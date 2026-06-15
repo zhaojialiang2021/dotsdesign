@@ -150,7 +150,9 @@ export function TokensPage() {
 
       <section className="docs-section-block">
         <h2 className="docs-section-block__heading">字号</h2>
-        <p className="docs-section-block__subheading">尺寸阶梯遵循 SF Pro / iOS Type Ramp</p>
+        <p className="docs-section-block__subheading">
+          组件规范统一使用 PingFang SC；代码片段使用 SaansMono-TRIAL
+        </p>
         <TypographySection />
       </section>
 

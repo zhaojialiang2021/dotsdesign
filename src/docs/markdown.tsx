@@ -256,7 +256,7 @@ export function renderMarkdown(src: string): ReactNode {
                   padding: 'var(--space-4)',
                   borderRadius: 'var(--radius-medium)',
                   overflow: 'auto',
-                  fontFamily: 'SF Mono, Menlo, monospace',
+                  fontFamily: 'var(--font-mono)',
                   fontSize: 'var(--footnote-size)',
                   lineHeight: 'var(--footnote-line-height)',
                 }}

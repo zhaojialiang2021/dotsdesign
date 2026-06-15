@@ -6,9 +6,79 @@
  * 不要在本文件里硬编码任何令牌——改令牌请改 design-tokens.md。
  */
 
+@font-face {
+  font-family: 'PhonicTrial';
+  src: url('./assets/fonts/phonic/PhonicTrial-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SaansMonoTrial';
+  src: url('./assets/fonts/saans-mono/SaansMono-TRIAL-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SaansMonoTrial';
+  src: url('./assets/fonts/saans-mono/SaansMono-TRIAL-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GlowSans';
+  src: url('./assets/fonts/glow-sans/GlowSansSC-Normal-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GlowSans';
+  src: url('./assets/fonts/glow-sans/GlowSansSC-Normal-Bold.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GlowSans';
+  src: url('./assets/fonts/glow-sans/GlowSansSC-Normal-Bold.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GlowSans';
+  src: url('./assets/fonts/glow-sans/GlowSansSC-Normal-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GlowSans';
+  src: url('./assets/fonts/glow-sans/GlowSansSC-Normal-Bold.otf') format('opentype');
+  font-weight: 800 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  font-family: 'PingFang SC', system-ui, -apple-system, sans-serif;
-  font-synthesis: none;
+  --font-latin: 'PhonicTrial';
+  --font-cjk: 'GlowSans';
+  --font-ui: var(--font-latin), var(--font-cjk), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-component: var(--font-family);
+  --font-mono: 'SaansMonoTrial', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  font-family: var(--font-ui);
+  font-synthesis: weight;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -34,8 +104,23 @@ body {
   margin: 0;
   background: var(--bg-1);
   color: var(--label-primary);
+  font-family: var(--font-ui);
 }
 
 #root {
   min-height: 100svh;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-mono);
 }

@@ -1,5 +1,5 @@
 {
-  "$generatedAt": "2026-06-15T08:29:33.647Z",
+  "$generatedAt": "2026-06-15T13:42:44.665Z",
   "$count": 176,
   "tokens": [
     {
@@ -1186,7 +1186,7 @@
       "name": "font.family",
       "value": "'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif",
       "type": "fontFamily",
-      "description": "唯一字体栈",
+      "description": "组件规范唯一字体栈",
       "modes": null
     },
     {

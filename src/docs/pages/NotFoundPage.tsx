@@ -66,7 +66,7 @@ export function NotFoundPage({ path }: { path: string }) {
                 background: 'var(--fill-quaternary)',
                 padding: '2px 8px',
                 borderRadius: 'var(--radius-small)',
-                fontFamily: "'SF Mono', ui-monospace, Menlo, monospace",
+                fontFamily: 'var(--font-mono)',
                 fontSize: 'var(--footnote-size)',
               }}
             >

@@ -218,7 +218,7 @@ function buildDesignMd(tokens) {
     `**约束**：`,
     `- 颜色只能引用下表令牌名。Light/Dark 双模式下，dark 值见每条的 \`(dark: ...)\` 后缀。`,
     `- 间距、圆角是封闭枚举，禁止自定义中间值（不能写 \`14px\`，只能用 \`space.4\` = 16px）。`,
-    `- 字体仅 PingFang SC，禁止其他字体。`,
+    `- 组件规范字体仅 PingFang SC，禁止其他字体。`,
     ``,
   ]
 

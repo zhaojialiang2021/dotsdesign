@@ -19,7 +19,7 @@ export function ButtonAnatomy() {
           x="110"
           y="55"
           fontSize="16"
-          fontFamily="-apple-system, 'PingFang SC', system-ui, sans-serif"
+          fontFamily="var(--font-component)"
           fontWeight="500"
           fill="var(--bg-light)"
           textAnchor="middle"
@@ -34,7 +34,7 @@ export function ButtonAnatomy() {
           x="110"
           y="108"
           fontSize="11"
-          fontFamily="'SF Mono', ui-monospace, Menlo, monospace"
+          fontFamily="var(--font-mono)"
           fill="currentColor"
           opacity="0.48"
           textAnchor="middle"
@@ -51,7 +51,7 @@ export function ButtonAnatomy() {
               x={s.w / 2}
               y={s.h / 2 + 5}
               fontSize={s.h >= 36 ? 14 : s.h >= 28 ? 12 : 10}
-              fontFamily="-apple-system, 'PingFang SC', system-ui, sans-serif"
+              fontFamily="var(--font-component)"
               fontWeight="500"
               fill="var(--bg-light)"
               textAnchor="middle"
@@ -62,7 +62,7 @@ export function ButtonAnatomy() {
               x="190"
               y={s.h / 2 + 4}
               fontSize="11"
-              fontFamily="'SF Mono', ui-monospace, Menlo, monospace"
+              fontFamily="var(--font-mono)"
               fill="currentColor"
               opacity="0.5"
             >
@@ -77,7 +77,7 @@ export function ButtonAnatomy() {
           x="0"
           y="0"
           fontSize="12"
-          fontFamily="'SF Mono', ui-monospace, Menlo, monospace"
+          fontFamily="var(--font-mono)"
           fill="currentColor"
           opacity="0.5"
         >
@@ -105,7 +105,7 @@ export function ButtonAnatomy() {
         x="380"
         y="326"
         fontSize="11"
-        fontFamily="'SF Mono', ui-monospace, Menlo, monospace"
+        fontFamily="var(--font-mono)"
         fill="currentColor"
         opacity="0.4"
         textAnchor="middle"

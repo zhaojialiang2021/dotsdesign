@@ -9,7 +9,7 @@ export function InputAnatomy() {
           x="0"
           y="0"
           fontSize="14"
-          fontFamily="-apple-system, 'PingFang SC', system-ui, sans-serif"
+          fontFamily="var(--font-component)"
           fill="currentColor"
           opacity="0.6"
         >
@@ -39,7 +39,7 @@ export function InputAnatomy() {
           x="44"
           y="42"
           fontSize="15"
-          fontFamily="-apple-system, 'PingFang SC', system-ui, sans-serif"
+          fontFamily="var(--font-component)"
           fill="currentColor"
         >
           我的第一个想法
@@ -64,7 +64,7 @@ export function InputAnatomy() {
           x="0"
           y="80"
           fontSize="13"
-          fontFamily="-apple-system, 'PingFang SC', system-ui, sans-serif"
+          fontFamily="var(--font-component)"
           fill="var(--accent-pink)"
         >
           内容不能为空
@@ -84,7 +84,7 @@ export function InputAnatomy() {
         x="180"
         y="100"
         fontSize="11"
-        fontFamily="'SF Mono', ui-monospace, Menlo, monospace"
+        fontFamily="var(--font-mono)"
         fill="currentColor"
         opacity="0.5"
         textAnchor="end"
@@ -96,7 +96,7 @@ export function InputAnatomy() {
         x="360"
         y="280"
         fontSize="11"
-        fontFamily="'SF Mono', ui-monospace, Menlo, monospace"
+        fontFamily="var(--font-mono)"
         fill="currentColor"
         opacity="0.4"
         textAnchor="middle"

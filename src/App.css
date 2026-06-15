@@ -658,7 +658,7 @@ body.is-preview *::-webkit-scrollbar {
   width: 100%;
   text-align: center;
   padding-top: 12px;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.24px;
@@ -695,7 +695,7 @@ body.is-preview *::-webkit-scrollbar {
 /* === 文字消息（短，灰底） === */
 .home-bubble {
   position: relative;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   box-sizing: border-box;
 }
 
@@ -756,7 +756,7 @@ body.is-preview *::-webkit-scrollbar {
   line-height: 24px;
   letter-spacing: 0.32px;
   color: var(--label-primary);
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
 }
 .home-bubble__voice-wave {
   display: inline-flex;
@@ -777,7 +777,7 @@ body.is-preview *::-webkit-scrollbar {
   border-radius: 20px;
 }
 .home-link__title {
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.32px;
@@ -799,7 +799,7 @@ body.is-preview *::-webkit-scrollbar {
   height: 72px;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 14px;
   line-height: 22px;
   letter-spacing: 0.28px;
@@ -820,7 +820,7 @@ body.is-preview *::-webkit-scrollbar {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.24px;
@@ -912,7 +912,7 @@ body.is-preview *::-webkit-scrollbar {
   width: 100%;
 }
 .home-quote__time {
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.24px;
@@ -929,7 +929,7 @@ body.is-preview *::-webkit-scrollbar {
 .home-quote__src {
   flex: 1 0 0;
   min-width: 0;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.24px;
@@ -940,7 +940,7 @@ body.is-preview *::-webkit-scrollbar {
 }
 .home-quote__body {
   margin: 0;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.24px;
@@ -964,7 +964,7 @@ body.is-preview *::-webkit-scrollbar {
   border: 0.5px solid rgba(111, 210, 189, 0.2);
   padding: 12px 16px;
   border-radius: 20px;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.32px;
@@ -1031,7 +1031,7 @@ body.is-preview *::-webkit-scrollbar {
 .home-ai-cite > span {
   flex: 1 0 0;
   min-width: 0;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.24px;
@@ -1056,7 +1056,7 @@ body.is-preview *::-webkit-scrollbar {
   gap: 12px;
   padding: 12px 0;
   margin-top: 12px;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
 }
 .home-ai__lead {
   margin: 0;
@@ -1220,7 +1220,7 @@ body.is-preview *::-webkit-scrollbar {
 .home-page__placeholder {
   flex: 1 0 0;
   min-width: 0;
-  font-family: 'PingFang SC', system-ui, sans-serif;
+  font-family: var(--font-component);
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.32px;
@@ -1914,7 +1914,7 @@ body.is-preview *::-webkit-scrollbar {
 }
 
 .personal-data-cell__value {
-  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 22px;
   line-height: 28px;
   font-weight: 700;
@@ -2004,7 +2004,7 @@ body.is-preview *::-webkit-scrollbar {
   position: absolute;
   left: 16px;
   bottom: 12px;
-  font-family: 'SF Mono', ui-monospace, Menlo, monospace;
+  font-family: var(--font-mono);
   font-size: 22px;
   line-height: 1;
   font-weight: 700;
@@ -2454,6 +2454,7 @@ body.is-preview *::-webkit-scrollbar {
   margin: 0 auto;
   overflow: hidden;
   background: var(--dots-bg);
+  font-family: var(--font-component);
 }
 
 .dotted-demo {
@@ -2684,6 +2685,7 @@ body.is-preview *::-webkit-scrollbar {
   --dots-ai-card-photo-shadow: rgba(0, 0, 0, 0.12);
   --dots-white-border-soft: rgba(255, 255, 255, 0.2);
   --dots-white-border-strong: rgba(255, 255, 255, 0.75);
+  font-family: var(--font-component);
 }
 
 .dots-message-row {
@@ -2712,6 +2714,7 @@ body.is-preview *::-webkit-scrollbar {
   border: 0.5px solid;
   border-radius: 22px;
   color: var(--dots-title);
+  font-family: var(--font-component);
   font-size: 16px;
   line-height: 26px;
   font-weight: 400;
@@ -2778,6 +2781,7 @@ body.is-preview *::-webkit-scrollbar {
   background: var(--dots-ai-card-bg, rgba(255, 255, 255, 0.8));
   box-shadow: 0 0 10px var(--dots-ai-card-shadow, rgba(0, 0, 0, 0.04));
   color: var(--dots-title, #141414);
+  font-family: var(--font-component);
 }
 
 .dots-generated-card__images {

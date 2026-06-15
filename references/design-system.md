@@ -159,6 +159,8 @@
 ## 3. 字体体系
 
 ### 3.1 字体栈
+组件规范统一使用 PingFang SC。
+
 ```css
 font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
 ```

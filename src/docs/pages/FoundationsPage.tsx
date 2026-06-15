@@ -20,7 +20,7 @@ const META: Record<
   },
   typography: {
     title: 'Typography',
-    subtitle: '尺寸阶梯遵循 SF Pro / iOS Type Ramp。仅 PingFang SC，禁止其他字体。',
+    subtitle: '组件规范统一使用 PingFang SC；字号、行高与字重按 Dots Type Ramp。',
     render: () => <TypographySection />,
   },
   spacing: {

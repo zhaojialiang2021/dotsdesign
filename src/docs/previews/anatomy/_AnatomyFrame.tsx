@@ -72,7 +72,7 @@ export function Annotation({
         x={x + dir * 24}
         y={y + 3}
         fontSize="10"
-        fontFamily="'SF Mono', ui-monospace, Menlo, monospace"
+        fontFamily="var(--font-mono)"
         fontWeight="600"
         fill="currentColor"
         textAnchor="middle"
@@ -83,7 +83,7 @@ export function Annotation({
         x={x + dir * 38}
         y={y + 4}
         fontSize="12"
-        fontFamily="-apple-system, 'PingFang SC', system-ui, sans-serif"
+        fontFamily="var(--font-component)"
         fill="currentColor"
         opacity="0.85"
         textAnchor={align === 'left' ? 'end' : 'start'}

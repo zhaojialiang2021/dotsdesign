@@ -91,7 +91,7 @@ Always Mode 文本使用 `--light-title` / `--light-paragraph` / `--light-descri
 
 ## 字体
 
-字体栈：
+组件规范字体栈：
 
 ```css
 'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif
