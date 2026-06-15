@@ -1,11 +1,29 @@
 {
-  "$description": "Dots 阴影。原则上禁用阴影，仅弹窗例外。",
+  "$description": "Dots 阴影。来源：点点设计规范 2.6 Shadow。",
   "shadow": {
-    "modal": {
-      "$value": "0 8px 32px rgba(0,0,0,0.12)",
+    "1": {
+      "$value": "0 8px 24px rgba(20,20,20,0.04)",
       "$type": "shadow",
-      "$description": "弹窗投影",
-      "$extensions": { "modes": { "dark": "0 8px 32px rgba(0,0,0,0.48)" } }
+      "$description": "卡片、容器阴影",
+      "$extensions": { "modes": { "dark": "0 8px 24px rgba(20,20,20,0.08)" } }
+    },
+    "2": {
+      "$value": "0 16px 48px rgba(20,20,20,0.12)",
+      "$type": "shadow",
+      "$description": "面板阴影",
+      "$extensions": { "modes": { "dark": "0 16px 48px rgba(20,20,20,0.24)" } }
+    },
+    "3": {
+      "$value": "0 24px 72px rgba(20,20,20,0.20)",
+      "$type": "shadow",
+      "$description": "高层面板阴影",
+      "$extensions": { "modes": { "dark": "0 24px 72px rgba(20,20,20,0.40)" } }
+    },
+    "modal": {
+      "$value": "0 16px 48px rgba(20,20,20,0.12)",
+      "$type": "shadow",
+      "$description": "兼容旧变量：映射到 shadow 2",
+      "$extensions": { "modes": { "dark": "0 16px 48px rgba(20,20,20,0.24)" } }
     }
   }
 }

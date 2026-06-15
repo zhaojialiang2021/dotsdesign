@@ -1,25 +1,40 @@
 {
-  "$description": "Dots 动效。封闭枚举。",
+  "$description": "Dots 动效。来源：点点设计规范 6 动画规范。",
   "duration": {
-    "fast": { "$value": "150ms", "$type": "duration", "$description": "开关切换、选中态变化" },
-    "normal": { "$value": "250ms", "$type": "duration", "$description": "页面切换、展开收起" },
-    "slow": { "$value": "350ms", "$type": "duration", "$description": "弹窗出入场" }
+    "in": { "$value": "250ms", "$type": "duration", "$description": "元素入场" },
+    "expand": { "$value": "350ms", "$type": "duration", "$description": "内容展开" },
+    "delayed-in": { "$value": "300ms", "$type": "duration", "$description": "延迟入场" },
+    "out": { "$value": "250ms", "$type": "duration", "$description": "元素退场" },
+    "sheet": { "$value": "400ms", "$type": "duration", "$description": "弹窗/底部弹窗出入场，允许 350-450ms" },
+    "fast": { "$value": "250ms", "$type": "duration", "$description": "兼容旧变量：状态切换" },
+    "normal": { "$value": "250ms", "$type": "duration", "$description": "兼容旧变量：页面切换" },
+    "slow": { "$value": "350ms", "$type": "duration", "$description": "兼容旧变量：大幅位移" }
   },
   "curve": {
-    "default": {
-      "$value": "cubic-bezier(0.25, 0.1, 0.25, 1)",
+    "out": {
+      "$value": "cubic-bezier(.32,.72,0,1)",
       "$type": "cubicBezier",
-      "$description": "标准缓动"
+      "$description": "通用出场/进入"
     },
     "spring": {
-      "$value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      "$value": "cubic-bezier(.34,1.56,.64,1)",
       "$type": "cubicBezier",
-      "$description": "弹性效果（极少使用）"
+      "$description": "弹性效果"
+    },
+    "default": {
+      "$value": "cubic-bezier(.32,.72,0,1)",
+      "$type": "cubicBezier",
+      "$description": "兼容旧变量：映射到 Dots ease-out"
     },
     "ease-out": {
-      "$value": "cubic-bezier(0, 0, 0.2, 1)",
+      "$value": "cubic-bezier(.32,.72,0,1)",
       "$type": "cubicBezier",
-      "$description": "元素退出"
+      "$description": "兼容旧变量：映射到 Dots ease-out"
     }
+  },
+  "press": {
+    "scale-min": { "$value": "0.95", "$type": "number", "$description": "按压缩放下限" },
+    "scale-max": { "$value": "0.97", "$type": "number", "$description": "按压缩放上限" },
+    "opacity": { "$value": "0.5", "$type": "number", "$description": "按压透明度" }
   }
 }

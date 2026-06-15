@@ -25,110 +25,242 @@
 
 | 令牌 | 值 | 说明 |
 |---|---|---|
-| `color.label.primary` | `#212121` (dark: `#F8F9F9`) | 标题、正文主文本 |
-| `color.label.secondary` | `rgba(60,60,67,0.6)` (dark: `rgba(235,235,245,0.6)`) | 辅助说明、副标题 |
-| `color.label.tertiary` | `rgba(60,60,67,0.3)` (dark: `rgba(235,235,245,0.3)`) | 占位符、禁用态文本 |
-| `color.label.quaternary` | `rgba(60,60,67,0.22)` (dark: `rgba(235,235,245,0.22)`) | 极弱提示、水印 |
-| `color.bg.0` | `#FFFFFF` (dark: `#101010`) | 卡片、弹窗、输入框 |
-| `color.bg.1` | `#F5F5F5` (dark: `#1A1A1A`) | 页面底色 |
-| `color.bg.2` | `#EBEBEB` (dark: `#242424`) | 导航选中态、分组背景 |
-| `color.bg.3` | `#D8D8D8` (dark: `#2C2C2C`) | 底部安全区、分割带 |
-| `color.bg.4` | `#E6E6E6` (dark: `#333333`) | 极深层级背景 |
-| `color.fill.primary` | `rgba(120,120,128,0.2)` (dark: `rgba(120,120,128,0.36)`) | 开关关闭态、滑块轨道 |
-| `color.fill.secondary` | `rgba(120,120,128,0.16)` (dark: `rgba(120,120,128,0.32)`) | 进度条底色 |
-| `color.fill.tertiary` | `rgba(120,120,128,0.12)` (dark: `rgba(120,120,128,0.24)`) | 占位图底色 |
-| `color.fill.quaternary` | `rgba(120,120,128,0.08)` (dark: `rgba(120,120,128,0.18)`) | 极弱填充 |
-| `color.fill.inverted-primary` | `rgba(255,255,255,0.32)` | 深色上的白填充 |
-| `color.fill.inverted-secondary` | `rgba(255,255,255,0.24)` | 深色上的弱白填充 |
-| `color.fill.inverted-tertiary` | `rgba(255,255,255,0.16)` | 深色上的极弱白填充 |
-| `color.fill.inverted-quaternary` | `rgba(255,255,255,0.08)` | 深色上的微弱白填充 |
-| `color.line.opaque` | `#C5C5C7` (dark: `#545458`) | 强分割（约 10% 场景） |
-| `color.line.non-opaque` | `rgba(0,0,0,0.08)` (dark: `rgba(255,255,255,0.08)`) | 默认分割（约 90% 场景） |
-| `color.brand.blue` | `#78AAFA` | 品牌蓝，只做点缀 |
-| `color.brand.blue-light` | `rgba(120,170,250,0.08)` | AI 回应气泡背景 |
-| `color.brand.blue-border` | `rgba(120,170,250,0.2)` | AI 回应气泡边框 |
-| `color.brand.blue-text` | `#4184EF` | AI 回应文本色 |
-| `color.accent.blue` | `#78AAFA` | 智能总结标签 |
-| `color.accent.yellow` | `#FFCC00` | 待办事项标签 |
-| `color.accent.green` | `#34C759` | 日记标签 |
-| `color.accent.pink` | `#FF6482` | 持续月录标签 |
-| `color.accent.brown` | `#916964` | 文件标签 |
-| `color.accent.event-blue` | `#5B9BDB` | 事件追踪标签 |
-| `color.link` | `#133667` (dark: `#C6D9EF`) | 可点击链接 |
-| `color.backdrop` | `rgba(0,0,0,0.32)` | Modal / Sheet 背后的遮罩底色 |
-| `color.deco.teal` | `#81D5CA` | Live 图功能图标背景 |
-| `color.deco.sky` | `#84B1EB` | Web 端 / 时间碎片图标背景 |
-| `color.deco.lavender` | `#9F8CCF` | AI 溯源图标背景 |
-| `color.deco.sage` | `#A0C484` | 频道数量图标背景 |
-| `color.deco.rose` | `#AA7D78` | 音视频解析图标背景 |
+| `color.bg.0` | `#FFFFFF` (dark: `#323232`) | 兼容旧 schema：BG-0，映射到 Bg 3 |
+| `color.bg.1` | `#F7F7F7` (dark: `#282828`) | Bg 1：底部栏、导航栏背景 |
+| `color.bg.2` | `#FAFAFA` (dark: `#2D2D2D`) | Bg 2：键盘升起低栏背景 |
+| `color.bg.3` | `#FFFFFF` (dark: `#323232`) | Bg 3：半屏、弹窗、弹出层背景 |
+| `color.bg.base` | `#F3F3F3` (dark: `#242424`) | Bg：主背景色，对话流等一级界面 |
+| `color.bg.light` | `#FFFFFF` | Bg Light：纯白背景，不随主题切换 |
+| `color.bg.black` | `#141414` | Bg Black：纯黑背景，不随主题切换 |
+| `color.bg.mask-1` | `rgba(0,0,0,0.2)` | Mask Bg 1：浅遮罩 |
+| `color.bg.mask-2` | `rgba(0,0,0,0.4)` | Mask Bg 2：深遮罩 |
+| `color.title` | `#141414` (dark: `rgba(255,255,255,0.94)`) | Title：一级标题、对话流文本 |
+| `color.paragraph` | `rgba(20,20,20,0.8)` (dark: `rgba(255,255,255,0.8)`) | Paragraph：二级标题、段落、icon |
+| `color.description` | `rgba(20,20,20,0.6)` (dark: `rgba(255,255,255,0.6)`) | Description：描述、未选中字色 |
+| `color.description-lighter` | `rgba(20,20,20,0.4)` (dark: `rgba(255,255,255,0.4)`) | Description Lighter：更弱描述 |
+| `color.placeholder` | `rgba(20,20,20,0.16)` (dark: `rgba(255,255,255,0.16)`) | Placeholder：输入栏、loading 占位文本 |
+| `color.disabled` | `rgba(20,20,20,0.09)` (dark: `rgba(255,255,255,0.09)`) | Disabled：禁用色 |
+| `color.link` | `#0D4087` (dark: `#93BFF1`) | Link：文字链 |
+| `color.label.primary` | `#141414` (dark: `rgba(255,255,255,0.94)`) | 兼容旧 schema：Label-Primary，映射到 Title |
+| `color.label.secondary` | `rgba(20,20,20,0.6)` (dark: `rgba(255,255,255,0.6)`) | 兼容旧 schema：Label-Secondary，映射到 Description |
+| `color.label.tertiary` | `rgba(20,20,20,0.16)` (dark: `rgba(255,255,255,0.16)`) | 兼容旧 schema：Label-Tertiary，映射到 Placeholder |
+| `color.label.quaternary` | `rgba(20,20,20,0.09)` (dark: `rgba(255,255,255,0.09)`) | 兼容旧 schema：Label-Quaternary，映射到 Disabled |
+| `color.dark.title` | `rgba(255,255,255,0.94)` (dark: `#141414`) | Dark Title：浅色背景上的反色一级标题 |
+| `color.dark.paragraph` | `rgba(255,255,255,0.8)` (dark: `rgba(20,20,20,0.8)`) | Dark Paragraph：浅色背景上的反色段落/icon |
+| `color.dark.description` | `rgba(255,255,255,0.6)` (dark: `rgba(20,20,20,0.6)`) | Dark Description |
+| `color.dark.placeholder` | `rgba(255,255,255,0.16)` (dark: `rgba(20,20,20,0.16)`) | Dark Placeholder |
+| `color.dark.link` | `#93BFF1` (dark: `#0D4087`) | Dark Link |
+| `color.light.title` | `#141414` | Light Title：Always Mode 一级标题 |
+| `color.light.paragraph` | `rgba(20,20,20,0.8)` | Light Paragraph：Always Mode 段落/icon |
+| `color.light.description` | `rgba(20,20,20,0.6)` | Light Description |
+| `color.light.description-1` | `rgba(20,20,20,0.4)` | Light Description 1 |
+| `color.light.placeholder` | `rgba(20,20,20,0.16)` | Light Placeholder |
+| `color.light.disabled` | `rgba(20,20,20,0.09)` | Light Disabled |
+| `color.light.link` | `#133667` | Light Link |
+| `color.fill.1` | `rgba(255,255,255,0.05)` (dark: `rgba(50,50,50,0.05)`) | Fill 1：loading 气泡等色 |
+| `color.fill.2` | `rgba(255,255,255,0.1)` (dark: `rgba(50,50,50,0.1)`) | Fill 2：富文本、分享卡悬浮容器底色 |
+| `color.fill.3` | `rgba(255,255,255,0.2)` (dark: `rgba(50,50,50,0.2)`) | Fill 3 |
+| `color.fill.4` | `rgba(255,255,255,0.5)` (dark: `rgba(50,50,50,0.5)`) | Fill 4 |
+| `color.fill.5` | `rgba(255,255,255,0.8)` (dark: `rgba(50,50,50,0.8)`) | Fill 5：AI 卡片/富文本背景 |
+| `color.fill.a` | `#FFFFFF` (dark: `#323232`) | Fill A：输入框、模型侧气泡底色 |
+| `color.fill.b` | `#E6E6E6` (dark: `#1C1C1C`) | Fill B：用户侧气泡/轻提示底色 |
+| `color.fill.c` | `rgba(50,50,50,0.92)` (dark: `rgba(68,68,68,0.8)`) | Fill C：长按面板底色 |
+| `color.fill.primary` | `rgba(50,50,50,0.2)` (dark: `rgba(255,255,255,0.2)`) | 兼容旧 schema：Fill-Primary，映射到 Inverted Fill 3 |
+| `color.fill.secondary` | `rgba(50,50,50,0.1)` (dark: `rgba(255,255,255,0.1)`) | 兼容旧 schema：Fill-Secondary，映射到 Inverted Fill 2 |
+| `color.fill.tertiary` | `rgba(50,50,50,0.05)` (dark: `rgba(255,255,255,0.05)`) | 兼容旧 schema：Fill-Tertiary，映射到 Inverted Fill 1 |
+| `color.fill.quaternary` | `rgba(20,20,20,0.02)` (dark: `rgba(91,88,88,0.26)`) | 兼容旧 schema：Fill-Quaternary，映射到 info 3 |
+| `color.inverted-fill.1` | `rgba(50,50,50,0.05)` (dark: `rgba(255,255,255,0.05)`) | Inverted Fill 1 |
+| `color.inverted-fill.2` | `rgba(50,50,50,0.1)` (dark: `rgba(255,255,255,0.1)`) | Inverted Fill 2 |
+| `color.inverted-fill.3` | `rgba(50,50,50,0.2)` (dark: `rgba(255,255,255,0.2)`) | Inverted Fill 3 |
+| `color.inverted-fill.4` | `rgba(50,50,50,0.5)` (dark: `rgba(255,255,255,0.5)`) | Inverted Fill 4 |
+| `color.inverted-fill.5` | `rgba(50,50,50,0.8)` (dark: `rgba(255,255,255,0.8)`) | Inverted Fill 5 |
+| `color.separator.2` | `rgba(20,20,20,0.08)` (dark: `rgba(255,255,255,0.08)`) | Separator 2：模型侧气泡、容器描边 |
+| `color.separator.3` | `rgba(20,20,20,0.1)` (dark: `rgba(255,255,255,0.1)`) | Separator 3：query 气泡描边 |
+| `color.separator.4` | `rgba(255,255,255,0.2)` (dark: `rgba(50,50,50,0.2)`) | Separator 4：容器白色描边 |
+| `color.separator.base` | `rgba(255,255,255,0.75)` (dark: `rgba(255,255,255,0.1)`) | Separator：用户侧气泡描边 |
+| `color.separator.light-1` | `rgba(255,255,255,0.08)` | Light Separator 1 |
+| `color.separator.light-2` | `rgba(255,255,255,0.2)` | Light Separator 2 |
+| `color.separator.light-3` | `rgba(255,255,255,0.75)` | Light Separator 3 |
+| `color.separator.light-4` | `rgba(20,20,20,0.08)` | Light Separator 4 |
+| `color.separator.light-5` | `rgba(50,50,50,0.2)` | Light Separator 5 |
+| `color.line.opaque` | `rgba(20,20,20,0.1)` (dark: `rgba(255,255,255,0.1)`) | 兼容旧 schema：Line-Opaque，映射到 Separator 3 |
+| `color.line.non-opaque` | `rgba(20,20,20,0.08)` (dark: `rgba(255,255,255,0.08)`) | 兼容旧 schema：Line-NonOpaque，映射到 Separator 2 |
+| `color.info.2` | `rgba(175,217,241,0.2)` (dark: `rgba(71,94,106,0.2)`) | info 2：富文本蓝色 |
+| `color.info.3` | `rgba(20,20,20,0.02)` (dark: `rgba(91,88,88,0.26)`) | info 3：富文本灰色 |
+| `color.info.4` | `rgba(111,210,189,0.3)` | info 4：文本选中绿色 |
+| `color.info.5` | `#6FD2BD` | info 5：品牌主色/纯绿色 |
+| `color.info.6` | `#21C3A1` | info 6：文本选中分割栏绿色 |
+| `color.info.base` | `rgba(253,240,145,0.2)` (dark: `rgba(108,104,69,0.2)`) | info：富文本黄色 |
+| `color.primary` | `#FF2442` | 小红书社区红，仅用于社区关注/发布场景 |
+| `color.brand.blue` | `#6FD2BD` | 兼容旧 schema：Brand-Blue，映射到 info 5 |
+| `color.brand.blue-light` | `rgba(111,210,189,0.3)` | 兼容旧 schema：Brand-Blue-Light，映射到 info 4 |
+| `color.brand.blue-border` | `#21C3A1` | 兼容旧 schema：Brand-Blue-Border，映射到 info 6 |
+| `color.brand.blue-text` | `#21C3A1` | 兼容旧 schema：Brand-Blue-Text，映射到 info 6 |
+| `color.backdrop` | `rgba(0,0,0,0.4)` | 兼容旧 schema：弹层遮罩，映射到 Mask Bg 2 |
+| `color.accent.yellow` | `#FFCC00` | 兼容：待办标签 |
+| `color.accent.green` | `#34C759` | 兼容：日记标签 |
+| `color.accent.pink` | `#FF6482` | 兼容：持续月录标签 |
+| `color.accent.brown` | `#916964` | 兼容：文件标签 |
+| `color.accent.event-blue` | `#5B9BDB` | 兼容：事件追踪标签 |
+| `color.deco.teal` | `#81D5CA` | 兼容：Live 图功能图标背景 |
+| `color.deco.sky` | `#84B1EB` | 兼容：Web 端 / 时间碎片图标背景 |
+| `color.deco.lavender` | `#9F8CCF` | 兼容：AI 溯源图标背景 |
+| `color.deco.sage` | `#A0C484` | 兼容：频道数量图标背景 |
+| `color.deco.rose` | `#AA7D78` | 兼容：音视频解析图标背景 |
+
+## phone
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `phone.width` | `430px` | iOS 大屏设计稿宽度 |
+| `phone.height` | `932px` | iOS 大屏设计稿高度 |
+| `phone.radius` | `54px` | 模拟真机外壳圆角 |
+
+## safe
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `safe.top` | `59px` | 状态栏/安全区顶部 |
+| `safe.bottom` | `34px` | 底部安全区 |
+| `safe.nav` | `65px` | 导航栏高度 |
+
+## dialog
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `dialog.flow-padding-x` | `12px` | 对话流左右 padding |
+| `dialog.gap-cross-side` | `20px` | 不同侧消息间距 |
+| `dialog.gap-tail` | `26px` | 有引脚的消息间距 |
+| `dialog.gap-ai` | `16px` | AI 连续消息间距 |
+| `dialog.gap-user` | `8px` | 用户连续消息间距 |
+| `dialog.bubble-max` | `346px` | 对话气泡最大宽度 |
+| `dialog.bubble-padding-y` | `12px` | 气泡垂直 padding |
+| `dialog.bubble-padding-x` | `20px` | 气泡水平 padding |
+| `dialog.tail` | `24px` | 气泡尾巴宽高 |
+| `dialog.tail-offset` | `-11px` | 气泡尾巴底部偏移 |
+| `dialog.input-height` | `48px` | 输入区域高度 |
+| `dialog.input-total-height` | `96px` | 输入栏含安全区总高 |
+| `dialog.icon` | `24px` | 输入栏图标尺寸 |
+
+## rich
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `rich.gap-level-1` | `32pt` | 富文本一级模块间距 |
+| `rich.gap-level-2` | `22pt` | 富文本二级模块间距 |
+| `rich.gap-level-3` | `16pt` | 富文本三级模块间距 |
+| `rich.text-padding-x` | `24pt` | 文字类原子左右间距 |
+| `rich.block-padding-x` | `14pt` | 图片、图组、地图、商品卡等内容块左右间距 |
+| `rich.card-top` | `28pt` | 卡片容器顶部到 H1 |
+| `rich.card-action-gap` | `28pt` | 最后内容到按钮区顶部 |
+| `rich.card-bottom` | `30pt` | 按钮区底部到容器底部 |
 
 ## Spacing
 
 | 令牌 | 值 | 说明 |
 |---|---|---|
-| `space.1` | `4px` | 图标与文字间距、紧凑内边距 |
-| `space.2` | `8px` | 导航项圆角、小元素间距 |
-| `space.3` | `12px` | 卡片间距、列表项间距 |
-| `space.4` | `16px` | 卡片内边距、标准组件内间距 |
-| `space.5` | `20px` | 区块间距、表单项间距 |
-| `space.6` | `24px` | 页面边距（紧凑） |
-| `space.7` | `32px` | 页面边距（标准） |
+| `space.1` | `4px` | 微调 |
+| `space.2` | `8px` | 紧凑间距 / 用户连续消息 |
+| `space.3` | `12px` | 对话流左右 padding / 气泡垂直 padding |
+| `space.4` | `16px` | AI 连续消息 / 小区块 |
+| `space.5` | `20px` | 不同侧消息间距 |
+| `space.6` | `24px` | 气泡尾巴 / 文字左右间距 |
+| `space.7` | `32px` | 富文本一级模块间距约值 |
 | `space.8` | `40px` | 大区块间距 |
-| `space.9` | `48px` | 页面顶部留白 |
-| `space.10` | `64px` | 最大留白 |
+| `space.9` | `48px` | 输入区域 / CTA 高度 |
+| `space.10` | `64px` | 大段留白 |
 
 ## Radius
 
 | 令牌 | 值 | 说明 |
 |---|---|---|
-| `radius.small` | `6px` | 图片、缩略图 |
-| `radius.medium` | `8px` | 导航项、输入框 |
-| `radius.large` | `12px` | 内容卡、弹窗 |
-| `radius.xlarge` | `20px` | 消息气泡、能力卡片、侧边栏信息卡 |
-| `radius.full` | `9999px` | Pill 按钮、标签、头像 |
+| `radius.bubble` | `22px` | 对话气泡 |
+| `radius.ai-card` | `36px` | AI 富文本卡片 |
+| `radius.inner-card` | `14px` | 卡片内元素 |
+| `radius.tag` | `20px` | 标签 |
+| `radius.input` | `16px` | 输入框 |
+| `radius.option` | `12px` | 选项标签 |
+| `radius.cta` | `24px` | CTA 按钮 |
+| `radius.input-container` | `28px 28px 0 0` | 输入栏容器 |
+| `radius.sheet` | `20px 20px 0 0` | 底部弹窗 |
+| `radius.community-card` | `8px` | 社区笔记卡片 |
+| `radius.avatar` | `50%` | 头像圆形 |
+| `radius.small` | `6px` | 兼容旧文档：小圆角 |
+| `radius.medium` | `8px` | 兼容旧文档：社区卡片/导航项 |
+| `radius.large` | `12px` | 兼容旧文档：选项标签 |
+| `radius.xlarge` | `22px` | 兼容旧文档：映射到气泡圆角 |
+| `radius.full` | `9999px` | 胶囊 / 头像 |
 
 ## Motion · Duration
 
 | 令牌 | 值 | 说明 |
 |---|---|---|
-| `duration.fast` | `150ms` | 开关切换、选中态变化 |
-| `duration.normal` | `250ms` | 页面切换、展开收起 |
-| `duration.slow` | `350ms` | 弹窗出入场 |
+| `duration.in` | `250ms` | 元素入场 |
+| `duration.expand` | `350ms` | 内容展开 |
+| `duration.delayed-in` | `300ms` | 延迟入场 |
+| `duration.out` | `250ms` | 元素退场 |
+| `duration.sheet` | `400ms` | 弹窗/底部弹窗出入场，允许 350-450ms |
+| `duration.fast` | `250ms` | 兼容旧变量：状态切换 |
+| `duration.normal` | `250ms` | 兼容旧变量：页面切换 |
+| `duration.slow` | `350ms` | 兼容旧变量：大幅位移 |
 
 ## Motion · Curve
 
 | 令牌 | 值 | 说明 |
 |---|---|---|
-| `curve.default` | `cubic-bezier(0.25, 0.1, 0.25, 1)` | 标准缓动 |
-| `curve.spring` | `cubic-bezier(0.34, 1.56, 0.64, 1)` | 弹性效果（极少使用） |
-| `curve.ease-out` | `cubic-bezier(0, 0, 0.2, 1)` | 元素退出 |
+| `curve.out` | `cubic-bezier(.32,.72,0,1)` | 通用出场/进入 |
+| `curve.spring` | `cubic-bezier(.34,1.56,.64,1)` | 弹性效果 |
+| `curve.default` | `cubic-bezier(.32,.72,0,1)` | 兼容旧变量：映射到 Dots ease-out |
+| `curve.ease-out` | `cubic-bezier(.32,.72,0,1)` | 兼容旧变量：映射到 Dots ease-out |
+
+## press
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `press.scale-min` | `0.95` | 按压缩放下限 |
+| `press.scale-max` | `0.97` | 按压缩放上限 |
+| `press.opacity` | `0.5` | 按压透明度 |
 
 ## Shadow
 
 | 令牌 | 值 | 说明 |
 |---|---|---|
-| `shadow.modal` | `0 8px 32px rgba(0,0,0,0.12)` (dark: `0 8px 32px rgba(0,0,0,0.48)`) | 弹窗投影 |
+| `shadow.1` | `0 8px 24px rgba(20,20,20,0.04)` (dark: `0 8px 24px rgba(20,20,20,0.08)`) | 卡片、容器阴影 |
+| `shadow.2` | `0 16px 48px rgba(20,20,20,0.12)` (dark: `0 16px 48px rgba(20,20,20,0.24)`) | 面板阴影 |
+| `shadow.3` | `0 24px 72px rgba(20,20,20,0.20)` (dark: `0 24px 72px rgba(20,20,20,0.40)`) | 高层面板阴影 |
+| `shadow.modal` | `0 16px 48px rgba(20,20,20,0.12)` (dark: `0 16px 48px rgba(20,20,20,0.24)`) | 兼容旧变量：映射到 shadow 2 |
 
 ## Font Family
 
 | 令牌 | 值 | 说明 |
 |---|---|---|
-| `font.family` | `PingFang SC, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', system-ui, sans-serif` | 唯一字体族 |
+| `font.family` | `'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif` | 唯一字体栈 |
 
 ## Typography
 
 | 令牌 | size | weight | line-height | 说明 |
 |---|---|---|---|---|
-| `typography.headline-h1` | 32px | 500 | 1.2 | 页面主标题（极少使用） |
-| `typography.headline-h2` | 24px | 500 | 1.3 | 区块标题 |
-| `typography.headline-h3` | 20px | 500 | 1.35 | 卡片标题 |
-| `typography.body-primary` | 17px | 400 | 1.5 | 正文主文本 |
-| `typography.body-secondary` | 15px | 400 | 1.45 | 辅助正文 |
-| `typography.callout` | 16px | 500 | 1.4 | 强调文本、按钮内文字 |
-| `typography.subhead` | 14px | 400 | 1.4 | 副标题、列表项 |
-| `typography.footnote` | 13px | 400 | 1.38 | 脚注、来源标注 |
-| `typography.caption-1` | 12px | 400 | 1.3 | 标签、辅助标记 |
-| `typography.caption-2` | 11px | 400 | 1.2 | 极小标注 |
+| `typography.rich-h1` | 20pt | 600 | 34pt | 富文本总标题 H1 |
+| `typography.rich-h2` | 18pt | 600 | 31pt | 富文本一级模块标题 H2 |
+| `typography.rich-h3` | 17pt | 600 | 29pt | 富文本二级模块标题 H3 |
+| `typography.rich-h4` | 16pt | 600 | 27pt | 富文本三级模块标题 H4 |
+| `typography.rich-paragraph` | 16pt | 400 | 27pt | 富文本正文段落、列表、引用 |
+| `typography.rich-table` | 14pt | 400 | 24pt | 富文本表格内容 |
+| `typography.dialog-bubble` | 16px | 400 | 1.69em | 对话气泡正文 |
+| `typography.dialog-input` | 16px | 400 | 48px | 输入框文字 |
+| `typography.dialog-time` | 13px | 400 | 18px | 对话时间标签 |
+| `typography.community-card-title` | 14px | 500 | 20px | 社区卡片标题，最多两行 |
+| `typography.support` | 12px | 400 | 17px | 辅助文字 |
+| `typography.headline-h1` | 20pt | 600 | 34pt | 兼容旧文档：映射到 Rich H1 |
+| `typography.headline-h2` | 18pt | 600 | 31pt | 兼容旧文档：映射到 Rich H2 |
+| `typography.headline-h3` | 17pt | 600 | 29pt | 兼容旧文档：映射到 Rich H3 |
+| `typography.body-primary` | 16px | 400 | 1.69em | 兼容旧文档：对话气泡正文 |
+| `typography.body-secondary` | 14px | 400 | 20px | 辅助正文 |
+| `typography.callout` | 16px | 500 | 22px | 按钮/强调文本 |
+| `typography.subhead` | 14px | 400 | 20px | 副标题、列表项 |
+| `typography.footnote` | 13px | 400 | 18px | 脚注、时间标签 |
+| `typography.caption-1` | 12px | 400 | 17px | 说明、分组标题 |
+| `typography.caption-2` | 11px | 400 | 13px | 极小说明 |
 
 
 ---
@@ -141,40 +273,48 @@
 
 **Category**: action
 
-用户主动触发的动作单元。Dots 风格：Pill / Rounded Rect 形态、品牌色克制使用、单视图最多一个 primary。
+触发即时任务的动作单元。Dots Button 继承 ReDs 的六档尺寸、宽度和场景规则，主色映射为 info 5，图底场景使用 ghost。
 
 ### Props
-- `intent`: "primary" | "secondary" | "soft" | "ghost" | "destructive" _(default: `"primary"`)_
-  意图层级。primary 主操作（CTA、提交）；secondary 次要操作（取消）；soft 品牌色辅助（小红点击操作如「填写领取」）；ghost 极弱（链接状）；destructive 不可逆动作（删除/退出）
-- `size`: "compact" | "standard" | "large" _(default: `"standard"`)_
-  compact 34px / standard 48px / large 51px
-- `icon`: "none" | "leading" | "only" _(default: `"none"`)_
-  图标位置。leading 文字左侧 20px 图标；only 图标按钮，无文字
+- `variant`: "filled" | "outline" | "neutral" | "ghost" _(default: `"filled"`)_
+  视觉层级。filled 是唯一主操作；outline 是强调次级动作；neutral 用于空态、取消和弱操作；ghost 只用于图片、彩色或深色背景。
+- `size`: "xLarge" | "large" | "medium" | "small" | "mini" | "micro" _(default: `"medium"`)_
+  xLarge 48px / large 44px / medium 36px / small 28px / mini 24px / micro 20px。xLarge 与 micro 仅限特定场景。
+- `icon`: "none" | "leading" | "trailing" | "only" _(default: `"none"`)_
+  图标位置。only 是纯图标按钮，必须提供 aria-label；文字按钮默认不带图标。
 - `fullWidth`: false | true _(default: `false`)_
-  是否占满容器宽度（启动页 CTA 等场景）
+  是否占满父容器。只用于表单底部、固定操作栏和页面主 CTA。
+- `selected`: false | true _(default: `false`)_
+  用于关注类按钮的已选中状态，例如 已关注 / 互相关注。选中后通常降低层级。
 
 ### States
-`idle`, `hover`, `active`, `loading`, `disabled`
+`default`, `pressed`, `disabled`, `loading`, `selected`
 
 ### Constraints
-- **max_primary_per_view**: 同一页面最多一个 primary 按钮，避免主次失焦
-- **destructive_requires**: destructive 仅用于不可逆动作（删除、退出登录、清空）
-- **icon_only_requires_aria_label**: icon=only 时必须提供 aria-label
+- **max_filled_per_view**: 同一视图最多一个 variant=filled 的主操作，避免主次失焦。
+- **copy_pattern**: 按钮文案必须短，优先使用 谓语+宾语 或 谓语，例如 立即查看、去看看、发送、关注。
+- **width_hugs_content_after_min_width**: 短文案使用 min-width 居中；长文案宽度随内容增长，并保留对应尺寸的左右 padding。
+- **full_width_requires_main_flow**: fullWidth 只能用于表单底部、固定操作栏或页面主 CTA，不用于卡片内普通按钮。
+- **ghost_requires_visual_background**: ghost 只用于图片、彩色或深色背景；图底按钮不展示 disabled 态。
+- **icon_only_requires_aria_label**: icon=only 时必须提供 aria-label。
 
 ### Anatomy
-- **container**: bg, radius, padding-x, height
-- **icon**: fg, size:20px, gap:space-1
-- **label**: fg, font
+- **container**: 承载视觉层级、尺寸、最小宽度和左右 padding；长文案时宽度 hug content。
+- **label**: 按钮文案，必须短，优先 谓语+宾语 或 谓语。
+- **icon**: 可选图标。leading/trailing 与文字同色；only 形态必须有 aria-label。
 
 ### Do
-- 在 CTA 位置使用 size=large + fullWidth=true
-- destructive 配合二次确认弹层使用
-- icon=only 时按钮宽高都是 size 的高度，正方形
+- 表单底部使用 size=large + variant=filled + fullWidth=true。
+- 空态动作使用 size=medium + variant=neutral。
+- 卡片内按钮使用 small 或 mini，避免抢过卡片标题。
+- 图片或彩色背景上使用 filled 或 ghost，不使用低识别度描边按钮。
 
 ### Don't
-- 不要在同一视图放两个 intent=primary 的按钮
-- 不要把 destructive 用在「保存」「确认」这种正向动作
-- 不要在 button 内嵌 button 或链接
+- 不要在同一视图放两个 variant=filled 的按钮。
+- 不要把小红书红 --primary 用作点点主按钮。
+- 不要在图底按钮上展示 disabled 态。
+- 不要让 xLarge 或 micro 成为默认尺寸。
+- 不要在 button 内嵌 button 或链接。
 
 ---
 

@@ -4,21 +4,18 @@ import dotsActionCamera from '../assets/dotted/dots-action-camera.svg'
 import dotsActionKeyboard from '../assets/dotted/dots-action-keyboard.svg'
 import dotsActionMessageMenu from '../assets/dotted/dots-action-message-menu.svg'
 import dotsActionSend from '../assets/dotted/dots-action-send.svg'
-import dotsAiCardPhoto1 from '../assets/dotted/dots-ai-card-1.png'
-import dotsAiCardPhoto2 from '../assets/dotted/dots-ai-card-2.png'
-import dotsAiCardPhoto3 from '../assets/dotted/dots-ai-card-3.png'
 import dotsChipCameraGuide from '../assets/dotted/dots-chip-camera-guide.svg'
 import dotsChipGoods from '../assets/dotted/dots-chip-goods.svg'
 import dotsChipOutfit from '../assets/dotted/dots-chip-outfit.svg'
 import dotsChipTravel from '../assets/dotted/dots-chip-travel.svg'
 import dotsKeyboard from '../assets/dotted/dots-keyboard-ios-latest.png'
-import dotsMessageTail from '../assets/dotted/dots-message-tail.svg'
-import dotsMessageTailUser from '../assets/dotted/dots-message-tail-user.svg'
 import dotsNavBack from '../assets/dotted/dots-nav-back.svg'
 import dotsNavMore from '../assets/dotted/dots-nav-more.svg'
 import dotsStatusCap from '../assets/dotted/dots-status-cap.svg'
 import dotsStatusCellular from '../assets/dotted/dots-status-cellular.svg'
 import dotsStatusWifi from '../assets/dotted/dots-status-wifi.svg'
+import { DotsGeneratedCard } from './dotted/DotsGeneratedCard'
+import { DotsMessage, DotsMessageBubble, type DotsMessageRole } from './dotted/DotsMessageBubble'
 
 const prompts = [
   { label: '穿搭指南', icon: dotsChipOutfit, selectedIconClass: 'dotted-demo__selected-skill-icon--outfit' },
@@ -32,7 +29,7 @@ type SkillPrompt = (typeof prompts)[number]
 type DotsHistoryMessage = {
   id: string
   type: 'message'
-  role: 'user' | 'dots'
+  role: DotsMessageRole
   text: string
   hasTail?: boolean
 }
@@ -46,6 +43,7 @@ type DotsHistoryTime = {
 type DotsHistoryAiCard = {
   id: string
   type: 'ai-card'
+  role: 'dots'
 }
 
 type DotsHistoryItem = DotsHistoryMessage | DotsHistoryTime | DotsHistoryAiCard
@@ -87,53 +85,9 @@ const dotsHistoryItems: DotsHistoryItem[] = [
   {
     id: 'dots-ai-card',
     type: 'ai-card',
+    role: 'dots',
   },
 ]
-
-function DottedAiCard() {
-  return (
-    <article className="dotted-demo__ai-card" data-node-id="1421:1105" aria-label="AI 生成卡片">
-      <div className="dotted-demo__ai-card-images" aria-hidden="true">
-        <div className="dotted-demo__ai-card-photo dotted-demo__ai-card-photo--first">
-          <img src={dotsAiCardPhoto1} alt="" draggable={false} />
-        </div>
-        <div className="dotted-demo__ai-card-photo dotted-demo__ai-card-photo--second">
-          <img src={dotsAiCardPhoto2} alt="" draggable={false} />
-        </div>
-        <div className="dotted-demo__ai-card-photo dotted-demo__ai-card-photo--third">
-          <img src={dotsAiCardPhoto3} alt="" draggable={false} />
-        </div>
-      </div>
-
-      <div className="dotted-demo__ai-card-body">
-        <h3 className="dotted-demo__ai-card-title">💆🏻‍♀️ 正确使用手法</h3>
-        <div className="dotted-demo__ai-card-list">
-          <div className="dotted-demo__ai-card-list-item">
-            <span className="dotted-demo__ai-card-bullet" aria-hidden="true" />
-            <p>
-              <strong>取量预热：</strong>
-              <span>取珍珠大小的面霜于掌心，利用掌心温度预热几秒，使其达到约35℃。</span>
-            </p>
-          </div>
-          <div className="dotted-demo__ai-card-list-item">
-            <span className="dotted-demo__ai-card-bullet" aria-hidden="true" />
-            <p>
-              <strong>按压上脸：</strong>
-              <span>将预热后的面霜均匀按压在脸部和颈部，用掌心由内向外、由下向上轻轻提拉按压。</span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="dotted-demo__ai-card-note-wrap">
-        <section className="dotted-demo__ai-card-note" aria-label="注意事项">
-          <h4>注意事项</h4>
-          <p>健康肌肤无需每天使用，过度使用反而会造成负担。建议一周使用3-4次。避免叠加高浓A醇、果酸等强刺激成分，易发不耐受。</p>
-        </section>
-      </div>
-    </article>
-  )
-}
 
 function DottedChatStream({
   items,
@@ -157,26 +111,16 @@ function DottedChatStream({
 
         if (item.type === 'ai-card') {
           return (
-            <div className="dotted-demo__chat-card-row" key={item.id}>
-              <DottedAiCard />
-            </div>
+            <DotsMessage key={item.id} role={item.role} contentType="ai-card">
+              <DotsGeneratedCard />
+            </DotsMessage>
           )
         }
 
         return (
-          <div className={`dotted-demo__chat-row dotted-demo__chat-row--${item.role}`} key={item.id}>
-            <div className={`dotted-demo__chat-bubble dotted-demo__chat-bubble--${item.role}`}>
-              {item.text}
-              {item.hasTail && (
-                <img
-                  className={`dotted-demo__chat-tail dotted-demo__chat-tail--${item.role}`}
-                  src={item.role === 'user' ? dotsMessageTailUser : dotsMessageTail}
-                  alt=""
-                  aria-hidden="true"
-                />
-              )}
-            </div>
-          </div>
+          <DotsMessageBubble key={item.id} role={item.role} hasTail={item.hasTail}>
+            {item.text}
+          </DotsMessageBubble>
         )
       })}
     </div>
@@ -407,7 +351,7 @@ export function DottedDemoScreen() {
 
   return (
     <div
-      className={`dotted-demo-page${isInputActive ? ' dotted-demo-page--input' : ''}${selectedSkill ? ' dotted-demo-page--skill' : ''}`}
+      className={`dotted-demo-page dots-message-surface${isInputActive ? ' dotted-demo-page--input' : ''}${selectedSkill ? ' dotted-demo-page--skill' : ''}`}
       data-node-id={pageNodeId}
     >
       <div className="dotted-demo">

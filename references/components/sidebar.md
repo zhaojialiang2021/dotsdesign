@@ -14,12 +14,12 @@ used_by: [notifications, sidebar, tab-architecture]
 | 属性 | 值 | 设计备注 |
 |------|------|------|
 | 宽度 | Mobile: 100% / Tablet+: 320px | 桌面参考 design-principles "侧边栏 ~200px" 但需容纳分组卡，调宽 |
-| 背景 | BG-1 | 页面底色，让分组卡（BG-0）浮起来 |
+| 背景 | `Bg` | 页面底色，让分组卡（`Bg 3`）浮起来 |
 | 内边距 | Space-4 (16px) 水平 | 与正文一致 |
 
 ## 分组卡（Container Card 形态）
 
-复用 Card 组件 Container 形态：背景 BG-0，圆角 Radius-XLarge (20px)，内边距 Space-4。
+复用 Card 组件 Container 形态：背景 `Bg 3`，圆角 `radius.bubble` (22px)，内边距 Space-4。
 
 | 元素 | 规格 |
 |------|------|

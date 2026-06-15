@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { useHash, parseDocsRoute } from './router'
 import { DocsLayout } from './DocsLayout'
 // LandingPage 是首屏关键路径，保持同步
@@ -43,6 +43,7 @@ function PageFallback() {
 export function DocsApp() {
   const hash = useHash()
   const route = parseDocsRoute(hash)
+  const prevPathRef = useRef<string | null>(null)
 
   // 路由变化时回到顶部 + 写入访问历史
   useEffect(() => {
@@ -55,6 +56,15 @@ export function DocsApp() {
     const path = hash.replace(/^#\/?/, '/')
     if (path.startsWith('/docs') && route.kind !== 'not-found') {
       try {
+        const prevPath = prevPathRef.current
+        if (
+          route.kind === 'pitch' &&
+          prevPath &&
+          prevPath.startsWith('/docs') &&
+          prevPath !== path
+        ) {
+          sessionStorage.setItem('dots-pitch-return', prevPath)
+        }
         const KEY = 'dots-docs-history'
         const v = localStorage.getItem(KEY)
         const list: string[] = v ? JSON.parse(v) : []
@@ -63,6 +73,9 @@ export function DocsApp() {
       } catch {
         /* ignore */
       }
+    }
+    if (path.startsWith('/docs') && route.kind !== 'not-found') {
+      prevPathRef.current = path
     }
     return () => window.clearTimeout(t)
   }, [hash, route])

@@ -63,7 +63,7 @@ export function TypographySection() {
               letterSpacing: '-0.01em',
             }}
           >
-            Dots 持续记录 静候回响
+            生活里有问题，就问点点。
           </span>
           <span className="docs-text--caption-2 docs-text--tertiary" style={{ textAlign: 'right' }}>
             {t.size} · {t.weight} · {t.lineHeight} · {t.usage}

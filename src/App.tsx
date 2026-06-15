@@ -1,15 +1,7 @@
-import { Component, useEffect, useSyncExternalStore, type ReactNode } from 'react'
+import { Component, lazy, Suspense, useEffect, useSyncExternalStore, type LazyExoticComponent, type ReactNode } from 'react'
 import './App.css'
 import { DocsApp } from './docs/DocsApp'
-import {
-  SplashScreen,
-  HomeScreen,
-  AIPreferencesScreen,
-  AISummaryScreen,
-  TimeFragmentScreen,
-  DottedDemoScreen,
-  type ScreenId,
-} from './screens'
+import type { ScreenId } from './screens/shared-data'
 
 // 顶层错误边界：避免渲染挂掉只剩黑屏，把真实报错打到页面上
 class AppErrorBoundary extends Component<
@@ -21,7 +13,6 @@ class AppErrorBoundary extends Component<
     return { error }
   }
   componentDidCatch(error: Error, info: React.ErrorInfo) {
-    // eslint-disable-next-line no-console
     console.error('[AppErrorBoundary]', error, info)
   }
   render() {
@@ -57,13 +48,19 @@ function readHash() {
   return typeof window === 'undefined' ? '' : window.location.hash
 }
 
-const screenBySlug: Record<ScreenId, React.FC> = {
-  'splash': SplashScreen,
-  'home': HomeScreen,
-  'ai-preferences': AIPreferencesScreen,
-  'ai-summary': AISummaryScreen,
-  'time-fragment': TimeFragmentScreen,
-  'dotted-demo': DottedDemoScreen,
+type PreviewScreen = () => ReactNode
+
+const screenBySlug: Record<ScreenId, LazyExoticComponent<PreviewScreen>> = {
+  'splash': lazy(() => import('./screens/SplashScreen').then((m) => ({ default: m.SplashScreen }))),
+  'home': lazy(() => import('./screens/HomeScreen').then((m) => ({ default: m.HomeScreen }))),
+  'ai-preferences': lazy(() =>
+    import('./screens/AIPreferencesScreen').then((m) => ({ default: m.AIPreferencesScreen })),
+  ),
+  'ai-summary': lazy(() => import('./screens/AISummaryScreen').then((m) => ({ default: m.AISummaryScreen }))),
+  'time-fragment': lazy(() =>
+    import('./screens/TimeFragmentScreen').then((m) => ({ default: m.TimeFragmentScreen })),
+  ),
+  'dotted-demo': lazy(() => import('./screens/DottedDemoScreen').then((m) => ({ default: m.DottedDemoScreen }))),
 }
 
 function AppInner() {
@@ -75,7 +72,13 @@ function AppInner() {
     const slug = previewMatch[1] as ScreenId
     const ScreenComponent = screenBySlug[slug]
     if (!ScreenComponent) return null
-    return <PreviewOnly slug={slug} ScreenComponent={ScreenComponent} />
+    return (
+      <PreviewOnly>
+        <Suspense fallback={null}>
+          <ScreenComponent />
+        </Suspense>
+      </PreviewOnly>
+    )
   }
 
   // 其他所有路径都直接进文档站
@@ -90,12 +93,7 @@ function App() {
   )
 }
 
-function PreviewOnly({
-  ScreenComponent,
-}: {
-  slug: ScreenId
-  ScreenComponent: React.FC
-}) {
+function PreviewOnly({ children }: { children: ReactNode }) {
   // 给 iframe 内 body 加 is-preview，配合 App.css 隐藏滚动条 + 清 margin
   useEffect(() => {
     document.body.classList.add('is-preview')
@@ -111,7 +109,7 @@ function PreviewOnly({
         background: 'var(--bg-1)',
       }}
     >
-      <ScreenComponent />
+      {children}
     </div>
   )
 }

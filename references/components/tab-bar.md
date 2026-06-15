@@ -7,7 +7,7 @@ used_by: [home, memory-review, search, settings]
 
 # TabBar
 
-水平滚动的筛选标签栏。Figma 中出现两种风格：Feed 页用黑底 Pill，记忆回顾页用品牌蓝底圆角矩形。统一为以下规格。
+水平滚动的筛选标签栏。Figma 中出现两种风格：Feed 页用黑底 Pill，记忆回顾页用品牌色底圆角矩形。统一为以下规格。
 
 ## 规格
 
@@ -23,12 +23,12 @@ used_by: [home, memory-review, search, settings]
 | 属性 | Active | Inactive |
 |------|--------|----------|
 | 形状 | Pill（Radius-Full） | Pill（Radius-Full） |
-| 背景 | `#212121` / Dark: `#F8F9F9` | 透明 |
+| 背景 | `Bg Black` / Dark: `Dark Title` | 透明 |
 | 字色 | `#FFFFFF` / Dark: `#101010` | Label-Secondary |
 | 字体 | Subhead (14px/500) | Subhead (14px/400) |
 | 水平内边距 | Space-3 (12px) | Space-3 (12px) |
 
-设计备注：记忆回顾页的筛选标签（全部/年/月/周）使用了品牌蓝底 + 8px 圆角的样式，那属于 TypeTag 的 Filter 形态，不是 TabBar。TabBar 统一用黑底 Pill 风格。
+设计备注：记忆回顾页的筛选标签（全部/年/月/周）使用了品牌色底 + 8px 圆角的样式，那属于 TypeTag 的 Filter 形态，不是 TabBar。TabBar 统一用黑底 Pill 风格。
 
 ## 交互
 

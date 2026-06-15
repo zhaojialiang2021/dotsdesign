@@ -1,4 +1,5 @@
-import { MobileShell, TopNav, InfoIcon, CloseIcon, BrandButton, abilities, AbilityCard } from './shared'
+import { abilities } from './shared-data'
+import { MobileShell, TopNav, InfoIcon, CloseIcon, BrandButton, AbilityCard } from './shared'
 
 export function TimeFragmentScreen() {
   return (

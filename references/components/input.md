@@ -1,59 +1,62 @@
 ---
 name: Input
-status: placeholder
-last_updated: 2026-05-12
-used_by: [ai-preferences, home, memory-review, onboarding, time-fragment]
+status: complete
+last_updated: 2026-06-15
+used_by: [dotted-demo]
 ---
 
-# Input
+# Input 输入栏
 
-文本输入控件。
+点点输入栏是对话页底部容器，不是普通表单输入框。它负责文本输入、语音/键盘切换、拍照、Skill 选中和发送。
 
-## 规格
+## 容器
 
-| 属性 | 值 | 设计备注 |
-|------|------|------|
-| 高度 | 48px（单行）/ 自适应（多行最少 88px） | 与列表项 48px 对齐，触达友好 |
-| 圆角 | Radius-Medium (12px) | 与 Card Compact 一致，不抢视觉 |
-| 背景 | Fill-Primary | 在 BG-0 / BG-1 上都有微弱浮起感 |
-| 水平内边距 | Space-4 (16px) | 与正文边距对齐 |
-| 垂直内边距 | Space-3 (12px) | 文字垂直居中 |
-| 文字样式 | Body-Primary (17px) | 主输入正文 |
-| 占位符 | Body-Primary，Label-Tertiary | 弱化但可读 |
-
-## 状态
-
-| 状态 | 关键差异 |
+| 属性 | 值 |
 |------|------|
-| Default | 背景 Fill-Primary，无边框 |
-| Focus | 1px Brand-Blue inset 边框 |
-| Error | 1px Accent-EventRed inset 边框 + 下方 Caption-1 错误文字（Accent-EventRed） |
-| Disabled | 透明度 0.4，不响应交互 |
+| 总高度 | 96px（含底部安全区） |
+| 背景 | `Bg 1` |
+| 圆角 | `radius.input-container` = 28px 28px 0 0 |
+| 阴影 | `shadow.1` |
+| 边框 | 0.5px `Separator 3` |
+| 底部安全区 | 34px |
 
-设计备注：聚焦边框用 inset 而非外扩，避免布局抖动；错误文字与边框同色，关联清晰。
+键盘升起时，输入栏贴在键盘上方，消息流需要被顶上去并保持最新消息可见。
 
-## 变体
+## 输入框
 
-| 变体 | 用途 | 关键差异 |
-|------|------|------|
-| Standard | 单行输入（搜索除外） | 基础形态 |
-| Multiline | 多行输入（碎片记录、AI 偏好详情） | 高度自适应，最少 88px，最多 240px 后内部滚动 |
-| Search | 搜索场景 | 左图标 search 24px（Space-3 右边距），右图标 close 24px（有内容时显示，点击清除） |
+| 属性 | 值 |
+|------|------|
+| 高度 | 48px |
+| 背景 | `Fill A` |
+| 圆角 | `radius.input` = 16px |
+| 文字 | `dialog-input`，`Title` |
+| placeholder | `Placeholder` |
+| padding | 0 16px |
+| 边框 | 0.5px `Separator 3` |
 
-## 交互
+输入框必须真实可输入。输入文字后，右侧语音和拍照 icon 合并为发送按钮。
 
-| 交互 | 行为 | 触觉 |
-|------|------|------|
-| 聚焦 / 失焦 | 切换 Default / Focus 状态 | 无 |
-| 点击搜索清除按钮 | 清空输入 | light |
-| 输入达到字数上限 | 阻止继续输入 | warning |
+## 工具按钮
 
-设计备注：聚焦/失焦不出触觉，避免输入流中的多余反馈。
+| 按钮 | 规格 |
+|------|------|
+| 左侧加号 | 24×24px，颜色 `Paragraph` |
+| 语音/键盘切换 | 24×24px，颜色 `Paragraph` |
+| 拍照 | 24×24px，颜色 `Paragraph` |
+| 发送 | 40×40px 圆形，背景 `info 5`，箭头白色 |
 
-## 多宽度适配
+点击语音按钮从输入状态回到语音态；点击消息空白区域时键盘收起。
 
-| 断点 | 变化 | 说明 |
-|------|------|------|
-| Mobile | 全宽 | 占满父容器 |
-| Tablet | 全宽，最大 540px 居中（位于内容区时） | 与内容区对齐 |
-| Desktop | 同 Tablet | 与内容区对齐 |
+## Skill 选中
+
+点击输入框上方 Skill 胶囊后，自动拉起输入框，并在输入框上方展示选中的 Skill。
+
+| 属性 | 值 |
+|------|------|
+| 选中容器背景 | `Bg 3` |
+| 选中容器圆角 | 28px |
+| Skill icon / 文本 | `Title` |
+| 关闭 icon | `Description` |
+| Skill 与输入框距离 | 16px |
+
+点击关闭 icon 移除 Skill，输入框仍保持可输入。

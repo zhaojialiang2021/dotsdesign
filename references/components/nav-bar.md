@@ -14,7 +14,7 @@ used_by: [ai-preferences, ai-summary, home, memory-review, time-fragment]
 | 属性 | 值 | 设计备注 |
 |------|------|------|
 | 高度 | 48px | 紧凑，与 home 现有 Head 一致 |
-| 背景 | BG-0 | 与页面 BG-1 形成层级 |
+| 背景 | `Bg 1` | 与页面 `Bg` 形成层级 |
 | 水平内边距 | Space-4 (16px) | 两侧对齐内容区 |
 | 底部分割线 | 0.5px Line-NonOpaque | 仅在内容滚动后显示，与内容区无缝时隐藏 |
 

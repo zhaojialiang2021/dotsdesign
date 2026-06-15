@@ -1,62 +1,96 @@
 ---
 name: Button
 status: complete
-last_updated: 2026-04-30
-used_by: [home, ai-preferences, settings, time-fragment, splash]
+last_updated: 2026-06-15
+used_by: [docs, dotted-demo, bottom-sheet]
+figma_source: ReDs Components / Button 按钮规范 / node 55137:12496
 ---
 
 # Button
 
-## 规格
+Button 用于触发一个即时任务。点点按钮规范继承 ReDs 的尺寸、宽度、场景和继承关系，但视觉语言替换为 Dots tokens：主操作使用 `info 5`，中性容器使用 `Separator 2`，图底按钮使用 `Fill C`。
 
-| 属性 | 值 | 设计备注 |
-|------|------|------|
-| 形状 | Pill 或 Rounded Rect（见尺寸变体） | 品牌调性：柔和、友好 |
-| 高度 | Standard 48px / Compact 34px / Large 51px | 按场景选择 |
-| 水平内边距 | Standard: Space-4 (16px) / Compact: Space-3 (12px) | 两侧对称 |
-| 字体 | Standard: Callout (16px/500) / Compact: Caption-1 (12px/500) | 500 字重 |
-| 字色 | 见变体表 | — |
-| 背景 | 见变体表 | — |
+按钮文案必须短，优先使用「谓语 + 宾语」或「谓语」：`立即查看`、`去看看`、`发送`、`关注`。不要把解释性长句塞进按钮。
 
-## 尺寸变体
+## 视觉层级
 
-| 尺寸 | 高度 | 圆角 | 用途 |
-|------|------|------|------|
-| Standard | 48px | Radius-Full (9999px) 或 Radius-XLarge (20px) | 主要操作、CTA |
-| Compact | 34px | Radius-Full (9999px) | 标签按钮、内联操作（如"填写领取"） |
-| Large | 51px | Radius-XLarge (18px) | 启动页"开启记录"等全宽 CTA |
+| Variant | 用途 | 背景 | 文字 | 边框 |
+|---|---|---|---|---|
+| `filled` | 主操作、当前页面唯一最强动作 | `info 5` / `--info-5` | `Bg Light` / `--bg-light` | `info 5` |
+| `outline` | 强调但不是唯一主动作 | 透明 | `info 6` / `--info-6` | `info 6` |
+| `neutral` | 空态、取消、弱操作 | 透明 | `Title` / `--title` | `Separator 2` / `--separator-2` |
+| `ghost` | 图片、彩色或深色背景上的按钮 | `Fill C` / `--fill-c` | `Bg Light` / `--bg-light` | `Separator Light 5` |
 
-## 颜色变体
+`filled` 不使用小红书红 `--primary`。红色只保留给社区语境或不可逆风险提示，不作为点点主 CTA。
 
-| 变体 | 背景色 | 字色 | 边框 | 用途 |
-|------|--------|------|------|------|
-| Primary | `#212121` / Dark: `#F8F9F9` | `#FFFFFF` / Dark: `#101010` | 无 | 主要操作（提交、确认、邀请好友） |
-| Secondary | 透明 | Label-Primary | 1px solid Label-Secondary | 次要操作（取消） |
-| Brand-Soft | Brand-Blue-Light (`rgba(120,170,250,0.1)`) | Brand-Blue | 无 | 品牌色辅助操作（填写领取） |
-| Light | BG-0 (`#F6F6F6`) | Label-Primary | 无 | 深色背景上的浅色按钮（启动页） |
-| Disabled | 同 Primary | 同 Primary | 无 | opacity: 0.3 |
+## 尺寸
 
-## 带图标按钮
+| Size | Height | Min width | Padding X | Font | 场景 |
+|---|---:|---:|---:|---|---|
+| `xLarge` | 48px | 112px | 32px | 16px / 24px / 500 | 限定场景，大型吸底或强运营动作 |
+| `large` | 44px | 102px | 24px | 16px / 24px / 500 | 表单提交、主流程底部按钮 |
+| `medium` | 36px | 82px | 20px | 14px / 22px / 500 | 空态动作、页面内按钮 |
+| `small` | 28px | 63px | 12px | 13px / 20px / 500 | 卡片内按钮、列表右侧操作 |
+| `mini` | 24px | 52px | 8px | 12px / 18px / 500 | 紧凑卡片、标签附近操作 |
+| `micro` | 20px | 40px | 8px | 10px / 14px / 500 | 限定场景，直播/悬浮/极小关注按钮 |
 
-| 变体 | 图标位置 | 图标尺寸 | 间距 |
-|------|---------|---------|------|
-| Icon-Left | 文字左侧 | 20px | 6px (图标与文字) |
-| Icon-Only | 无文字，图标居中 | 20px | — |
+`xLarge` 和 `micro` 只能在明确限定场景使用，不能作为日常默认尺寸。默认从 `medium` 或 `large` 开始选。
 
-示例：邀请好友按钮 = [icon 20px] "邀请好友" "获得限时奖励"（主文字白色 + 辅助文字 Fill-Inverted-Secondary）
+## 宽度规则
 
-## 交互状态
+- 文案短于最小宽度时，按钮使用 `min-width`，文字居中。
+- 文案变长时，按钮宽度随内容增长，同时保留对应尺寸的左右 padding。
+- `fullWidth=true` 只在表单、底部固定操作、页面主 CTA 中使用，宽度跟随父容器。
+- 卡片内按钮不要固定同一宽度，除非同一组按钮需要横向对齐。
 
-| 状态 | 变化 | 触觉 |
-|------|------|------|
-| Default | 无 | — |
-| Active | 背景 opacity 降至 0.7，Duration-Fast (150ms) 过渡 | light |
-| Disabled | 整体 opacity 0.3，不可点击 | 无 |
+## 状态
 
-## 多宽度适配
+| State | 规则 |
+|---|---|
+| `default` | 使用当前 `variant` + `size` |
+| `pressed` | `scale(.97)`，opacity 降到 `.6`，不额外换颜色 |
+| `disabled` | 背景使用 `Disabled`，文字使用 `Placeholder` 或 `Description Lighter` |
+| `loading` | 保持按钮尺寸不变，文案可替换为 loading 指示 |
+| `selected` | 用于关注类按钮，例如 `已关注`、`互相关注`，层级从 `outline/neutral` 降低 |
 
-| 断点 | 变化 | 说明 |
-|------|------|------|
-| Mobile | 全宽或内联 | 根据场景决定 |
-| Tablet | 最大宽度 320px | 居中显示 |
-| Desktop | 最大宽度 280px | 不超过内容区 |
+图底/彩色背景按钮不展示 disabled 态。不可用时应隐藏或移出该背景区。
+
+## 场景规则
+
+### 表单底部
+
+整页表单使用 `large + filled + fullWidth`。按钮固定在底部容器内时，按钮宽度由父容器决定，不单独写死。
+
+### 空态动作
+
+空态里只有一个补救动作时，使用 `medium + neutral`。不要把空态动作做成强主按钮，除非该动作就是当前页面唯一目标。
+
+### 卡片按钮
+
+卡片内主动作使用 `small` 或 `mini`。当按钮和卡片标题同屏出现时，按钮不能抢过标题层级。
+
+### 图片或彩色背景
+
+图片、插画、复杂彩色背景上优先使用 `filled` 或 `ghost`。不要在图底使用低识别度的描边按钮，也不要放 disabled 态。
+
+### 继承关系
+
+点击按钮进入下一级页面后，如果动作仍然延续，按钮层级可以根据当前页面目标重新判断。例如列表页的 `添加` 可以是 `outline`，详情页只有一个核心动作时可以升级为 `filled`。
+
+## Icon Button
+
+| 属性 | 值 |
+|---|---|
+| 尺寸 | 40×40px 或 48×48px |
+| 图标 | 24×24px |
+| 图标色 | `Paragraph` / `--paragraph` |
+| 背景 | 默认透明；选中态可用 `Inverted Fill 1` |
+| 无文字 | 必须提供 `aria-label` |
+
+## 禁止
+
+- 不使用黑色实心按钮作为点点主 CTA。
+- 不使用 `--primary` 小红书红作为点点主按钮。
+- 不在同一个视图里放两个同层级 `filled` 主操作。
+- 不为 hover 单独发明颜色；桌面 hover 只做轻微背景或按压反馈。
+- 不在按钮中嵌套链接或另一个按钮。

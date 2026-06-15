@@ -7,14 +7,11 @@ import { Icon } from '../icons'
 import { NotFoundPage } from './NotFoundPage'
 import { useT } from '../useLocale'
 import { DocsPageHeader } from '../PageHeader'
-import { NavBarPreview } from '../previews/NavBarPreview'
-import { SidebarPreview } from '../previews/SidebarPreview'
 import { SwitchPreview } from '../previews/SwitchPreview'
 import { InputPreview } from '../previews/InputPreview'
-import { ModalPreview } from '../previews/ModalPreview'
 import { DividerPreview } from '../previews/DividerPreview'
 import { ToastPreview } from '../previews/ToastPreview'
-import { ActionBarPreview } from '../previews/ActionBarPreview'
+import { MessageBubblePreview } from '../previews/MessageBubblePreview'
 // 5 个深度组件 live demo —— Day 4 逐个实现
 import { ButtonDemo } from '../previews/ButtonDemo'
 import { InputDemo } from '../previews/InputDemo'
@@ -40,14 +37,11 @@ function loadSpec(slug: ComponentSlug): string | null {
 }
 
 const shallowPreviewMap: Partial<Record<ComponentSlug, () => React.ReactNode>> = {
-  'nav-bar': () => <NavBarPreview />,
-  sidebar: () => <SidebarPreview />,
   switch: () => <SwitchPreview />,
   input: () => <InputPreview />,
-  modal: () => <ModalPreview />,
   divider: () => <DividerPreview />,
   toast: () => <ToastPreview />,
-  'action-bar': () => <ActionBarPreview />,
+  'message-bubble': () => <MessageBubblePreview />,
 }
 
 const deepDemoMap: Partial<Record<ComponentSlug, React.ComponentType>> = {

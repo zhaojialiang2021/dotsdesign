@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
+import { Icon } from '../icons'
+import { navigate } from '../router'
 
 const slides = [
   {
@@ -102,6 +104,18 @@ export function PitchPage() {
 
   const next = useCallback(() => setIndex((i) => Math.min(i + 1, total - 1)), [total])
   const prev = useCallback(() => setIndex((i) => Math.max(i - 1, 0)), [])
+  const closePage = useCallback(() => {
+    let target = '/docs/intro'
+    try {
+      const stored = sessionStorage.getItem('dots-pitch-return')
+      if (stored && stored.startsWith('/docs') && stored !== '/docs/pitch') {
+        target = stored
+      }
+    } catch {
+      /* ignore */
+    }
+    navigate(target)
+  }, [])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -125,6 +139,10 @@ export function PitchPage() {
 
   return (
     <div className="pitch">
+      <button className="pitch__close" onClick={closePage} aria-label="关闭项目汇报" title="关闭">
+        <Icon.Close size={15} />
+        <span>关闭</span>
+      </button>
       <SlideContent data={slides[index]} />
       <div className="pitch__nav">
         <button className="pitch__arrow" onClick={prev} disabled={index === 0} aria-label="上一页">

@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { useLottie } from 'lottie-react'
 
 // 状态栏复用个人页同尺寸 393x50
 import statusBarLight from '../assets/personal/statusbar-light.png'
@@ -19,7 +18,6 @@ import photoSingle from '../assets/home/photo-single.png'
 import photoCollage1 from '../assets/home/photo-collage-1.png'
 import photoCollage2 from '../assets/home/photo-collage-2.png'
 import photoCollage3 from '../assets/home/photo-collage-3.png'
-import aiLoadingAnimation from '../assets/home/icon-ai-loading.json'
 
 // === 内联备用 SVG（仅 PlusIcon，Figma 里是个 picture 占位） ===
 
@@ -32,16 +30,13 @@ function PlusIcon() {
 }
 
 function AiLoadingIcon() {
-  // 用 useLottie hook 而不是 <Lottie> 组件，避开 lottie-react 的 UMD 默认导出在 Vite 预打包后变成对象的坑
-  const { View } = useLottie(
-    {
-      animationData: aiLoadingAnimation,
-      loop: true,
-      autoplay: true,
-    },
-    { width: 16, height: 16 },
+  return (
+    <span className="home-ai-loading-icon" aria-hidden="true">
+      <span />
+      <span />
+      <span />
+    </span>
   )
-  return <span aria-hidden="true">{View}</span>
 }
 
 // === 复用元件 ===

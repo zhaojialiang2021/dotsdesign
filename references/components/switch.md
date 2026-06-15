@@ -22,11 +22,11 @@ used_by: [ai-preferences, notifications, sidebar, tab-architecture]
 
 | 状态 | 轨道色 | 滑块位置 |
 |------|------|------|
-| 开 (on) | Brand-Blue | 右侧（距右边 2px） |
+| 开 (on) | `info 5` | 右侧（距右边 2px） |
 | 关 (off) | Fill-Primary | 左侧（距左边 2px） |
 | 禁用 (disabled) | 透明度 0.4 | 不响应交互 |
 
-设计备注：开态用 Brand-Blue 而非 Accent，统一品牌强调。关态用 Fill-Primary 让控件在 BG-0 / BG-1 上都可见。
+设计备注：开态用 `info 5`，统一点点品牌强调。关态用 `Inverted Fill 3`，保证在 `Bg` / `Bg 1` 上都可见。
 
 ## 动效
 

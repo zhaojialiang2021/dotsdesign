@@ -7,17 +7,10 @@ export type ComponentSlug =
   | 'card'
   | 'sheet'
   | 'empty-state'
-  | 'nav-bar'
-  | 'sidebar'
   | 'switch'
-  | 'modal'
   | 'divider'
   | 'toast'
-  | 'action-bar'
   | 'message-bubble'
-  | 'slider'
-  | 'tab-bar'
-  | 'type-tag'
 
 export type PageSlug =
   | 'dotted-demo'
@@ -49,17 +42,10 @@ export const components: ComponentMeta[] = [
   { slug: 'sheet', name: 'Sheet', status: 'placeholder', depth: 'deep' },
   { slug: 'empty-state', name: 'Empty State', status: 'placeholder', depth: 'deep' },
   // 其余浅组件 —— backlog
-  { slug: 'nav-bar', name: 'NavBar', status: 'placeholder', depth: 'shallow' },
-  { slug: 'sidebar', name: 'Sidebar', status: 'placeholder', depth: 'shallow' },
   { slug: 'switch', name: 'Switch', status: 'placeholder', depth: 'shallow' },
-  { slug: 'modal', name: 'Modal', status: 'placeholder', depth: 'shallow' },
   { slug: 'divider', name: 'Divider', status: 'placeholder', depth: 'shallow' },
   { slug: 'toast', name: 'Toast', status: 'placeholder', depth: 'shallow' },
-  { slug: 'action-bar', name: 'ActionBar', status: 'placeholder', depth: 'shallow' },
   { slug: 'message-bubble', name: 'MessageBubble', status: 'draft', depth: 'shallow' },
-  { slug: 'slider', name: 'Slider', status: 'draft', depth: 'shallow' },
-  { slug: 'tab-bar', name: 'TabBar', status: 'draft', depth: 'shallow' },
-  { slug: 'type-tag', name: 'TypeTag', status: 'draft', depth: 'shallow' },
 ]
 
 export const pages: PageMeta[] = [

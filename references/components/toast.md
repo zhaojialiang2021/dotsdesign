@@ -19,7 +19,7 @@ used_by: [ai-preferences, home, memory-review, time-fragment]
 | 宽度 | Mobile: 内容自适应，最大 calc(100% - Space-4×2) / Tablet+: 最大 360px | 不强占整行 |
 | 高度 | 自适应内容，最少 44px | 与 NavBar 区分 |
 | 圆角 | Radius-Full | 胶囊感 |
-| 背景 | BG-Inverse（Light）/ BG-0 + 1px Line-NonOpaque inset 边框（Dark） | 反色让提示明显但不喧宾夺主 |
+| 背景 | `Bg Black`（Light）/ `Bg 3` + 1px `Separator 2` inset 边框（Dark） | 反色让提示明显但不喧宾夺主 |
 | 文字 | Body-Primary (17px)，颜色 Label-Inverse | 主文 |
 | 水平内边距 | Space-4 (16px) | 紧凑但不挤 |
 | 垂直内边距 | Space-3 (12px) | 与 Input 一致 |
@@ -33,7 +33,7 @@ used_by: [ai-preferences, home, memory-review, time-fragment]
 | Success | 左图标 ✓（Accent-EventGreen） | success |
 | Warning | 左图标 ⚠（Accent-EventOrange） | warning |
 | Error | 左图标 ✕（Accent-EventRed） | warning |
-| WithAction | 右侧文字按钮（如"撤销"，颜色 Brand-Blue） | 操作按钮点击 light |
+| WithAction | 右侧文字按钮（如"撤销"，颜色 `info 5`） | 操作按钮点击 light |
 
 设计备注：Error 用 warning 触觉而非更强反馈，避免恐吓——错误已是负面信号，触觉只需提醒。
 

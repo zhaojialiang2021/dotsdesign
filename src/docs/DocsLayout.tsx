@@ -2,9 +2,9 @@ import { useEffect, useState, type ReactNode } from 'react'
 import { components, pages, patterns } from './manifest'
 import { navigate, type DocsRoute, type Area, getRouteArea } from './router'
 import { Icon } from './icons'
-import { useT } from './useLocale'
+import { useLocale, useT } from './useLocale'
+import { useTheme } from './useTheme'
 import { CommandPalette } from './CommandPalette'
-import { FloatingControls } from './FloatingControls'
 import { PageFooter } from './PageFooter'
 import logoLight from './assets/logo-light.svg'
 import logoDark from './assets/logo-dark.svg'
@@ -22,6 +22,8 @@ const AREAS: Array<{ id: Area; key: 'area.system' | 'area.writing' }> = [
 
 export function DocsLayout({ route, children }: Props) {
   const t = useT()
+  const { locale, setLocale } = useLocale()
+  const { theme, setTheme } = useTheme()
   const area = getRouteArea(route)
   const [drawerOpen, setDrawerOpen] = useState(false)
   // 用 ref-like state 检测 route 变化，避免 effect 里 setState
@@ -90,6 +92,22 @@ export function DocsLayout({ route, children }: Props) {
         </nav>
         <span className="docs-topnav__spacer" />
         <button
+          className="docs-topnav__theme"
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          aria-label={theme === 'dark' ? t('theme.light') : t('theme.dark')}
+          title={theme === 'dark' ? t('theme.light') : t('theme.dark')}
+        >
+          {theme === 'dark' ? <Icon.Sun size={15} /> : <Icon.Moon size={15} />}
+        </button>
+        <button
+          className="docs-topnav__locale"
+          onClick={() => setLocale(locale === 'zh' ? 'en' : 'zh')}
+          aria-label={locale === 'zh' ? 'Switch to English' : '切换到中文'}
+          title={locale === 'zh' ? 'Switch to English' : '切换到中文'}
+        >
+          {locale === 'zh' ? 'EN' : '中'}
+        </button>
+        <button
           className="docs-topnav__search"
           onClick={openSearch}
           aria-label={`${t('cmdk.search')} (Cmd+K)`}
@@ -150,7 +168,6 @@ export function DocsLayout({ route, children }: Props) {
       </main>
 
       <CommandPalette />
-      <FloatingControls />
     </div>
   )
 }

@@ -95,6 +95,34 @@ function buildCss(tokens) {
       darkLines.push(`  ${cssVar}: ${t.modes.dark};`)
     }
   }
+  const aliasLines = [
+    `  /* Dots 规范别名：让旧页面变量名继续指向新 token */`,
+    `  --bg: var(--bg-base);`,
+    `  --bg-0: var(--bg-3);`,
+    `  --label-primary: var(--title);`,
+    `  --label-secondary: var(--description);`,
+    `  --label-tertiary: var(--placeholder);`,
+    `  --label-quaternary: var(--disabled);`,
+    `  --fill-primary: var(--inverted-fill-3);`,
+    `  --fill-secondary: var(--inverted-fill-2);`,
+    `  --fill-tertiary: var(--inverted-fill-1);`,
+    `  --fill-quaternary: var(--info-3);`,
+    `  --line-opaque: var(--separator-3);`,
+    `  --line-non-opaque: var(--separator-2);`,
+    `  --brand-blue: var(--info-5);`,
+    `  --brand-blue-light: var(--info-4);`,
+    `  --brand-blue-border: var(--info-6);`,
+    `  --brand-blue-text: var(--info-6);`,
+    `  --radius-x-large: var(--radius-bubble);`,
+    `  --radius-xlarge: var(--radius-bubble);`,
+    `  --duration-fast: var(--duration-out);`,
+    `  --duration-normal: var(--duration-in);`,
+    `  --duration-slow: var(--duration-expand);`,
+    `  --curve-default: var(--curve-out);`,
+    `  --curve-ease-out: var(--curve-out);`,
+    `  --shadow-modal: var(--shadow-2);`,
+  ]
+  lightLines.push(...aliasLines)
   return [
     `/* tokens.css —— 由 scripts/build-tokens.mjs 从 tokens/*.json 生成`,
     ` * 不要手动修改。改令牌请改 tokens/*.json，跑 node scripts/build-tokens.mjs。`,

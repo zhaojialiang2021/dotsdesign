@@ -278,7 +278,7 @@
 
 .ap-fill {
   position: absolute; top: 2px; bottom: 2px;
-  background: #78aafa;
+  background: #6FD2BD;
   border-radius: 10000px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.07), 0 1px 1px rgba(0, 0, 0, 0.04), 0 3px 1px rgba(0, 0, 0, 0.01);
   transition: left 0.05s, right 0.05s;

@@ -19,7 +19,7 @@
           font-size="22" font-weight="600" fill="#212121" letter-spacing="0.5">
       Dots Design System
     </text>
-    <line x1="0" y1="38" x2="56" y2="38" stroke="#78AAFA" stroke-width="3" />
+    <line x1="0" y1="38" x2="56" y2="38" stroke="#6FD2BD" stroke-width="3" />
   </g>
 
   <!-- 标题 -->
@@ -32,7 +32,7 @@
     <text y="92" font-family="-apple-system, 'PingFang SC', system-ui, sans-serif"
           font-size="76" font-weight="600" fill="#212121"
           letter-spacing="-2.5">
-      <tspan>设计</tspan><tspan fill="#212121" text-decoration="underline" text-decoration-color="#78AAFA" text-decoration-thickness="3">系统</tspan>
+      <tspan>设计</tspan><tspan fill="#212121" text-decoration="underline" text-decoration-color="#6FD2BD" text-decoration-thickness="3">系统</tspan>
     </text>
   </g>
 

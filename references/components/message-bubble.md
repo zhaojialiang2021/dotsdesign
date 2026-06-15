@@ -1,134 +1,92 @@
-# MessageBubble 消息气泡
+# MessageBubble 消息体
 
-> status: draft
+> status: complete
+> 真相源：`references/design-system.md` 7.1、11.2、11.3、11.4。
 
-聊天气泡容器，承载用户输入和 AI 回应。是首页最高频组件。
-
----
-
-## 概览
-
-消息气泡有两种角色（User / AI）和五种内容类型（文字 / 语音 / 链接卡片 / 图片 / 引用），共 10 种组合。气泡在首页中以时间线流式排列，同一时间段的连续消息归为一组，组间插入日期标记。
+消息体是点点对话页的基础单元，承载用户消息、AI 文本回复、AI 富文本卡片、引用卡、图片/图组等内容。页面 demo 只能引用该组件规范，不允许复制一份私有气泡样式。
 
 ---
 
-## 结构
+## 组件结构
 
-```
-MessageBubble
-├── 角色标识（通过背景色区分，无额外标签）
-├── 内容区（根据类型渲染不同内容）
-└── 引用来源区（可选，显示被引用的原始消息摘要）
+```tsx
+<DotsMessage role="user | dots" contentType="text | ai-card | quote | image | link">
+  <DotsMessageBubble />
+  <DotsGeneratedCard />
+</DotsMessage>
 ```
 
----
-
-## 变体
-
-### 按角色
-
-| 角色 | 背景 | 边框 | 文字色 | 圆角 |
-|------|------|------|--------|------|
-| User | BG-3 (`#F3F3F3`) | 无 | Label-Primary (`#212121`) | Radius-XLarge (20px) |
-| AI | Brand-Blue-Light (`rgba(120,170,250,0.08)`) | 0.5px Brand-Blue-Border (`rgba(120,170,250,0.2)`) | Brand-Blue-Text (`#4184EF`) | Radius-XLarge (20px) |
-
-### 按内容类型
-
-#### 文字消息
-
-- 最大宽度 329px（手机端）
-- 文字完整展示，不截断
-- 字号 Body-Primary (17px/400)，行高 1.5
-- 链接文字使用 Link 令牌色
-
-#### 语音消息
-
-- 气泡宽度自适应内容，最小 80px，最大 240px
-- 显示时长文本 + 语音图标（voice_message，右旋 90°）
-- 图标 20px，文本字号 Body-Primary
-- 气泡右下角 6px 圆点（已读/未读标记）
-
-#### 链接卡片
-
-- 白色背景 (BG-0) + 0.5px NonOpaque 边框
-- 标题：Body-Primary，单行省略
-- 摘要：Body-Secondary (14px)，最多 3 行省略
-- 缩略图：68×68px，Radius-Medium (8px)，右侧
-- 来源图标 14×14px + 来源名称：Caption-1，Label-Tertiary
-
-#### 图片消息
-
-- 单图：宽度 164px，高度 218px，Radius-XLarge (20px)
-- 四图网格：宽度 236px，高度 258px，Radius-XLarge (20px)
-- 图片间有微旋转偏移（约 4°），制造堆叠感
-- 每张图 0.5px NonOpaque 边框
-
-#### 引用消息
-
-- 上方：引用来源气泡（User 或 AI 样式）
-- 下方：被引用原文卡片
-  - 背景 BG-1 (`#FAFAFA`)
-  - 引用图标 14px + 原文摘要（单行省略，Body-Secondary）
-  - 来源标记行：来源图标 16px + 来源名 + 箭头分隔 + 标题
-  - 全部 Caption-1，Label-Secondary
+`DotsMessage` 负责左右对齐、消息间距和流式位置；`DotsMessageBubble` 只负责文字气泡；`DotsGeneratedCard` 是 AI 角色下的一种消息内容，不包进普通气泡里。
 
 ---
 
-## 间距
+## 文字气泡
 
-| 场景 | 值 | 令牌 |
+| 属性 | User | AI |
 |------|------|------|
-| 气泡内边距 | 12px 16px | Space-3 Space-4 |
-| 同角色连续气泡间距 | 12px | Space-3 |
-| 不同角色气泡间距 | 12px | Space-3 |
-| 引用区与气泡间距 | 8px | Space-2 |
-| 链接卡片内标题与摘要间距 | 8px | Space-2 |
+| 对齐 | 右对齐 | 左对齐 |
+| 背景 | `Fill B` / `--fill-b` | `Fill A` / `--fill-a` |
+| 文字 | `Title` / `--title` | `Title` / `--title` |
+| 边框 | 0.5px `Separator` / `--separator-base` | 0.5px `Separator 2` / `--separator-2` |
+| 圆角 | `radius.bubble` 22px | `radius.bubble` 22px |
+| padding | 12px 20px | 12px 20px |
+| 最大宽度 | 346px | 346px |
+| 引脚 | 右下角，24×24px，bottom -11px | 左下角，24×24px，bottom -11px |
+
+文字使用 `dialog-bubble`：16px / 400 / 1.69em / 0.06em。多行文本完整展示，保留换行，允许长词换行。
 
 ---
 
-## 交互状态
+## AI 富文本卡片
 
-| 状态 | 表现 | 触觉 |
-|------|------|------|
-| Default | 如上 | — |
-| Active | 背景降一级（User: BG-2，AI: 透明度 ×1.5） | light |
-| Long Press | 弹出操作菜单（复制/引用/分享/删除） | medium |
+AI 生成卡片属于消息体的一种，放在消息流内，左对齐。
 
----
-
-## AI 回应特殊模式
-
-AI 回应在生成中显示 loading 动画图标（16px），完成后替换为实际内容。AI 回应支持以下内容结构：
-
-- 开场语（"久等啦～"）
-- 引用块：左侧 2px 品牌蓝竖线 + 被引用摘要
-- 结构化内容（标题 + 列表项，用于总结/计划等）
-- 引用来源行（同引用消息）
-
----
-
-## 日期标记
-
-同一时段的连续消息组之间插入居中日期标记：
-- 文字：Caption-1，Label-Tertiary
-- 上下间距各 12px (Space-3)
-
----
-
-## 多宽度适配
-
-| 屏幕宽度 | 气泡最大宽度 | 变化 |
-|----------|-------------|------|
-| Mobile (390px) | 329px | 默认 |
-| Tablet (768px) | 480px | 气泡加宽，内容区更宽 |
-| Desktop (1440px) | 480px | 同 Tablet |
-
----
-
-## 触觉反馈
-
-| 交互 | 意图 |
+| 属性 | 值 |
 |------|------|
-| 点击气泡 | light |
-| 长按气泡 | medium |
-| 点击链接/引用来源 | light |
+| 背景 | `Fill 5` / `--fill-5` |
+| 文字 | 标题 `Title`，正文 `Paragraph`，标注 `Description` |
+| 边框 | 0.5px `Separator 2` |
+| 圆角 | `radius.ai-card` 36px |
+| 阴影 | `shadow.1` |
+| 内间距 | 顶部 28pt，文字左右 24pt，内容块左右 14pt，底部 28pt + 30pt |
+| 富文本 | 使用 `rich-*` 字体与富文本结构规则 |
+
+AI 富文本卡片可包含图片、图组、商品卡、社区用户声音、表格、高亮块等内容块；内容块之间必须有文字承接。
+
+---
+
+## 消息流间距
+
+| 场景 | 值 |
+|------|------|
+| 不同侧消息间距 | 20px |
+| 有引脚的消息间距 | 26px |
+| AI 连续消息间距 | 16px |
+| 用户连续消息间距 | 8px |
+| 对话流左右 padding | 12px |
+| 时间戳 | 居中，13px，`Placeholder` |
+
+---
+
+## 内容类型
+
+| 类型 | 规范 |
+|------|------|
+| `text` | 使用文字气泡，按角色选择 `Fill A/B` |
+| `ai-card` | 使用 AI 富文本卡片，不嵌套在文字气泡内 |
+| `quote` | 外框 `Fill 5`，圆角 22px，正文 `Title`，来源 `Description` |
+| `image` | 图组属于内容块，左右 14pt，圆角按内容类型定义 |
+| `link` | 分享/外链卡属于内容块，背景 `Fill 5`，描边 `Separator 2` |
+
+---
+
+## 交互
+
+| 交互 | 行为 |
+|------|------|
+| 点击气泡 | 不改变气泡样式 |
+| 长按气泡 | 打开长按面板，面板背景 `Fill C` |
+| 点击链接/来源 | 进入对应详情 |
+| 发送新消息 | 新消息追加到消息流底部，键盘收起，消息流滚动到最新消息 |
+
+按压反馈统一使用 `scale(.95-.97)` 与 `.5` 透明度；icon、图片禁止拖动。

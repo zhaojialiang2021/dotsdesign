@@ -6,40 +6,48 @@
 
 **Category**: action
 
-用户主动触发的动作单元。Dots 风格：Pill / Rounded Rect 形态、品牌色克制使用、单视图最多一个 primary。
+触发即时任务的动作单元。Dots Button 继承 ReDs 的六档尺寸、宽度和场景规则，主色映射为 info 5，图底场景使用 ghost。
 
 ### Props
-- `intent`: "primary" | "secondary" | "soft" | "ghost" | "destructive" _(default: `"primary"`)_
-  意图层级。primary 主操作（CTA、提交）；secondary 次要操作（取消）；soft 品牌色辅助（小红点击操作如「填写领取」）；ghost 极弱（链接状）；destructive 不可逆动作（删除/退出）
-- `size`: "compact" | "standard" | "large" _(default: `"standard"`)_
-  compact 34px / standard 48px / large 51px
-- `icon`: "none" | "leading" | "only" _(default: `"none"`)_
-  图标位置。leading 文字左侧 20px 图标；only 图标按钮，无文字
+- `variant`: "filled" | "outline" | "neutral" | "ghost" _(default: `"filled"`)_
+  视觉层级。filled 是唯一主操作；outline 是强调次级动作；neutral 用于空态、取消和弱操作；ghost 只用于图片、彩色或深色背景。
+- `size`: "xLarge" | "large" | "medium" | "small" | "mini" | "micro" _(default: `"medium"`)_
+  xLarge 48px / large 44px / medium 36px / small 28px / mini 24px / micro 20px。xLarge 与 micro 仅限特定场景。
+- `icon`: "none" | "leading" | "trailing" | "only" _(default: `"none"`)_
+  图标位置。only 是纯图标按钮，必须提供 aria-label；文字按钮默认不带图标。
 - `fullWidth`: false | true _(default: `false`)_
-  是否占满容器宽度（启动页 CTA 等场景）
+  是否占满父容器。只用于表单底部、固定操作栏和页面主 CTA。
+- `selected`: false | true _(default: `false`)_
+  用于关注类按钮的已选中状态，例如 已关注 / 互相关注。选中后通常降低层级。
 
 ### States
-`idle`, `hover`, `active`, `loading`, `disabled`
+`default`, `pressed`, `disabled`, `loading`, `selected`
 
 ### Constraints
-- **max_primary_per_view**: 同一页面最多一个 primary 按钮，避免主次失焦
-- **destructive_requires**: destructive 仅用于不可逆动作（删除、退出登录、清空）
-- **icon_only_requires_aria_label**: icon=only 时必须提供 aria-label
+- **max_filled_per_view**: 同一视图最多一个 variant=filled 的主操作，避免主次失焦。
+- **copy_pattern**: 按钮文案必须短，优先使用 谓语+宾语 或 谓语，例如 立即查看、去看看、发送、关注。
+- **width_hugs_content_after_min_width**: 短文案使用 min-width 居中；长文案宽度随内容增长，并保留对应尺寸的左右 padding。
+- **full_width_requires_main_flow**: fullWidth 只能用于表单底部、固定操作栏或页面主 CTA，不用于卡片内普通按钮。
+- **ghost_requires_visual_background**: ghost 只用于图片、彩色或深色背景；图底按钮不展示 disabled 态。
+- **icon_only_requires_aria_label**: icon=only 时必须提供 aria-label。
 
 ### Anatomy
-- **container**: bg, radius, padding-x, height
-- **icon**: fg, size:20px, gap:space-1
-- **label**: fg, font
+- **container**: 承载视觉层级、尺寸、最小宽度和左右 padding；长文案时宽度 hug content。
+- **label**: 按钮文案，必须短，优先 谓语+宾语 或 谓语。
+- **icon**: 可选图标。leading/trailing 与文字同色；only 形态必须有 aria-label。
 
 ### Do
-- 在 CTA 位置使用 size=large + fullWidth=true
-- destructive 配合二次确认弹层使用
-- icon=only 时按钮宽高都是 size 的高度，正方形
+- 表单底部使用 size=large + variant=filled + fullWidth=true。
+- 空态动作使用 size=medium + variant=neutral。
+- 卡片内按钮使用 small 或 mini，避免抢过卡片标题。
+- 图片或彩色背景上使用 filled 或 ghost，不使用低识别度描边按钮。
 
 ### Don't
-- 不要在同一视图放两个 intent=primary 的按钮
-- 不要把 destructive 用在「保存」「确认」这种正向动作
-- 不要在 button 内嵌 button 或链接
+- 不要在同一视图放两个 variant=filled 的按钮。
+- 不要把小红书红 --primary 用作点点主按钮。
+- 不要在图底按钮上展示 disabled 态。
+- 不要让 xLarge 或 micro 成为默认尺寸。
+- 不要在 button 内嵌 button 或链接。
 
 ---
 

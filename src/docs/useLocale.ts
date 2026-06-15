@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 export type Locale = 'zh' | 'en'
-const KEY = 'dots-docs-locale'
+const KEY = 'dots-docs-locale-v2'
 
 function readInitial(): Locale {
   if (typeof window === 'undefined') return 'zh'
@@ -11,9 +11,7 @@ function readInitial(): Locale {
   } catch {
     /* ignore */
   }
-  // 浏览器语言推断
-  const lang = navigator.language?.toLowerCase() ?? ''
-  if (lang.startsWith('en')) return 'en'
+  // 没有手动选择过语言时，设计文档默认中文。
   return 'zh'
 }
 
@@ -125,36 +123,36 @@ const DICT: Dict = {
   'cmdk.recent': { zh: '最近访问', en: 'Recent' },
 
   // ComponentPage 各 section 标题
-  'component.live-demo': { zh: 'Live Demo', en: 'Live Demo' },
+  'component.live-demo': { zh: '实时预览', en: 'Live Demo' },
   'component.live-demo.lead': {
     zh: '可调 props 实时预览。所有数值来自 tokens / schema，不可硬编码。',
     en: 'Live preview with adjustable props. All values come from tokens / schema; no hardcoding allowed.',
   },
-  'component.props': { zh: 'Props', en: 'Props' },
+  'component.props': { zh: '属性', en: 'Props' },
   'component.props.lead': {
     zh: '所有 prop 都是封闭枚举，AI 必须从 values 中选择。',
     en: 'All props are closed enums; AI must pick from listed values.',
   },
-  'component.states': { zh: 'States', en: 'States' },
+  'component.states': { zh: '状态', en: 'States' },
   'component.states.lead': {
     zh: '完整状态矩阵 —— 渲染时必须每个状态都有定义，否则 AI 会瞎补。',
     en: 'Full state matrix. Every state must be explicitly defined; otherwise the AI will improvise.',
   },
-  'component.anatomy': { zh: 'Anatomy', en: 'Anatomy' },
+  'component.anatomy': { zh: '结构', en: 'Anatomy' },
   'component.anatomy.lead': {
     zh: '每个组成部分用什么 token、约束在哪。SVG 图解中的标号对应下表 part。',
     en: 'Which token each part uses and its constraint. Numbers in the SVG match the table below.',
   },
-  'component.constraints': { zh: 'Constraints', en: 'Constraints' },
+  'component.constraints': { zh: '约束', en: 'Constraints' },
   'component.constraints.lead': {
     zh: 'AI 生成时违反这些约束 = 幻觉。可被 lint 抓出来。',
     en: 'Violating these constraints during AI generation = hallucination. Caught by lint.',
   },
-  'component.do-dont': { zh: "Do / Don't", en: "Do / Don't" },
-  'component.do': { zh: 'Do', en: 'Do' },
-  'component.dont': { zh: "Don't", en: "Don't" },
-  'component.copy-ai': { zh: 'Copy for AI', en: 'Copy for AI' },
-  'component.copy-schema': { zh: 'Schema JSON', en: 'Schema JSON' },
+  'component.do-dont': { zh: '建议 / 禁止', en: "Do / Don't" },
+  'component.do': { zh: '建议', en: 'Do' },
+  'component.dont': { zh: '禁止', en: "Don't" },
+  'component.copy-ai': { zh: '复制给 AI', en: 'Copy for AI' },
+  'component.copy-schema': { zh: '复制 Schema', en: 'Schema JSON' },
   'component.deep-tag': { zh: '深度组件', en: 'deep' },
 
   // 内容文案 - 通用
@@ -208,8 +206,8 @@ const DICT: Dict = {
     zh: '构建产物直接 expose 为 HTTP 路由。任何 fetch / curl 都能拉到当前最新契约，无需 clone 仓库。',
     en: 'Build artifacts are exposed as HTTP routes. Any fetch / curl returns the current contract — no need to clone the repo.',
   },
-  'aiw.endpoints.col.method': { zh: 'Method', en: 'Method' },
-  'aiw.endpoints.col.path': { zh: 'Path', en: 'Path' },
+  'aiw.endpoints.col.method': { zh: '方法', en: 'Method' },
+  'aiw.endpoints.col.path': { zh: '路径', en: 'Path' },
   'aiw.endpoints.col.desc': { zh: '说明', en: 'Description' },
   'aiw.mcp.title': { zh: 'MCP Server', en: 'MCP Server' },
   'aiw.mcp.lead': {

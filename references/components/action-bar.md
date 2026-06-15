@@ -15,7 +15,7 @@ used_by: [home, memory-review, time-fragment]
 
 | 属性 | 值 | 设计备注 |
 |------|------|------|
-| 背景 | BG-0 | 与 NavBar 同层 |
+| 背景 | `Bg 1` | 与 NavBar 同层 |
 | 水平内边距 | Space-4 (16px) | 与 NavBar 对齐 |
 | 垂直内边距 | Space-3 (12px) | 紧凑 |
 | 按钮间距 | Space-3 (12px) | 与列表项图标间距一致 |
@@ -25,7 +25,7 @@ used_by: [home, memory-review, time-fragment]
 | 形态 | 用途 | 高度 | 位置 | 圆角 | 顶部分割线 |
 |------|------|------|------|------|------|
 | Fixed | 多按钮固定底栏 | 64px + 安全区 | 紧贴底部，全宽 | 0 | 0.5px Line-NonOpaque FullWidth |
-| Floating | 单一主操作浮动按钮 | 56px | 距底 Space-6，水平居中 | Radius-XLarge (20px) | 无 |
+| Floating | 单一主操作浮动按钮 | 56px | 距底 Space-6，水平居中 | `radius.cta` (24px) | 无 |
 
 设计备注：ActionBar 与 NavBar 是镜像关系——一个在顶部承载导航，一个在底部承载操作。home 现有的"录入"按钮是 Floating 形态。
 

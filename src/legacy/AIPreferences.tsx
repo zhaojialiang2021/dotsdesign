@@ -294,7 +294,7 @@ export default function AIPreferences() {
 
             <div className="ap-badge" style={{ left: 24, top: 18 }}>
               <div className="ap-badgeIcon"><img src={imgIcon} alt="" /></div>
-              <span className="ap-badgeText" style={{ color: '#78aafa' }}>Dots 人格</span>
+              <span className="ap-badgeText" style={{ color: '#6FD2BD' }}>Dots 人格</span>
             </div>
 
             <div className="ap-card1-content">

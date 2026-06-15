@@ -1,22 +1,68 @@
 {
-  "$description": "Dots 间距、圆角。封闭枚举，禁止自定义中间值。",
+  "$description": "Dots 尺寸、间距、圆角。来源：点点设计规范。旧 Space/Radius 变量保留给文档站兼容，新页面优先引用语义 token。",
+  "phone": {
+    "width": { "$value": "430px", "$type": "dimension", "$description": "iOS 大屏设计稿宽度" },
+    "height": { "$value": "932px", "$type": "dimension", "$description": "iOS 大屏设计稿高度" },
+    "radius": { "$value": "54px", "$type": "dimension", "$description": "模拟真机外壳圆角" }
+  },
+  "safe": {
+    "top": { "$value": "59px", "$type": "dimension", "$description": "状态栏/安全区顶部" },
+    "bottom": { "$value": "34px", "$type": "dimension", "$description": "底部安全区" },
+    "nav": { "$value": "65px", "$type": "dimension", "$description": "导航栏高度" }
+  },
+  "dialog": {
+    "flow-padding-x": { "$value": "12px", "$type": "dimension", "$description": "对话流左右 padding" },
+    "gap-cross-side": { "$value": "20px", "$type": "dimension", "$description": "不同侧消息间距" },
+    "gap-tail": { "$value": "26px", "$type": "dimension", "$description": "有引脚的消息间距" },
+    "gap-ai": { "$value": "16px", "$type": "dimension", "$description": "AI 连续消息间距" },
+    "gap-user": { "$value": "8px", "$type": "dimension", "$description": "用户连续消息间距" },
+    "bubble-max": { "$value": "346px", "$type": "dimension", "$description": "对话气泡最大宽度" },
+    "bubble-padding-y": { "$value": "12px", "$type": "dimension", "$description": "气泡垂直 padding" },
+    "bubble-padding-x": { "$value": "20px", "$type": "dimension", "$description": "气泡水平 padding" },
+    "tail": { "$value": "24px", "$type": "dimension", "$description": "气泡尾巴宽高" },
+    "tail-offset": { "$value": "-11px", "$type": "dimension", "$description": "气泡尾巴底部偏移" },
+    "input-height": { "$value": "48px", "$type": "dimension", "$description": "输入区域高度" },
+    "input-total-height": { "$value": "96px", "$type": "dimension", "$description": "输入栏含安全区总高" },
+    "icon": { "$value": "24px", "$type": "dimension", "$description": "输入栏图标尺寸" }
+  },
+  "rich": {
+    "gap-level-1": { "$value": "32pt", "$type": "dimension", "$description": "富文本一级模块间距" },
+    "gap-level-2": { "$value": "22pt", "$type": "dimension", "$description": "富文本二级模块间距" },
+    "gap-level-3": { "$value": "16pt", "$type": "dimension", "$description": "富文本三级模块间距" },
+    "text-padding-x": { "$value": "24pt", "$type": "dimension", "$description": "文字类原子左右间距" },
+    "block-padding-x": { "$value": "14pt", "$type": "dimension", "$description": "图片、图组、地图、商品卡等内容块左右间距" },
+    "card-top": { "$value": "28pt", "$type": "dimension", "$description": "卡片容器顶部到 H1" },
+    "card-action-gap": { "$value": "28pt", "$type": "dimension", "$description": "最后内容到按钮区顶部" },
+    "card-bottom": { "$value": "30pt", "$type": "dimension", "$description": "按钮区底部到容器底部" }
+  },
   "space": {
-    "1": { "$value": "4px", "$type": "dimension", "$description": "图标与文字间距、紧凑内边距" },
-    "2": { "$value": "8px", "$type": "dimension", "$description": "导航项圆角、小元素间距" },
-    "3": { "$value": "12px", "$type": "dimension", "$description": "卡片间距、列表项间距" },
-    "4": { "$value": "16px", "$type": "dimension", "$description": "卡片内边距、标准组件内间距" },
-    "5": { "$value": "20px", "$type": "dimension", "$description": "区块间距、表单项间距" },
-    "6": { "$value": "24px", "$type": "dimension", "$description": "页面边距（紧凑）" },
-    "7": { "$value": "32px", "$type": "dimension", "$description": "页面边距（标准）" },
+    "1": { "$value": "4px", "$type": "dimension", "$description": "微调" },
+    "2": { "$value": "8px", "$type": "dimension", "$description": "紧凑间距 / 用户连续消息" },
+    "3": { "$value": "12px", "$type": "dimension", "$description": "对话流左右 padding / 气泡垂直 padding" },
+    "4": { "$value": "16px", "$type": "dimension", "$description": "AI 连续消息 / 小区块" },
+    "5": { "$value": "20px", "$type": "dimension", "$description": "不同侧消息间距" },
+    "6": { "$value": "24px", "$type": "dimension", "$description": "气泡尾巴 / 文字左右间距" },
+    "7": { "$value": "32px", "$type": "dimension", "$description": "富文本一级模块间距约值" },
     "8": { "$value": "40px", "$type": "dimension", "$description": "大区块间距" },
-    "9": { "$value": "48px", "$type": "dimension", "$description": "页面顶部留白" },
-    "10": { "$value": "64px", "$type": "dimension", "$description": "最大留白" }
+    "9": { "$value": "48px", "$type": "dimension", "$description": "输入区域 / CTA 高度" },
+    "10": { "$value": "64px", "$type": "dimension", "$description": "大段留白" }
   },
   "radius": {
-    "small": { "$value": "6px", "$type": "dimension", "$description": "图片、缩略图" },
-    "medium": { "$value": "8px", "$type": "dimension", "$description": "导航项、输入框" },
-    "large": { "$value": "12px", "$type": "dimension", "$description": "内容卡、弹窗" },
-    "xlarge": { "$value": "20px", "$type": "dimension", "$description": "消息气泡、能力卡片、侧边栏信息卡" },
-    "full": { "$value": "9999px", "$type": "dimension", "$description": "Pill 按钮、标签、头像" }
+    "bubble": { "$value": "22px", "$type": "dimension", "$description": "对话气泡" },
+    "ai-card": { "$value": "36px", "$type": "dimension", "$description": "AI 富文本卡片" },
+    "inner-card": { "$value": "14px", "$type": "dimension", "$description": "卡片内元素" },
+    "tag": { "$value": "20px", "$type": "dimension", "$description": "标签" },
+    "input": { "$value": "16px", "$type": "dimension", "$description": "输入框" },
+    "option": { "$value": "12px", "$type": "dimension", "$description": "选项标签" },
+    "cta": { "$value": "24px", "$type": "dimension", "$description": "CTA 按钮" },
+    "input-container": { "$value": "28px 28px 0 0", "$type": "dimension", "$description": "输入栏容器" },
+    "sheet": { "$value": "20px 20px 0 0", "$type": "dimension", "$description": "底部弹窗" },
+    "community-card": { "$value": "8px", "$type": "dimension", "$description": "社区笔记卡片" },
+    "avatar": { "$value": "50%", "$type": "dimension", "$description": "头像圆形" },
+    "small": { "$value": "6px", "$type": "dimension", "$description": "兼容旧文档：小圆角" },
+    "medium": { "$value": "8px", "$type": "dimension", "$description": "兼容旧文档：社区卡片/导航项" },
+    "large": { "$value": "12px", "$type": "dimension", "$description": "兼容旧文档：选项标签" },
+    "xlarge": { "$value": "22px", "$type": "dimension", "$description": "兼容旧文档：映射到气泡圆角" },
+    "full": { "$value": "9999px", "$type": "dimension", "$description": "胶囊 / 头像" }
   }
 }
