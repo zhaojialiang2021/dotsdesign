@@ -61,11 +61,11 @@ type DotsHistoryAiCard = {
 type DotsHistoryItem = DotsHistoryMessage | DotsHistoryTime | DotsHistoryAiCard
 
 const dotsReplyText = '收到，我会继续按这个护肤场景帮你补充。'
-const dotsVoiceMessageText = '我今晚想厚涂黑绷带，怎么用更稳？'
+const dotsVoiceMessageText = '我今晚想厚涂黑绷带面霜，前面要不要先用精华？'
 const voiceRecognitionSteps = [
-  '我今晚想厚涂黑绷带',
-  '我今晚想厚涂黑绷带，怎么用',
-  '我今晚想厚涂黑绷带，怎么用更稳？',
+  '我今晚想厚涂黑绷带面霜',
+  '我今晚想厚涂黑绷带面霜，前面要不要',
+  '我今晚想厚涂黑绷带面霜，前面要不要先用精华？',
 ]
 const voiceWaveformBars = [4, 10, 14, 6, 8, 20, 10, 12, 10, 4, 10, 10, 16, 6, 12, 14, 8, 12, 8, 8, 16, 12, 12, 6, 12, 8, 8]
 

@@ -2734,13 +2734,10 @@ body.is-preview *::-webkit-scrollbar {
 
 .dots-message-row--recognizing .dots-message-bubble {
   min-width: 132px;
-  border-color: rgba(111, 210, 189, 0.7);
-  animation: dotted-demo-recognition-breath 960ms ease-in-out infinite;
 }
 
 .dots-message-row--recognizing-cancel .dots-message-bubble {
   opacity: 0.48;
-  animation: none;
 }
 
 .dotted-demo__recognition-loading {
@@ -2807,17 +2804,6 @@ body.is-preview *::-webkit-scrollbar {
   left: 0;
   transform: scaleX(-1);
   --fill-0: var(--dots-reply-bubble, #ffffff);
-}
-
-@keyframes dotted-demo-recognition-breath {
-  0%,
-  100% {
-    border-color: rgba(111, 210, 189, 0.36);
-  }
-
-  50% {
-    border-color: rgba(111, 210, 189, 0.82);
-  }
 }
 
 @keyframes dotted-demo-recognition-dot {
