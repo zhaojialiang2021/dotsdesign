@@ -6,22 +6,38 @@
   "description": "组合容器。承载相关信息的最小单元，是 patterns 的起点。Dots 风格：hairline 边框、20px / 12px 圆角、不滥用阴影。",
   "props": {
     "variant": {
-      "values": ["default", "tinted", "elevated"],
+      "values": [
+        "default",
+        "tinted",
+        "elevated"
+      ],
       "default": "default",
       "description": "default 透明 + hairline；tinted 浅灰底 (bg-1) 不带边；elevated 仅用于弹层卡，带 shadow-modal"
     },
     "padding": {
-      "values": ["compact", "standard", "comfortable"],
+      "values": [
+        "compact",
+        "standard",
+        "comfortable"
+      ],
       "default": "standard",
       "description": "compact space-3 / standard space-4 / comfortable space-5"
     },
     "interactive": {
-      "values": [false, true],
+      "values": [
+        false,
+        true
+      ],
       "default": false,
       "description": "是否可点击。true 时 hover 加 fill-quaternary 背景，cursor=pointer"
     }
   },
-  "states": ["idle", "hover", "pressed", "disabled"],
+  "states": [
+    "idle",
+    "hover",
+    "pressed",
+    "disabled"
+  ],
   "constraints": [
     {
       "rule": "no_nested_card",
@@ -55,10 +71,28 @@
     "interactive.hover.bg": "fill-quaternary"
   },
   "anatomy": [
-    { "part": "container", "tokens": ["bg", "border", "shadow?", "radius", "padding"] },
-    { "part": "header (optional)", "description": "标题区，用 typography.headline-h3" },
-    { "part": "body", "description": "正文区" },
-    { "part": "footer (optional)", "description": "动作区，常含 Button" }
+    {
+      "part": "container",
+      "tokens": [
+        "bg",
+        "border",
+        "shadow?",
+        "radius",
+        "padding"
+      ]
+    },
+    {
+      "part": "header (optional)",
+      "description": "标题区，用 typography.headline-h3"
+    },
+    {
+      "part": "body",
+      "description": "正文区"
+    },
+    {
+      "part": "footer (optional)",
+      "description": "动作区，常含 Button"
+    }
   ],
   "doDont": {
     "do": [
@@ -70,6 +104,19 @@
       "不要在 Card 里再嵌 Card",
       "不要给非弹层卡片加阴影",
       "不要让 Card 边框和 Card 内 Divider 视觉上混淆"
+    ]
+  },
+  "harness": {
+    "semantic": "用于组织相关信息的最小容器，是 pattern 的起点，不承担页面分区装饰。",
+    "generation": [
+      "先判断内容是否真的需要容器；页面 section 不默认包 Card。",
+      "interactive=true 时整卡可点击并支持键盘。",
+      "普通页面优先 default 或 tinted，elevated 只给弹层使用。"
+    ],
+    "validation": [
+      "Card 内不得嵌套 Card。",
+      "非弹层卡片不得使用阴影。",
+      "hover 只改变轻微背景，不改变布局尺寸。"
     ]
   }
 }

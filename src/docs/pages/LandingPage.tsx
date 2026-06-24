@@ -64,8 +64,8 @@ export function LandingPage() {
           </h1>
           <p className="docs-landing__studio-lead">
             {isZh
-              ? '把点点的设计系统、组件规范、Figma 还原和上线流程放进同一个工作台。文档是源头，demo 是验证，代码是最终交付。'
-              : 'A studio-style design system workspace for Dian Dian: docs as source, demos as proof, code as production output.'}
+              ? '把点点的设计系统、组件规范、Figma 还原和上线流程放进同一个工作台。文档是源头，demo 是验证，Harness 是 AI 执行轨道。'
+              : 'A studio-style design system workspace for Dian Dian: docs as source, demos as proof, harnesses as AI execution rails.'}
           </p>
           <div className="docs-landing__studio-actions">
             <button className="docs-landing__studio-button" onClick={() => navigate('/docs/intro')}>
@@ -80,8 +80,8 @@ export function LandingPage() {
           <h2>{isZh ? '点点设计系统' : 'dots design'}</h2>
           <p>
             {isZh
-              ? '这里不是另一个组件展示站，而是点点设计工作流的运行环境。每个规格都要能被设计师阅读、被 agent 执行、被开发接走。'
-              : 'Not another component gallery, but the operating environment for Dian Dian design work.'}
+              ? '这里不是另一个组件展示站，而是点点 AI 组件库的运行环境。每个组件都要能被设计师阅读、被 agent 生成、被开发复用、被检查验证。'
+              : 'Not another component gallery, but the operating environment for Dian Dian AI component harnesses.'}
           </p>
         </div>
         <div className="docs-landing__product-visual" aria-label="Dian Dian illustration preview">

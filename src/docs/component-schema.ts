@@ -18,11 +18,18 @@ export type AnatomyPart = {
   description?: string
 }
 
+export type ComponentHarness = {
+  semantic: string
+  generation: string[]
+  validation: string[]
+}
+
 export type ComponentSchema = {
   slug: string
   name: string
   category: string
   description: string
+  harness?: ComponentHarness
   props: Record<string, PropDef>
   states: string[]
   constraints: Constraint[]
@@ -54,6 +61,16 @@ export function schemaToLLMSpec(schema: ComponentSchema): string {
   lines.push('')
   lines.push(schema.description)
   lines.push('')
+
+  if (schema.harness) {
+    lines.push('## Harness')
+    lines.push(`- **Semantic**: ${schema.harness.semantic}`)
+    lines.push('- **Generation Rules**')
+    for (const item of schema.harness.generation) lines.push(`  - ${item}`)
+    lines.push('- **Validation**')
+    for (const item of schema.harness.validation) lines.push(`  - ${item}`)
+    lines.push('')
+  }
 
   lines.push('## Props')
   for (const [name, def] of Object.entries(schema.props)) {

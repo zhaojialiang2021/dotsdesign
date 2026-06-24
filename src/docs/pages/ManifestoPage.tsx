@@ -6,6 +6,7 @@ const DIFFS: { dim: string; old: string; native: string }[] = [
   { dim: '文档形态', old: 'Markdown 散文 + 截图', native: 'JSON / YAML 机器层 + Markdown 人读层' },
   { dim: 'Token 性质', old: '命名建议', native: '封闭契约（lint 强制）' },
   { dim: '规则形态', old: '散文描述', native: '可执行逻辑（条件 → token 覆盖）' },
+  { dim: '组件形态', old: '视觉组件', native: 'Component Harness（语义 + schema + 验证）' },
   { dim: '设计师角色', old: '制作者 (maker)', native: '策展人 / 审校 (curator)' },
 ]
 
@@ -18,7 +19,7 @@ export function ManifestoPage() {
             给 AI 也设计的<em>设计系统</em>
           </>
         }
-        lead="传统设计系统是「给人看的约定」，AI-native 设计系统是「给机器读的契约」。约定可以靠经验和上下文补救；契约一旦违反，AI 立即开始幻觉——这是整套工程取舍的根。"
+        lead="传统设计系统是「给人看的约定」，AI-native 设计系统是「给机器读的契约」。Dots 再往前走一步：用 Harness Engineering 把契约变成 AI 可执行、可验证、可复用的工作轨道。"
       />
 
       <section className="docs-section-block">
@@ -42,6 +43,30 @@ export function ManifestoPage() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="docs-section-block">
+        <h2 className="docs-section-block__heading">核心观点：组件不是终点，Harness 才是</h2>
+        <p className="docs-section-block__subheading">
+          一个 Dots 组件要同时给人和 AI 使用。人需要看到视觉和语义；AI 需要知道 props 边界、状态矩阵、组合规则和验证方式。
+        </p>
+        <div className="docs-stat-grid">
+          <div className="docs-stat">
+            <div className="docs-stat__label">Component Harness</div>
+            <div className="docs-stat__value">1</div>
+            <div className="docs-stat__hint">单个组件的语义、schema、状态、行为、token、do/don't。</div>
+          </div>
+          <div className="docs-stat">
+            <div className="docs-stat__label">Pattern Harness</div>
+            <div className="docs-stat__value">N</div>
+            <div className="docs-stat__hint">多个组件组成对话流、Skill 选择、AI 卡片生成等业务模式。</div>
+          </div>
+          <div className="docs-stat">
+            <div className="docs-stat__label">Page Harness</div>
+            <div className="docs-stat__value">Demo</div>
+            <div className="docs-stat__hint">真实页面用来验证组件和模式是否能跑通，而不是只展示好看的状态。</div>
+          </div>
         </div>
       </section>
 

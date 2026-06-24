@@ -37,7 +37,7 @@ function buildMd(all) {
   const lines = []
   lines.push('# Dots Component Contracts (machine-readable)')
   lines.push('')
-  lines.push('> 自动生成自 `components/*.schema.json`。AI 在生成 Dots 风格 UI 时，组件 props 必须从 values 枚举中选；states 必须全覆盖；constraints 不能违反。')
+  lines.push('> 自动生成自 `components/*.schema.json`。AI 在生成 Dots 风格 UI 时，组件 props 必须从 values 枚举中选；states 必须全覆盖；constraints 不能违反；harness 规则必须执行。')
   lines.push('')
   for (const c of all) {
     lines.push(`## ${c.name} (\`${c.slug}\`)`)
@@ -46,6 +46,16 @@ function buildMd(all) {
     lines.push('')
     lines.push(c.description)
     lines.push('')
+
+    if (c.harness) {
+      lines.push('### Harness')
+      lines.push(`- **Semantic**: ${c.harness.semantic}`)
+      lines.push('- **Generation Rules**')
+      for (const item of c.harness.generation) lines.push(`  - ${item}`)
+      lines.push('- **Validation**')
+      for (const item of c.harness.validation) lines.push(`  - ${item}`)
+      lines.push('')
+    }
 
     lines.push('### Props')
     for (const [name, def] of Object.entries(c.props)) {
@@ -92,14 +102,14 @@ function buildSkillMd(componentsMd) {
     '# Dots Design System Skill',
     '',
     '> 把这份内容粘到 Cursor / Claude Code 的系统提示里，再开始生成 UI。',
-    '> AI-native 设计系统：给机器读的契约。约束被违反 = 幻觉。',
+    '> AI-native 设计系统：给机器读的契约。Harness 是 AI 的执行轨道；约束被违反 = 幻觉。',
     '',
     '## 使用约定',
     '- **颜色**：仅引用 `var(--<token-name>)`（见下方 Tokens 段），禁止 hex/rgba 字面量。',
     '- **间距**：仅用 `var(--space-1)` ~ `var(--space-10)`，禁止自定义 px。',
     '- **圆角**：5 级封闭枚举 `radius-small / medium / large / x-large / full`。',
     '- **字号**：从 typography 令牌挑（headline-h1/h2/h3, body-primary/secondary, callout, subhead, footnote, caption-1/2）。',
-    '- **组件**：见下方 Component Contracts。props 必须命中 values 枚举；states 必须全覆盖；constraints 不能违反。',
+    '- **组件**：见下方 Component Harness。props 必须命中 values 枚举；states 必须全覆盖；constraints 和 harness 规则不能违反。',
     '- **校验**：生成完跑 `npm run lint:tokens`，0 违规才算合格。',
     '',
     '---',
@@ -112,7 +122,7 @@ function buildLlmsTxt() {
   return [
     '# Dots Design System',
     '',
-    'AI-native 设计系统：给机器读的契约，不是给人看的约定。',
+    'AI-native 设计系统：给机器读的契约，也是一套 Harness Engineering 运行轨道。',
     '',
     '## 关键端点',
     '- /skill.md         一站式 Skill 包（推荐 AI 直接拉这个）',

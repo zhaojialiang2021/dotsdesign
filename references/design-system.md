@@ -6,6 +6,38 @@
 
 ---
 
+## 0. Harness Engineering 底层逻辑
+
+Dots 设计系统的底层逻辑是 Harness Engineering：给 AI 搭一套可执行、可验证、可复用的工程轨道。传统组件库只回答“组件长什么样”；Dots 组件库还要回答“AI 什么时候用它、能传什么参数、哪些状态必须覆盖、生成后怎么检查”。
+
+### 0.1 五层结构
+
+| 层级 | 作用 | 产物 |
+|------|------|------|
+| Design Tokens | 定义视觉物理规则 | `tokens/*.json`、`tokens.css` |
+| Component Harness | 定义单个组件的语义、结构、状态、行为、验证 | `components/*.schema.json`、组件文档、实时预览 |
+| Pattern Harness | 定义多个组件如何组成业务模式 | 对话流、Skill 选择、AI 卡片生成 |
+| Page Harness | 用真实页面验证组件和模式是否能跑通 | `dotted-demo` 等页面 demo |
+| Agent Harness | 告诉 AI 如何读取、生成、修改、检查 | `/skill.md`、`components.json`、Copy for AI |
+
+### 0.2 Component Harness 的完成标准
+
+每个核心组件必须包含：
+
+- **视觉规范**：颜色、字体、圆角、间距、阴影和状态。
+- **语义定义**：这个组件解决什么问题，什么时候该用，什么时候不该用。
+- **结构 Schema**：AI 可用的 props、slot、variant、状态枚举。
+- **行为规则**：点击、展开、关闭、滚动、发送、加载、禁用等边界。
+- **示例场景**：组件在真实页面里的用法，而不是孤立样式。
+- **验证方式**：lint、build、截图检查、设计 checklist、Figma 对齐。
+- **Agent 使用说明**：AI 生成时必须怎么用，不能怎么改，失败后怎么修。
+
+### 0.3 判断标准
+
+一个组件只有 CSS，不算进入系统；只有 Figma，不算进入系统；只有页面 demo，也不算进入系统。只有当它能被人读、被 AI 生成、被代码复用、被检查验证，才算完成。
+
+---
+
 ## 1. 设备画布
 
 - **设计稿尺寸**：430 × 932px（iOS 大屏），模拟真机使用 `.app` 或 `.phone` 容器
@@ -303,6 +335,8 @@ font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display',
 ---
 
 ## 7. 组件规范
+
+组件规范默认按 Component Harness 书写：先定义语义，再定义结构、状态、约束、行为和验证方式。页面 demo 只能引用组件 harness，不能复制私有样式。
 
 ### 7.1 对话气泡
 

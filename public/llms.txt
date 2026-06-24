@@ -1,6 +1,6 @@
 # Dots Design System
 
-AI-native 设计系统：给机器读的契约，不是给人看的约定。
+AI-native 设计系统：给机器读的契约，也是一套 Harness Engineering 运行轨道。
 
 ## 关键端点
 - /skill.md         一站式 Skill 包（推荐 AI 直接拉这个）

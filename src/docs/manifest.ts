@@ -11,6 +11,7 @@ export type ComponentSlug =
   | 'divider'
   | 'toast'
   | 'message-bubble'
+  | 'live-waveform'
 
 export type PageSlug =
   | 'dotted-demo'
@@ -19,7 +20,7 @@ export type ComponentMeta = {
   slug: ComponentSlug
   name: string
   status: 'placeholder' | 'draft' | 'complete'
-  /** brief §5.3 选定的 5 个深度组件，做 schema-driven 完整结构。其余 9 个保留作 backlog */
+  /** 深度组件使用 Component Harness：schema-driven 固定结构。其余保留作 backlog */
   depth?: 'deep' | 'shallow'
   filledInBatch?: 1 | 2 | 3 | null
 }
@@ -45,7 +46,8 @@ export const components: ComponentMeta[] = [
   { slug: 'switch', name: 'Switch', status: 'placeholder', depth: 'shallow' },
   { slug: 'divider', name: 'Divider', status: 'placeholder', depth: 'shallow' },
   { slug: 'toast', name: 'Toast', status: 'placeholder', depth: 'shallow' },
-  { slug: 'message-bubble', name: 'MessageBubble', status: 'draft', depth: 'shallow' },
+  { slug: 'message-bubble', name: 'MessageBubble', status: 'complete', depth: 'deep' },
+  { slug: 'live-waveform', name: 'LiveWaveform', status: 'draft', depth: 'deep' },
 ]
 
 export const pages: PageMeta[] = [
@@ -73,9 +75,14 @@ export const patterns: PatternMeta[] = [
   { slug: 'error', name: '错误态', desc: '网络断 / 接口挂 / 数据脏 —— 给用户能动的下一步', status: 'placeholder' },
 ]
 
-// === Writing（4 篇思考）===
+// === Writing（5 篇思考）===
 export type WritingMeta = {
-  slug: 'manifesto' | 'when-making-is-not-scarce' | 'when-ai-takes-the-wheel' | 'how-i-fed-my-design-system-to-ai'
+  slug:
+    | 'manifesto'
+    | 'prompt-to-harness'
+    | 'when-making-is-not-scarce'
+    | 'when-ai-takes-the-wheel'
+    | 'how-i-fed-my-design-system-to-ai'
   title: string
   desc: string
   status: 'placeholder' | 'draft' | 'published'
@@ -87,6 +94,12 @@ export const writings: WritingMeta[] = [
     title: '也是给 AI 设计的 Design System',
     desc: 'AI-native 设计系统的理念与方法论',
     status: 'draft',
+  },
+  {
+    slug: 'prompt-to-harness',
+    title: '从 Prompt 到 Harness',
+    desc: 'AI Agent 时代的人机协作，正在从表达意图走向组织执行',
+    status: 'published',
   },
   {
     slug: 'how-i-fed-my-design-system-to-ai',

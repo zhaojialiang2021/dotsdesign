@@ -15,11 +15,12 @@ const SITE = 'https://docs.dots.design'
 const COMPONENTS = [
   'button', 'input', 'card', 'sheet', 'empty-state',
   'nav-bar', 'sidebar', 'switch', 'modal', 'divider', 'toast', 'action-bar',
-  'message-bubble', 'slider', 'tab-bar', 'type-tag',
+  'message-bubble', 'live-waveform', 'slider', 'tab-bar', 'type-tag',
 ]
 const PAGES = ['splash', 'home', 'ai-preferences', 'ai-summary', 'time-fragment']
 const WRITINGS = [
   'manifesto',
+  'prompt-to-harness',
   'how-i-fed-my-design-system-to-ai',
   'when-making-is-not-scarce',
   'when-ai-takes-the-wheel',

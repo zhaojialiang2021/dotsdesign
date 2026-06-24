@@ -123,6 +123,11 @@ const DICT: Dict = {
   'cmdk.recent': { zh: '最近访问', en: 'Recent' },
 
   // ComponentPage 各 section 标题
+  'component.harness': { zh: 'Harness', en: 'Harness' },
+  'component.harness.lead': {
+    zh: '这部分定义 AI 如何理解、生成和验证这个组件。它比视觉样式更靠近执行契约。',
+    en: 'How AI understands, generates, and validates this component. This is the execution contract beyond visuals.',
+  },
   'component.live-demo': { zh: '实时预览', en: 'Live Demo' },
   'component.live-demo.lead': {
     zh: '可调 props 实时预览。所有数值来自 tokens / schema，不可硬编码。',

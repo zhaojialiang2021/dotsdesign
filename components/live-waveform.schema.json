@@ -1,0 +1,190 @@
+{
+  "$schema": "https://dots.design/schemas/component.schema.json",
+  "slug": "live-waveform",
+  "name": "LiveWaveform",
+  "category": "voice",
+  "description": "实时语音波形组件。用于表达点点正在待机、监听或处理语音输入，是语音入口、AI 对话页和生成等待态的可复用状态 harness。",
+  "harness": {
+    "semantic": "表达声音输入或语音处理的实时强度。可以消费上游 audio level，也可以在用户显式触发后调用浏览器麦克风并实时渲染输入强度；不保存音频。",
+    "generation": [
+      "先判断业务状态：idle 只做低幅呼吸；listening 使用实时滚动；processing 使用规则脉冲。",
+      "如果 source=microphone，必须由按钮点击触发权限请求，页面加载时不得自动调用 getUserMedia。",
+      "语音入口优先使用 size=compact；沉浸式录音面板可使用 regular 或 large。",
+      "必须使用 tone 命中当前背景：浅底品牌色用 brand，深底或图片底用 inverse。"
+    ],
+    "validation": [
+      "source=microphone 时必须真实读取麦克风输入，不能只用模拟动画。",
+      "麦克风权限必须由用户显式点击触发，不能自动弹权限。",
+      "停止监听或切换到非 listening 状态时必须释放 MediaStreamTrack 和 AudioContext。",
+      "波形颜色必须来自 Dots token，不允许硬编码 hex/rgba。",
+      "prefers-reduced-motion=true 时必须退化成静态波形。",
+      "idle/listening/processing 三态必须可被外部 props 控制。"
+    ]
+  },
+  "props": {
+    "state": {
+      "values": [
+        "idle",
+        "listening",
+        "processing"
+      ],
+      "default": "idle",
+      "description": "波形语义状态。idle 是可输入但未采集；listening 表示正在接收语音；processing 表示已提交并等待 AI 解析。"
+    },
+    "source": {
+      "values": [
+        "microphone",
+        "levels",
+        "demo"
+      ],
+      "default": "levels",
+      "description": "音频来源。microphone 表示组件通过用户点击启动麦克风；levels 表示消费上游音量数组；demo 表示文档或占位演示。"
+    },
+    "mode": {
+      "values": [
+        "scrolling",
+        "static"
+      ],
+      "default": "scrolling",
+      "description": "波形更新方式。scrolling 用于实时输入；static 用于列表、卡片或 reduce motion 场景。"
+    },
+    "size": {
+      "values": [
+        "compact",
+        "regular",
+        "large"
+      ],
+      "default": "regular",
+      "description": "波形高度。compact 用于输入栏和按钮；regular 用于面板；large 用于独立语音页。"
+    },
+    "density": {
+      "values": [
+        "compact",
+        "comfortable",
+        "dense"
+      ],
+      "default": "comfortable",
+      "description": "柱数量密度。compact 信息少但清爽；dense 更像实时声谱，适合宽容器。"
+    },
+    "tone": {
+      "values": [
+        "brand",
+        "ink",
+        "inverse"
+      ],
+      "default": "brand",
+      "description": "颜色语义。brand 使用点点主色；ink 用文本色；inverse 用于深色、图片和彩色背景。"
+    }
+  },
+  "states": [
+    "idle",
+    "requesting",
+    "listening",
+    "processing",
+    "stopped",
+    "denied",
+    "muted",
+    "error"
+  ],
+  "constraints": [
+    {
+      "rule": "microphone_requires_user_gesture",
+      "value": true,
+      "description": "source=microphone 时，getUserMedia 必须由用户点击触发。"
+    },
+    {
+      "rule": "microphone_stream_released_on_stop",
+      "value": true,
+      "description": "停止监听或退出 listening 时，必须停止所有 MediaStreamTrack 并关闭 AudioContext。"
+    },
+    {
+      "rule": "microphone_fallback_state",
+      "value": true,
+      "description": "权限被拒绝或设备不可用时，必须显示 denied/error/unsupported 状态。"
+    },
+    {
+      "rule": "motion_respects_user_setting",
+      "value": true,
+      "description": "用户开启减少动态效果时，scrolling 必须退化为 static。"
+    },
+    {
+      "rule": "min_visible_height",
+      "value": "48px",
+      "description": "可交互语音入口的波形高度不低于 48px，避免被误认为普通装饰线。"
+    },
+    {
+      "rule": "state_is_controlled",
+      "value": true,
+      "description": "状态由上层业务传入，不能靠组件内部猜测录音生命周期。"
+    }
+  ],
+  "tokens": {
+    "tone.brand.active": "brand-blue",
+    "tone.brand.processing": "info-6",
+    "tone.brand.idle": "separator-2",
+    "tone.ink.active": "title",
+    "tone.inverse.active": "bg-light",
+    "surface.bg": "fill-a",
+    "surface.border": "separator-2",
+    "surface.radius": "radius-inner-card",
+    "size.compact.height": "64px",
+    "size.regular.height": "92px",
+    "size.large.height": "124px",
+    "bar.radius": "radius-full"
+  },
+  "haptics": {
+    "start-listening": "light",
+    "stop-listening": "soft"
+  },
+  "anatomy": [
+    {
+      "part": "surface",
+      "tokens": [
+        "surface.bg",
+        "surface.border",
+        "surface.radius"
+      ],
+      "description": "承载波形的视觉容器，可独立放入输入栏、面板或卡片。"
+    },
+    {
+      "part": "waveform-canvas",
+      "tokens": [
+        "size.*.height",
+        "tone.*.active"
+      ],
+      "description": "实际波形绘制区域，只负责渲染，不负责音频采集。"
+    },
+    {
+      "part": "bars",
+      "tokens": [
+        "bar.radius"
+      ],
+      "description": "竖向圆角柱。高度由 audio level 或模拟 level 控制。"
+    },
+    {
+      "part": "status",
+      "tokens": [
+        "tone.brand.active",
+        "description"
+      ],
+      "description": "可选状态标签，用于文档、调试或无障碍说明，也承载 microphoneStatus。"
+    }
+  ],
+  "doDont": {
+    "do": [
+      "语音输入中使用 state=listening + mode=scrolling。",
+      "需要真实监听时使用 source=microphone，并提供开始/停止入口。",
+      "AI 正在解析语音时使用 state=processing。",
+      "在输入栏中使用 compact，保持和操作按钮同层级。",
+      "如果业务已有音频采集链路，把真实音量数据通过 source=levels 传入。"
+    ],
+    "dont": [
+      "不要在页面加载时自动请求麦克风权限。",
+      "不要用模拟动画冒充 source=microphone。",
+      "不要在停止后继续占用麦克风。",
+      "不要用随机颜色或渐变替代 token。",
+      "不要把 idle 做成高频动效。",
+      "不要在 reduce motion 场景继续滚动动画。"
+    ]
+  }
+}

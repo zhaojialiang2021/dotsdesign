@@ -1,0 +1,160 @@
+{
+  "$schema": "https://dots.design/schemas/component.schema.json",
+  "slug": "message-bubble",
+  "name": "MessageBubble",
+  "category": "conversation",
+  "description": "点点对话流的消息体 harness。承载用户消息、Dots 文本回复、AI 富文本卡片、引用卡和图片内容，是页面 demo 不允许私自复制的核心规范。",
+  "harness": {
+    "semantic": "表达一次对话中的消息单位，负责角色、内容类型、左右对齐、消息间距和消息进入流的位置。",
+    "generation": [
+      "先选择 role=user 或 dots，再选择 contentType。",
+      "text 使用文字气泡；ai-card 使用富文本卡片，不嵌套在文字气泡里。",
+      "连续消息根据 role 调整间距，换侧消息拉开距离。"
+    ],
+    "validation": [
+      "用户消息右对齐，Dots 消息左对齐。",
+      "用户气泡使用 Fill B，AI 文本气泡使用 Fill A，AI 卡片使用 Fill 5。",
+      "气泡尖角颜色必须与气泡背景一致。",
+      "发送新消息后键盘收起，消息流滚动到最新。"
+    ]
+  },
+  "props": {
+    "role": {
+      "values": [
+        "user",
+        "dots"
+      ],
+      "default": "dots",
+      "description": "消息角色。user 右对齐；dots 左对齐。"
+    },
+    "contentType": {
+      "values": [
+        "text",
+        "ai-card",
+        "quote",
+        "image",
+        "link"
+      ],
+      "default": "text",
+      "description": "消息内容类型。ai-card 属于消息体，不包进普通文字气泡。"
+    },
+    "tail": {
+      "values": [
+        "none",
+        "left",
+        "right"
+      ],
+      "default": "none",
+      "description": "气泡尖角。user 通常 right，dots text 通常 left；连续消息可 none。"
+    },
+    "sequence": {
+      "values": [
+        "single",
+        "first",
+        "middle",
+        "last"
+      ],
+      "default": "single",
+      "description": "同一角色连续消息的位置，用于控制间距和尖角。"
+    }
+  },
+  "states": [
+    "default",
+    "pressed",
+    "streaming",
+    "failed"
+  ],
+  "constraints": [
+    {
+      "rule": "role_controls_alignment",
+      "value": true,
+      "description": "role=user 必须右对齐；role=dots 必须左对齐。"
+    },
+    {
+      "rule": "ai_card_not_nested_in_text_bubble",
+      "value": true,
+      "description": "contentType=ai-card 时直接渲染 AI 富文本卡片，不再包文字气泡。"
+    },
+    {
+      "rule": "tail_matches_background",
+      "value": true,
+      "description": "气泡尖角必须与对应气泡背景同色。"
+    },
+    {
+      "rule": "message_spacing_by_sequence",
+      "value": true,
+      "description": "连续消息和换侧消息使用不同间距，不能当普通列表处理。"
+    }
+  ],
+  "tokens": {
+    "user.bg": "fill-b",
+    "user.fg": "title",
+    "user.border": "separator-base",
+    "dots.bg": "fill-a",
+    "dots.fg": "title",
+    "dots.border": "separator-2",
+    "ai-card.bg": "fill-5",
+    "ai-card.border": "separator-2",
+    "bubble.radius": "radius-bubble",
+    "ai-card.radius": "radius-ai-card",
+    "bubble.padding": "12px 20px",
+    "bubble.max-width": "346px",
+    "flow.padding-x": "12px",
+    "spacing.cross-role": "20px",
+    "spacing.with-tail": "26px",
+    "spacing.dots-sequence": "16px",
+    "spacing.user-sequence": "8px"
+  },
+  "haptics": {
+    "pressed": "light"
+  },
+  "anatomy": [
+    {
+      "part": "message-row",
+      "tokens": [
+        "flow.padding-x",
+        "alignment"
+      ],
+      "description": "负责左右对齐和消息流间距。"
+    },
+    {
+      "part": "text-bubble",
+      "tokens": [
+        "user.bg",
+        "dots.bg",
+        "bubble.radius",
+        "bubble.padding"
+      ],
+      "description": "仅用于 contentType=text 的文字气泡。"
+    },
+    {
+      "part": "bubble-tail",
+      "tokens": [
+        "tail_matches_background"
+      ],
+      "description": "24×24px 尖角，颜色跟随气泡背景。"
+    },
+    {
+      "part": "ai-card",
+      "tokens": [
+        "ai-card.bg",
+        "ai-card.radius",
+        "ai-card.border"
+      ],
+      "description": "AI 生成卡片，作为消息体直接进入流。"
+    }
+  ],
+  "doDont": {
+    "do": [
+      "页面 demo 直接引用 MessageBubble harness，不复制私有气泡样式。",
+      "AI 生成卡片和文本回复都放入同一消息流。",
+      "发送后收起键盘并滚动到最新消息。"
+    ],
+    "dont": [
+      "不要把 AI 卡片包进普通文字气泡。",
+      "不要让用户消息出现在左侧。",
+      "不要让尖角颜色和气泡背景不一致。",
+      "不要把消息间距当普通列表 gap。"
+    ]
+  }
+}

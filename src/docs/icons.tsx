@@ -116,6 +116,26 @@ export const Icon = {
       <path d="M12 5v14M5 12h14" />
     </Base>
   ),
+  UserPlus: (p: Props) => (
+    <Base {...p}>
+      <circle cx="10" cy="8" r="3.5" />
+      <path d="M3.5 20c.8-4 3.2-6 6.5-6 1.6 0 3 .45 4.1 1.35" />
+      <path d="M18 11v6M15 14h6" />
+    </Base>
+  ),
+  ChevronDown: (p: Props) => (
+    <Base {...p}>
+      <path d="M6 9l6 6 6-6" />
+    </Base>
+  ),
+  EyeOff: (p: Props) => (
+    <Base {...p}>
+      <path d="M3 3l18 18" />
+      <path d="M10.6 10.6A2 2 0 0012 14a2 2 0 001.4-.6" />
+      <path d="M9.9 5.2A9.8 9.8 0 0112 5c5 0 8.5 4.5 9.5 7a12.2 12.2 0 01-2.3 3.5" />
+      <path d="M6.2 6.8A12.2 12.2 0 002.5 12c1 2.5 4.5 7 9.5 7a9.8 9.8 0 004.1-.9" />
+    </Base>
+  ),
   Sun: (p: Props) => (
     <Base {...p}>
       <circle cx="12" cy="12" r="4" />

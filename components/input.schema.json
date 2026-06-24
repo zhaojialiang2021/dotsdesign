@@ -1,88 +1,222 @@
 {
   "$schema": "https://dots.design/schemas/component.schema.json",
   "slug": "input",
-  "name": "Input",
+  "name": "Input / TextField",
   "category": "form",
-  "description": "单行文字输入。状态最多的组件——empty / focus / error / disabled / loading 必须全覆盖，否则 AI 生成时会随机漏。",
+  "description": "点点文本输入字段。按 ReDs TextField 规范沉淀为可复用组件：普通 393x48、拓展 361x48、前后缀组合、聚焦清除、禁用与错误态必须完整覆盖。",
   "props": {
-    "size": {
-      "values": ["compact", "standard"],
-      "default": "standard",
-      "description": "compact 36px / standard 44px"
+    "variant": {
+      "values": [
+        "field",
+        "extension"
+      ],
+      "default": "field",
+      "description": "field 为普通文本字段，393x48；extension 为拓展文本字段，361x48、12px 圆角、弱填充背景。"
     },
-    "kind": {
-      "values": ["text", "search", "password"],
-      "default": "text",
-      "description": "类型。search 左侧带搜索图标；password 右侧带 eye 切换"
-    },
-    "leadingIcon": {
-      "values": [false, true],
+    "prefix": {
+      "values": [
+        false,
+        true
+      ],
       "default": false,
-      "description": "是否显示前置图标位"
+      "description": "是否显示前缀槽。前缀槽固定在输入文字左侧，不参与文本滚动。"
     },
-    "trailingAction": {
-      "values": ["none", "clear", "submit"],
-      "default": "none",
-      "description": "尾部动作。clear 已输入时显示叉号；submit 显示发送按钮"
+    "prefixType": {
+      "values": [
+        "text",
+        "icon",
+        "dropdown"
+      ],
+      "default": "text",
+      "description": "前缀内容类型：纯文字、24px 图标、文字加下拉箭头。仅 prefix=true 时生效。"
+    },
+    "suffix": {
+      "values": [
+        false,
+        true
+      ],
+      "default": false,
+      "description": "是否显示后缀槽。后缀槽固定在输入文字右侧，和聚焦清除按钮保持 12px 间距。"
+    },
+    "suffixType": {
+      "values": [
+        "text",
+        "limit",
+        "link",
+        "icon",
+        "image"
+      ],
+      "default": "text",
+      "description": "后缀内容类型：纯文字、字数计数、文字按钮、24px 图标、48x24 图片。仅 suffix=true 时生效。"
+    },
+    "maxLength": {
+      "values": [
+        24,
+        48
+      ],
+      "default": 24,
+      "description": "字数计数时使用的最大长度。Figma 默认展示 0/24。"
     }
   },
-  "states": ["empty", "focus", "filled", "error", "disabled", "loading"],
+  "states": [
+    "default",
+    "focused",
+    "filled",
+    "disabled",
+    "error"
+  ],
   "constraints": [
     {
-      "rule": "error_requires_message",
+      "rule": "field_error_reserves_message_row",
       "value": true,
-      "description": "error 状态必须配文案，不能只让边框变红"
+      "description": "field 的 error 态总高为 78px，48px 输入行下方必须显示 12px Caption 错误提示。"
     },
     {
-      "rule": "loading_disables_input",
+      "rule": "extension_error_stays_single_row",
       "value": true,
-      "description": "loading 时输入框不可编辑（disabled 视觉），右侧显示菊花"
+      "description": "extension 的 error 态仍保持 48px 高度，用错误底色表达，不在容器内额外占提示行。"
     },
     {
-      "rule": "placeholder_not_label",
+      "rule": "prefix_suffix_spacing_fixed",
+      "value": "12px",
+      "description": "前缀、输入文字、清除按钮、后缀之间的水平间距固定为 12px；dropdown 内文字和箭头为 4px。"
+    },
+    {
+      "rule": "focused_clear_action",
       "value": true,
-      "description": "placeholder 不能替代 label，必须有独立的 label 或 aria-label"
+      "description": "focused 且有输入内容时必须提供清除入口；清除后焦点仍留在输入框。"
+    },
+    {
+      "rule": "disabled_blocks_editing",
+      "value": true,
+      "description": "disabled 态不可输入、不可清除、不可触发后缀 action。"
+    },
+    {
+      "rule": "native_input_required",
+      "value": true,
+      "description": "demo 和生产实现必须使用真实 input/textarea，不能只用 div 模拟文字。"
     }
   ],
   "tokens": {
-    "container.bg": "fill-quaternary",
-    "container.bg.focus": "bg-0",
-    "container.border.idle": "transparent",
-    "container.border.focus": "brand-blue",
-    "container.border.error": "accent-pink",
-    "container.radius": "radius-medium",
-    "container.padding-x": "space-3",
-    "container.height.compact": "36px",
-    "container.height.standard": "44px",
-    "label.font": "subhead",
-    "label.color": "label-secondary",
-    "value.font": "body-secondary",
-    "value.color": "label-primary",
-    "placeholder.color": "label-tertiary",
-    "error.font": "footnote",
-    "error.color": "accent-pink",
-    "icon.size": "20px",
-    "icon.color": "label-tertiary"
+    "field.width": "393px",
+    "extension.width": "361px",
+    "container.height": "48px",
+    "field.error.height": "78px",
+    "container.padding-x": "space-4",
+    "container.gap": "space-3",
+    "field.bg": "bg-light",
+    "extension.bg": "fill-tertiary",
+    "extension.radius": "radius-large",
+    "text.font": "body-primary",
+    "caption.font": "caption-2",
+    "text.color": "title",
+    "prefix.color": "paragraph",
+    "suffix.color": "description",
+    "placeholder.color": "placeholder",
+    "disabled.color": "disabled",
+    "action.color": "brand-blue-text",
+    "cursor.color": "brand-blue-text",
+    "selection.bg": "brand-blue-light",
+    "clear.bg": "fill-primary",
+    "error.bg": "info-base",
+    "error.text": "description",
+    "icon.size": "24px",
+    "clear.size": "20px",
+    "image-suffix.size": "48px 24px"
+  },
+  "haptics": {
+    "focus": "tick",
+    "clear": "light",
+    "error": "warning"
   },
   "anatomy": [
-    { "part": "label", "tokens": ["label.font", "label.color"] },
-    { "part": "container", "tokens": ["container.bg", "container.border.*", "container.radius", "container.height.*"] },
-    { "part": "leading-icon", "tokens": ["icon.size", "icon.color"] },
-    { "part": "value", "tokens": ["value.font", "value.color"] },
-    { "part": "placeholder", "tokens": ["placeholder.color"] },
-    { "part": "trailing-action", "tokens": ["icon.size"] },
-    { "part": "error-message", "tokens": ["error.font", "error.color"] }
+    {
+      "part": "container",
+      "tokens": [
+        "field.width",
+        "extension.width",
+        "container.height",
+        "extension.radius"
+      ],
+      "description": "输入字段容器；field 不强调外轮廓，extension 使用弱填充和 12px 圆角。"
+    },
+    {
+      "part": "prefix",
+      "tokens": [
+        "prefix.color",
+        "icon.size"
+      ],
+      "description": "可选前缀槽，支持 text / icon / dropdown 三种结构。"
+    },
+    {
+      "part": "native-input",
+      "tokens": [
+        "text.font",
+        "text.color",
+        "placeholder.color",
+        "cursor.color",
+        "selection.bg"
+      ],
+      "description": "真实可输入区域，负责 value、placeholder、focus、disabled。"
+    },
+    {
+      "part": "clear-action",
+      "tokens": [
+        "clear.size",
+        "clear.bg",
+        "action.color",
+        "disabled.color"
+      ],
+      "description": "聚焦且有内容时出现的清除按钮。"
+    },
+    {
+      "part": "suffix",
+      "tokens": [
+        "suffix.color",
+        "icon.size",
+        "image-suffix.size"
+      ],
+      "description": "可选后缀槽，支持 text / limit / link / icon / image 五种结构。"
+    },
+    {
+      "part": "error-message",
+      "tokens": [
+        "caption.font",
+        "error.bg",
+        "error.text"
+      ],
+      "description": "field error 专属提示行；extension error 不额外占行。"
+    }
   ],
   "doDont": {
     "do": [
-      "label 写在输入框上方，不要和 placeholder 二选一",
-      "error 状态同时改边框 + 显示文案 + 触发 haptic light",
-      "loading 用菊花替代 trailingAction，禁用输入"
+      "输入态必须用真实 input/textarea，支持键盘输入、清除和 disabled。",
+      "field 和 extension 分开实现，不能只靠圆角/背景临时覆盖。",
+      "prefix/suffix 是插槽，不要把它们拼进输入值。",
+      "error 态必须有明确反馈；field 显示提示行，extension 使用错误底色。"
     ],
     "dont": [
-      "不要用 placeholder 当 label",
-      "不要让 disabled 看起来像 idle（区别于 read-only）",
-      "不要把验证错误悄悄塞在角落，必须显式占行"
+      "不要复用旧 search/password 输入框逻辑覆盖 TextField 规范。",
+      "不要用 placeholder 当 label；需要 label 时在容器外单独提供。",
+      "不要把 --primary 小红书红用于光标、后缀按钮或聚焦反馈。",
+      "不要在 focused 态改变容器尺寸，清除按钮出现不应造成布局跳动。",
+      "不要把 ReDs 临时色直接提升为全局 token；需要沉淀时先补 token 文档。"
+    ]
+  },
+  "harness": {
+    "semantic": "采集短文本输入的基础控件，显式承载编辑状态、前后缀上下文、错误反馈和可清除动作。",
+    "generation": [
+      "从 variant 选择 field 或 extension，不要混用两套尺寸和圆角。",
+      "prefix=true 时必须选择 prefixType；suffix=true 时必须选择 suffixType。",
+      "focused 且 value 非空时生成 clear-action，清除后继续保持 focused。",
+      "limit 后缀必须实时读取 value.length，不允许写死 0/24。",
+      "disabled 态必须同时禁用输入、清除和后缀 action。"
+    ],
+    "validation": [
+      "default、focused、filled、disabled、error 五态都有可见输出。",
+      "field error 为 78px 并显示错误提示；extension error 为 48px 并保留单行结构。",
+      "prefix/suffix 与输入文字间距稳定，状态切换不抖动。",
+      "文档页 demo 可以真实输入，并能实时反映字数和清除状态。"
     ]
   }
 }

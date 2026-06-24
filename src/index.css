@@ -100,6 +100,16 @@
   color-scheme: light;
 }
 
+::selection {
+  color: var(--title);
+  background: var(--info-4);
+}
+
+::-moz-selection {
+  color: var(--title);
+  background: var(--info-4);
+}
+
 body {
   margin: 0;
   background: var(--bg-1);

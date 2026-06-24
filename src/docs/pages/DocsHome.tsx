@@ -17,7 +17,7 @@ export function DocsHome() {
             一套<em>文档驱动</em>的设计系统
           </>
         }
-        lead="这里是 Dots App 的设计真相源。令牌、原则、组件、页面统一用 markdown 文档定义，画板做视觉验证，agent 按文档执行。设计师写规则、agent 写画板、开发取参数——三方共用一套语言。"
+        lead="这里是 Dots App 的设计真相源，也是给 AI 搭的执行轨道。令牌、原则、组件、页面统一用文档和 schema 定义，画板做视觉验证，agent 按 Harness 执行。"
         meta={
           <>
             <span>iOS · 聊天式点点助手</span>
@@ -32,7 +32,7 @@ export function DocsHome() {
       <section className="docs-section-block">
         <h2 className="docs-section-block__heading">这套系统由什么构成</h2>
         <p className="docs-section-block__subheading">
-          四层结构：底层是不可拆分的原子，往上每一层都用下面的层组合而来。
+          五层结构：从视觉原子到 Agent Harness，往上每一层都把下层规则变成可执行产物。
         </p>
         <div className="docs-problem-grid">
           <div className="docs-problem">
@@ -48,15 +48,21 @@ export function DocsHome() {
             </p>
           </div>
           <div className="docs-problem">
-            <div className="docs-problem__num">组件 Components</div>
+            <div className="docs-problem__num">组件 Harness</div>
             <p className="docs-problem__text">
-              {components.length} 个 UI 单元，规格 + 多状态 + 实时预览。每个组件文档同时是设计稿和开发规约。
+              {components.length} 个 UI 单元，规格 + schema + 多状态 + 验证方式。每个组件同时是设计稿、开发规约和 AI 生成契约。
             </p>
           </div>
           <div className="docs-problem">
-            <div className="docs-problem__num">页面 Pages</div>
+            <div className="docs-problem__num">页面 Harness</div>
             <p className="docs-problem__text">
-              {pages.length} 个 base case 页面，多设备宽度切换。展示组件如何被组合、信息架构如何落地。
+              {pages.length} 个 base case 页面，多设备宽度切换。页面不是展示稿，而是验证组件能否组成真实业务流的测试夹具。
+            </p>
+          </div>
+          <div className="docs-problem">
+            <div className="docs-problem__num">Agent Harness</div>
+            <p className="docs-problem__text">
+              `/skill.md`、`components.json` 和 Copy for AI 把规范变成 agent 可读的上下文，让 AI 生成时先受约束再动手。
             </p>
           </div>
         </div>
@@ -82,9 +88,9 @@ export function DocsHome() {
         />
         <Principle
           num="03"
-          title="agent 与人各司其职"
-          rule="数值合规、引用完整性、多宽度适配——agent 自己判。视觉氛围、情感弧线、两个接近选项哪个更好——人判。"
-          why="agent 擅长执行规则但不擅长审美裁定，人擅长审美裁定但不擅长重复执行。把可被规则化的工作交给 agent（让它批量做、不出错），把需要主观经验的部分留给人（让人不被低层细节淹没）。"
+          title="组件是 Harness"
+          rule="核心组件必须同时定义视觉、语义、schema、行为、示例和验证方式。页面 demo 只能引用组件 harness，不能复制私有样式。"
+          why="AI 需要的不是灵感板，而是可执行轨道。组件只有在能被 agent 正确生成、被代码复用、被检查验证时，才算真正进入系统。"
         />
       </section>
 

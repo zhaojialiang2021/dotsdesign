@@ -18,6 +18,7 @@ import { InputDemo } from '../previews/InputDemo'
 import { CardDemo } from '../previews/CardDemo'
 import { SheetDemo } from '../previews/SheetDemo'
 import { EmptyStateDemo } from '../previews/EmptyStateDemo'
+import { LiveWaveformDemo } from '../previews/LiveWaveformDemo'
 // Anatomy SVG 图解 —— Day 10
 import { ButtonAnatomy } from '../previews/anatomy/ButtonAnatomy'
 import { InputAnatomy } from '../previews/anatomy/InputAnatomy'
@@ -50,6 +51,8 @@ const deepDemoMap: Partial<Record<ComponentSlug, React.ComponentType>> = {
   card: CardDemo,
   sheet: SheetDemo,
   'empty-state': EmptyStateDemo,
+  'message-bubble': MessageBubblePreview,
+  'live-waveform': LiveWaveformDemo,
 }
 
 const anatomyMap: Partial<Record<ComponentSlug, React.ComponentType>> = {
@@ -135,6 +138,7 @@ function DeepComponentPage({
   }
 
   const sections: Array<[string, string]> = [
+    ['harness', t('component.harness')],
     ['live-demo', t('component.live-demo')],
     ['props', t('component.props')],
     ['states', t('component.states')],
@@ -178,6 +182,35 @@ function DeepComponentPage({
           </a>
         ))}
       </nav>
+
+      {schema.harness && (
+        <section className="docs-section-block" id="harness">
+          <h2 className="docs-section-block__heading">{t('component.harness')}</h2>
+          <p className="docs-section-block__subheading">{t('component.harness.lead')}</p>
+          <div className="docs-harness-grid">
+            <div className="docs-harness-card docs-harness-card--wide">
+              <div className="docs-harness-card__label">Semantic</div>
+              <p>{schema.harness.semantic}</p>
+            </div>
+            <div className="docs-harness-card">
+              <div className="docs-harness-card__label">Generation</div>
+              <ul>
+                {schema.harness.generation.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="docs-harness-card">
+              <div className="docs-harness-card__label">Validation</div>
+              <ul>
+                {schema.harness.validation.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="docs-section-block" id="live-demo">
         <h2 className="docs-section-block__heading">{t('component.live-demo')}</h2>

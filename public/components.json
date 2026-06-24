@@ -1,6 +1,6 @@
 {
-  "$generatedAt": "2026-06-15T11:05:58.402Z",
-  "$count": 5,
+  "$generatedAt": "2026-06-24T03:53:58.557Z",
+  "$count": 7,
   "components": [
     {
       "$schema": "https://dots.design/schemas/component.schema.json",
@@ -184,6 +184,19 @@
           "不要让 xLarge 或 micro 成为默认尺寸。",
           "不要在 button 内嵌 button 或链接。"
         ]
+      },
+      "harness": {
+        "semantic": "用于触发即时任务的动作单元，负责表达当前界面的行动优先级。",
+        "generation": [
+          "先判断当前视图是否已经存在 filled 主操作。",
+          "根据场景选择 size：表单底部用 large，空态用 medium，卡片内用 small 或 mini。",
+          "图片或彩色背景只允许使用 filled 或 ghost。"
+        ],
+        "validation": [
+          "同一视图 filled 不超过 1 个。",
+          "filled 背景为 info 5，文字为纯白。",
+          "fullWidth 只出现在主流程、表单底部或固定操作栏。"
+        ]
       }
     },
     {
@@ -292,6 +305,19 @@
           "不要在 Card 里再嵌 Card",
           "不要给非弹层卡片加阴影",
           "不要让 Card 边框和 Card 内 Divider 视觉上混淆"
+        ]
+      },
+      "harness": {
+        "semantic": "用于组织相关信息的最小容器，是 pattern 的起点，不承担页面分区装饰。",
+        "generation": [
+          "先判断内容是否真的需要容器；页面 section 不默认包 Card。",
+          "interactive=true 时整卡可点击并支持键盘。",
+          "普通页面优先 default 或 tinted，elevated 只给弹层使用。"
+        ],
+        "validation": [
+          "Card 内不得嵌套 Card。",
+          "非弹层卡片不得使用阴影。",
+          "hover 只改变轻微背景，不改变布局尺寸。"
         ]
       }
     },
@@ -410,156 +436,590 @@
           "不要在 fullscreen 空状态里让用户找返回键",
           "不要把 loading 当 empty 渲染（先转 spinner，超时后才进 empty）"
         ]
+      },
+      "harness": {
+        "semantic": "用于解释空容器、失败或首次进入状态，并给用户下一步。",
+        "generation": [
+          "先区分 empty、no-result、no-permission、error、first-time。",
+          "除 inline 外必须给至少一个动作按钮。",
+          "error 必须给重试或查看详情。"
+        ],
+        "validation": [
+          "空态不能只有一句“没有数据”。",
+          "first-time 必须解释价值。",
+          "fullscreen 空态必须有返回或继续路径。"
+        ]
       }
     },
     {
       "$schema": "https://dots.design/schemas/component.schema.json",
       "slug": "input",
-      "name": "Input",
+      "name": "Input / TextField",
       "category": "form",
-      "description": "单行文字输入。状态最多的组件——empty / focus / error / disabled / loading 必须全覆盖，否则 AI 生成时会随机漏。",
+      "description": "点点文本输入字段。按 ReDs TextField 规范沉淀为可复用组件：普通 393x48、拓展 361x48、前后缀组合、聚焦清除、禁用与错误态必须完整覆盖。",
       "props": {
-        "size": {
+        "variant": {
           "values": [
-            "compact",
-            "standard"
+            "field",
+            "extension"
           ],
-          "default": "standard",
-          "description": "compact 36px / standard 44px"
+          "default": "field",
+          "description": "field 为普通文本字段，393x48；extension 为拓展文本字段，361x48、12px 圆角、弱填充背景。"
         },
-        "kind": {
-          "values": [
-            "text",
-            "search",
-            "password"
-          ],
-          "default": "text",
-          "description": "类型。search 左侧带搜索图标；password 右侧带 eye 切换"
-        },
-        "leadingIcon": {
+        "prefix": {
           "values": [
             false,
             true
           ],
           "default": false,
-          "description": "是否显示前置图标位"
+          "description": "是否显示前缀槽。前缀槽固定在输入文字左侧，不参与文本滚动。"
         },
-        "trailingAction": {
+        "prefixType": {
           "values": [
-            "none",
-            "clear",
-            "submit"
+            "text",
+            "icon",
+            "dropdown"
           ],
-          "default": "none",
-          "description": "尾部动作。clear 已输入时显示叉号；submit 显示发送按钮"
+          "default": "text",
+          "description": "前缀内容类型：纯文字、24px 图标、文字加下拉箭头。仅 prefix=true 时生效。"
+        },
+        "suffix": {
+          "values": [
+            false,
+            true
+          ],
+          "default": false,
+          "description": "是否显示后缀槽。后缀槽固定在输入文字右侧，和聚焦清除按钮保持 12px 间距。"
+        },
+        "suffixType": {
+          "values": [
+            "text",
+            "limit",
+            "link",
+            "icon",
+            "image"
+          ],
+          "default": "text",
+          "description": "后缀内容类型：纯文字、字数计数、文字按钮、24px 图标、48x24 图片。仅 suffix=true 时生效。"
+        },
+        "maxLength": {
+          "values": [
+            24,
+            48
+          ],
+          "default": 24,
+          "description": "字数计数时使用的最大长度。Figma 默认展示 0/24。"
         }
       },
       "states": [
-        "empty",
-        "focus",
+        "default",
+        "focused",
         "filled",
-        "error",
         "disabled",
-        "loading"
+        "error"
       ],
       "constraints": [
         {
-          "rule": "error_requires_message",
+          "rule": "field_error_reserves_message_row",
           "value": true,
-          "description": "error 状态必须配文案，不能只让边框变红"
+          "description": "field 的 error 态总高为 78px，48px 输入行下方必须显示 12px Caption 错误提示。"
         },
         {
-          "rule": "loading_disables_input",
+          "rule": "extension_error_stays_single_row",
           "value": true,
-          "description": "loading 时输入框不可编辑（disabled 视觉），右侧显示菊花"
+          "description": "extension 的 error 态仍保持 48px 高度，用错误底色表达，不在容器内额外占提示行。"
         },
         {
-          "rule": "placeholder_not_label",
+          "rule": "prefix_suffix_spacing_fixed",
+          "value": "12px",
+          "description": "前缀、输入文字、清除按钮、后缀之间的水平间距固定为 12px；dropdown 内文字和箭头为 4px。"
+        },
+        {
+          "rule": "focused_clear_action",
           "value": true,
-          "description": "placeholder 不能替代 label，必须有独立的 label 或 aria-label"
+          "description": "focused 且有输入内容时必须提供清除入口；清除后焦点仍留在输入框。"
+        },
+        {
+          "rule": "disabled_blocks_editing",
+          "value": true,
+          "description": "disabled 态不可输入、不可清除、不可触发后缀 action。"
+        },
+        {
+          "rule": "native_input_required",
+          "value": true,
+          "description": "demo 和生产实现必须使用真实 input/textarea，不能只用 div 模拟文字。"
         }
       ],
       "tokens": {
-        "container.bg": "fill-quaternary",
-        "container.bg.focus": "bg-0",
-        "container.border.idle": "transparent",
-        "container.border.focus": "brand-blue",
-        "container.border.error": "accent-pink",
-        "container.radius": "radius-medium",
-        "container.padding-x": "space-3",
-        "container.height.compact": "36px",
-        "container.height.standard": "44px",
-        "label.font": "subhead",
-        "label.color": "label-secondary",
-        "value.font": "body-secondary",
-        "value.color": "label-primary",
-        "placeholder.color": "label-tertiary",
-        "error.font": "footnote",
-        "error.color": "accent-pink",
-        "icon.size": "20px",
-        "icon.color": "label-tertiary"
+        "field.width": "393px",
+        "extension.width": "361px",
+        "container.height": "48px",
+        "field.error.height": "78px",
+        "container.padding-x": "space-4",
+        "container.gap": "space-3",
+        "field.bg": "bg-light",
+        "extension.bg": "fill-tertiary",
+        "extension.radius": "radius-large",
+        "text.font": "body-primary",
+        "caption.font": "caption-2",
+        "text.color": "title",
+        "prefix.color": "paragraph",
+        "suffix.color": "description",
+        "placeholder.color": "placeholder",
+        "disabled.color": "disabled",
+        "action.color": "brand-blue-text",
+        "cursor.color": "brand-blue-text",
+        "selection.bg": "brand-blue-light",
+        "clear.bg": "fill-primary",
+        "error.bg": "info-base",
+        "error.text": "description",
+        "icon.size": "24px",
+        "clear.size": "20px",
+        "image-suffix.size": "48px 24px"
+      },
+      "haptics": {
+        "focus": "tick",
+        "clear": "light",
+        "error": "warning"
       },
       "anatomy": [
         {
-          "part": "label",
-          "tokens": [
-            "label.font",
-            "label.color"
-          ]
-        },
-        {
           "part": "container",
           "tokens": [
-            "container.bg",
-            "container.border.*",
-            "container.radius",
-            "container.height.*"
-          ]
+            "field.width",
+            "extension.width",
+            "container.height",
+            "extension.radius"
+          ],
+          "description": "输入字段容器；field 不强调外轮廓，extension 使用弱填充和 12px 圆角。"
         },
         {
-          "part": "leading-icon",
+          "part": "prefix",
           "tokens": [
-            "icon.size",
-            "icon.color"
-          ]
-        },
-        {
-          "part": "value",
-          "tokens": [
-            "value.font",
-            "value.color"
-          ]
-        },
-        {
-          "part": "placeholder",
-          "tokens": [
-            "placeholder.color"
-          ]
-        },
-        {
-          "part": "trailing-action",
-          "tokens": [
+            "prefix.color",
             "icon.size"
-          ]
+          ],
+          "description": "可选前缀槽，支持 text / icon / dropdown 三种结构。"
+        },
+        {
+          "part": "native-input",
+          "tokens": [
+            "text.font",
+            "text.color",
+            "placeholder.color",
+            "cursor.color",
+            "selection.bg"
+          ],
+          "description": "真实可输入区域，负责 value、placeholder、focus、disabled。"
+        },
+        {
+          "part": "clear-action",
+          "tokens": [
+            "clear.size",
+            "clear.bg",
+            "action.color",
+            "disabled.color"
+          ],
+          "description": "聚焦且有内容时出现的清除按钮。"
+        },
+        {
+          "part": "suffix",
+          "tokens": [
+            "suffix.color",
+            "icon.size",
+            "image-suffix.size"
+          ],
+          "description": "可选后缀槽，支持 text / limit / link / icon / image 五种结构。"
         },
         {
           "part": "error-message",
           "tokens": [
-            "error.font",
-            "error.color"
-          ]
+            "caption.font",
+            "error.bg",
+            "error.text"
+          ],
+          "description": "field error 专属提示行；extension error 不额外占行。"
         }
       ],
       "doDont": {
         "do": [
-          "label 写在输入框上方，不要和 placeholder 二选一",
-          "error 状态同时改边框 + 显示文案 + 触发 haptic light",
-          "loading 用菊花替代 trailingAction，禁用输入"
+          "输入态必须用真实 input/textarea，支持键盘输入、清除和 disabled。",
+          "field 和 extension 分开实现，不能只靠圆角/背景临时覆盖。",
+          "prefix/suffix 是插槽，不要把它们拼进输入值。",
+          "error 态必须有明确反馈；field 显示提示行，extension 使用错误底色。"
         ],
         "dont": [
-          "不要用 placeholder 当 label",
-          "不要让 disabled 看起来像 idle（区别于 read-only）",
-          "不要把验证错误悄悄塞在角落，必须显式占行"
+          "不要复用旧 search/password 输入框逻辑覆盖 TextField 规范。",
+          "不要用 placeholder 当 label；需要 label 时在容器外单独提供。",
+          "不要把 --primary 小红书红用于光标、后缀按钮或聚焦反馈。",
+          "不要在 focused 态改变容器尺寸，清除按钮出现不应造成布局跳动。",
+          "不要把 ReDs 临时色直接提升为全局 token；需要沉淀时先补 token 文档。"
+        ]
+      },
+      "harness": {
+        "semantic": "采集短文本输入的基础控件，显式承载编辑状态、前后缀上下文、错误反馈和可清除动作。",
+        "generation": [
+          "从 variant 选择 field 或 extension，不要混用两套尺寸和圆角。",
+          "prefix=true 时必须选择 prefixType；suffix=true 时必须选择 suffixType。",
+          "focused 且 value 非空时生成 clear-action，清除后继续保持 focused。",
+          "limit 后缀必须实时读取 value.length，不允许写死 0/24。",
+          "disabled 态必须同时禁用输入、清除和后缀 action。"
+        ],
+        "validation": [
+          "default、focused、filled、disabled、error 五态都有可见输出。",
+          "field error 为 78px 并显示错误提示；extension error 为 48px 并保留单行结构。",
+          "prefix/suffix 与输入文字间距稳定，状态切换不抖动。",
+          "文档页 demo 可以真实输入，并能实时反映字数和清除状态。"
+        ]
+      }
+    },
+    {
+      "$schema": "https://dots.design/schemas/component.schema.json",
+      "slug": "live-waveform",
+      "name": "LiveWaveform",
+      "category": "voice",
+      "description": "实时语音波形组件。用于表达点点正在待机、监听或处理语音输入，是语音入口、AI 对话页和生成等待态的可复用状态 harness。",
+      "harness": {
+        "semantic": "表达声音输入或语音处理的实时强度。可以消费上游 audio level，也可以在用户显式触发后调用浏览器麦克风并实时渲染输入强度；不保存音频。",
+        "generation": [
+          "先判断业务状态：idle 只做低幅呼吸；listening 使用实时滚动；processing 使用规则脉冲。",
+          "如果 source=microphone，必须由按钮点击触发权限请求，页面加载时不得自动调用 getUserMedia。",
+          "语音入口优先使用 size=compact；沉浸式录音面板可使用 regular 或 large。",
+          "必须使用 tone 命中当前背景：浅底品牌色用 brand，深底或图片底用 inverse。"
+        ],
+        "validation": [
+          "source=microphone 时必须真实读取麦克风输入，不能只用模拟动画。",
+          "麦克风权限必须由用户显式点击触发，不能自动弹权限。",
+          "停止监听或切换到非 listening 状态时必须释放 MediaStreamTrack 和 AudioContext。",
+          "波形颜色必须来自 Dots token，不允许硬编码 hex/rgba。",
+          "prefers-reduced-motion=true 时必须退化成静态波形。",
+          "idle/listening/processing 三态必须可被外部 props 控制。"
+        ]
+      },
+      "props": {
+        "state": {
+          "values": [
+            "idle",
+            "listening",
+            "processing"
+          ],
+          "default": "idle",
+          "description": "波形语义状态。idle 是可输入但未采集；listening 表示正在接收语音；processing 表示已提交并等待 AI 解析。"
+        },
+        "source": {
+          "values": [
+            "microphone",
+            "levels",
+            "demo"
+          ],
+          "default": "levels",
+          "description": "音频来源。microphone 表示组件通过用户点击启动麦克风；levels 表示消费上游音量数组；demo 表示文档或占位演示。"
+        },
+        "mode": {
+          "values": [
+            "scrolling",
+            "static"
+          ],
+          "default": "scrolling",
+          "description": "波形更新方式。scrolling 用于实时输入；static 用于列表、卡片或 reduce motion 场景。"
+        },
+        "size": {
+          "values": [
+            "compact",
+            "regular",
+            "large"
+          ],
+          "default": "regular",
+          "description": "波形高度。compact 用于输入栏和按钮；regular 用于面板；large 用于独立语音页。"
+        },
+        "density": {
+          "values": [
+            "compact",
+            "comfortable",
+            "dense"
+          ],
+          "default": "comfortable",
+          "description": "柱数量密度。compact 信息少但清爽；dense 更像实时声谱，适合宽容器。"
+        },
+        "tone": {
+          "values": [
+            "brand",
+            "ink",
+            "inverse"
+          ],
+          "default": "brand",
+          "description": "颜色语义。brand 使用点点主色；ink 用文本色；inverse 用于深色、图片和彩色背景。"
+        }
+      },
+      "states": [
+        "idle",
+        "requesting",
+        "listening",
+        "processing",
+        "stopped",
+        "denied",
+        "muted",
+        "error"
+      ],
+      "constraints": [
+        {
+          "rule": "microphone_requires_user_gesture",
+          "value": true,
+          "description": "source=microphone 时，getUserMedia 必须由用户点击触发。"
+        },
+        {
+          "rule": "microphone_stream_released_on_stop",
+          "value": true,
+          "description": "停止监听或退出 listening 时，必须停止所有 MediaStreamTrack 并关闭 AudioContext。"
+        },
+        {
+          "rule": "microphone_fallback_state",
+          "value": true,
+          "description": "权限被拒绝或设备不可用时，必须显示 denied/error/unsupported 状态。"
+        },
+        {
+          "rule": "motion_respects_user_setting",
+          "value": true,
+          "description": "用户开启减少动态效果时，scrolling 必须退化为 static。"
+        },
+        {
+          "rule": "min_visible_height",
+          "value": "48px",
+          "description": "可交互语音入口的波形高度不低于 48px，避免被误认为普通装饰线。"
+        },
+        {
+          "rule": "state_is_controlled",
+          "value": true,
+          "description": "状态由上层业务传入，不能靠组件内部猜测录音生命周期。"
+        }
+      ],
+      "tokens": {
+        "tone.brand.active": "brand-blue",
+        "tone.brand.processing": "info-6",
+        "tone.brand.idle": "separator-2",
+        "tone.ink.active": "title",
+        "tone.inverse.active": "bg-light",
+        "surface.bg": "fill-a",
+        "surface.border": "separator-2",
+        "surface.radius": "radius-inner-card",
+        "size.compact.height": "64px",
+        "size.regular.height": "92px",
+        "size.large.height": "124px",
+        "bar.radius": "radius-full"
+      },
+      "haptics": {
+        "start-listening": "light",
+        "stop-listening": "soft"
+      },
+      "anatomy": [
+        {
+          "part": "surface",
+          "tokens": [
+            "surface.bg",
+            "surface.border",
+            "surface.radius"
+          ],
+          "description": "承载波形的视觉容器，可独立放入输入栏、面板或卡片。"
+        },
+        {
+          "part": "waveform-canvas",
+          "tokens": [
+            "size.*.height",
+            "tone.*.active"
+          ],
+          "description": "实际波形绘制区域，只负责渲染，不负责音频采集。"
+        },
+        {
+          "part": "bars",
+          "tokens": [
+            "bar.radius"
+          ],
+          "description": "竖向圆角柱。高度由 audio level 或模拟 level 控制。"
+        },
+        {
+          "part": "status",
+          "tokens": [
+            "tone.brand.active",
+            "description"
+          ],
+          "description": "可选状态标签，用于文档、调试或无障碍说明，也承载 microphoneStatus。"
+        }
+      ],
+      "doDont": {
+        "do": [
+          "语音输入中使用 state=listening + mode=scrolling。",
+          "需要真实监听时使用 source=microphone，并提供开始/停止入口。",
+          "AI 正在解析语音时使用 state=processing。",
+          "在输入栏中使用 compact，保持和操作按钮同层级。",
+          "如果业务已有音频采集链路，把真实音量数据通过 source=levels 传入。"
+        ],
+        "dont": [
+          "不要在页面加载时自动请求麦克风权限。",
+          "不要用模拟动画冒充 source=microphone。",
+          "不要在停止后继续占用麦克风。",
+          "不要用随机颜色或渐变替代 token。",
+          "不要把 idle 做成高频动效。",
+          "不要在 reduce motion 场景继续滚动动画。"
+        ]
+      }
+    },
+    {
+      "$schema": "https://dots.design/schemas/component.schema.json",
+      "slug": "message-bubble",
+      "name": "MessageBubble",
+      "category": "conversation",
+      "description": "点点对话流的消息体 harness。承载用户消息、Dots 文本回复、AI 富文本卡片、引用卡和图片内容，是页面 demo 不允许私自复制的核心规范。",
+      "harness": {
+        "semantic": "表达一次对话中的消息单位，负责角色、内容类型、左右对齐、消息间距和消息进入流的位置。",
+        "generation": [
+          "先选择 role=user 或 dots，再选择 contentType。",
+          "text 使用文字气泡；ai-card 使用富文本卡片，不嵌套在文字气泡里。",
+          "连续消息根据 role 调整间距，换侧消息拉开距离。"
+        ],
+        "validation": [
+          "用户消息右对齐，Dots 消息左对齐。",
+          "用户气泡使用 Fill B，AI 文本气泡使用 Fill A，AI 卡片使用 Fill 5。",
+          "气泡尖角颜色必须与气泡背景一致。",
+          "发送新消息后键盘收起，消息流滚动到最新。"
+        ]
+      },
+      "props": {
+        "role": {
+          "values": [
+            "user",
+            "dots"
+          ],
+          "default": "dots",
+          "description": "消息角色。user 右对齐；dots 左对齐。"
+        },
+        "contentType": {
+          "values": [
+            "text",
+            "ai-card",
+            "quote",
+            "image",
+            "link"
+          ],
+          "default": "text",
+          "description": "消息内容类型。ai-card 属于消息体，不包进普通文字气泡。"
+        },
+        "tail": {
+          "values": [
+            "none",
+            "left",
+            "right"
+          ],
+          "default": "none",
+          "description": "气泡尖角。user 通常 right，dots text 通常 left；连续消息可 none。"
+        },
+        "sequence": {
+          "values": [
+            "single",
+            "first",
+            "middle",
+            "last"
+          ],
+          "default": "single",
+          "description": "同一角色连续消息的位置，用于控制间距和尖角。"
+        }
+      },
+      "states": [
+        "default",
+        "pressed",
+        "streaming",
+        "failed"
+      ],
+      "constraints": [
+        {
+          "rule": "role_controls_alignment",
+          "value": true,
+          "description": "role=user 必须右对齐；role=dots 必须左对齐。"
+        },
+        {
+          "rule": "ai_card_not_nested_in_text_bubble",
+          "value": true,
+          "description": "contentType=ai-card 时直接渲染 AI 富文本卡片，不再包文字气泡。"
+        },
+        {
+          "rule": "tail_matches_background",
+          "value": true,
+          "description": "气泡尖角必须与对应气泡背景同色。"
+        },
+        {
+          "rule": "message_spacing_by_sequence",
+          "value": true,
+          "description": "连续消息和换侧消息使用不同间距，不能当普通列表处理。"
+        }
+      ],
+      "tokens": {
+        "user.bg": "fill-b",
+        "user.fg": "title",
+        "user.border": "separator-base",
+        "dots.bg": "fill-a",
+        "dots.fg": "title",
+        "dots.border": "separator-2",
+        "ai-card.bg": "fill-5",
+        "ai-card.border": "separator-2",
+        "bubble.radius": "radius-bubble",
+        "ai-card.radius": "radius-ai-card",
+        "bubble.padding": "12px 20px",
+        "bubble.max-width": "346px",
+        "flow.padding-x": "12px",
+        "spacing.cross-role": "20px",
+        "spacing.with-tail": "26px",
+        "spacing.dots-sequence": "16px",
+        "spacing.user-sequence": "8px"
+      },
+      "haptics": {
+        "pressed": "light"
+      },
+      "anatomy": [
+        {
+          "part": "message-row",
+          "tokens": [
+            "flow.padding-x",
+            "alignment"
+          ],
+          "description": "负责左右对齐和消息流间距。"
+        },
+        {
+          "part": "text-bubble",
+          "tokens": [
+            "user.bg",
+            "dots.bg",
+            "bubble.radius",
+            "bubble.padding"
+          ],
+          "description": "仅用于 contentType=text 的文字气泡。"
+        },
+        {
+          "part": "bubble-tail",
+          "tokens": [
+            "tail_matches_background"
+          ],
+          "description": "24×24px 尖角，颜色跟随气泡背景。"
+        },
+        {
+          "part": "ai-card",
+          "tokens": [
+            "ai-card.bg",
+            "ai-card.radius",
+            "ai-card.border"
+          ],
+          "description": "AI 生成卡片，作为消息体直接进入流。"
+        }
+      ],
+      "doDont": {
+        "do": [
+          "页面 demo 直接引用 MessageBubble harness，不复制私有气泡样式。",
+          "AI 生成卡片和文本回复都放入同一消息流。",
+          "发送后收起键盘并滚动到最新消息。"
+        ],
+        "dont": [
+          "不要把 AI 卡片包进普通文字气泡。",
+          "不要让用户消息出现在左侧。",
+          "不要让尖角颜色和气泡背景不一致。",
+          "不要把消息间距当普通列表 gap。"
         ]
       }
     },
@@ -688,6 +1148,19 @@
           "不要用 Sheet 做关键确认（删除前的二次确认必须 Modal）",
           "不要在 Sheet 上再叠 Sheet",
           "不要让 Sheet 的圆角与全屏页混淆 —— 永远露出顶部状态栏的 backdrop"
+        ]
+      },
+      "harness": {
+        "semantic": "用于从屏幕边缘引入临时上下文，承载可退出的辅助任务。",
+        "generation": [
+          "先判断任务是否可被轻易关闭；不可逆确认必须用 Modal。",
+          "side=bottom 且 dragToDismiss=true 时显示 drag handle。",
+          "内容超过 90vh 时主体滚动，footer 保持固定。"
+        ],
+        "validation": [
+          "同一时间只有一个 Sheet。",
+          "Sheet 上不得再叠 Sheet。",
+          "full 尺寸仍需保留状态栏或退出入口。"
         ]
       }
     }
