@@ -2446,6 +2446,8 @@ body.is-preview *::-webkit-scrollbar {
   --dots-white-border-soft: rgba(255, 255, 255, 0.2);
   --dots-white-border-strong: rgba(255, 255, 255, 0.75);
   --dots-shadow-soft: rgba(20, 20, 20, 0.04);
+  --dots-brand: var(--brand-blue, #6FD2BD);
+  --dots-brand-soft: rgba(111, 210, 189, 0.1);
 
   position: relative;
   width: 393px;
@@ -2730,6 +2732,43 @@ body.is-preview *::-webkit-scrollbar {
   border-color: var(--dots-white-border-strong, rgba(255, 255, 255, 0.75));
 }
 
+.dots-message-row--recognizing .dots-message-bubble {
+  min-width: 132px;
+  border-color: rgba(111, 210, 189, 0.7);
+  animation: dotted-demo-recognition-breath 960ms ease-in-out infinite;
+}
+
+.dots-message-row--recognizing-cancel .dots-message-bubble {
+  opacity: 0.48;
+  animation: none;
+}
+
+.dotted-demo__recognition-loading {
+  min-width: 48px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.dotted-demo__recognition-loading span {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--dots-brand);
+  opacity: 0.34;
+  animation: dotted-demo-recognition-dot 840ms ease-in-out infinite;
+}
+
+.dotted-demo__recognition-loading span:nth-child(2) {
+  animation-delay: 120ms;
+}
+
+.dotted-demo__recognition-loading span:nth-child(3) {
+  animation-delay: 240ms;
+}
+
 .dots-message-bubble--dots {
   background: var(--dots-reply-bubble, #ffffff);
   border-color: var(--dots-white-border-soft, rgba(255, 255, 255, 0.2));
@@ -2768,6 +2807,28 @@ body.is-preview *::-webkit-scrollbar {
   left: 0;
   transform: scaleX(-1);
   --fill-0: var(--dots-reply-bubble, #ffffff);
+}
+
+@keyframes dotted-demo-recognition-breath {
+  0%,
+  100% {
+    border-color: rgba(111, 210, 189, 0.36);
+  }
+
+  50% {
+    border-color: rgba(111, 210, 189, 0.82);
+  }
+}
+
+@keyframes dotted-demo-recognition-dot {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .dots-generated-card {
@@ -3179,6 +3240,13 @@ body.is-preview *::-webkit-scrollbar {
   overflow: hidden;
 }
 
+.dotted-demo__dock--voice {
+  bottom: 38px;
+  height: 92px;
+  gap: 8px;
+  overflow: visible;
+}
+
 .dotted-demo__chips {
   flex: 0 0 40px;
   display: block;
@@ -3261,12 +3329,52 @@ body.is-preview *::-webkit-scrollbar {
   backdrop-filter: blur(2px);
 }
 
+.dotted-demo__dock--voice .dotted-demo__composer {
+  flex: 0 0 58px;
+  height: 58px;
+  padding-top: 10px;
+  background: transparent;
+  border-radius: 0;
+  backdrop-filter: none;
+}
+
+.dotted-demo__voice-hint {
+  flex: 0 0 26px;
+  height: 26px;
+  width: 393px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dots-placeholder);
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 500;
+  letter-spacing: 0.32px;
+  white-space: nowrap;
+  animation: dotted-demo-voice-fade-in 180ms ease-out both;
+}
+
+.dotted-demo__voice-hint--cancel {
+  color: var(--dots-description);
+}
+
 .dotted-demo__voice-row {
   flex: 0 0 48px;
   width: 393px;
   height: 48px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
+}
+
+.dotted-demo__voice-row--recording {
+  justify-content: center;
+  padding: 0;
+}
+
+.dotted-demo__voice-row--recording .dotted-demo__voice {
+  flex: 0 0 285px;
+  width: 285px;
 }
 
 .dotted-demo__leading-area {
@@ -3323,6 +3431,88 @@ body.is-preview *::-webkit-scrollbar {
   text-align: center;
   letter-spacing: 0.32px;
   box-shadow: 0 0 8px 0 var(--dots-shadow-soft);
+  transition:
+    background 220ms ease-out,
+    border-color 220ms ease-out,
+    box-shadow 220ms ease-out,
+    color 180ms ease-out;
+}
+
+.dotted-demo__voice--recording {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--dots-white-border-soft);
+  background: var(--dots-brand-soft);
+  box-shadow: none;
+}
+
+.dotted-demo__voice--canceling {
+  background: rgba(20, 20, 20, 0.06);
+}
+
+.dotted-demo__voice-waveform {
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  opacity: 0;
+  animation: dotted-demo-voice-fade-in 180ms ease-out 70ms forwards;
+}
+
+.dotted-demo__voice-waveform-bar {
+  width: 3px;
+  height: var(--bar-height);
+  min-height: 4px;
+  border-radius: 2px;
+  background-color: var(--dots-brand);
+  transform-origin: center;
+  animation: dotted-demo-voice-wave 760ms ease-in-out infinite;
+  animation-delay: var(--bar-delay);
+}
+
+.dotted-demo__voice-waveform--canceling .dotted-demo__voice-waveform-bar {
+  background: var(--dots-description);
+  opacity: 0.7;
+}
+
+@keyframes dotted-demo-voice-wave {
+  0%,
+  100% {
+    transform: scaleY(0.64);
+  }
+
+  50% {
+    transform: scaleY(1.18);
+  }
+}
+
+@keyframes dotted-demo-voice-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dotted-demo__voice-hint,
+  .dotted-demo__voice-waveform,
+  .dotted-demo__voice-waveform-bar,
+  .dotted-demo__recognition-loading span {
+    animation: none;
+  }
+
+  .dotted-demo__voice-waveform {
+    opacity: 1;
+  }
+
+  .dotted-demo__recognition-loading span {
+    opacity: 0.72;
+  }
 }
 
 .dotted-demo__ai-note {
