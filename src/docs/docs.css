@@ -4792,6 +4792,44 @@ body.pitch-mode .docs-main__inner {
   padding: 13px 0 0;
 }
 
+.docs-report-variant {
+  margin: 14px auto 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.docs-report-variant__control {
+  padding: 2px;
+  border: 0.5px solid var(--line-non-opaque);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.docs-report-variant__button {
+  min-width: 48px;
+  height: 26px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.docs-report-variant__button--active {
+  background: var(--label-primary);
+  color: var(--bg-0);
+}
+
 .docs-report-progress__line {
   position: absolute;
   left: calc(100% / 18);
