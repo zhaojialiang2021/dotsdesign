@@ -4625,6 +4625,37 @@ body.pitch-mode .docs-main__inner {
   justify-content: center;
 }
 
+.docs-report-demo-shell--immersive {
+  position: relative;
+  min-height: 100svh;
+  box-sizing: border-box;
+  padding: 32px 56px;
+  background: var(--bg-0);
+}
+
+.docs-report-demo-close {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 20;
+  height: 40px;
+  padding: 0 16px;
+  border: 0.5px solid var(--line-non-opaque);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-0) 86%, transparent);
+  color: var(--label-primary);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--shadow-1);
+  backdrop-filter: blur(18px);
+}
+
+.docs-report-demo-close:hover {
+  background: var(--bg-0);
+}
+
 .docs-report-demo-title {
   width: 100%;
   margin: 0 0 28px;
@@ -4639,9 +4670,9 @@ body.pitch-mode .docs-main__inner {
 
 .docs-timestamp-hero {
   display: grid;
-  grid-template-columns: minmax(320px, 430px) minmax(280px, 1fr);
-  width: 100%;
-  gap: 44px;
+  grid-template-columns: minmax(320px, 430px) 560px;
+  width: min(100%, 1062px);
+  gap: 72px;
   align-items: center;
   justify-items: center;
   margin: 0 0 56px;
@@ -4790,44 +4821,6 @@ body.pitch-mode .docs-main__inner {
   position: relative;
   width: 100%;
   padding: 13px 0 0;
-}
-
-.docs-report-variant {
-  margin: 14px auto 18px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  color: var(--label-secondary);
-  font-size: 12px;
-  line-height: 18px;
-}
-
-.docs-report-variant__control {
-  padding: 2px;
-  border: 0.5px solid var(--line-non-opaque);
-  border-radius: 999px;
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-}
-
-.docs-report-variant__button {
-  min-width: 48px;
-  height: 26px;
-  padding: 0 10px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--label-secondary);
-  font-size: 12px;
-  line-height: 18px;
-  cursor: pointer;
-}
-
-.docs-report-variant__button--active {
-  background: var(--label-primary);
-  color: var(--bg-0);
 }
 
 .docs-report-progress__line {

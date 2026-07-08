@@ -3164,6 +3164,19 @@ body.is-preview *::-webkit-scrollbar {
   animation: dotted-demo-thinking-sheen 22000ms linear infinite;
 }
 
+.dotted-demo__thinking--tail-stream.dotted-demo__thinking--judging-hold .dotted-demo__thinking-copy,
+.dotted-demo__thinking--tail-stream.dotted-demo__thinking--deep-title-complete .dotted-demo__thinking-deep-title {
+  color: var(--dots-paragraph);
+  background-image: none;
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+  animation: none;
+}
+
+.dotted-demo__thinking--tail-stream .dotted-demo__thinking-copy {
+  color: var(--dots-description);
+}
+
 @keyframes dotted-demo-thinking-soft-in {
   from {
     opacity: 0.42;
@@ -3844,31 +3857,17 @@ body.is-preview *::-webkit-scrollbar {
   overflow-wrap: anywhere;
 }
 
-.dotted-demo__stream-reveal {
-  position: relative;
-  overflow: hidden;
+.dotted-demo__stream-char {
+  opacity: var(--stream-char-opacity, 1);
+  transition: opacity 260ms ease-out;
 }
 
-.dotted-demo__stream-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 1;
+.dotted-demo__stream-char--settle {
+  animation: dotted-demo-stream-tail-settle 760ms cubic-bezier(0.18, 0.72, 0.28, 1) 120ms both;
 }
 
-.dotted-demo__streaming-text.dotted-demo__stream-reveal {
-  display: inline-block;
-  vertical-align: top;
-}
-
-.dotted-demo__stream-span {
-  position: relative;
-  z-index: 1;
-  opacity: 0;
-  animation: dotted-demo-stream-span-fade 350ms ease-out forwards;
-  animation-delay: calc(var(--stream-span-index) * 50ms);
+.dotted-demo__stream-tail-delayed {
+  animation: dotted-demo-stream-tail-delayed-in 180ms ease-out 180ms both;
 }
 
 .dotted-demo__response-section {
@@ -4042,9 +4041,19 @@ body.is-preview *::-webkit-scrollbar {
   }
 }
 
-@keyframes dotted-demo-stream-span-fade {
+@keyframes dotted-demo-stream-tail-delayed-in {
   0% {
     opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes dotted-demo-stream-tail-settle {
+  0% {
+    opacity: var(--stream-char-opacity, 1);
   }
 
   100% {

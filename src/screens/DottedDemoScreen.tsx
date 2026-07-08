@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type HTMLAttributes, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject, type UIEvent as ReactUIEvent, type WheelEvent as ReactWheelEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject, type UIEvent as ReactUIEvent, type WheelEvent as ReactWheelEvent } from 'react'
 import lottie from 'lottie-web'
 import thinkAddCircle from '../assets/dotted/think-add-circle.svg'
 import thinkBack from '../assets/dotted/think-back.svg'
@@ -148,194 +148,76 @@ const finalResponseSections = [
 
 const countCharacters = (text: string) => Array.from(text).length
 
-function getStreamSpanIndex(characterOffset: number) {
-  return Math.floor(characterOffset / 14)
+function getDeepThinkingTargetTitle(kind: DottedProcessKind | undefined) {
+  if (kind === 'toolcall') return toolCallTitleText
+  if (kind === 'thinkCompact') return compactThinkTitleText
+  if (kind === 'toolcallSearch') return searchToolCallTitleText
+  if (kind === 'thinkPlan') return planThinkTitleText
+  return deepThinkingTitleText
+}
+
+function getDeepThinkingTargetBody(kind: DottedProcessKind | undefined) {
+  if (kind === 'toolcall') return toolCallBodyText
+  if (kind === 'toolcallSearch') return searchToolCallBodyText
+  if (kind === 'thinkPlan') return planThinkBodyText
+  if (kind === 'thinkCompact') return ''
+  return deepThinkingBodyText
+}
+
+function getTailOpacity({
+  characterIndex,
+  totalVisibleCharacters,
+}: {
+  characterIndex: number
+  totalVisibleCharacters: number
+}) {
+  const tailSize = 10
+  const distanceFromEnd = totalVisibleCharacters - characterIndex - 1
+  if (distanceFromEnd >= tailSize) return 1
+
+  const minOpacity = 0.34
+  const progress = Math.max(0, distanceFromEnd) / Math.max(1, tailSize - 1)
+  return minOpacity + (1 - minOpacity) * progress
 }
 
 function DottedStreamingSpanText({
   text,
   spanKey,
   enabled,
-  spanStartIndex = 0,
+  characterStartIndex = 0,
+  totalVisibleCharacters,
+  complete = false,
 }: {
   text: string
   spanKey: string
   enabled: boolean
-  spanStartIndex?: number
+  characterStartIndex?: number
+  totalVisibleCharacters?: number
+  complete?: boolean
 }) {
   if (!enabled) return text
 
   const characters = Array.from(text)
-  const segments: string[] = []
-  for (let index = 0; index < characters.length; index += 14) {
-    segments.push(characters.slice(index, index + 14).join(''))
-  }
+  const visibleCharacters = totalVisibleCharacters ?? characterStartIndex + characters.length
 
   return (
     <>
-      {segments.map((segment, index) => (
+      {characters.map((character, index) => {
+        const characterIndex = characterStartIndex + index
+        return (
         <span
-          className="dotted-demo__stream-span"
-          key={`${spanKey}-${index}`}
-          style={{ '--stream-span-index': spanStartIndex + index } as CSSProperties}
+          className={[
+            'dotted-demo__stream-char',
+            complete ? 'dotted-demo__stream-char--settle' : '',
+          ].filter(Boolean).join(' ')}
+          key={`${spanKey}-${characterIndex}`}
+          style={{ '--stream-char-opacity': getTailOpacity({ characterIndex, totalVisibleCharacters: visibleCharacters }) } as CSSProperties}
         >
-          {segment}
+          {character}
         </span>
-      ))}
+        )
+      })}
     </>
-  )
-}
-
-function DottedStreamingReveal({
-  as = 'div',
-  enabled,
-  complete = false,
-  className,
-  children,
-  ...restProps
-}: {
-  as?: 'div' | 'span'
-  enabled: boolean
-  complete?: boolean
-  children: ReactNode
-} & HTMLAttributes<HTMLDivElement | HTMLSpanElement>) {
-  const revealRef = useRef<HTMLDivElement | HTMLSpanElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const completeRef = useRef(complete)
-
-  useEffect(() => {
-    completeRef.current = complete
-  }, [complete])
-
-  useEffect(() => {
-    if (!enabled) return undefined
-
-    const container = revealRef.current
-    const canvas = canvasRef.current
-    const context = canvas?.getContext('2d')
-    if (!container || !canvas || !context) return undefined
-
-    let animationFrame = 0
-    let lastTimestamp = 0
-    let smoothY = 0
-    let fadeCanvas: HTMLCanvasElement | null = null
-    let fadeHeight = 81
-    let canvasWidth = 0
-    let canvasHeight = 0
-    let isDone = false
-
-    const prepareCanvas = () => {
-      const rect = container.getBoundingClientRect()
-      const computedStyle = window.getComputedStyle(container)
-      const parsedLineHeight = Number.parseFloat(computedStyle.lineHeight)
-      const lineHeight = Number.isFinite(parsedLineHeight) ? parsedLineHeight : 27
-      const width = Math.max(1, Math.ceil(rect.width))
-      const height = Math.max(1200, Math.ceil(container.scrollHeight + lineHeight * 4))
-
-      if (width === canvasWidth && height === canvasHeight && fadeCanvas) return
-
-      canvasWidth = width
-      canvasHeight = height
-      fadeHeight = Math.max(1, Math.round(lineHeight * 3))
-      canvas.width = canvasWidth
-      canvas.height = canvasHeight
-      canvas.style.width = `${canvasWidth}px`
-      canvas.style.height = `${canvasHeight}px`
-
-      fadeCanvas = document.createElement('canvas')
-      fadeCanvas.width = canvasWidth
-      fadeCanvas.height = fadeHeight
-      const fadeContext = fadeCanvas.getContext('2d')
-      if (!fadeContext) return
-
-      const imageData = fadeContext.createImageData(canvasWidth, fadeHeight)
-      const data = imageData.data
-      const contentLeft = Math.max(0, Number.parseFloat(computedStyle.paddingLeft) || 0)
-      const textWidth = Math.max(1, canvasWidth - contentLeft - (Number.parseFloat(computedStyle.paddingRight) || 0))
-
-      for (let py = 0; py < fadeHeight; py += 1) {
-        const yRatio = py / fadeHeight
-        for (let px = 0; px < canvasWidth; px += 1) {
-          const xRatio = Math.max(0, Math.min(1, (px - contentLeft) / textWidth))
-          const alpha = Math.min(1, (yRatio ** 0.7) * 0.72 + (xRatio ** 0.8) * 0.28)
-          const index = (py * canvasWidth + px) * 4
-          data[index] = 255
-          data[index + 1] = 255
-          data[index + 2] = 255
-          data[index + 3] = Math.round(alpha * 255)
-        }
-      }
-      fadeContext.putImageData(imageData, 0, 0)
-    }
-
-    const getTargetY = () => {
-      const spans = container.querySelectorAll<HTMLElement>('.dotted-demo__stream-span')
-      const lastSpan = spans[spans.length - 1]
-      if (!lastSpan) return 0
-      return lastSpan.offsetTop + lastSpan.offsetHeight
-    }
-
-    const drawMask = (timestamp: number) => {
-      if (!lastTimestamp) lastTimestamp = timestamp
-      const delta = Math.min((timestamp - lastTimestamp) / 1000, 0.08)
-      lastTimestamp = timestamp
-
-      prepareCanvas()
-
-      const targetY = getTargetY()
-      const alpha = 1 - 0.93 ** (delta * 60)
-      smoothY += (targetY - smoothY) * alpha
-
-      context.clearRect(0, 0, canvasWidth, canvasHeight)
-      if (!completeRef.current || targetY - smoothY > 0.5) {
-        if (fadeCanvas) context.drawImage(fadeCanvas, 0, Math.round(smoothY))
-        const belowY = Math.round(smoothY) + fadeHeight
-        if (belowY < canvasHeight) {
-          context.fillStyle = '#ffffff'
-          context.fillRect(0, belowY, canvasWidth, canvasHeight - belowY)
-        }
-        canvas.style.opacity = '1'
-        isDone = false
-      } else if (!isDone) {
-        canvas.style.transition = 'opacity .4s'
-        canvas.style.opacity = '0'
-        isDone = true
-      }
-
-      animationFrame = window.requestAnimationFrame(drawMask)
-    }
-
-    canvas.style.transition = 'none'
-    canvas.style.opacity = completeRef.current ? '0' : '1'
-    context.fillStyle = '#ffffff'
-    prepareCanvas()
-    context.fillRect(0, 0, canvasWidth, canvasHeight)
-    animationFrame = window.requestAnimationFrame(drawMask)
-
-    return () => {
-      window.cancelAnimationFrame(animationFrame)
-    }
-  }, [enabled])
-
-  const revealClassName = ['dotted-demo__stream-reveal', className].filter(Boolean).join(' ')
-  const setRevealRef = (node: HTMLDivElement | HTMLSpanElement | null) => {
-    revealRef.current = node
-  }
-
-  if (as === 'span') {
-    return (
-      <span ref={setRevealRef} className={revealClassName} {...restProps}>
-        {children}
-        {enabled && <canvas ref={canvasRef} className="dotted-demo__stream-canvas" aria-hidden="true" />}
-      </span>
-    )
-  }
-
-  return (
-    <div ref={setRevealRef} className={revealClassName} {...restProps}>
-      {children}
-      {enabled && <canvas ref={canvasRef} className="dotted-demo__stream-canvas" aria-hidden="true" />}
-    </div>
   )
 }
 const sourceItems = [
@@ -402,14 +284,20 @@ const thinkingStages = [
 function DottedToolSearchRows({
   text,
   streamingVariant = 'default',
-  spanStartIndex = 0,
+  characterStartIndex = 0,
+  totalVisibleCharacters,
+  complete = false,
+  className,
 }: {
   text: string
   streamingVariant?: DottedStreamingVariant
-  spanStartIndex?: number
+  characterStartIndex?: number
+  totalVisibleCharacters?: number
+  complete?: boolean
+  className?: string
 }) {
   const useSpanMask = streamingVariant === 'span-mask'
-  const rows = text.split('\n').filter(Boolean).reduce<Array<{ line: string; visibleLine: string; spanStartIndex: number }>>((result, line) => {
+  const rows = text.split('\n').filter(Boolean).reduce<Array<{ line: string; visibleLine: string; characterStartIndex: number }>>((result, line) => {
     const visibleLine = line.replace('笔记｜', '').replace('网页｜', '')
     const previousCharacters = result.reduce((total, row) => total + countCharacters(row.visibleLine), 0)
     return [
@@ -417,14 +305,15 @@ function DottedToolSearchRows({
       {
         line,
         visibleLine,
-        spanStartIndex: spanStartIndex + getStreamSpanIndex(previousCharacters),
+        characterStartIndex: characterStartIndex + previousCharacters,
       },
     ]
   }, [])
+  const visibleCharacters = totalVisibleCharacters ?? characterStartIndex + countCharacters(rows.map((row) => row.visibleLine).join(''))
 
   return (
-    <span className="dotted-demo__thinking-search-list">
-      {rows.map(({ line, visibleLine, spanStartIndex: currentSpanStartIndex }, index) => {
+    <span className={['dotted-demo__thinking-search-list', className].filter(Boolean).join(' ')}>
+      {rows.map(({ line, visibleLine, characterStartIndex: currentCharacterStartIndex }, index) => {
         if (line.startsWith('笔记｜')) {
           return (
             <span className="dotted-demo__thinking-search-row" key={`${line}-${index}`}>
@@ -434,7 +323,7 @@ function DottedToolSearchRows({
               </span>
               <span className="dotted-demo__thinking-search-divider" aria-hidden="true" />
               <span className="dotted-demo__thinking-search-text">
-                <DottedStreamingSpanText text={visibleLine} spanKey={`search-${index}`} enabled={useSpanMask} spanStartIndex={currentSpanStartIndex} />
+                <DottedStreamingSpanText text={visibleLine} spanKey={`search-${index}`} enabled={useSpanMask} characterStartIndex={currentCharacterStartIndex} totalVisibleCharacters={visibleCharacters} complete={complete} />
               </span>
             </span>
           )
@@ -447,7 +336,7 @@ function DottedToolSearchRows({
                 <img src={thinkInternet} alt="" aria-hidden="true" />
               </span>
               <span className="dotted-demo__thinking-search-text">
-                <DottedStreamingSpanText text={visibleLine} spanKey={`search-${index}`} enabled={useSpanMask} spanStartIndex={currentSpanStartIndex} />
+                <DottedStreamingSpanText text={visibleLine} spanKey={`search-${index}`} enabled={useSpanMask} characterStartIndex={currentCharacterStartIndex} totalVisibleCharacters={visibleCharacters} complete={complete} />
               </span>
             </span>
           )
@@ -456,12 +345,62 @@ function DottedToolSearchRows({
         return (
           <span className="dotted-demo__thinking-search-row dotted-demo__thinking-search-row--plain" key={`${line}-${index}`}>
             <span className="dotted-demo__thinking-search-text">
-              <DottedStreamingSpanText text={visibleLine} spanKey={`search-${index}`} enabled={useSpanMask} spanStartIndex={currentSpanStartIndex} />
+              <DottedStreamingSpanText text={visibleLine} spanKey={`search-${index}`} enabled={useSpanMask} characterStartIndex={currentCharacterStartIndex} totalVisibleCharacters={visibleCharacters} complete={complete} />
             </span>
           </span>
         )
       })}
     </span>
+  )
+}
+
+function DottedDeepThinkingContent({
+  item,
+  streamingVariant,
+}: {
+  item: DotsHistoryMessage
+  streamingVariant: DottedStreamingVariant
+}) {
+  const useTailOpacity = streamingVariant === 'span-mask'
+  const visibleTitle = item.deepThinkingTitle ?? ''
+  const visibleBody = item.deepThinkingBody ?? ''
+  const targetTitle = getDeepThinkingTargetTitle(item.deepThinkingKind)
+  const targetBody = getDeepThinkingTargetBody(item.deepThinkingKind)
+  const titleComplete = countCharacters(visibleTitle) >= countCharacters(targetTitle)
+  const bodyComplete = countCharacters(visibleBody) >= countCharacters(targetBody)
+  const shouldShowBody = !useTailOpacity || titleComplete
+
+  return (
+    <>
+      <span className="dotted-demo__thinking-deep-title">
+        <DottedStreamingSpanText
+          text={visibleTitle}
+          spanKey={`${item.id}-title`}
+          enabled={useTailOpacity}
+          totalVisibleCharacters={countCharacters(visibleTitle)}
+          complete={titleComplete}
+        />
+      </span>
+      {shouldShowBody && item.deepThinkingKind === 'toolcallSearch' ? (
+        <DottedToolSearchRows
+          text={visibleBody}
+          streamingVariant={streamingVariant}
+          totalVisibleCharacters={countCharacters(visibleBody)}
+          complete={bodyComplete}
+          className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined}
+        />
+      ) : shouldShowBody ? (
+        <span className={['dotted-demo__thinking-deep-body', useTailOpacity ? 'dotted-demo__stream-tail-delayed' : ''].filter(Boolean).join(' ')}>
+          <DottedStreamingSpanText
+            text={visibleBody}
+            spanKey={`${item.id}-body`}
+            enabled={useTailOpacity}
+            totalVisibleCharacters={countCharacters(visibleBody)}
+            complete={bodyComplete}
+          />
+        </span>
+      ) : null}
+    </>
   )
 }
 
@@ -552,10 +491,7 @@ function DottedChatStream({
           ) : (
             <DotsMessageBubble key={item.id} role={item.role} className={messageClassName}>
               {item.isThinking ? (
-              <DottedStreamingReveal
-                as="span"
-                enabled={useSpanMask}
-                complete={item.isDeepThinking ? item.isDeepThinkingTitleComplete : item.isJudgingHold}
+              <span
                 key={item.id}
                 className={[
                   'dotted-demo__thinking',
@@ -569,6 +505,7 @@ function DottedChatStream({
                   item.deepThinkingKind === 'toolcallSearch' ? 'dotted-demo__thinking--toolcall-search' : '',
                   item.deepThinkingKind === 'thinkPlan' ? 'dotted-demo__thinking--think-plan' : '',
                   item.isDeepThinkingTitleComplete ? 'dotted-demo__thinking--deep-title-complete' : '',
+                  useSpanMask ? 'dotted-demo__thinking--tail-stream' : '',
                 ].filter(Boolean).join(' ')}
                 role={item.isDeepThinking ? 'button' : undefined}
                 tabIndex={item.isDeepThinking ? 0 : undefined}
@@ -593,35 +530,19 @@ function DottedChatStream({
                   className="dotted-demo__thinking-lottie"
                 />
                 {item.isDeepThinking ? (
-                  <>
-                    <span className="dotted-demo__thinking-deep-title">
-                      <DottedStreamingSpanText text={item.deepThinkingTitle ?? ''} spanKey={`${item.id}-title`} enabled={useSpanMask} />
-                    </span>
-                    {item.deepThinkingKind === 'toolcallSearch' ? (
-                      <DottedToolSearchRows text={item.deepThinkingBody ?? ''} streamingVariant={streamingVariant} spanStartIndex={getStreamSpanIndex(countCharacters(item.deepThinkingTitle ?? ''))} />
-                    ) : (
-                      <span className="dotted-demo__thinking-deep-body">
-                        <DottedStreamingSpanText text={item.deepThinkingBody ?? ''} spanKey={`${item.id}-body`} enabled={useSpanMask} spanStartIndex={getStreamSpanIndex(countCharacters(item.deepThinkingTitle ?? ''))} />
-                      </span>
-                    )}
-                  </>
+                  <DottedDeepThinkingContent item={item} streamingVariant={streamingVariant} />
                 ) : (
                   item.isJudging && (
                     <span className="dotted-demo__thinking-copy">
-                      <DottedStreamingSpanText text={item.text} spanKey={`${item.id}-judging`} enabled={useSpanMask} />
+                      <DottedStreamingSpanText text={item.text} spanKey={`${item.id}-judging`} enabled={useSpanMask} totalVisibleCharacters={countCharacters(item.text)} complete={item.isJudgingHold} />
                     </span>
                   )
                 )}
-              </DottedStreamingReveal>
+              </span>
               ) : item.isStreaming ? (
-                <DottedStreamingReveal
-                  as="span"
-                  enabled={useSpanMask}
-                  complete={item.text.length >= streamingReplyTextFull.length}
-                  className="dotted-demo__streaming-text"
-                >
-                  <DottedStreamingSpanText text={item.text} spanKey={`${item.id}-streaming`} enabled={useSpanMask} />
-                </DottedStreamingReveal>
+                <span className="dotted-demo__streaming-text">
+                  <DottedStreamingSpanText text={item.text} spanKey={`${item.id}-streaming`} enabled={useSpanMask} totalVisibleCharacters={countCharacters(item.text)} complete={item.text.length >= streamingReplyTextFull.length} />
+                </span>
               ) : (
                 item.text
               )}
@@ -726,11 +647,7 @@ function DottedFinalResponseCard({
           </span>
           <img className="dotted-demo__response-arrow" src={thinkResponseArrow} alt="" aria-hidden="true" />
         </button>
-        <DottedStreamingReveal
-          enabled={useSpanMask}
-          complete={complete}
-          className="dotted-demo__response-content"
-        >
+        <div className="dotted-demo__response-content">
           {finalResponseSections.map((section, sectionIndex) => {
             const renderedBlocks = section.blocks.map((blockIndex) => {
               const block = finalResponseBlocks[blockIndex]
@@ -745,7 +662,7 @@ function DottedFinalResponseCard({
               if (block.type === 'heading') {
                 return (
                   <h3 key={`${block.type}-${blockIndex}`}>
-                    <DottedStreamingSpanText text={visibleText} spanKey={`${block.type}-${blockIndex}`} enabled={useSpanMask} spanStartIndex={getStreamSpanIndex(previousLength)} />
+                    <DottedStreamingSpanText text={visibleText} spanKey={`${block.type}-${blockIndex}`} enabled={useSpanMask} characterStartIndex={previousLength} totalVisibleCharacters={visibleCount} complete={complete} />
                   </h3>
                 )
               }
@@ -755,7 +672,7 @@ function DottedFinalResponseCard({
                   <div className="dotted-demo__response-bullet" key={`${block.type}-${blockIndex}`}>
                     <span aria-hidden="true" />
                     <p>
-                      <DottedStreamingSpanText text={visibleText} spanKey={`${block.type}-${blockIndex}`} enabled={useSpanMask} spanStartIndex={getStreamSpanIndex(previousLength)} />
+                      <DottedStreamingSpanText text={visibleText} spanKey={`${block.type}-${blockIndex}`} enabled={useSpanMask} characterStartIndex={previousLength} totalVisibleCharacters={visibleCount} complete={complete} />
                     </p>
                   </div>
                 )
@@ -763,7 +680,7 @@ function DottedFinalResponseCard({
 
               return (
                 <p key={`${block.type}-${blockIndex}`}>
-                  <DottedStreamingSpanText text={visibleText} spanKey={`${block.type}-${blockIndex}`} enabled={useSpanMask} spanStartIndex={getStreamSpanIndex(previousLength)} />
+                  <DottedStreamingSpanText text={visibleText} spanKey={`${block.type}-${blockIndex}`} enabled={useSpanMask} characterStartIndex={previousLength} totalVisibleCharacters={visibleCount} complete={complete} />
                 </p>
               )
             }).filter(Boolean)
@@ -782,7 +699,7 @@ function DottedFinalResponseCard({
               </section>
             )
           })}
-        </DottedStreamingReveal>
+        </div>
       </div>
       {complete && (
         <div className="dotted-demo__response-actions">

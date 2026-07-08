@@ -1,7 +1,8 @@
 import { useCallback, useState, type CSSProperties } from 'react'
 import { reportDemos } from '../manifest'
+import { navigate } from '../router'
 import { NotFoundPage } from './NotFoundPage'
-import { DottedDemoScreen, type DottedDemoStep, type DottedStreamingVariant } from '../../screens/DottedDemoScreen'
+import { DottedDemoScreen, type DottedDemoStep } from '../../screens/DottedDemoScreen'
 import restartIcon from '../../assets/dotted/think-response-refresh.svg'
 
 const demoSteps: Array<{ id: DottedDemoStep; label: string }> = [
@@ -31,7 +32,6 @@ function ConversationStreamingReport() {
   const [continueAfterStep, setContinueAfterStep] = useState(false)
   const [demoRunId, setDemoRunId] = useState(0)
   const [resumeSignal, setResumeSignal] = useState(0)
-  const [streamingVariant, setStreamingVariant] = useState<DottedStreamingVariant>('default')
 
   const jumpToStep = (step: DottedDemoStep) => {
     setPlayState('playing')
@@ -78,7 +78,10 @@ function ConversationStreamingReport() {
   const progressPercent = demoSteps.length > 1 ? (activeStepIndex / (demoSteps.length - 1)) * 100 : 0
 
   return (
-    <div className="docs-report-demo-shell">
+    <div className="docs-report-demo-shell docs-report-demo-shell--immersive">
+      <button className="docs-report-demo-close" type="button" onClick={() => navigate('/docs')} aria-label="关闭项目 demo">
+        关闭
+      </button>
       <section className="docs-timestamp-hero">
         <div className="docs-timestamp-phone" aria-label="点点对话页回答流式 demo">
           <DottedDemoScreen
@@ -89,31 +92,12 @@ function ConversationStreamingReport() {
             paused={playState === 'paused'}
             resumeSignal={resumeSignal}
             onStepChange={handleStepChange}
-            streamingVariant={streamingVariant}
+            streamingVariant="span-mask"
           />
         </div>
 
         <aside className="docs-report-progress" aria-label="回答状态进度控制">
           <h1 className="docs-report-demo-title">回答loading新增长思考模式</h1>
-          <div className="docs-report-variant" aria-label="流式输出样式">
-            <span>流式输出</span>
-            <div className="docs-report-variant__control">
-              {([
-                { id: 'default', label: '当前' },
-                { id: 'span-mask', label: 'B 版' },
-              ] as Array<{ id: DottedStreamingVariant; label: string }>).map((variant) => (
-                <button
-                  className={streamingVariant === variant.id ? 'docs-report-variant__button docs-report-variant__button--active' : 'docs-report-variant__button'}
-                  type="button"
-                  key={variant.id}
-                  onClick={() => setStreamingVariant(variant.id)}
-                  aria-pressed={streamingVariant === variant.id}
-                >
-                  {variant.label}
-                </button>
-              ))}
-            </div>
-          </div>
           <div className="docs-report-progress__track" style={{ '--progress': `${progressPercent}%` } as CSSProperties}>
             <div className="docs-report-progress__line" aria-hidden="true" />
             <div className="docs-report-progress__nodes">

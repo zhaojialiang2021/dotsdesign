@@ -84,6 +84,14 @@ export function DocsApp() {
     return () => window.clearTimeout(t)
   }, [hash, route])
 
+  if (route.kind === 'report') {
+    return (
+      <Suspense fallback={<PageFallback />}>
+        <ReportsPage slug={route.slug} />
+      </Suspense>
+    )
+  }
+
   return (
     <DocsLayout route={route}>
       <Suspense fallback={<PageFallback />}>
@@ -95,7 +103,6 @@ export function DocsApp() {
         {route.kind === 'haptics' && <HapticsPage />}
         {route.kind === 'component' && <ComponentPage slug={route.slug} />}
         {route.kind === 'patterns' && <PatternsPage slug={route.slug} />}
-        {route.kind === 'report' && <ReportsPage slug={route.slug} />}
         {route.kind === 'ai-workflows' && <AIWorkflowsPage />}
         {route.kind === 'changelog' && <ChangelogPage />}
         {route.kind === 'pitch' && <PitchPage />}
