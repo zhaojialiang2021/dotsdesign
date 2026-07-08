@@ -2855,7 +2855,7 @@ body.is-preview *::-webkit-scrollbar {
 
 .dotted-demo__thinking--deep::before {
   inset: -6px -10px;
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .dotted-demo__thinking--transition-soft {
