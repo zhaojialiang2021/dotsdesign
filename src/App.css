@@ -2446,7 +2446,8 @@ body.is-preview *::-webkit-scrollbar {
   overflow: hidden;
   background: var(--dots-bg);
   font-family: var(--font-component);
-  border-radius: 40px;
+  border-radius: 48px;
+  corner-shape: squircle;
 }
 
 .dotted-demo {
@@ -4224,23 +4225,22 @@ body.is-preview *::-webkit-scrollbar {
   flex-direction: column;
   align-items: center;
   background: transparent;
-  isolation: isolate;
 }
 
 .dotted-demo__dock::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
+  left: -48px;
+  right: -48px;
   top: 0;
-  bottom: 0;
+  bottom: -40px;
   z-index: 0;
   background: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0) 10%,
-    rgba(255, 255, 255, 0.8) 32%,
-    rgba(255, 255, 255, 1) 48%,
-    rgba(255, 255, 255, 1) 100%
+    rgba(245, 245, 245, 0) 0%,
+    rgba(245, 245, 245, 0.8) 18%,
+    rgba(245, 245, 245, 1) 36%,
+    rgba(245, 245, 245, 1) 100%
   );
   pointer-events: none;
 }
@@ -4267,6 +4267,7 @@ body.is-preview *::-webkit-scrollbar {
   box-shadow: 0 0 36px var(--dots-shadow-soft);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
+  transform: translateZ(0);
 }
 
 .dotted-demo__composer-placeholder {
