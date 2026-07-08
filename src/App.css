@@ -2434,7 +2434,7 @@ body.is-preview *::-webkit-scrollbar {
   --dots-separator: rgba(20, 20, 20, 0.08);
   --dots-user-bubble: rgba(0, 0, 0, 0.08);
   --dots-reply-bubble: #ffffff;
-  --dots-composer-bg: rgba(255, 255, 255, 0.8);
+  --dots-composer-bg: #fcfcfc;
   --dots-watermark: rgba(48, 48, 52, 0.2);
   --dots-shadow-soft: rgba(0, 0, 0, 0.08);
 
