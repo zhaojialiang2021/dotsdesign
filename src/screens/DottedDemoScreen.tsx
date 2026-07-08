@@ -77,11 +77,9 @@ type DottedProcessRow = {
   icon: string
   title: string
   detail: string
-  avatars?: boolean
   last?: boolean
   lottieUrl?: string
   lottiePlaying?: boolean
-  searchComplete?: boolean
 }
 
 const streamingReplyChunks = [
@@ -241,59 +239,6 @@ function DottedToolSearchRows({ text }: { text: string }) {
           </span>
         )
       })}
-    </span>
-  )
-}
-
-const completedSearchResults = [
-  {
-    title: '古北 老钱 希尔顿 三合一体验',
-    author: 'Linksphotograph',
-    likes: '2765',
-    image: sourceImageSailormmoon3,
-    avatar: sourceLogoYt,
-  },
-  {
-    title: '上海璞丽酒店入住体验',
-    author: 'sailormmoon',
-    likes: '634',
-    image: sourceImageSailormmoon2,
-    avatar: sourceLogoSailormmoon,
-  },
-] as const
-
-function DottedCompletedSearchResults() {
-  return (
-    <span className="dotted-demo__process-search-complete">
-      {completedSearchResults.map((item) => (
-        <span className="dotted-demo__process-search-note" key={item.title}>
-          <img className="dotted-demo__process-search-thumb" src={item.image} alt="" aria-hidden="true" />
-          <span className="dotted-demo__process-search-note-copy">
-            <span className="dotted-demo__process-search-note-title">{item.title}</span>
-            <span className="dotted-demo__process-search-note-meta">
-              <span className="dotted-demo__process-search-author">
-                <img src={item.avatar} alt="" aria-hidden="true" />
-                {item.author}
-              </span>
-              <span className="dotted-demo__process-search-likes">
-                <img src={sourceLike} alt="" aria-hidden="true" />
-                {item.likes}
-              </span>
-            </span>
-          </span>
-        </span>
-      ))}
-      <span className="dotted-demo__process-search-web">
-        <span>
-          <img src={thinkInternet} alt="" aria-hidden="true" />
-          马蜂窝：上海宝格丽｜心目中无法被超越的上海...
-        </span>
-        <span>
-          <img src={thinkInternet} alt="" aria-hidden="true" />
-          携程：上海嘉佩乐酒店，住上5层独栋小楼了！
-        </span>
-      </span>
-      <span className="dotted-demo__process-search-more">展示更多 23 条内容</span>
     </span>
   )
 }
@@ -486,8 +431,6 @@ function getThinkingProcessRows({
       icon: '🔍',
       title: searchToolCallTitleText,
       detail: searchToolCallBodyText,
-      avatars: !isThinkingComplete,
-      searchComplete: isThinkingComplete,
     },
     {
       kind: 'thinkPlan',
@@ -643,7 +586,6 @@ function DottedSourcesSheet({
       title: searchToolCallTitleText,
       detail: searchToolCallBodyText,
       lottieUrl: thinkGlassAnimationUrl,
-      searchComplete: true,
     },
     {
       kind: 'thinkPlan',
@@ -780,12 +722,6 @@ function DottedSourcesSheet({
                     <div className="dotted-demo__process-text">
                       <span className="dotted-demo__process-summary">
                         <span>{row.title}</span>
-                        {row.avatars && (
-                          <span className="dotted-demo__process-avatars" aria-hidden="true">
-                            <img src={thinkResponseAvatar1} alt="" />
-                            <img src={thinkResponseAvatar2} alt="" />
-                          </span>
-                        )}
                         {mode === 'sources' && hasExpandableContent && (
                           <span
                             className={[
@@ -798,9 +734,7 @@ function DottedSourcesSheet({
                       </span>
                       {(mode === 'thinking' || isRowExpanded) && row.detail && (
                         <span className="dotted-demo__process-detail-motion">
-                          {row.searchComplete ? (
-                            <DottedCompletedSearchResults />
-                          ) : row.kind === 'toolcallSearch' ? (
+                          {row.kind === 'toolcallSearch' ? (
                             <DottedToolSearchRows text={row.detail} />
                           ) : (
                             <span className="dotted-demo__process-detail">
@@ -818,7 +752,6 @@ function DottedSourcesSheet({
                     className={[
                       'dotted-demo__process-row',
                       'dotted-demo__process-row--static',
-                      row.searchComplete ? 'dotted-demo__process-row--search-complete' : '',
                     ].filter(Boolean).join(' ')}
                     key={`${row.title}-${index}`}
                   >
@@ -829,7 +762,6 @@ function DottedSourcesSheet({
                     className={[
                       'dotted-demo__process-row',
                       isRowExpanded ? 'dotted-demo__process-row--expanded' : '',
-                      row.searchComplete ? 'dotted-demo__process-row--search-complete' : '',
                     ].filter(Boolean).join(' ')}
                     key={row.title}
                     type="button"
