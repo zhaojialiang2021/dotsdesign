@@ -15,9 +15,10 @@ type Props = {
   children: ReactNode
 }
 
-const AREAS: Array<{ id: Area; key: 'area.system' | 'area.writing' }> = [
+const AREAS: Array<{ id: Area; key: 'area.system' | 'area.reports' | 'area.writing' }> = [
   { id: 'system', key: 'area.system' },
   { id: 'writing', key: 'area.writing' },
+  { id: 'reports', key: 'area.reports' },
 ]
 
 export function DocsLayout({ route, children }: Props) {
@@ -52,7 +53,7 @@ export function DocsLayout({ route, children }: Props) {
   return (
     <div
       className={`docs-shell ${drawerOpen ? 'docs-shell--drawer-open' : ''} ${
-        area === 'writing' || area === 'landing' ? 'docs-shell--no-sidebar' : ''
+        area === 'reports' || area === 'writing' || area === 'landing' ? 'docs-shell--no-sidebar' : ''
       } ${area === 'landing' ? 'docs-shell--landing' : ''}`}
     >
       {/* a11y：跳到主内容（仅键盘 focus 时可见） */}
@@ -184,6 +185,8 @@ function areaHome(area: Area): string {
   switch (area) {
     case 'system':
       return '/docs/intro'
+    case 'reports':
+      return '/docs/reports/conversation-streaming'
     case 'writing':
       return '/docs/writing'
     case 'landing':
@@ -221,9 +224,6 @@ function SystemNav({ route }: { route: DocsRoute }) {
       <Section title={t('group.start')}>
         <NavItem href="/docs/intro" active={route.kind === 'intro'}>
           {t('nav.intro')}
-        </NavItem>
-        <NavItem href="/docs/manifesto" active={route.kind === 'manifesto'}>
-          {t('nav.manifesto')}
         </NavItem>
         <NavItem href="/docs/workflow" active={route.kind === 'workflow'}>
           {t('nav.workflow')}

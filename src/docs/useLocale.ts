@@ -58,6 +58,7 @@ type Dict = Record<string, { zh: string; en: string }>
 const DICT: Dict = {
   // 顶部两组（Dots 已合并进 System）
   'area.system': { zh: '设计系统', en: 'System' },
+  'area.reports': { zh: '项目demo', en: 'Project Demo' },
   'area.writing': { zh: '构建的思考', en: 'Notes on Building' },
 
   // 入门组
@@ -82,6 +83,7 @@ const DICT: Dict = {
   // 组件 + Patterns
   'group.components': { zh: '组件', en: 'Components' },
   'group.patterns': { zh: '模式', en: 'Patterns' },
+  'group.reports': { zh: '项目demo', en: 'Project Demo' },
   'badge.deep': { zh: '深度', en: 'deep' },
 
   // 资源组

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { components, pages, patterns, writings } from './manifest'
+import { components, pages, patterns, reportDemos, writings } from './manifest'
 import { navigate, useHash } from './router'
 import { Icon } from './icons'
 import { useT } from './useLocale'
@@ -30,7 +30,6 @@ type Item = {
 const STATIC: Item[] = [
   { href: '/docs', label: '首页 · Landing', group: 'System', keywords: 'home landing' },
   { href: '/docs/intro', label: '关于 Dots', group: 'System', keywords: 'intro about' },
-  { href: '/docs/manifesto', label: 'Manifesto', group: 'System', keywords: 'why ai-native' },
   { href: '/docs/workflow', label: '设计工作流', group: 'System', keywords: 'workflow agent skill' },
   { href: '/docs/foundations/color', label: 'Color', group: 'Foundations', keywords: 'tokens color label brand accent' },
   { href: '/docs/foundations/typography', label: 'Typography', group: 'Foundations', keywords: 'font type pingfang' },
@@ -61,6 +60,14 @@ function buildItems(): Item[] {
       label: p.name,
       group: 'Patterns',
       keywords: p.slug + ' ' + p.desc,
+    })
+  }
+  for (const p of reportDemos) {
+    items.push({
+      href: `/docs/reports/${p.slug}`,
+      label: p.name,
+      group: '项目demo',
+      keywords: p.slug + ' ' + p.desc + ' report demo presentation',
     })
   }
   for (const p of pages) {

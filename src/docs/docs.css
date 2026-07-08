@@ -4616,6 +4616,420 @@ body.pitch-mode .docs-main__inner {
   flex-wrap: wrap;
 }
 
+/* === Conversation timestamp report === */
+.docs-report-demo-shell {
+  min-height: calc(100vh - 144px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-report-demo-title {
+  width: 100%;
+  margin: 0 0 28px;
+  color: var(--label-primary);
+  font-family: var(--font-ui);
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.docs-timestamp-hero {
+  display: grid;
+  grid-template-columns: minmax(320px, 430px) minmax(280px, 1fr);
+  width: 100%;
+  gap: 44px;
+  align-items: center;
+  margin: 0 0 56px;
+}
+
+.docs-timestamp-phone {
+  width: 393px;
+  height: 852px;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+}
+
+.docs-timestamp-brief {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.docs-timestamp-brief__eyebrow {
+  margin: 0;
+  color: var(--label-tertiary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.docs-timestamp-brief h2 {
+  margin: 0;
+  max-width: 620px;
+  color: var(--label-primary);
+  font-size: clamp(32px, 5vw, 58px);
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.docs-timestamp-brief p {
+  margin: 0;
+  max-width: 560px;
+  color: var(--label-secondary);
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.docs-timestamp-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.docs-timestamp-checks span {
+  min-height: 32px;
+  padding: 7px 12px;
+  border: 0.5px solid var(--line-non-opaque);
+  border-radius: 999px;
+  color: var(--label-secondary);
+  font-size: 13px;
+  line-height: 18px;
+  background: var(--bg-0);
+}
+
+.docs-report-stepper {
+  width: min(100%, 360px);
+  min-height: 64px;
+  box-sizing: border-box;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 0.5px solid var(--line-non-opaque);
+  border-radius: 16px;
+  background: var(--bg-0);
+}
+
+.docs-report-stepper__meta {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.docs-report-stepper__meta span {
+  color: var(--label-tertiary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.docs-report-stepper__meta strong {
+  color: var(--label-primary);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.docs-report-stepper__button {
+  min-width: 104px;
+  height: 40px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--label-primary);
+  color: var(--bg-0);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.docs-report-stepper__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.docs-report-stepper__button--secondary {
+  min-width: 96px;
+  border: 0.5px solid var(--line-non-opaque);
+  background: var(--bg-0);
+  color: var(--label-primary);
+}
+
+.docs-report-stepper__button:active {
+  transform: scale(0.97);
+  opacity: 0.82;
+}
+
+.docs-report-progress {
+  width: min(100%, 560px);
+  box-sizing: border-box;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.docs-report-progress__track {
+  --progress: 0%;
+  position: relative;
+  width: 100%;
+  padding: 13px 0 0;
+}
+
+.docs-report-progress__line {
+  position: absolute;
+  left: calc(100% / 18);
+  right: calc(100% / 18);
+  top: 24px;
+  height: 2px;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      var(--label-primary) 0 var(--progress),
+      var(--line-non-opaque) var(--progress) 100%
+    );
+}
+
+.docs-report-progress__nodes {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0;
+}
+
+.docs-report-progress__node {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: var(--label-tertiary);
+  cursor: pointer;
+}
+
+.docs-report-progress__node span {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--line-non-opaque);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  background: var(--bg-0);
+  color: var(--label-tertiary);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 12px;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    transform 180ms ease;
+}
+
+.docs-report-progress__node strong {
+  max-width: 56px;
+  min-height: 28px;
+  color: inherit;
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 400;
+  text-align: center;
+  word-break: keep-all;
+}
+
+.docs-report-progress__node--complete span {
+  border-color: var(--label-primary);
+  background: var(--label-primary);
+  color: var(--bg-0);
+}
+
+.docs-report-progress__node--complete {
+  color: var(--label-secondary);
+}
+
+.docs-report-progress__node--active span {
+  border-color: var(--label-primary);
+  background: var(--bg-0);
+  color: var(--label-primary);
+  transform: scale(1.16);
+}
+
+.docs-report-progress__node--active strong {
+  color: var(--label-primary);
+  font-weight: 500;
+}
+
+.docs-report-progress__node:focus-visible {
+  outline: 1px solid var(--label-primary);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.docs-report-progress__actions {
+  margin: 38px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.docs-report-progress__button {
+  width: auto;
+  min-width: 96px;
+  height: 36px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.docs-report-progress__button:disabled {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.docs-report-progress__button--icon {
+  width: 36px;
+  min-width: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.docs-report-progress__button--icon img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.docs-report-progress__button--primary {
+  background: var(--label-primary);
+  color: var(--bg-0);
+}
+
+.docs-report-progress__button--secondary {
+  border: 0.5px solid var(--line-non-opaque);
+  background: transparent;
+  color: var(--label-primary);
+}
+
+.docs-report-progress__node:active span,
+.docs-report-progress__button:active {
+  transform: scale(0.96);
+  opacity: 0.86;
+}
+
+.docs-timestamp-table {
+  border: 0.5px solid var(--line-non-opaque);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg-0);
+}
+
+.docs-timestamp-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1.4fr;
+  gap: 0;
+  border-top: 0.5px solid var(--line-non-opaque);
+}
+
+.docs-timestamp-row:first-child {
+  border-top: 0;
+}
+
+.docs-timestamp-row > div {
+  padding: 16px;
+  color: var(--label-secondary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.docs-timestamp-row__condition {
+  color: var(--label-primary);
+  font-weight: 500;
+}
+
+.docs-timestamp-row__behavior {
+  border-left: 0.5px solid var(--line-non-opaque);
+  border-right: 0.5px solid var(--line-non-opaque);
+}
+
+.docs-timestamp-rules {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.docs-timestamp-rules > div {
+  padding: 18px;
+  border: 0.5px solid var(--line-non-opaque);
+  border-radius: 12px;
+  background: var(--bg-0);
+}
+
+.docs-timestamp-rules strong {
+  display: block;
+  color: var(--label-primary);
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.docs-timestamp-rules p {
+  margin: 0;
+  color: var(--label-secondary);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+@media (max-width: 860px) {
+  .docs-timestamp-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-timestamp-phone {
+    margin: 0 auto;
+  }
+
+  .docs-timestamp-row,
+  .docs-timestamp-rules {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-timestamp-row__behavior {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0.5px solid var(--line-non-opaque);
+    border-bottom: 0.5px solid var(--line-non-opaque);
+  }
+}
+
 /* === Changelog 版本块 === */
 .docs-release {
   border-top: 0.5px solid var(--line-non-opaque);

@@ -91,11 +91,30 @@ Always Mode 文本使用 `--light-title` / `--light-paragraph` / `--light-descri
 
 ## 字体
 
-组件规范字体栈：
+### 使用边界
+
+点点有两套字体边界，不能混用：
+
+- **组件规范 / Dots App UI / 页面 Demo**：统一使用 `PingFang SC`。Button、Input、MessageBubble、LiveWaveform、Sheet 等组件预览必须落到这个字体栈，不能被文档站展示字体污染。
+- **Docs / Studio / Landing 等非规范展示 UI**：中文使用 `GlowSans SC`，英文使用 `PhonicTrial`，代码和等宽信息使用 `SaansMono-TRIAL`。
+- **代码块、token 名、route、props**：统一使用 `SaansMono-TRIAL`；不可混用组件字体。
+
+组件字体栈：
 
 ```css
 'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif
 ```
+
+文档展示字体栈：
+
+```css
+--font-component: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+--font-display-cn: 'GlowSans SC', 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
+--font-display-en: 'PhonicTrial', 'GlowSans SC', 'PingFang SC', sans-serif;
+--font-mono: 'SaansMono-TRIAL', 'SFMono-Regular', Consolas, monospace;
+```
+
+规范文案中如果写 `PingFang SC`，实际组件预览也必须使用 `--font-component`。文档页导航、首页 Hero、说明段落可以使用展示字体，但组件容器内部不能继承展示字体。
 
 ### 富文本字号
 

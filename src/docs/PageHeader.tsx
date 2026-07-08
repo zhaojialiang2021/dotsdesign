@@ -9,7 +9,7 @@ import { type ReactNode } from 'react'
  *    Foundations / Components / Patterns 子页 / AI Workflows / Changelog / Tokens / Pages / Writing
  *
  * 2. <DocsHero>            —— 入口页用。h1 = 36-44px，subtitle 17px。
- *    DocsHome / Manifesto / Patterns 索引 / 404
+ *    DocsHome / Patterns 索引 / 404
  *
  * 选用规则：详情页用 PageHeader，引导/概览页用 Hero。两者字号梯度有意拉开。
  */

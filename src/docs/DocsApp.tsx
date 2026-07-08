@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
-import { useHash, parseDocsRoute } from './router'
+import { navigate, useHash, parseDocsRoute } from './router'
 import { DocsLayout } from './DocsLayout'
 // LandingPage 是首屏关键路径，保持同步
 import { LandingPage } from './pages/LandingPage'
@@ -20,10 +20,8 @@ const ComponentPage = lazy(() =>
   import('./pages/ComponentPage').then((m) => ({ default: m.ComponentPage })),
 )
 const PagePage = lazy(() => import('./pages/PagePage').then((m) => ({ default: m.PagePage })))
-const ManifestoPage = lazy(() =>
-  import('./pages/ManifestoPage').then((m) => ({ default: m.ManifestoPage })),
-)
 const PatternsPage = lazy(() => import('./pages/PatternsPage').then((m) => ({ default: m.PatternsPage })))
+const ReportsPage = lazy(() => import('./pages/ReportsPage').then((m) => ({ default: m.ReportsPage })))
 const AIWorkflowsPage = lazy(() =>
   import('./pages/AIWorkflowsPage').then((m) => ({ default: m.AIWorkflowsPage })),
 )
@@ -44,6 +42,12 @@ export function DocsApp() {
   const hash = useHash()
   const route = parseDocsRoute(hash)
   const prevPathRef = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (hash === '#/docs/patterns/conversation-streaming') {
+      navigate('/docs/reports/conversation-streaming')
+    }
+  }, [hash])
 
   // 路由变化时回到顶部 + 写入访问历史
   useEffect(() => {
@@ -85,13 +89,13 @@ export function DocsApp() {
       <Suspense fallback={<PageFallback />}>
         {route.kind === 'home' && <LandingPage />}
         {route.kind === 'intro' && <DocsHome />}
-        {route.kind === 'manifesto' && <ManifestoPage />}
         {route.kind === 'workflow' && <WorkflowPage />}
         {route.kind === 'foundations' && <FoundationsPage sub={route.sub} />}
         {route.kind === 'principles' && <PrinciplesPage />}
         {route.kind === 'haptics' && <HapticsPage />}
         {route.kind === 'component' && <ComponentPage slug={route.slug} />}
         {route.kind === 'patterns' && <PatternsPage slug={route.slug} />}
+        {route.kind === 'report' && <ReportsPage slug={route.slug} />}
         {route.kind === 'ai-workflows' && <AIWorkflowsPage />}
         {route.kind === 'changelog' && <ChangelogPage />}
         {route.kind === 'pitch' && <PitchPage />}

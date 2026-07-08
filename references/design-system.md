@@ -191,11 +191,21 @@ Dots 设计系统的底层逻辑是 Harness Engineering：给 AI 搭一套可执
 ## 3. 字体体系
 
 ### 3.1 字体栈
-组件规范统一使用 PingFang SC。
+组件规范、Dots App UI、页面 demo 统一使用 PingFang SC。文档站首页、导航和说明文字可以使用展示字体，但不能影响组件预览内部。
 
 ```css
 font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
 ```
+
+Docs / Studio / Landing 等非规范展示 UI 使用独立字体边界：
+
+```css
+--font-display-cn: 'GlowSans SC', 'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif;
+--font-display-en: 'PhonicTrial', 'GlowSans SC', 'PingFang SC', sans-serif;
+--font-mono: 'SaansMono-TRIAL', 'SFMono-Regular', Consolas, monospace;
+```
+
+规则：组件页的真实组件、Dotted 页面 demo、MessageBubble、Button、Input、LiveWaveform、Sheet 必须使用 PingFang SC。看到「组件」或「页面 demo」就回到组件字体栈，不跟随文档展示字体。
 
 ### 3.2 富文本字号规范
 

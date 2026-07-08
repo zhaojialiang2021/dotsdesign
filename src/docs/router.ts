@@ -18,7 +18,7 @@ export function navigate(path: string) {
   window.location.hash = path
 }
 
-export type Area = 'system' | 'writing' | 'landing'
+export type Area = 'system' | 'reports' | 'writing' | 'landing'
 
 export type FoundationSub = 'color' | 'typography' | 'spacing' | 'radius' | 'motion'
 
@@ -27,12 +27,12 @@ export type DocsRoute =
   | { kind: 'home' }
   // System 区
   | { kind: 'intro' }
-  | { kind: 'manifesto' }
   | { kind: 'foundations'; sub: FoundationSub }
   | { kind: 'principles' }
   | { kind: 'haptics' }
   | { kind: 'component'; slug: string }
   | { kind: 'patterns'; slug?: string }
+  | { kind: 'report'; slug: string }
   | { kind: 'ai-workflows' }
   | { kind: 'workflow' }
   | { kind: 'pitch' }
@@ -49,6 +49,8 @@ export function getRouteArea(route: DocsRoute): Area {
   switch (route.kind) {
     case 'home':
       return 'landing'
+    case 'report':
+      return 'reports'
     case 'writing':
     case 'writing-index':
       return 'writing'
@@ -60,13 +62,14 @@ export function getRouteArea(route: DocsRoute): Area {
 
 // hash 形态：
 //   #/docs                              → home
-//   #/docs/manifesto                    → manifesto
+//   #/docs/manifesto                    → intro（旧链接兼容）
 //   #/docs/foundations/color            → foundations sub
 //   #/docs/principles                   → principles
 //   #/docs/haptics                      → haptics
 //   #/docs/components/<slug>            → component
 //   #/docs/patterns                     → patterns 索引
 //   #/docs/patterns/<slug>              → patterns 子页
+//   #/docs/reports/<slug>               → 项目demo
 //   #/docs/ai-workflows                 → ai-workflows
 //   #/docs/workflow                     → workflow (协作管线)
 //   #/docs/changelog                    → changelog
@@ -81,7 +84,7 @@ export function parseDocsRoute(hash: string): DocsRoute {
   const [head, sub] = parts
 
   if (head === 'intro') return { kind: 'intro' }
-  if (head === 'manifesto') return { kind: 'manifesto' }
+  if (head === 'manifesto') return { kind: 'intro' }
   if (head === 'foundations') {
     const valid: FoundationSub[] = ['color', 'typography', 'spacing', 'radius', 'motion']
     const s = (valid.includes(sub as FoundationSub) ? sub : 'color') as FoundationSub
@@ -91,6 +94,8 @@ export function parseDocsRoute(hash: string): DocsRoute {
   if (head === 'principles') return { kind: 'principles' }
   if (head === 'haptics') return { kind: 'haptics' }
   if (head === 'components' && sub) return { kind: 'component', slug: sub }
+  if (head === 'reports' && sub) return { kind: 'report', slug: sub }
+  if (head === 'patterns' && sub === 'conversation-streaming') return { kind: 'report', slug: sub }
   if (head === 'patterns') return { kind: 'patterns', slug: sub }
   if (head === 'ai-workflows') return { kind: 'ai-workflows' }
   if (head === 'workflow') return { kind: 'workflow' }

@@ -62,17 +62,30 @@ export const pages: PageMeta[] = [
 
 // === Patterns（v1 四个）===
 export type PatternMeta = {
-  slug: 'empty' | 'loading' | 'permission' | 'error'
+  slug: 'empty' | 'loading' | 'permission' | 'error' | 'conversation-timestamp'
   name: string
   desc: string
   status: 'placeholder' | 'draft' | 'complete'
 }
 
 export const patterns: PatternMeta[] = [
+  { slug: 'conversation-timestamp', name: '对话时间戳', desc: '消息流里什么时候露出时间，什么时候收起时间', status: 'draft' },
   { slug: 'empty', name: '空状态', desc: '没有内容时怎么呈现 —— AI 最容易忘记的状态', status: 'placeholder' },
   { slug: 'loading', name: '加载态', desc: '骨架屏 / 加载条 / 占位 —— 决定首屏感知速度', status: 'placeholder' },
   { slug: 'permission', name: '权限态', desc: '没登录 / 没付费 / 缺权限 —— 必须留有出口', status: 'placeholder' },
   { slug: 'error', name: '错误态', desc: '网络断 / 接口挂 / 数据脏 —— 给用户能动的下一步', status: 'placeholder' },
+]
+
+// === 项目demo ===
+export type ReportDemoMeta = {
+  slug: 'conversation-streaming'
+  name: string
+  desc: string
+  status: 'placeholder' | 'draft' | 'complete'
+}
+
+export const reportDemos: ReportDemoMeta[] = [
+  { slug: 'conversation-streaming', name: '回答loading新增长思考模式', desc: 'AI 回答前的思考态和回答中的流式输出', status: 'draft' },
 ]
 
 // === Writing（5 篇思考）===

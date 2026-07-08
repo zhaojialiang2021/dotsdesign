@@ -1,4 +1,4 @@
-import { components, pages, patterns, writings } from './manifest'
+import { components, pages, patterns, reportDemos, writings } from './manifest'
 import { navigate, type DocsRoute } from './router'
 import { Icon } from './icons'
 import { useT } from './useLocale'
@@ -13,7 +13,6 @@ function buildSequence(): Item[] {
   const seq: Item[] = []
   // System 区
   seq.push({ href: '/docs/intro', label: '关于 / Introduction' })
-  seq.push({ href: '/docs/manifesto', label: 'Manifesto' })
   seq.push({ href: '/docs/workflow', label: '设计工作流 / Workflow' })
 
   for (const sub of ['color', 'typography', 'spacing', 'radius', 'motion'] as const) {
@@ -33,6 +32,10 @@ function buildSequence(): Item[] {
   seq.push({ href: '/docs/patterns', label: 'Patterns' })
   for (const p of patterns) {
     seq.push({ href: `/docs/patterns/${p.slug}`, label: p.name })
+  }
+
+  for (const p of reportDemos) {
+    seq.push({ href: `/docs/reports/${p.slug}`, label: p.name })
   }
 
   seq.push({ href: '/docs/ai-workflows', label: 'AI Workflows' })
@@ -57,8 +60,6 @@ function routeToHref(route: DocsRoute): string | null {
       return '/docs'
     case 'intro':
       return '/docs/intro'
-    case 'manifesto':
-      return '/docs/manifesto'
     case 'workflow':
       return '/docs/workflow'
     case 'foundations':
@@ -71,6 +72,8 @@ function routeToHref(route: DocsRoute): string | null {
       return `/docs/components/${route.slug}`
     case 'patterns':
       return route.slug ? `/docs/patterns/${route.slug}` : '/docs/patterns'
+    case 'report':
+      return `/docs/reports/${route.slug}`
     case 'ai-workflows':
       return '/docs/ai-workflows'
     case 'changelog':
@@ -91,6 +94,8 @@ export function PageFooter({ route }: { route: DocsRoute }) {
   if (route.kind === 'writing' && 'slug' in route && route.slug) return null
   // Landing 页不显示页脚导航（自身是入口）
   if (route.kind === 'home') return null
+  // 项目 demo 是独立汇报面板，不显示文档页上一页/下一页导航。
+  if (route.kind === 'report') return null
   const href = routeToHref(route)
   if (!href) return null
   const seq = buildSequence()

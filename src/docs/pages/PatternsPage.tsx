@@ -4,11 +4,13 @@ import { navigate } from '../router'
 import { Icon } from '../icons'
 import { NotFoundPage } from './NotFoundPage'
 import { DocsPageHeader, DocsHero } from '../PageHeader'
+import { DottedDemoScreen } from '../../screens/DottedDemoScreen'
 
 type PatternSlug = (typeof patterns)[number]['slug']
+type BasicPatternSlug = Exclude<PatternSlug, 'conversation-timestamp'>
 
 const CONTENT: Record<
-  PatternSlug,
+  BasicPatternSlug,
   {
     title: string
     eyebrow: string
@@ -158,7 +160,8 @@ export function PatternsPage({ slug }: { slug?: string }) {
 
   const meta = patterns.find((p) => p.slug === slug)
   if (!meta) return <NotFoundPage path={`patterns/${slug}`} />
-  const c = CONTENT[slug as PatternSlug]
+  if (slug === 'conversation-timestamp') return <ConversationTimestampPage />
+  const c = CONTENT[slug as BasicPatternSlug]
   if (!c) return <NotFoundPage path={`patterns/${slug}`} />
 
   return (
@@ -193,6 +196,86 @@ export function PatternsPage({ slug }: { slug?: string }) {
           </div>
         </div>
       </Section>
+    </>
+  )
+}
+
+const timestampLogic = [
+  ['会话首条消息', '显示完整日期或「今天 HH:mm」', '让用户知道这段对话从什么时候开始。'],
+  ['两条消息间隔 < 15 分钟', '不重复显示时间戳', '连续阅读不被打断。'],
+  ['两条消息间隔 >= 15 分钟', '在下一条消息前插入时间戳', '标记上下文发生过暂停。'],
+  ['跨天', '显示「昨天 / 周几 / 日期」', '避免只看 HH:mm 时误判发生日期。'],
+  ['发送中新消息', '不提前插入未来时间戳', '等消息进入流后按真实 createdAt 计算。'],
+]
+
+function ConversationTimestampPage() {
+  return (
+    <>
+      <DocsPageHeader
+        title="对话时间戳能力"
+        subtitle="把时间戳从装饰文字变成 Conversation Flow 的规则：只在用户需要重新定位上下文时出现。"
+        meta={
+          <>
+            <span>Pattern <strong>Conversation Flow</strong></span>
+            <span>状态 <strong>draft</strong></span>
+          </>
+        }
+      />
+
+      <section className="docs-timestamp-hero">
+        <div className="docs-timestamp-phone" aria-label="点点对话页时间戳 demo">
+          <DottedDemoScreen />
+        </div>
+
+        <div className="docs-timestamp-brief">
+          <p className="docs-timestamp-brief__eyebrow">Design Decision</p>
+          <h2>时间戳不是消息，也不是分割线</h2>
+          <p>
+            左侧直接使用点点对话页基座和真实消息气泡。时间戳是对话流的弱锚点：居中、低对比、不占用气泡角色。用户连续对话时不打断阅读，
+            只有当时间间隔让上下文可能断开时才出现。
+          </p>
+          <div className="docs-timestamp-checks">
+            <span>13px dialog-time</span>
+            <span>Placeholder 色</span>
+            <span>不带背景</span>
+            <span>不响应点击</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="docs-section-block">
+        <h2 className="docs-section-block__heading">插入逻辑</h2>
+        <p className="docs-section-block__subheading">
+          这张表是给 agent 和开发看的判断规则。页面渲染只接收排序后的消息事件，不在样式层猜时间。
+        </p>
+        <div className="docs-timestamp-table">
+          {timestampLogic.map(([condition, behavior, reason]) => (
+            <div className="docs-timestamp-row" key={condition}>
+              <div className="docs-timestamp-row__condition">{condition}</div>
+              <div className="docs-timestamp-row__behavior">{behavior}</div>
+              <div className="docs-timestamp-row__reason">{reason}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="docs-section-block">
+        <h2 className="docs-section-block__heading">结构约束</h2>
+        <div className="docs-timestamp-rules">
+          <div>
+            <strong>时间戳作为 stream item</strong>
+            <p>数据层类型为 `time`，和 `message`、`ai-card` 同级，不能塞进任意一条消息气泡内部。</p>
+          </div>
+          <div>
+            <strong>样式沿用 MessageBubble 规范</strong>
+            <p>对话左右 padding 仍是 12px；时间戳居中，使用 `dialog-time` 和 `Placeholder`，不新增颜色。</p>
+          </div>
+          <div>
+            <strong>滚动规则不变</strong>
+            <p>键盘拉起、发送新消息、语音识别完成后仍滚动到底部；时间戳跟随消息流自然滚动。</p>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
@@ -265,4 +348,3 @@ function Section({
     </section>
   )
 }
-

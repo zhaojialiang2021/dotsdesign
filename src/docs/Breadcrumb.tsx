@@ -1,4 +1,4 @@
-import { components, pages, patterns, writings } from './manifest'
+import { components, pages, patterns, reportDemos, writings } from './manifest'
 import { navigate, type DocsRoute } from './router'
 import { useT } from './useLocale'
 import { Icon } from './icons'
@@ -11,8 +11,6 @@ function buildCrumbs(route: DocsRoute, t: Translator): Crumb[] {
   switch (route.kind) {
     case 'home':
       return [{ label: t('area.system') }, { label: t('nav.intro') }]
-    case 'manifesto':
-      return [{ label: t('area.system') }, { label: t('nav.manifesto') }]
     case 'workflow':
       return [
         { label: t('area.system') },
@@ -60,6 +58,13 @@ function buildCrumbs(route: DocsRoute, t: Translator): Crumb[] {
       ]
       if (p) crumbs.push({ label: p.name })
       return crumbs
+    }
+    case 'report': {
+      const p = reportDemos.find((x) => x.slug === route.slug)
+      return [
+        { label: t('area.reports') },
+        { label: p?.name ?? route.slug },
+      ]
     }
     case 'ai-workflows':
       return [

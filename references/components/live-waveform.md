@@ -1,7 +1,7 @@
 ---
 status: draft
 used_by: dotted-demo, voice-input, ai-processing
-last_updated: 2026-06-24
+last_updated: 2026-06-25
 ---
 
 # LiveWaveform 实时波形
@@ -35,6 +35,44 @@ LiveWaveform 是点点语音与 AI 处理链路里的状态组件。它复刻的
 - `prefers-reduced-motion: reduce` 时，滚动波形必须退化为静态波形。
 - 所有颜色从 token 读取，不允许 hardcoded 颜色。
 - 状态由外部 props 控制；真实监听状态通过 `microphoneStatus` 或等价状态反馈给业务层。
+
+## 实时监听
+
+组件支持真实麦克风监听，但只能在用户点击后启动。实现参数必须稳定，避免不同 demo 各自发明一套监听算法。
+
+| 项 | 规格 |
+|---|---|
+| 权限入口 | 用户点击 `开始实时监听` 或业务层等价按钮 |
+| 采样 | `AudioContext` + `AnalyserNode` |
+| `fftSize` | `1024` |
+| `smoothingTimeConstant` | `0.72` |
+| media constraints | `echoCancellation` / `noiseSuppression` / `autoGainControl` 开启 |
+| 停止 | 停止所有 `MediaStreamTrack`，关闭 `AudioContext` |
+| 状态 | `idle` / `requesting` / `listening` / `stopped` / `denied` / `unsupported` / `error` |
+
+## 尺寸与密度
+
+| Size | 高度 | 用途 |
+|---|---:|---|
+| `compact` | 64px | 输入栏、对话页语音条 |
+| `regular` | 92px | 组件规范主预览 |
+| `large` | 124px | 独立录音页、强调型演示 |
+
+| Density | 柱数 | Gap | 用途 |
+|---|---:|---:|---|
+| `compact` | 36 | 5px | 小空间，稳定感优先 |
+| `comfortable` | 52 | 4px | 默认规范展示 |
+| `dense` | 72 | 3px | 需要更细颗粒度的监听反馈 |
+
+## 色彩
+
+| Tone | Active | Idle | Processing | 用途 |
+|---|---|---|---|---|
+| `brand` | `info 5` | `Separator 2` | `info 6` | 默认浅底语音状态 |
+| `ink` | `Title` | `Description Lighter` | `Paragraph` | 文本密集或低彩场景 |
+| `inverse` | `Bg Light` | `Separator 4` | `Bg Light` | 深色、图片或反色背景 |
+
+`listening` 的波形可以实时变化，语音输入条本身的入场/出场只做颜色和透明度过渡，不做弹跳位移，避免让用户误解控件位置发生变化。
 
 ## 何时使用
 

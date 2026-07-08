@@ -22,7 +22,6 @@ function levenshtein(a: string, b: string): number {
 function buildAllPaths(): Array<{ href: string; label: string }> {
   const out: Array<{ href: string; label: string }> = [
     { href: '/docs', label: '介绍 / Introduction' },
-    { href: '/docs/manifesto', label: 'Manifesto' },
     { href: '/docs/workflow', label: '设计工作流' },
     { href: '/docs/principles', label: '设计原则' },
     { href: '/docs/haptics', label: '触觉反馈' },
