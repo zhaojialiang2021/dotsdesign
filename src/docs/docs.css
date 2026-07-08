@@ -4643,6 +4643,7 @@ body.pitch-mode .docs-main__inner {
   width: 100%;
   gap: 44px;
   align-items: center;
+  justify-items: center;
   margin: 0 0 56px;
 }
 
@@ -5009,8 +5010,17 @@ body.pitch-mode .docs-main__inner {
 }
 
 @media (max-width: 860px) {
+  .docs-report-demo-shell {
+    justify-content: center;
+  }
+
   .docs-timestamp-hero {
     grid-template-columns: 1fr;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    gap: 32px;
+    margin: 0;
   }
 
   .docs-timestamp-phone {

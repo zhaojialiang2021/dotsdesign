@@ -2445,6 +2445,7 @@ body.is-preview *::-webkit-scrollbar {
   margin: 0 auto;
   overflow: hidden;
   background: var(--dots-bg);
+  box-shadow: 0 0 0 8px #ffffff;
   font-family: var(--font-component);
   border-radius: 48px;
   corner-shape: squircle;
