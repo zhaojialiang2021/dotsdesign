@@ -40,6 +40,8 @@ export type DottedDemoMode = 'default' | 'streaming-reply'
 export type DottedDemoStep = 'thinking' | 'judging-think' | 'context' | 'think' | 'toolcall' | 'think-compact' | 'toolcall-search' | 'think-plan' | 'response' | 'complete'
 export type DottedThinkingTransitionStyle = 'soft' | 'float' | 'blur' | 'breathe'
 export type DottedStreamingVariant = 'default' | 'span-mask'
+export type DottedToolNoteDisplayVariant = 'consistent' | 'preview-detail'
+export type DottedThinkingDisplayVariant = 'single' | 'stacked'
 type DottedProcessKind = 'think' | 'toolcall' | 'thinkCompact' | 'toolcallSearch' | 'thinkPlan'
 
 type DotsHistoryMessage = {
@@ -62,6 +64,7 @@ type DotsHistoryMessage = {
   previousDeepThinkingTitle?: string
   previousDeepThinkingBody?: string
   previousDeepThinkingKind?: DottedProcessKind
+  thinkingDisplayVariant?: DottedThinkingDisplayVariant
   isFinalResponse?: boolean
   isFinalResponseComplete?: boolean
 }
@@ -69,9 +72,11 @@ type DotsHistoryMessage = {
 type DotsHistoryItem = DotsHistoryMessage
 type DottedSheetMode = 'thinking' | 'sources'
 
-const getDeepThinkingWidth = (kind: DottedProcessKind | undefined, progress = 1) => (
-  kind === 'thinkCompact' ? 52 + 180 * progress : 52 + 309 * progress
+const getDeepThinkingWidth = (kind: DottedProcessKind | undefined) => (
+  kind === 'thinkCompact' ? 232 : 361
 )
+
+const processKindOrder: DottedProcessKind[] = ['think', 'toolcall', 'thinkCompact', 'toolcallSearch', 'thinkPlan']
 
 type DottedProcessRow = {
   kind?: DottedProcessKind
@@ -106,6 +111,26 @@ const searchToolCallBodyText = [
   '网页｜携程：上海嘉佩乐酒店住上5层独栋小楼了！',
   '更多内容检索中...',
 ].join('\n')
+const searchToolCallPreviewItems = [
+  {
+    title: '古北 老钱 希尔顿 三合一体验',
+    author: 'Linksphotograph',
+    likes: '2765',
+    image: sourceImage1,
+    logo: sourceLogoAlice,
+  },
+  {
+    title: '上海璞丽酒店入住体验',
+    author: 'sailormmoon',
+    likes: '634',
+    image: sourceImageSailormmoon1,
+    logo: sourceLogoSailormmoon,
+  },
+] as const
+const searchToolCallWebItems = [
+  '马蜂窝：上海宝格丽｜心目中无法被超越的上海奢华酒店No.1',
+  '携程：上海嘉佩乐酒店住上5层独栋小楼了！',
+] as const
 const planThinkTitleText = '现在为用户创建一份3天的奢华行程安排'
 const planThinkBodyText = '包括宝格丽酒店住宿、Ultraviolet晚餐和新荣记等高端体验，核心思路不是“景点打卡”，而是：老上海建筑肌理 + 当代艺术 + 顶级酒店体验 + 私人专车 + 稀缺餐厅。'
 const finalResponseText = [
@@ -162,6 +187,20 @@ function getDeepThinkingTargetBody(kind: DottedProcessKind | undefined) {
   if (kind === 'thinkPlan') return planThinkBodyText
   if (kind === 'thinkCompact') return ''
   return deepThinkingBodyText
+}
+
+function getDeepThinkingAnimationUrl(kind: DottedProcessKind | undefined) {
+  if (kind === 'toolcallSearch') return thinkGlassAnimationUrl
+  if (kind === 'toolcall') return thinkPenAnimationUrl
+  return thinkCloudAnimationUrl
+}
+
+function getStackDetailTargetHeight(kind: DottedProcessKind | undefined, toolNoteDisplayVariant: DottedToolNoteDisplayVariant) {
+  if (kind === 'toolcall') return 108
+  if (kind === 'toolcallSearch') return toolNoteDisplayVariant === 'preview-detail' ? 28 : 90
+  if (kind === 'thinkPlan') return 72
+  if (kind === 'thinkCompact') return 0
+  return 72
 }
 
 function getTailOpacity({
@@ -274,6 +313,7 @@ const planThinkTitleCharacters = Array.from(planThinkTitleText)
 const planThinkBodyCharacters = Array.from(planThinkBodyText)
 const finalResponseCharacters = Array.from(finalResponseText)
 const processTransitionDelayMs = 1000
+const responseStartDelayMs = 420
 
 const thinkingStages = [
   { label: '判断中...', animationUrl: thinkCloudAnimationUrl },
@@ -354,12 +394,80 @@ function DottedToolSearchRows({
   )
 }
 
+function DottedToolSearchPreviewRows({
+  className,
+  visibleCount = 3,
+}: {
+  className?: string
+  visibleCount?: number
+}) {
+  const normalizedVisibleCount = Math.max(0, Math.min(3, visibleCount))
+
+  return (
+    <span className={['dotted-demo__thinking-search-list', 'dotted-demo__thinking-search-list--preview', className].filter(Boolean).join(' ')}>
+      {normalizedVisibleCount >= 1 ? (
+        <span className="dotted-demo__thinking-search-pill">
+          <span className="dotted-demo__thinking-search-avatar-stack" aria-hidden="true">
+            <img src={sourceLogoAlice} alt="" />
+            <img src={sourceLogoSailormmoon} alt="" />
+            <img src={sourceLogoYt} alt="" />
+          </span>
+          <span>小红书笔记</span>
+        </span>
+      ) : null}
+      {normalizedVisibleCount >= 2 ? (
+        <span className="dotted-demo__thinking-search-pill">
+          <img src={thinkInternet} alt="" aria-hidden="true" />
+          <span>携程网</span>
+        </span>
+      ) : null}
+      {normalizedVisibleCount >= 3 ? (
+        <span className="dotted-demo__thinking-search-pill">
+          <img src={thinkInternet} alt="" aria-hidden="true" />
+          <span>马蜂窝</span>
+        </span>
+      ) : null}
+    </span>
+  )
+}
+
+function DottedToolSearchDetailCards() {
+  return (
+    <span className="dotted-demo__thinking-search-detail">
+      {searchToolCallPreviewItems.map((item) => (
+        <span className="dotted-demo__thinking-search-detail-card" key={item.title}>
+          <img className="dotted-demo__thinking-search-detail-thumb" src={item.image} alt="" aria-hidden="true" />
+          <span className="dotted-demo__thinking-search-detail-copy">
+            <span className="dotted-demo__thinking-search-detail-title">{item.title}</span>
+            <span className="dotted-demo__thinking-search-detail-meta">
+              <img src={item.logo} alt="" aria-hidden="true" />
+              <span>{item.author}</span>
+            </span>
+          </span>
+          <span className="dotted-demo__thinking-search-detail-like">♡ {item.likes}</span>
+        </span>
+      ))}
+      {searchToolCallWebItems.map((item) => (
+        <span className="dotted-demo__thinking-search-detail-web" key={item}>
+          <img src={thinkInternet} alt="" aria-hidden="true" />
+          <span>{item}</span>
+        </span>
+      ))}
+      <span className="dotted-demo__thinking-search-detail-more">展示更多 23 条内容</span>
+    </span>
+  )
+}
+
 function DottedDeepThinkingContent({
   item,
   streamingVariant,
+  toolNoteDisplayVariant,
+  thinkingDisplayVariant,
 }: {
   item: DotsHistoryMessage
   streamingVariant: DottedStreamingVariant
+  toolNoteDisplayVariant: DottedToolNoteDisplayVariant
+  thinkingDisplayVariant: DottedThinkingDisplayVariant
 }) {
   const useTailOpacity = streamingVariant === 'span-mask'
   const visibleTitle = item.deepThinkingTitle ?? ''
@@ -369,6 +477,96 @@ function DottedDeepThinkingContent({
   const titleComplete = countCharacters(visibleTitle) >= countCharacters(targetTitle)
   const bodyComplete = countCharacters(visibleBody) >= countCharacters(targetBody)
   const shouldShowBody = !useTailOpacity || titleComplete
+
+  if (thinkingDisplayVariant === 'stacked' && item.deepThinkingKind) {
+    const activeIndex = processKindOrder.indexOf(item.deepThinkingKind)
+    const visibleProcessKinds = processKindOrder.slice(0, Math.max(activeIndex + 1, 1))
+
+    return (
+      <span className="dotted-demo__thinking-stack">
+        {visibleProcessKinds.map((kind) => {
+          const isActive = kind === item.deepThinkingKind
+          const rowTitle = isActive ? visibleTitle : getDeepThinkingTargetTitle(kind)
+          const rowBody = isActive ? visibleBody : getDeepThinkingTargetBody(kind)
+          const rowTargetTitle = getDeepThinkingTargetTitle(kind)
+          const rowTargetBody = getDeepThinkingTargetBody(kind)
+          const rowTitleComplete = countCharacters(rowTitle) >= countCharacters(rowTargetTitle)
+          const rowBodyComplete = countCharacters(rowBody) >= countCharacters(rowTargetBody)
+          const rowShouldShowBody = isActive && (!useTailOpacity || rowTitleComplete)
+          const rowBodyProgress = rowTargetBody ? Math.min(1, countCharacters(rowBody) / countCharacters(rowTargetBody)) : rowShouldShowBody ? 1 : 0
+          const detailTargetHeight = getStackDetailTargetHeight(kind, toolNoteDisplayVariant)
+          const hasDetailContent = kind === 'toolcallSearch' || Boolean(rowTargetBody)
+          const shouldRenderDetail = hasDetailContent && kind !== 'thinkCompact'
+          const detailMinHeight = kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? 28 : 18
+          const detailHeight = rowShouldShowBody && shouldRenderDetail ? Math.max(detailMinHeight, Math.ceil(detailTargetHeight * rowBodyProgress)) : 0
+          const searchPreviewPillCount = rowShouldShowBody ? Math.min(3, Math.max(1, Math.ceil(rowBodyProgress * 3))) : 0
+
+          return (
+            <span
+              className={[
+                'dotted-demo__thinking-stack-row',
+                isActive ? 'dotted-demo__thinking-stack-row--active' : 'dotted-demo__thinking-stack-row--collapsed',
+                kind === 'toolcallSearch' ? 'dotted-demo__thinking-stack-row--search' : '',
+              ].filter(Boolean).join(' ')}
+              key={kind}
+            >
+              <span className="dotted-demo__thinking-stack-icon" aria-hidden="true">
+                <DottedLottieAnimation
+                  src={getDeepThinkingAnimationUrl(kind)}
+                  className="dotted-demo__thinking-stack-lottie"
+                  play={isActive}
+                />
+              </span>
+              <span className="dotted-demo__thinking-stack-content">
+                <span className="dotted-demo__thinking-stack-title">
+                  <DottedStreamingSpanText
+                    text={rowTitle}
+                    spanKey={`${item.id}-${kind}-title`}
+                    enabled={useTailOpacity && isActive}
+                    totalVisibleCharacters={countCharacters(rowTitle)}
+                    complete={!isActive || rowTitleComplete}
+                  />
+                </span>
+                {shouldRenderDetail ? (
+                  <span
+                    className={[
+                      'dotted-demo__thinking-stack-detail',
+                      rowShouldShowBody ? 'dotted-demo__thinking-stack-detail--open' : 'dotted-demo__thinking-stack-detail--closed',
+                    ].join(' ')}
+                    style={{ '--thinking-stack-detail-height': `${detailHeight}px` } as CSSProperties}
+                  >
+                    {kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
+                      <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
+                    ) : kind === 'toolcallSearch' ? (
+                      <DottedToolSearchRows
+                        text={rowBody}
+                        streamingVariant={streamingVariant}
+                        totalVisibleCharacters={countCharacters(rowBody)}
+                        complete={rowBodyComplete}
+                        className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined}
+                      />
+                    ) : (
+                      <span className={['dotted-demo__thinking-stack-body', useTailOpacity ? 'dotted-demo__stream-tail-delayed' : ''].filter(Boolean).join(' ')}>
+                        <DottedStreamingSpanText
+                          text={rowBody}
+                          spanKey={`${item.id}-${kind}-body`}
+                          enabled={useTailOpacity}
+                          totalVisibleCharacters={countCharacters(rowBody)}
+                          complete={rowBodyComplete}
+                        />
+                      </span>
+                    )}
+                  </span>
+                ) : null}
+              </span>
+            </span>
+          )
+        })}
+      </span>
+    )
+  }
+
+  const searchPreviewPillCount = shouldShowBody ? Math.min(3, Math.max(1, Math.ceil((targetBody ? countCharacters(visibleBody) / countCharacters(targetBody) : 1) * 3))) : 0
 
   return (
     <>
@@ -381,7 +579,9 @@ function DottedDeepThinkingContent({
           complete={titleComplete}
         />
       </span>
-      {shouldShowBody && item.deepThinkingKind === 'toolcallSearch' ? (
+      {shouldShowBody && item.deepThinkingKind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
+        <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
+      ) : shouldShowBody && item.deepThinkingKind === 'toolcallSearch' ? (
         <DottedToolSearchRows
           text={visibleBody}
           streamingVariant={streamingVariant}
@@ -453,6 +653,8 @@ function DottedChatStream({
   onThinkingClick,
   thinkingTransitionStyle = 'soft',
   streamingVariant = 'default',
+  toolNoteDisplayVariant = 'consistent',
+  thinkingDisplayVariant = 'single',
 }: {
   items: DotsHistoryItem[]
   streamRef?: RefObject<HTMLDivElement | null>
@@ -460,6 +662,8 @@ function DottedChatStream({
   onThinkingClick?: () => void
   thinkingTransitionStyle?: DottedThinkingTransitionStyle
   streamingVariant?: DottedStreamingVariant
+  toolNoteDisplayVariant?: DottedToolNoteDisplayVariant
+  thinkingDisplayVariant?: DottedThinkingDisplayVariant
 }) {
   const useSpanMask = streamingVariant === 'span-mask'
   const handleThinkingKeyDown = (event: ReactKeyboardEvent<HTMLSpanElement>) => {
@@ -504,6 +708,7 @@ function DottedChatStream({
                   item.deepThinkingKind === 'thinkCompact' ? 'dotted-demo__thinking--think-compact' : '',
                   item.deepThinkingKind === 'toolcallSearch' ? 'dotted-demo__thinking--toolcall-search' : '',
                   item.deepThinkingKind === 'thinkPlan' ? 'dotted-demo__thinking--think-plan' : '',
+                  item.thinkingDisplayVariant === 'stacked' ? 'dotted-demo__thinking--stacked' : '',
                   item.isDeepThinkingTitleComplete ? 'dotted-demo__thinking--deep-title-complete' : '',
                   useSpanMask ? 'dotted-demo__thinking--tail-stream' : '',
                 ].filter(Boolean).join(' ')}
@@ -515,7 +720,7 @@ function DottedChatStream({
                 style={
                   item.isDeepThinking
                     ? ({
-                        '--thinking-deep-width': `${getDeepThinkingWidth(item.deepThinkingKind, item.deepThinkingTitleProgress ?? 0)}px`,
+                        '--thinking-deep-width': `${thinkingDisplayVariant === 'stacked' ? 361 : getDeepThinkingWidth(item.deepThinkingKind)}px`,
                       } as CSSProperties)
                     : item.isJudging
                     ? ({
@@ -530,7 +735,12 @@ function DottedChatStream({
                   className="dotted-demo__thinking-lottie"
                 />
                 {item.isDeepThinking ? (
-                  <DottedDeepThinkingContent item={item} streamingVariant={streamingVariant} />
+                  <DottedDeepThinkingContent
+                    item={item}
+                    streamingVariant={streamingVariant}
+                    toolNoteDisplayVariant={toolNoteDisplayVariant}
+                    thinkingDisplayVariant={thinkingDisplayVariant}
+                  />
                 ) : (
                   item.isJudging && (
                     <span className="dotted-demo__thinking-copy">
@@ -640,7 +850,7 @@ function DottedFinalResponseCard({
     <article className="dotted-demo__response-card" aria-label="Dots 最终回答">
       <div className="dotted-demo__response-main">
         <button className="dotted-demo__response-status" type="button" onClick={onSourcesClick}>
-          <span>参考小红书与全网内容</span>
+          <span>已思考完成，参考小红书与全网内容</span>
           <span className="dotted-demo__response-avatars" aria-hidden="true">
             <img src={thinkResponseAvatar1} alt="" />
             <img src={thinkResponseAvatar2} alt="" />
@@ -732,6 +942,7 @@ function DottedSourcesSheet({
   currentThinkingTitle,
   currentThinkingBody,
   isThinkingComplete,
+  toolNoteDisplayVariant = 'consistent',
 }: {
   mode: DottedSheetMode
   onClose: () => void
@@ -739,6 +950,7 @@ function DottedSourcesSheet({
   currentThinkingTitle: string
   currentThinkingBody: string
   isThinkingComplete: boolean
+  toolNoteDisplayVariant?: DottedToolNoteDisplayVariant
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [expandedProcessIndexes, setExpandedProcessIndexes] = useState<number[]>([])
@@ -919,7 +1131,9 @@ function DottedSourcesSheet({
                       </span>
                       {(mode === 'thinking' || isRowExpanded) && row.detail && (
                         <span className="dotted-demo__process-detail-motion">
-                          {row.kind === 'toolcallSearch' ? (
+                          {row.kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
+                            <DottedToolSearchDetailCards />
+                          ) : row.kind === 'toolcallSearch' ? (
                             <DottedToolSearchRows text={row.detail} />
                           ) : (
                             <span className="dotted-demo__process-detail">
@@ -1028,6 +1242,8 @@ export function DottedDemoScreen({
   onStepChange,
   thinkingTransitionStyle = 'float',
   streamingVariant = 'default',
+  toolNoteDisplayVariant = 'consistent',
+  thinkingDisplayVariant = 'single',
 }: {
   demoMode?: DottedDemoMode
   demoStep?: DottedDemoStep
@@ -1037,6 +1253,8 @@ export function DottedDemoScreen({
   onStepChange?: (step: DottedDemoStep) => void
   thinkingTransitionStyle?: DottedThinkingTransitionStyle
   streamingVariant?: DottedStreamingVariant
+  toolNoteDisplayVariant?: DottedToolNoteDisplayVariant
+  thinkingDisplayVariant?: DottedThinkingDisplayVariant
 } = {}) {
   const chatStreamRef = useRef<HTMLDivElement>(null)
   const jumpToBottomDismissedRef = useRef(false)
@@ -1146,7 +1364,7 @@ export function DottedDemoScreen({
         timers.push(window.setTimeout(typeFinalResponseCharacter, 12))
       }
 
-      typeFinalResponseCharacter()
+      timers.push(window.setTimeout(typeFinalResponseCharacter, responseStartDelayMs))
     }
     const runProcessFromKind = (kind: DottedProcessKind, titleStart = 0, bodyStart = 0) => {
       let titleCursor = titleStart
@@ -1311,6 +1529,11 @@ export function DottedDemoScreen({
             }
 
             timers.push(window.setTimeout(continueFinalResponse, 12))
+          }
+
+          if (finalResponseCursor <= 0) {
+            timers.push(window.setTimeout(continueFinalResponse, responseStartDelayMs))
+            return
           }
 
           continueFinalResponse()
@@ -1563,7 +1786,7 @@ export function DottedDemoScreen({
           timers.push(window.setTimeout(typeFinalResponseCharacter, 12))
         }
 
-        typeFinalResponseCharacter()
+        timers.push(window.setTimeout(typeFinalResponseCharacter, responseStartDelayMs))
       }, 0))
       return () => timers.forEach((timerId) => window.clearTimeout(timerId))
     }
@@ -1713,7 +1936,7 @@ export function DottedDemoScreen({
                                                                 timers.push(window.setTimeout(typeFinalResponseCharacter, 12))
                                                               }
 
-                                                              typeFinalResponseCharacter()
+                                                              timers.push(window.setTimeout(typeFinalResponseCharacter, responseStartDelayMs))
                                                             }, processTransitionDelayMs))
                                                             return
                                                           }
@@ -1898,6 +2121,7 @@ export function DottedDemoScreen({
                   previousDeepThinkingTitle: previousThinking?.title,
                   previousDeepThinkingBody: previousThinking?.body,
                   previousDeepThinkingKind: previousThinking?.kind,
+                  thinkingDisplayVariant,
                 },
               ]
             : []),
@@ -1969,6 +2193,8 @@ export function DottedDemoScreen({
             onThinkingClick={() => setActiveSheetMode('thinking')}
             thinkingTransitionStyle={thinkingTransitionStyle}
             streamingVariant={streamingVariant}
+            toolNoteDisplayVariant={toolNoteDisplayVariant}
+            thinkingDisplayVariant={thinkingDisplayVariant}
           />
         </main>
 
@@ -2006,6 +2232,7 @@ export function DottedDemoScreen({
             currentThinkingTitle={deepThinkingTitle}
             currentThinkingBody={deepThinkingBody}
             isThinkingComplete={streamingPhase === 'response' || streamingPhase === 'done'}
+            toolNoteDisplayVariant={toolNoteDisplayVariant}
             onClose={() => setActiveSheetMode(null)}
           />
         )}

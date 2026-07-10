@@ -4668,6 +4668,44 @@ body.pitch-mode .docs-main__inner {
   text-align: center;
 }
 
+.docs-report-option {
+  margin: 0 auto 22px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.docs-report-option__control {
+  padding: 2px;
+  border: 0.5px solid var(--line-non-opaque);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.docs-report-option__button {
+  min-width: 96px;
+  height: 28px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.docs-report-option__button--active {
+  background: var(--label-primary);
+  color: var(--bg-0);
+}
+
 .docs-timestamp-hero {
   display: grid;
   grid-template-columns: minmax(320px, 430px) 560px;
@@ -4683,7 +4721,6 @@ body.pitch-mode .docs-main__inner {
   height: 852px;
   border-radius: 32px;
   overflow: hidden;
-  box-shadow: var(--shadow-1);
 }
 
 .docs-timestamp-brief {

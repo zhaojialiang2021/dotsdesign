@@ -2,7 +2,7 @@ import { useCallback, useState, type CSSProperties } from 'react'
 import { reportDemos } from '../manifest'
 import { navigate } from '../router'
 import { NotFoundPage } from './NotFoundPage'
-import { DottedDemoScreen, type DottedDemoStep } from '../../screens/DottedDemoScreen'
+import { DottedDemoScreen, type DottedDemoStep, type DottedThinkingDisplayVariant, type DottedToolNoteDisplayVariant } from '../../screens/DottedDemoScreen'
 import restartIcon from '../../assets/dotted/think-response-refresh.svg'
 
 const demoSteps: Array<{ id: DottedDemoStep; label: string }> = [
@@ -32,6 +32,8 @@ function ConversationStreamingReport() {
   const [continueAfterStep, setContinueAfterStep] = useState(false)
   const [demoRunId, setDemoRunId] = useState(0)
   const [resumeSignal, setResumeSignal] = useState(0)
+  const [toolNoteDisplayVariant, setToolNoteDisplayVariant] = useState<DottedToolNoteDisplayVariant>('preview-detail')
+  const [thinkingDisplayVariant, setThinkingDisplayVariant] = useState<DottedThinkingDisplayVariant>('stacked')
 
   const jumpToStep = (step: DottedDemoStep) => {
     setPlayState('playing')
@@ -93,11 +95,51 @@ function ConversationStreamingReport() {
             resumeSignal={resumeSignal}
             onStepChange={handleStepChange}
             streamingVariant="span-mask"
+            toolNoteDisplayVariant={toolNoteDisplayVariant}
+            thinkingDisplayVariant={thinkingDisplayVariant}
           />
         </div>
 
         <aside className="docs-report-progress" aria-label="回答状态进度控制">
           <h1 className="docs-report-demo-title">回答loading新增长思考模式</h1>
+          <div className="docs-report-option" aria-label="工具调用笔记展示样式">
+            <span>工具调用的笔记展示样式</span>
+            <div className="docs-report-option__control">
+              {([
+                { id: 'consistent', label: 'A 里外一致' },
+                { id: 'preview-detail', label: 'B 外部缩略' },
+              ] as Array<{ id: DottedToolNoteDisplayVariant; label: string }>).map((variant) => (
+                <button
+                  className={toolNoteDisplayVariant === variant.id ? 'docs-report-option__button docs-report-option__button--active' : 'docs-report-option__button'}
+                  type="button"
+                  key={variant.id}
+                  onClick={() => setToolNoteDisplayVariant(variant.id)}
+                  aria-pressed={toolNoteDisplayVariant === variant.id}
+                >
+                  {variant.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="docs-report-option" aria-label="思考过程展示方式">
+            <span>思考过程展示方式</span>
+            <div className="docs-report-option__control">
+              {([
+                { id: 'single', label: '单条切换' },
+                { id: 'stacked', label: '连续堆叠' },
+              ] as Array<{ id: DottedThinkingDisplayVariant; label: string }>).map((variant) => (
+                <button
+                  className={thinkingDisplayVariant === variant.id ? 'docs-report-option__button docs-report-option__button--active' : 'docs-report-option__button'}
+                  type="button"
+                  key={variant.id}
+                  onClick={() => setThinkingDisplayVariant(variant.id)}
+                  aria-pressed={thinkingDisplayVariant === variant.id}
+                >
+                  {variant.label}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="docs-report-progress__track" style={{ '--progress': `${progressPercent}%` } as CSSProperties}>
             <div className="docs-report-progress__line" aria-hidden="true" />
             <div className="docs-report-progress__nodes">

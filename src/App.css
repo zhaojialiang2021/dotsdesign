@@ -2848,22 +2848,31 @@ body.is-preview *::-webkit-scrollbar {
   row-gap: 4px;
   align-items: start;
   transition:
-    width 560ms cubic-bezier(0.16, 0.84, 0.32, 1),
-    min-height 520ms cubic-bezier(0.16, 0.84, 0.32, 1);
-  will-change: width, min-height;
+    opacity 220ms ease-out,
+    min-height 420ms cubic-bezier(0.16, 0.84, 0.32, 1);
+  will-change: opacity, min-height;
 }
 
 .dotted-demo__thinking--deep::before {
   inset: -6px -10px;
   opacity: 0.8;
+  transition: opacity 180ms ease-out, inset 420ms cubic-bezier(0.16, 0.84, 0.32, 1);
 }
 
 .dotted-demo__thinking--transition-soft {
-  animation: dotted-demo-thinking-soft-in 520ms cubic-bezier(0.16, 0.84, 0.32, 1) both;
+  animation: dotted-demo-thinking-soft-in 260ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
+}
+
+.dotted-demo__thinking--transition-soft::before {
+  animation: dotted-demo-thinking-bg-soft-in 220ms ease-out both;
 }
 
 .dotted-demo__thinking--transition-float {
-  animation: dotted-demo-thinking-float-in 520ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
+  animation: dotted-demo-thinking-float-in 240ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
+}
+
+.dotted-demo__thinking--transition-float::before {
+  animation: dotted-demo-thinking-bg-soft-in 220ms ease-out both;
 }
 
 .dotted-demo__thinking--transition-blur {
@@ -2904,6 +2913,203 @@ body.is-preview *::-webkit-scrollbar {
   top: auto;
   grid-column: 1;
   grid-row: 1;
+}
+
+.dotted-demo__thinking--stacked {
+  min-height: 50px;
+  padding: 12px 16px 12px 8px;
+}
+
+.dotted-demo__thinking--stacked::before {
+  display: none;
+}
+
+.dotted-demo__thinking--stacked > .dotted-demo__thinking-lottie {
+  display: none;
+}
+
+.dotted-demo__thinking-stack {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  grid-column: 1 / -1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.dotted-demo__thinking-stack::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -6px -10px;
+  border-radius: 22px;
+  background: var(--dots-surface);
+  opacity: 0.8;
+  filter: blur(8px);
+  transition:
+    inset 260ms cubic-bezier(0.16, 0.84, 0.32, 1),
+    opacity 220ms ease-out;
+  pointer-events: none;
+}
+
+.dotted-demo__thinking-stack-row {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  column-gap: 0;
+  align-items: flex-start;
+}
+
+.dotted-demo__thinking-stack-row + .dotted-demo__thinking-stack-row {
+  margin-top: 0;
+}
+
+.dotted-demo__thinking-stack-row--active {
+  padding-bottom: 0;
+}
+
+.dotted-demo__thinking-stack-row--active::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 40px;
+  bottom: 0;
+  width: 1px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(20, 20, 20, 0.08) 0,
+    rgba(20, 20, 20, 0.08) 1.5px,
+    transparent 1.5px,
+    transparent 3px
+  );
+  pointer-events: none;
+}
+
+.dotted-demo__thinking-stack-row--collapsed:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 33px;
+  width: 1px;
+  height: 6px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(20, 20, 20, 0.08) 0,
+    rgba(20, 20, 20, 0.08) 1.5px,
+    transparent 1.5px,
+    transparent 3px
+  );
+  pointer-events: none;
+}
+
+.dotted-demo__thinking-stack-icon {
+  position: relative;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dotted-demo__thinking-stack-lottie {
+  width: 36px;
+  height: 36px;
+  display: block;
+  overflow: hidden;
+}
+
+.dotted-demo__thinking-stack-lottie svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.dotted-demo__thinking-stack-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.dotted-demo__thinking-stack-title {
+  width: 100%;
+  min-width: 0;
+  margin-top: 6px;
+  display: block;
+  overflow: hidden;
+  color: var(--dots-paragraph);
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0.28px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dotted-demo__thinking-stack-row--collapsed .dotted-demo__thinking-stack-title {
+  margin-top: 8px;
+  color: var(--dots-paragraph);
+  line-height: 20px;
+}
+
+.dotted-demo__thinking-stack-body {
+  width: 301px;
+  display: block;
+  overflow: hidden;
+  color: var(--dots-description);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  letter-spacing: 0.24px;
+  text-align: left;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.dotted-demo__thinking-stack-detail {
+  width: 301px;
+  max-height: var(--thinking-stack-detail-height, 0);
+  margin-top: 0;
+  display: block;
+  overflow: hidden;
+  opacity: 0;
+  transform-origin: top left;
+  transition:
+    max-height 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    margin-top 360ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 240ms ease-out,
+    transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: max-height, opacity, transform;
+}
+
+.dotted-demo__thinking-stack-detail--open {
+  margin-top: 10px;
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.dotted-demo__thinking-stack-detail--closed {
+  margin-top: 0;
+  opacity: 0;
+  transform: scaleY(0.98);
+}
+
+.dotted-demo__thinking-stack .dotted-demo__thinking-search-list {
+  width: 301px;
+  margin-top: 0;
+  margin-left: 0;
+}
+
+.dotted-demo__thinking-stack .dotted-demo__thinking-search-list--preview {
+  width: 301px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .dotted-demo__thinking-copy {
@@ -3113,6 +3319,57 @@ body.is-preview *::-webkit-scrollbar {
   gap: 0;
 }
 
+.dotted-demo__thinking-search-list--preview {
+  width: 321px;
+  margin-left: 8px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.dotted-demo__thinking-search-pill {
+  height: 28px;
+  padding: 0 10px 0 6px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  background: var(--dots-bg);
+  color: var(--dots-description);
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.24px;
+  white-space: nowrap;
+  animation: dotted-demo-search-pill-in 220ms cubic-bezier(0.16, 0.84, 0.32, 1) both;
+}
+
+.dotted-demo__thinking-search-pill > img {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+
+.dotted-demo__thinking-search-avatar-stack {
+  display: flex;
+  align-items: center;
+  isolation: isolate;
+}
+
+.dotted-demo__thinking-search-avatar-stack img {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 1px solid var(--dots-surface);
+  object-fit: cover;
+  margin-right: -2px;
+}
+
+.dotted-demo__thinking-search-avatar-stack img:last-child {
+  margin-right: 0;
+}
+
 .dotted-demo__thinking--think-compact {
   min-height: 50px;
   height: 50px;
@@ -3179,10 +3436,19 @@ body.is-preview *::-webkit-scrollbar {
 
 @keyframes dotted-demo-thinking-soft-in {
   from {
-    opacity: 0.42;
+    opacity: 0.72;
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes dotted-demo-thinking-bg-soft-in {
+  from {
+    opacity: 0.28;
+  }
+  to {
+    opacity: 0.8;
   }
 }
 
@@ -3210,8 +3476,8 @@ body.is-preview *::-webkit-scrollbar {
 
 @keyframes dotted-demo-thinking-float-in {
   from {
-    opacity: 0.36;
-    transform: translateY(4px);
+    opacity: 0.78;
+    transform: translateY(1px);
   }
   to {
     opacity: 1;
@@ -3320,6 +3586,12 @@ body.is-preview *::-webkit-scrollbar {
   font-family: var(--font-component);
   text-align: left;
   cursor: pointer;
+}
+
+.dotted-demo__response-status > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dotted-demo__response-avatars {
@@ -3536,7 +3808,7 @@ body.is-preview *::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
+  gap: 8px;
   color: var(--dots-title);
   font-size: 13px;
   line-height: 20px;
@@ -3614,6 +3886,118 @@ body.is-preview *::-webkit-scrollbar {
 
 .dotted-demo__process-text .dotted-demo__thinking-search-divider {
   background: rgba(20, 20, 20, 0.08);
+}
+
+.dotted-demo__thinking-search-detail {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dotted-demo__thinking-search-detail-card {
+  width: 100%;
+  min-height: 48px;
+  padding: 4px 8px 4px 4px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px;
+  border: 0.4px solid var(--dots-separator);
+  border-radius: 12px;
+  background: var(--dots-surface);
+}
+
+.dotted-demo__thinking-search-detail-thumb {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--dots-separator);
+  object-fit: cover;
+}
+
+.dotted-demo__thinking-search-detail-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dotted-demo__thinking-search-detail-title {
+  color: var(--dots-paragraph);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  letter-spacing: 0.24px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dotted-demo__thinking-search-detail-meta {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--dots-paragraph);
+  font-size: 11px;
+  line-height: 14px;
+  white-space: nowrap;
+}
+
+.dotted-demo__thinking-search-detail-meta img {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.dotted-demo__thinking-search-detail-like {
+  color: var(--dots-paragraph);
+  font-size: 11px;
+  line-height: 14px;
+  white-space: nowrap;
+  justify-self: end;
+  align-self: end;
+  margin-bottom: 3px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.dotted-demo__thinking-search-detail-web {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--dots-paragraph);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  letter-spacing: 0.24px;
+  white-space: nowrap;
+}
+
+.dotted-demo__thinking-search-detail-web span {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dotted-demo__thinking-search-detail-web img {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+}
+
+.dotted-demo__thinking-search-detail-more {
+  color: var(--dots-paragraph);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  letter-spacing: 0.24px;
 }
 
 .dotted-demo__process-chevron {
@@ -4038,6 +4422,18 @@ body.is-preview *::-webkit-scrollbar {
   100% {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes dotted-demo-search-pill-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
