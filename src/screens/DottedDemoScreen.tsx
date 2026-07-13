@@ -542,6 +542,8 @@ function DottedDeepThinkingContent({
   const isSummaryCollapsing = item.deepThinkingSummaryCollapsing === true
   const stackScrollRef = useRef<HTMLSpanElement | null>(null)
   const stackScrollFrameRef = useRef<number | null>(null)
+  const stackScrollTargetRef = useRef(0)
+  const stackScrollTimeRef = useRef<number | null>(null)
   const [stackHasScrolled, setStackHasScrolled] = useState(false)
   const activeCheckKey = thinkingDisplayVariant === 'stacked' && item.deepThinkingComplete
     ? `${item.id}-${item.deepThinkingKind}-${visibleTitle.length}-${visibleBody.length}`
@@ -564,31 +566,53 @@ function DottedDeepThinkingContent({
     const scrollElement = stackScrollRef.current
     if (!scrollElement) return undefined
 
-    if (stackScrollFrameRef.current !== null) {
-      window.cancelAnimationFrame(stackScrollFrameRef.current)
-      stackScrollFrameRef.current = null
-    }
-
     const frameId = window.requestAnimationFrame(() => {
       const maxScrollTop = scrollElement.scrollHeight - scrollElement.clientHeight
       if (maxScrollTop <= 0) {
+        stackScrollTargetRef.current = 0
         setStackHasScrolled(false)
         return
       }
 
       setStackHasScrolled(maxScrollTop > 1)
-      scrollElement.scrollTop = maxScrollTop
-      stackScrollFrameRef.current = null
+      stackScrollTargetRef.current = maxScrollTop
+      if (stackScrollFrameRef.current !== null) return
+
+      stackScrollTimeRef.current = null
+      const animateScroll = (now: number) => {
+        const targetTop = stackScrollTargetRef.current
+        const currentTop = scrollElement.scrollTop
+        const delta = targetTop - currentTop
+
+        if (Math.abs(delta) <= 0.5) {
+          scrollElement.scrollTop = targetTop
+          stackScrollFrameRef.current = null
+          stackScrollTimeRef.current = null
+          return
+        }
+
+        const previousTime = stackScrollTimeRef.current ?? now
+        const elapsed = Math.max(0, now - previousTime)
+        stackScrollTimeRef.current = now
+        const step = Math.max(0.5, elapsed * 0.42)
+        scrollElement.scrollTop = currentTop + Math.sign(delta) * Math.min(Math.abs(delta), step)
+        stackScrollFrameRef.current = window.requestAnimationFrame(animateScroll)
+      }
+
+      stackScrollFrameRef.current = window.requestAnimationFrame(animateScroll)
     })
 
     return () => {
       window.cancelAnimationFrame(frameId)
-      if (stackScrollFrameRef.current !== null) {
-        window.cancelAnimationFrame(stackScrollFrameRef.current)
-        stackScrollFrameRef.current = null
-      }
     }
   }, [thinkingDisplayVariant, item.deepThinkingKind, item.deepThinkingComplete, item.deepThinkingTitle, item.deepThinkingBody])
+
+  useEffect(() => () => {
+    if (stackScrollFrameRef.current !== null) {
+      window.cancelAnimationFrame(stackScrollFrameRef.current)
+      stackScrollFrameRef.current = null
+    }
+  }, [])
 
   if (thinkingDisplayVariant === 'stacked' && item.deepThinkingKind) {
     const activeIndex = processKindOrder.indexOf(item.deepThinkingKind)
@@ -2216,6 +2240,23 @@ export function DottedDemoScreen({
     || (deepThinkingKind === 'thinkPlan' && streamingPhase === 'thinkingComplete')
     || (deepThinkingKind === 'thinkPlan' && streamingPhase === 'thinkingSummary')
   )
+  const shouldRenderDeepThinking = streamingPhase !== 'response'
+    && streamingPhase !== 'done'
+    && (
+      Boolean(deepThinkingTitle)
+      || Boolean(deepThinkingBody)
+      || streamingPhase === 'think'
+      || streamingPhase === 'thinkHold'
+      || streamingPhase === 'toolcall'
+      || streamingPhase === 'toolcallHold'
+      || streamingPhase === 'thinkCompact'
+      || streamingPhase === 'thinkCompactHold'
+      || streamingPhase === 'toolcallSearch'
+      || streamingPhase === 'toolcallSearchHold'
+      || streamingPhase === 'thinkPlan'
+      || streamingPhase === 'thinkPlanHold'
+      || streamingPhase === 'thinkingComplete'
+    )
   const chatItems: DotsHistoryItem[] = [
     {
       id: 'user-query',
@@ -2232,7 +2273,7 @@ export function DottedDemoScreen({
             text: streamingReplyText,
             isStreaming: streamingPhase === 'streaming',
           },
-          ...(deepThinkingTitle || deepThinkingBody || streamingPhase === 'think' || streamingPhase === 'thinkHold' || streamingPhase === 'toolcall' || streamingPhase === 'toolcallHold' || streamingPhase === 'thinkCompact' || streamingPhase === 'thinkCompactHold' || streamingPhase === 'toolcallSearch' || streamingPhase === 'toolcallSearchHold' || streamingPhase === 'thinkPlan' || streamingPhase === 'thinkPlanHold' || streamingPhase === 'thinkingComplete'
+          ...(shouldRenderDeepThinking
             ? [
                 {
                   id: 'dots-deep-thinking',
@@ -2256,7 +2297,7 @@ export function DottedDemoScreen({
                 },
               ]
             : []),
-          ...(finalResponseReplyText || streamingPhase === 'thinkingSummary' || streamingPhase === 'response'
+          ...(finalResponseReplyText || streamingPhase === 'response'
             ? [
                 {
                   id: 'dots-final-response',
