@@ -2917,7 +2917,7 @@ body.is-preview *::-webkit-scrollbar {
 
 .dotted-demo__thinking--stacked {
   min-height: 50px;
-  padding: 12px 16px 12px 8px;
+  padding: 12px 16px 8px 8px;
 }
 
 .dotted-demo__thinking--stacked::before {
@@ -2934,19 +2934,120 @@ body.is-preview *::-webkit-scrollbar {
   isolation: isolate;
   grid-column: 1 / -1;
   width: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 0;
+  overflow: visible;
+}
+
+.dotted-demo__thinking-stack-scroll {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-height: 154px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scroll-behavior: auto;
+  scrollbar-width: none;
+}
+
+.dotted-demo__thinking-stack-scroll--masked {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 15px,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 15px,
+    #000 100%
+  );
+}
+
+.dotted-demo__thinking-stack-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.dotted-demo__thinking-stack-entry {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 36px;
+  padding: 8px 0 8px 8px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dotted-demo__thinking-stack-entry-text {
+  position: relative;
+  min-width: 0;
+  flex: 0 0 auto;
+  overflow: hidden;
+  color: var(--dots-description);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0.28px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dotted-demo__thinking-stack--streaming .dotted-demo__thinking-stack-entry-text {
+  color: transparent;
+  background-image:
+    linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.9) 44%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0.9) 56%, transparent 100%),
+    linear-gradient(var(--dots-description), var(--dots-description));
+  background-size: 68px 100%, 100% 100%;
+  background-position: -140px 0, 0 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: dotted-thinking-entry-sheen 4800ms linear infinite;
+}
+
+.dotted-demo__thinking-stack-entry-arrow {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  display: block;
+}
+
+.dotted-demo__thinking-stack-entry-avatars {
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.dotted-demo__thinking-stack-entry-avatars img {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--dots-surface);
+}
+
+.dotted-demo__thinking-stack-entry-avatars img + img {
+  margin-left: -4px;
 }
 
 .dotted-demo__thinking-stack::before {
   content: "";
   position: absolute;
   z-index: -1;
-  inset: -6px -10px;
+  inset: -6px -10px -20px;
   border-radius: 22px;
   background: var(--dots-surface);
-  opacity: 0.8;
+  opacity: 0.9;
   filter: blur(8px);
   transition:
     inset 260ms cubic-bezier(0.16, 0.84, 0.32, 1),
@@ -2954,12 +3055,41 @@ body.is-preview *::-webkit-scrollbar {
   pointer-events: none;
 }
 
+.dotted-demo__thinking-stack--summary-collapse::before {
+  inset: -6px -10px -6px;
+  opacity: 1;
+  filter: blur(2px);
+}
+
+.dotted-demo__thinking-stack--summary-collapse .dotted-demo__thinking-stack-entry {
+  height: 46px;
+  padding: 13px 0 13px 8px;
+  transition:
+    height 520ms cubic-bezier(0.16, 0.84, 0.32, 1),
+    padding 520ms cubic-bezier(0.16, 0.84, 0.32, 1);
+}
+
+.dotted-demo__thinking-stack--summary-collapse .dotted-demo__thinking-stack-entry-text {
+  color: var(--dots-description);
+}
+
+.dotted-demo__thinking-stack--summary-collapse .dotted-demo__thinking-stack-scroll {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-14px) scaleY(0.72);
+  transform-origin: top left;
+  transition:
+    max-height 560ms cubic-bezier(0.16, 0.84, 0.32, 1),
+    opacity 360ms ease,
+    transform 560ms cubic-bezier(0.16, 0.84, 0.32, 1);
+}
+
 .dotted-demo__thinking-stack-row {
   position: relative;
   z-index: 1;
   min-width: 0;
   display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
+  grid-template-columns: 32px minmax(0, 1fr);
   column-gap: 0;
   align-items: flex-start;
 }
@@ -2972,61 +3102,112 @@ body.is-preview *::-webkit-scrollbar {
   padding-bottom: 0;
 }
 
-.dotted-demo__thinking-stack-row--active::before {
+.dotted-demo__thinking-stack-row:not(:last-child)::after {
   content: "";
   position: absolute;
-  left: 18px;
-  top: 40px;
-  bottom: 0;
+  z-index: 0;
+  left: 16px;
+  top: 27px;
   width: 1px;
+  height: 10px;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(20, 20, 20, 0.08) 0,
-    rgba(20, 20, 20, 0.08) 1.5px,
+    var(--dots-separator) 0,
+    var(--dots-separator) 1.5px,
     transparent 1.5px,
     transparent 3px
   );
   pointer-events: none;
 }
 
-.dotted-demo__thinking-stack-row--collapsed:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  top: 33px;
-  width: 1px;
-  height: 6px;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(20, 20, 20, 0.08) 0,
-    rgba(20, 20, 20, 0.08) 1.5px,
-    transparent 1.5px,
-    transparent 3px
-  );
-  pointer-events: none;
+.dotted-demo__thinking-stack-row:last-child::after,
+.dotted-demo__thinking-stack-row--detail-open::after,
+.dotted-demo__thinking-stack-row--active::after {
+  display: none;
 }
 
 .dotted-demo__thinking-stack-icon {
   position: relative;
-  z-index: 1;
-  width: 36px;
-  height: 36px;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .dotted-demo__thinking-stack-lottie {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: block;
   overflow: hidden;
+  opacity: 0;
+  transform-origin: center;
+  filter: blur(1.5px);
+  animation: dotted-thinking-icon-in 640ms cubic-bezier(0.16, 0.84, 0.32, 1) forwards;
 }
 
 .dotted-demo__thinking-stack-lottie svg {
   width: 100% !important;
   height: 100% !important;
   display: block;
+}
+
+.dotted-demo__thinking-check {
+  width: 32px;
+  height: 32px;
+  display: block;
+  opacity: 0;
+  transform-origin: 16px 16px;
+  filter: blur(2px);
+  animation: dotted-thinking-check-asset 680ms cubic-bezier(0.16, 0.84, 0.32, 1) forwards;
+  overflow: visible;
+}
+
+.dotted-demo__thinking-check img {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+@keyframes dotted-thinking-check-asset {
+  0% {
+    opacity: 0;
+    filter: blur(2px);
+  }
+
+  45% {
+    opacity: 0.58;
+    filter: blur(0.8px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes dotted-thinking-icon-in {
+  0% {
+    opacity: 0;
+    filter: blur(1.5px);
+  }
+
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes dotted-thinking-entry-sheen {
+  0% {
+    background-position: -140px 0, 0 0;
+  }
+
+  58%,
+  100% {
+    background-position: calc(100% + 140px) 0, 0 0;
+  }
 }
 
 .dotted-demo__thinking-stack-content {
@@ -3042,9 +3223,9 @@ body.is-preview *::-webkit-scrollbar {
   margin-top: 6px;
   display: block;
   overflow: hidden;
-  color: var(--dots-paragraph);
+  color: var(--dots-description);
   font-size: 14px;
-  line-height: 24px;
+  line-height: 20px;
   font-weight: 400;
   letter-spacing: 0.28px;
   white-space: nowrap;
@@ -3052,13 +3233,31 @@ body.is-preview *::-webkit-scrollbar {
 }
 
 .dotted-demo__thinking-stack-row--collapsed .dotted-demo__thinking-stack-title {
-  margin-top: 8px;
-  color: var(--dots-paragraph);
+  margin-top: 6px;
+  color: var(--dots-description);
   line-height: 20px;
 }
 
+.dotted-demo__thinking-stack-row--active .dotted-demo__thinking-stack-title {
+  color: var(--dots-paragraph);
+}
+
+.dotted-demo__thinking-stack-row--toolcall .dotted-demo__thinking-stack-title {
+  color: var(--dots-paragraph);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  letter-spacing: 0.28px;
+}
+
+.dotted-demo__thinking-stack-row--complete .dotted-demo__thinking-stack-title {
+  color: var(--dots-description);
+  line-height: 20px;
+  font-weight: 400;
+}
+
 .dotted-demo__thinking-stack-body {
-  width: 301px;
+  width: 305px;
   display: block;
   overflow: hidden;
   color: var(--dots-description);
@@ -3072,7 +3271,7 @@ body.is-preview *::-webkit-scrollbar {
 }
 
 .dotted-demo__thinking-stack-detail {
-  width: 301px;
+  width: 305px;
   max-height: var(--thinking-stack-detail-height, 0);
   margin-top: 0;
   display: block;
@@ -3088,9 +3287,13 @@ body.is-preview *::-webkit-scrollbar {
 }
 
 .dotted-demo__thinking-stack-detail--open {
-  margin-top: 10px;
+  margin-top: 4px;
   opacity: 1;
   transform: scaleY(1);
+}
+
+.dotted-demo__thinking-stack-row--toolcall .dotted-demo__thinking-stack-detail--open {
+  margin-top: 8px;
 }
 
 .dotted-demo__thinking-stack-detail--closed {
@@ -3099,14 +3302,22 @@ body.is-preview *::-webkit-scrollbar {
   transform: scaleY(0.98);
 }
 
+.dotted-demo__thinking-stack-detail--closed .dotted-demo__thinking-search-list--preview {
+  transform: translateY(-6px) scale(0.98);
+  opacity: 0;
+  transition:
+    opacity 260ms ease,
+    transform 360ms cubic-bezier(0.16, 0.84, 0.32, 1);
+}
+
 .dotted-demo__thinking-stack .dotted-demo__thinking-search-list {
-  width: 301px;
+  width: 305px;
   margin-top: 0;
   margin-left: 0;
 }
 
 .dotted-demo__thinking-stack .dotted-demo__thinking-search-list--preview {
-  width: 301px;
+  width: 305px;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 8px;
@@ -3118,7 +3329,7 @@ body.is-preview *::-webkit-scrollbar {
   width: var(--thinking-copy-width, 0);
   min-width: 0;
   display: inline-block;
-  color: var(--dots-description);
+  color: var(--dots-paragraph);
   font-size: 14px;
   line-height: 24px;
   font-weight: 400;
@@ -3342,7 +3553,19 @@ body.is-preview *::-webkit-scrollbar {
   line-height: 18px;
   letter-spacing: 0.24px;
   white-space: nowrap;
-  animation: dotted-demo-search-pill-in 220ms cubic-bezier(0.16, 0.84, 0.32, 1) both;
+  opacity: 0;
+  filter: blur(3px);
+  transform: translateX(-6px);
+  animation: dotted-demo-search-pill-in 520ms cubic-bezier(0.16, 0.84, 0.32, 1) both;
+  will-change: opacity, filter, transform;
+}
+
+.dotted-demo__thinking-search-pill:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.dotted-demo__thinking-search-pill:nth-child(3) {
+  animation-delay: 160ms;
 }
 
 .dotted-demo__thinking-search-pill > img {
@@ -3387,13 +3610,13 @@ body.is-preview *::-webkit-scrollbar {
   color: transparent;
   background-image: linear-gradient(
     90deg,
-    var(--dots-description) 0%,
-    var(--dots-description) 34%,
-    color-mix(in srgb, var(--dots-description) 74%, var(--dots-surface)) 44%,
-    color-mix(in srgb, var(--dots-description) 88%, var(--dots-surface)) 50%,
-    color-mix(in srgb, var(--dots-description) 74%, var(--dots-surface)) 56%,
-    var(--dots-description) 66%,
-    var(--dots-description) 100%
+    var(--dots-paragraph) 0%,
+    var(--dots-paragraph) 34%,
+    color-mix(in srgb, var(--dots-paragraph) 74%, var(--dots-surface)) 44%,
+    color-mix(in srgb, var(--dots-paragraph) 88%, var(--dots-surface)) 50%,
+    color-mix(in srgb, var(--dots-paragraph) 74%, var(--dots-surface)) 56%,
+    var(--dots-paragraph) 66%,
+    var(--dots-paragraph) 100%
   );
   background-size: 420% 100%;
   background-position: 105% 0;
@@ -3431,7 +3654,7 @@ body.is-preview *::-webkit-scrollbar {
 }
 
 .dotted-demo__thinking--tail-stream .dotted-demo__thinking-copy {
-  color: var(--dots-description);
+  color: var(--dots-paragraph);
 }
 
 @keyframes dotted-demo-thinking-soft-in {
@@ -3557,15 +3780,29 @@ body.is-preview *::-webkit-scrollbar {
 }
 
 .dots-message-row--response .dotted-demo__response-card {
-  will-change: transform, opacity;
+  will-change: auto;
   backface-visibility: hidden;
-  animation: dotted-demo-response-soft-rise 900ms cubic-bezier(0.18, 0.72, 0.28, 1) both;
+  animation: none;
+}
+
+.dots-message-row--response .dotted-demo__response-card--summary {
+  animation: none;
 }
 
 .dotted-demo__response-main {
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 14px;
+}
+
+.dotted-demo__response-card--summary {
+  padding: 20px 16px;
+  gap: 20px;
+  animation: none;
+}
+
+.dotted-demo__response-card--summary .dotted-demo__response-main {
   gap: 14px;
 }
 
@@ -3966,6 +4203,13 @@ body.is-preview *::-webkit-scrollbar {
   gap: 2px;
 }
 
+.dotted-demo__thinking-search-detail-like img {
+  width: 12px;
+  height: 12px;
+  display: block;
+  flex: 0 0 12px;
+}
+
 .dotted-demo__thinking-search-detail-web {
   display: flex;
   align-items: center;
@@ -4354,7 +4598,7 @@ body.is-preview *::-webkit-scrollbar {
   will-change: transform, opacity;
   backface-visibility: hidden;
   transform: translateY(0);
-  animation: dotted-demo-reply-rise 1200ms cubic-bezier(0.16, 0.84, 0.32, 1) both;
+  animation: dotted-demo-context-rise 420ms cubic-bezier(0.2, 0.72, 0.24, 1) both;
 }
 
 @keyframes dotted-demo-thinking-sheen {
@@ -4413,6 +4657,18 @@ body.is-preview *::-webkit-scrollbar {
   }
 }
 
+@keyframes dotted-demo-context-rise {
+  0% {
+    opacity: 0.96;
+    transform: translateY(6px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes dotted-demo-response-soft-rise {
   0% {
     opacity: 0.98;
@@ -4425,15 +4681,42 @@ body.is-preview *::-webkit-scrollbar {
   }
 }
 
-@keyframes dotted-demo-search-pill-in {
+@keyframes dotted-demo-response-summary-in {
   0% {
-    opacity: 0;
-    transform: scale(0.96);
+    opacity: 0.86;
+    filter: blur(8px);
+    background: var(--dots-surface);
+  }
+
+  62% {
+    opacity: 0.96;
+    filter: blur(2px);
   }
 
   100% {
     opacity: 1;
-    transform: scale(1);
+    filter: blur(0);
+    background: var(--dots-surface);
+  }
+}
+
+@keyframes dotted-demo-search-pill-in {
+  0% {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateX(-6px);
+  }
+
+  58% {
+    opacity: 0.92;
+    filter: blur(0.8px);
+    transform: translateX(-1px);
+  }
+
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
   }
 }
 
