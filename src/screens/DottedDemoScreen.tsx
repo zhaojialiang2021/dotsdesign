@@ -137,12 +137,12 @@ const contextCharacterStep = 2
 const contextCharacterDelayMs = 16
 const contextToThinkDelayMs = 600
 const compactThinkCompleteHoldMs = 1000
-const simpleJudgmentText = '正在规划新疆伊犁环线10天行程'
+const simpleJudgmentText = '分析新疆暑期旅行需求'
 const simpleJudgmentCharacters = Array.from(simpleJudgmentText)
-const simpleJudgmentCopyWidthPx = 211
-const deepThinkingTitleText = '规划新疆伊犁红圈10天行程'
-const deepThinkingBodyText = '用户需要计划去新疆伊犁的10天旅行，和5个朋友一起，考虑到预算没有给限制，住宿推荐4星级，出行推荐自驾游，可以欣赏风景和自由摄影。'
-const toolCallTitleText = '制定新疆伊犁环线10日自驾游路线'
+const simpleJudgmentCopyWidthPx = Math.ceil(simpleJudgmentCharacters.length * 15.5 + 6)
+const deepThinkingTitleText = '搭建新疆伊犁环线行程框架'
+const deepThinkingBodyText = '用户计划和5个朋友去新疆伊犁旅行10天，走伊犁环线，未限定预算。6人出行适合自驾，需要重点规划路线节奏、核心景点和住宿安排。'
+const toolCallTitleText = '搜索自驾路线与核心景点攻略'
 const toolCallBodyText = [
   '网页｜那拉提旅游风景区官方网站',
   '网页｜喀拉峻国际生态旅游区官方信息',
@@ -150,9 +150,9 @@ const toolCallBodyText = [
   '网页｜赛里木湖景区游客服务信息',
   '更多官方信息检索中...',
 ].join('\n')
-const compactThinkTitleText = '查找景区开放信息和路线攻略'
-const compactThinkBodyText = '我需要更多官方信息，特别是那拉提景区、喀拉峻景区、夏塔景区和赛里木湖的开放时间和票价信息。虽然目前的资料可能会变动，但我还是可以提供建议。'
-const searchToolCallTitleText = '搜索景区官方网站及相关信息'
+const compactThinkTitleText = '整理景区的开放时间与预约规则'
+const compactThinkBodyText = '需要确认那拉提、喀拉峻、夏塔景区和赛里木湖的开放时间与预约规则，以官方最新信息为准，完善行程安排。'
+const searchToolCallTitleText = '搜索官方公告与出行提示'
 const searchToolCallBodyText = ''
 const searchToolCallPreviewItems = [
   {
@@ -194,15 +194,15 @@ const searchToolCallPreviewItems = [
 const searchToolCallWebItems = [
   {
     icon: sourceJulyPillZhihu,
-    text: '知乎：新疆自驾路线汇总（新疆自驾行必读攻略）',
+    text: '知乎：新疆自驾路线汇总（新疆自驾行必读攻略）华酒店No.1',
   },
   {
     icon: sourceJulyPillCtrip,
     text: '携程：自驾新疆，应如何规划线路？',
   },
 ] as const
-const planThinkTitleText = '考虑提供合理的行车距离和交通建议'
-const planThinkBodyText = '行车时间可以根据常见自驾估算，最终以当天导航为准。至于交通，6人客户可以考虑选择一辆较大的7座商务车或1+1车型来适应行李的需求。从乌鲁木齐进出新疆是比较方便的方式。'
+const planThinkTitleText = '确定租车方案和进出疆方式'
+const planThinkBodyText = '行车时间以导航实时规划为准，6人出行建议租一辆7座商务车，空间充裕也方便放行李。进出疆推荐选择乌鲁木齐，航班多且交通接驳方便。'
 const finalResponseText = [
   '6个人暑假去新疆玩10天，推荐走伊犁环线，以乌鲁木齐为起点和终点，包7座车或自驾最方便。路线可以安排为：乌鲁木齐→赛里木湖→伊宁→喀拉峻草原→琼库什台→夏塔→昭苏→那拉提草原→独库公路→乌鲁木齐。\n',
   '',
@@ -262,7 +262,7 @@ function getDeepThinkingTargetBody(kind: DottedProcessKind | undefined) {
 
 function getDeepThinkingAnimationUrl(kind: DottedProcessKind | undefined) {
   if (kind === 'toolcallSearch') return thinkGlassAnimationUrl
-  if (kind === 'toolcall') return thinkPenAnimationUrl
+  if (kind === 'toolcall') return thinkGlassAnimationUrl
   return thinkCloudAnimationUrl
 }
 
@@ -987,7 +987,7 @@ function DottedChatStream({
                 }
               >
                 <DottedLottieAnimation
-                  src={thinkingStages[item.deepThinkingKind === 'toolcallSearch' ? 2 : item.deepThinkingKind === 'toolcall' ? 1 : item.thinkingStageIndex ?? 0].animationUrl}
+                  src={item.isDeepThinking ? getDeepThinkingAnimationUrl(item.deepThinkingKind) : thinkingStages[item.thinkingStageIndex ?? 0].animationUrl}
                   className="dotted-demo__thinking-lottie"
                 />
                 {item.isDeepThinking ? (
@@ -1022,7 +1022,7 @@ function DottedChatStream({
 
 function getProcessAnimationUrl(kind: DottedProcessKind) {
   if (kind === 'toolcallSearch') return thinkGlassAnimationUrl
-  if (kind === 'toolcall') return thinkPenAnimationUrl
+  if (kind === 'toolcall') return thinkGlassAnimationUrl
   return thinkCloudAnimationUrl
 }
 
@@ -1240,10 +1240,10 @@ function DottedSourcesSheet({
     },
     {
       kind: 'toolcall',
-      icon: '✍️',
+      icon: '🔍',
       title: toolCallTitleText,
       detail: toolCallBodyText,
-      lottieUrl: thinkPenAnimationUrl,
+      lottieUrl: thinkGlassAnimationUrl,
     },
     {
       kind: 'thinkCompact',
