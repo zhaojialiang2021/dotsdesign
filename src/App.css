@@ -2770,7 +2770,7 @@ body.is-preview *::-webkit-scrollbar {
 
 .dots-message-bubble--user .dots-message-bubble__content {
   text-decoration-line: underline;
-  text-decoration-style: solid;
+  text-decoration-style: dashed;
   text-decoration-color: var(--dots-separator);
   text-decoration-thickness: 0.75px;
   text-underline-offset: 4px;
