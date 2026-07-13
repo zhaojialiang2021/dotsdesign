@@ -142,7 +142,7 @@ const simpleJudgmentCharacters = Array.from(simpleJudgmentText)
 const simpleJudgmentCopyWidthPx = Math.ceil(simpleJudgmentCharacters.length * 15.5 + 6)
 const deepThinkingTitleText = '搭建新疆伊犁环线行程框架'
 const deepThinkingBodyText = '用户计划和5个朋友去新疆伊犁旅行10天，走伊犁环线，未限定预算。6人出行适合自驾，需要重点规划路线节奏、核心景点和住宿安排。'
-const toolCallTitleText = '搜索自驾路线与核心景点攻略'
+const toolCallTitleText = '搜集自驾路线与核心景点攻略'
 const toolCallBodyText = [
   '网页｜那拉提旅游风景区官方网站',
   '网页｜喀拉峻国际生态旅游区官方信息',
