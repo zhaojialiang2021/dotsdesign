@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import { useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import dotsMessageTail from '../../assets/dotted/dots-message-tail.svg'
 import dotsMessageTailUser from '../../assets/dotted/dots-message-tail-user.svg'
 
@@ -39,10 +39,38 @@ export function DotsMessageBubble({
   hasTail?: boolean
   className?: string
 }) {
+  const contentRef = useRef<HTMLSpanElement>(null)
+  const [isMultiLine, setIsMultiLine] = useState(false)
+
+  useLayoutEffect(() => {
+    const content = contentRef.current
+    if (!content) return undefined
+
+    const updateLineState = () => {
+      const lineRects = Array.from(content.getClientRects()).filter((rect) => rect.width > 0 && rect.height > 0)
+      setIsMultiLine(lineRects.length > 1)
+    }
+
+    const frame = window.requestAnimationFrame(updateLineState)
+    const resizeObserver = new ResizeObserver(updateLineState)
+    resizeObserver.observe(content)
+
+    return () => {
+      window.cancelAnimationFrame(frame)
+      resizeObserver.disconnect()
+    }
+  }, [children])
+
+  const bubbleClassName = [
+    'dots-message-bubble',
+    `dots-message-bubble--${role}`,
+    isMultiLine ? 'dots-message-bubble--multi-line' : 'dots-message-bubble--single-line',
+  ].join(' ')
+
   return (
     <DotsMessage role={role} contentType="text" className={className}>
-      <div className={`dots-message-bubble dots-message-bubble--${role}`}>
-        {children}
+      <div className={bubbleClassName}>
+        <span className="dots-message-bubble__content" ref={contentRef}>{children}</span>
         {hasTail && (
           <img
             className={`dots-message-tail dots-message-tail--${role}`}

@@ -2749,6 +2749,10 @@ body.is-preview *::-webkit-scrollbar {
   overflow: visible;
 }
 
+.dots-message-bubble--multi-line {
+  border-radius: 22px;
+}
+
 .dots-message-bubble--user {
   width: 293px;
   min-height: 80px;
@@ -2760,36 +2764,23 @@ body.is-preview *::-webkit-scrollbar {
   overflow: hidden;
 }
 
+.dots-message-bubble__content {
+  display: inline;
+}
+
+.dots-message-bubble--user .dots-message-bubble__content {
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-color: var(--dots-separator);
+  text-decoration-thickness: 0.75px;
+  text-underline-offset: 4px;
+  text-decoration-skip-ink: none;
+}
+
 .dots-message-bubble--dots {
   background: var(--dots-reply-bubble, #ffffff);
   font-size: 16px;
   line-height: 28px;
-}
-
-.dots-message-bubble--user::before,
-.dots-message-bubble--user::after {
-  content: "";
-  position: absolute;
-  left: 16px;
-  height: 1px;
-  background-image: repeating-linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.2) 0,
-    rgba(0, 0, 0, 0.2) 2px,
-    transparent 2px,
-    transparent 4px
-  );
-  pointer-events: none;
-}
-
-.dots-message-bubble--user::before {
-  top: 40px;
-  width: 261px;
-}
-
-.dots-message-bubble--user::after {
-  top: 68px;
-  width: 80px;
 }
 
 .dots-message-row--thinking .dots-message-bubble {
@@ -2973,6 +2964,13 @@ body.is-preview *::-webkit-scrollbar {
 
 .dotted-demo__thinking-stack-scroll::-webkit-scrollbar {
   display: none;
+}
+
+.dotted-demo__thinking-stack-scroll-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .dotted-demo__thinking-stack-entry {
@@ -3223,7 +3221,7 @@ body.is-preview *::-webkit-scrollbar {
   margin-top: 6px;
   display: block;
   overflow: hidden;
-  color: var(--dots-description);
+  color: rgba(0, 0, 0, 0.8);
   font-size: 14px;
   line-height: 20px;
   font-weight: 400;
@@ -3234,16 +3232,16 @@ body.is-preview *::-webkit-scrollbar {
 
 .dotted-demo__thinking-stack-row--collapsed .dotted-demo__thinking-stack-title {
   margin-top: 6px;
-  color: var(--dots-description);
+  color: rgba(0, 0, 0, 0.8);
   line-height: 20px;
 }
 
 .dotted-demo__thinking-stack-row--active .dotted-demo__thinking-stack-title {
-  color: var(--dots-paragraph);
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .dotted-demo__thinking-stack-row--toolcall .dotted-demo__thinking-stack-title {
-  color: var(--dots-paragraph);
+  color: rgba(0, 0, 0, 0.8);
   font-size: 14px;
   line-height: 20px;
   font-weight: 400;
@@ -3279,10 +3277,10 @@ body.is-preview *::-webkit-scrollbar {
   opacity: 0;
   transform-origin: top left;
   transition:
-    max-height 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    margin-top 360ms cubic-bezier(0.22, 0.61, 0.36, 1),
-    opacity 240ms ease-out,
-    transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    max-height 620ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    margin-top 520ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 360ms ease-out,
+    transform 620ms cubic-bezier(0.22, 0.61, 0.36, 1);
   will-change: max-height, opacity, transform;
 }
 
@@ -3572,6 +3570,8 @@ body.is-preview *::-webkit-scrollbar {
   width: 16px;
   height: 16px;
   flex: 0 0 16px;
+  border-radius: 999px;
+  object-fit: cover;
 }
 
 .dotted-demo__thinking-search-avatar-stack {
@@ -3937,6 +3937,10 @@ body.is-preview *::-webkit-scrollbar {
   display: none;
 }
 
+.dotted-demo__sheet-block {
+  width: 100%;
+}
+
 .dotted-demo__sheet-header {
   width: 100%;
   box-sizing: border-box;
@@ -3963,6 +3967,29 @@ body.is-preview *::-webkit-scrollbar {
   align-items: flex-start;
   border-radius: 16px;
   background: #ffffff;
+}
+
+.dotted-demo__process-card--thinking {
+  min-height: 0;
+  max-height: 539px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.dotted-demo__process-card--thinking::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+.dotted-demo__process-card--sources {
+  min-height: 0;
+}
+
+.dotted-demo__sources-sheet--expanded .dotted-demo__process-card--thinking {
+  max-height: 698px;
 }
 
 .dotted-demo__process-row {
@@ -4234,6 +4261,8 @@ body.is-preview *::-webkit-scrollbar {
   width: 14px;
   height: 14px;
   flex: 0 0 14px;
+  border-radius: 999px;
+  object-fit: cover;
 }
 
 .dotted-demo__thinking-search-detail-more {
@@ -4411,6 +4440,10 @@ body.is-preview *::-webkit-scrollbar {
   white-space: nowrap;
 }
 
+.dotted-demo__source-excerpt-row--no-quote p {
+  flex: 1 1 100%;
+}
+
 .dotted-demo__source-excerpt-line {
   width: 100%;
   display: block;
@@ -4513,6 +4546,28 @@ body.is-preview *::-webkit-scrollbar {
   margin-bottom: 2px;
 }
 
+.dotted-demo__response-image-row {
+  width: 100%;
+  padding: 2px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dotted-demo__response-image-row img {
+  min-width: 0;
+  width: calc((100% - 12px) / 3);
+  aspect-ratio: 1 / 1;
+  display: block;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+  background: var(--dots-surface);
+  opacity: 0;
+  animation: dotted-demo-response-image-in 320ms cubic-bezier(0.2, 0.72, 0.24, 1) forwards;
+  animation-delay: calc(var(--response-image-index, 0) * 70ms);
+}
+
 .dotted-demo__response-content p {
   margin: 0;
   font-size: 16px;
@@ -4565,7 +4620,17 @@ body.is-preview *::-webkit-scrollbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  animation: dotted-demo-response-actions-enter 360ms cubic-bezier(0.16, 0.84, 0.32, 1) both;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms ease-out, visibility 0s linear 220ms;
+}
+
+.dotted-demo__response-actions--visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 220ms ease-out;
 }
 
 .dotted-demo__response-action-group {
@@ -4697,6 +4762,18 @@ body.is-preview *::-webkit-scrollbar {
     opacity: 1;
     filter: blur(0);
     background: var(--dots-surface);
+  }
+}
+
+@keyframes dotted-demo-response-image-in {
+  0% {
+    opacity: 0;
+    transform: translateY(3px) scale(0.985);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
 }
 

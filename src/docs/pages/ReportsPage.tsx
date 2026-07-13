@@ -8,7 +8,7 @@ import restartIcon from '../../assets/dotted/think-response-refresh.svg'
 const demoSteps: Array<{ id: DottedDemoStep; label: string }> = [
   { id: 'thinking', label: '判断' },
   { id: 'judging-think', label: 'think' },
-  { id: 'context', label: 'context' },
+  { id: 'context', label: 'content' },
   { id: 'think', label: 'think' },
   { id: 'toolcall', label: 'tool call' },
   { id: 'think-compact', label: 'think' },

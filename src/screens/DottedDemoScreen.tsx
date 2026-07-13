@@ -22,18 +22,38 @@ import thinkResponseShare from '../assets/dotted/think-response-share.svg'
 import thinkStatusCap from '../assets/dotted/think-status-cap.svg'
 import thinkStatusCellular from '../assets/dotted/think-status-cellular.svg'
 import thinkStatusWifi from '../assets/dotted/think-status-wifi.svg'
-import sourceImage1 from '../assets/dotted/source-image-1.png'
-import sourceImage2 from '../assets/dotted/source-image-2.png'
-import sourceImage3 from '../assets/dotted/source-image-3.png'
-import sourceImageSailormmoon1 from '../assets/dotted/source-image-sailormmoon-1.png'
-import sourceImageSailormmoon2 from '../assets/dotted/source-image-sailormmoon-2.png'
-import sourceImageSailormmoon3 from '../assets/dotted/source-image-sailormmoon-3.png'
 import sourceLike from '../assets/dotted/source-like.svg'
-import sourceLogoAlice from '../assets/dotted/source-logo-alice.png'
-import sourceLogoBreeze from '../assets/dotted/source-logo-breeze.png'
-import sourceLogoSailormmoon from '../assets/dotted/source-logo-sailormmoon.png'
-import sourceLogoYt from '../assets/dotted/source-logo-yt.png'
 import sourceQuote from '../assets/dotted/source-quote.svg'
+import responseIli1 from '../assets/dotted/response/ili-1.png'
+import responseIli2 from '../assets/dotted/response/ili-2.png'
+import responseIli3 from '../assets/dotted/response/ili-3.png'
+import sourceJulyAliceLogo from '../assets/dotted/sources-july/alice-logo.png'
+import sourceJulyBreezeLogo from '../assets/dotted/sources-july/breeze-logo.png'
+import sourceJulyKLogo from '../assets/dotted/sources-july/k-logo.png'
+import sourceJulyK1 from '../assets/dotted/sources-july/k-1.png'
+import sourceJulyK2 from '../assets/dotted/sources-july/k-2.png'
+import sourceJulyK3 from '../assets/dotted/sources-july/k-3.png'
+import sourceJulyOolongLogo from '../assets/dotted/sources-july/oolong-logo.png'
+import sourceJulyOolong1 from '../assets/dotted/sources-july/oolong-1.png'
+import sourceJulyOolong2 from '../assets/dotted/sources-july/oolong-2.png'
+import sourceJulyOolong3 from '../assets/dotted/sources-july/oolong-3.png'
+import sourceJulyOrangeLogo from '../assets/dotted/sources-july/orange-logo.png'
+import sourceJulyOrange1 from '../assets/dotted/sources-july/orange-1.png'
+import sourceJulyOrange2 from '../assets/dotted/sources-july/orange-2.png'
+import sourceJulyOrange3 from '../assets/dotted/sources-july/orange-3.png'
+import sourceJulySailorLogo from '../assets/dotted/sources-july/sailor-logo.png'
+import sourceJulySailor1 from '../assets/dotted/sources-july/sailor-1.png'
+import sourceJulySailor2 from '../assets/dotted/sources-july/sailor-2.png'
+import sourceJulySailor3 from '../assets/dotted/sources-july/sailor-3.png'
+import sourceJulyPillCtrip from '../assets/dotted/sources-july/pills/ctrip.png'
+import sourceJulyPillXhs1 from '../assets/dotted/sources-july/pills/xhs-1.png'
+import sourceJulyPillXhs2 from '../assets/dotted/sources-july/pills/xhs-2.png'
+import sourceJulyPillXhs3 from '../assets/dotted/sources-july/pills/xhs-3.png'
+import sourceJulyPillZhihu from '../assets/dotted/sources-july/pills/zhihu.png'
+import sourceJulyYiLogo from '../assets/dotted/sources-july/yi-logo.png'
+import sourceJulyYi1 from '../assets/dotted/sources-july/yi-1.png'
+import sourceJulyYi2 from '../assets/dotted/sources-july/yi-2.png'
+import sourceJulyYi3 from '../assets/dotted/sources-july/yi-3.png'
 import thinkUserAvatar from '../assets/dotted/think-user-avatar.svg'
 import { DotsMessageBubble, type DotsMessageRole } from './dotted/DotsMessageBubble'
 
@@ -93,10 +113,17 @@ type DottedProcessRow = {
   lottiePlaying?: boolean
 }
 
-type DottedFinalResponseBlock = {
+type DottedFinalResponseTextBlock = {
   type: 'paragraph' | 'heading' | 'bullet'
   text: string
 }
+
+type DottedFinalResponseImageBlock = {
+  type: 'image-row'
+  images: string[]
+}
+
+type DottedFinalResponseBlock = DottedFinalResponseTextBlock | DottedFinalResponseImageBlock
 
 const streamingReplyChunks = [
   '暑期伊犁环线是个很经典的选择，',
@@ -108,7 +135,7 @@ const streamingReplyTextFull = streamingReplyChunks.join('')
 const streamingReplyCharacters = Array.from(streamingReplyTextFull)
 const contextCharacterStep = 2
 const contextCharacterDelayMs = 16
-const contextToThinkDelayMs = 260
+const contextToThinkDelayMs = 600
 const compactThinkCompleteHoldMs = 1000
 const simpleJudgmentText = '正在规划新疆伊犁环线10天行程'
 const simpleJudgmentCharacters = Array.from(simpleJudgmentText)
@@ -132,41 +159,47 @@ const searchToolCallPreviewItems = [
     title: '新疆伊犁环线10天自驾攻略，直接抄作业！',
     author: '亦一行',
     likes: '2765',
-    image: sourceImage1,
-    logo: sourceLogoAlice,
+    image: sourceJulyYi1,
+    logo: sourceJulyYiLogo,
   },
   {
     title: '新疆伊犁环线10天9晚 （上）',
     author: 'sailormmoon',
     likes: '234',
-    image: sourceImageSailormmoon1,
-    logo: sourceLogoSailormmoon,
+    image: sourceJulySailor1,
+    logo: sourceJulySailorLogo,
   },
   {
     title: '记录一下伊犁环线自驾详细路线',
     author: '小k',
     likes: '1634',
-    image: sourceImage2,
-    logo: sourceLogoYt,
+    image: sourceJulyK1,
+    logo: sourceJulyKLogo,
   },
   {
     title: '二刷新疆伊犁9天治愈环线攻略',
     author: 'Oolong',
     likes: '67',
-    image: sourceImage3,
-    logo: sourceLogoBreeze,
+    image: sourceJulyOolong1,
+    logo: sourceJulyOolongLogo,
   },
   {
     title: '新疆伊犁9天自驾🚗懒人不赶路天花板路线',
     author: '橘子汽水',
     likes: '3452',
-    image: sourceImageSailormmoon2,
-    logo: sourceLogoAlice,
+    image: sourceJulyOrange1,
+    logo: sourceJulyOrangeLogo,
   },
 ] as const
 const searchToolCallWebItems = [
-  '知乎：新疆自驾路线汇总（新疆自驾行必读攻略）',
-  '携程：自驾新疆，应如何规划线路？',
+  {
+    icon: sourceJulyPillZhihu,
+    text: '知乎：新疆自驾路线汇总（新疆自驾行必读攻略）',
+  },
+  {
+    icon: sourceJulyPillCtrip,
+    text: '携程：自驾新疆，应如何规划线路？',
+  },
 ] as const
 const planThinkTitleText = '考虑提供合理的行车距离和交通建议'
 const planThinkBodyText = '行车时间可以根据常见自驾估算，最终以当天导航为准。至于交通，6人客户可以考虑选择一辆较大的7座商务车或1+1车型来适应行李的需求。从乌鲁木齐进出新疆是比较方便的方式。'
@@ -186,6 +219,7 @@ const finalResponseText = [
 ].join('\n')
 const finalResponseBlocks: DottedFinalResponseBlock[] = [
   { type: 'paragraph', text: '6个人暑假去新疆玩10天，推荐走伊犁环线，以乌鲁木齐为起点和终点，包7座车或自驾最方便。路线可以安排为：乌鲁木齐→赛里木湖→伊宁→喀拉峻草原→琼库什台→夏塔→昭苏→那拉提草原→独库公路→乌鲁木齐。' },
+  { type: 'image-row', images: [responseIli1, responseIli2, responseIli3] },
   { type: 'heading', text: '🚗 行程安排' },
   { type: 'paragraph', text: '整体路线建议安排为：乌鲁木齐→赛里木湖→伊宁→喀拉峻草原→琼库什台→夏塔→昭苏→那拉提草原→独库公路→乌鲁木齐。第一天抵达乌鲁木齐后，可以逛国际大巴扎，品尝新疆特色美食；第二天前往赛里木湖，欣赏新疆最经典的湖泊、雪山和草原风光，晚上建议住湖边附近，方便拍摄日出和晨雾。' },
   { type: 'paragraph', text: '之后前往伊宁市，途中可以打卡果子沟大桥，晚上逛六星街，体验当地民族风情。接下来几天重点游玩伊犁草原区域，喀拉峻草原以辽阔的草原和雪山背景闻名，适合拍照；琼库什台则保留了原始牧村风貌，可以体验木屋、草原、森林和星空，是行程中非常值得停留的一站。' },
@@ -196,13 +230,19 @@ const finalResponseBlocks: DottedFinalResponseBlock[] = [
   { type: 'paragraph', text: '费用方面，6个人包车10天，交通费用大约1万—1.5万元，人均约1700—2500元；住宿、餐饮和门票加起来，整体比较舒适的预算大约人均5000—8000元左右。这条线路节奏适中，不会太赶，既能看到新疆最经典的自然风光，也能体验当地民族文化，非常适合作为朋友暑假旅行目的地。' },
 ]
 const finalResponseSections = [
-  { blocks: [0], list: false },
-  { blocks: [1, 2, 3, 4], list: false },
-  { blocks: [5, 6], list: false },
-  { blocks: [7, 8], list: false },
+  { blocks: [0, 1], list: false },
+  { blocks: [2, 3, 4, 5], list: false },
+  { blocks: [6, 7], list: false },
+  { blocks: [8, 9], list: false },
 ] as const
 
 const countCharacters = (text: string) => Array.from(text).length
+
+const getFinalResponseTextLengthBeforeBlock = (blockIndex: number) => (
+  finalResponseBlocks
+    .slice(0, blockIndex)
+    .reduce((total, previousBlock) => total + (previousBlock.type === 'image-row' ? 0 : Array.from(previousBlock.text).length), 0)
+)
 
 function getDeepThinkingTargetTitle(kind: DottedProcessKind | undefined) {
   if (kind === 'toolcall') return toolCallTitleText
@@ -293,58 +333,83 @@ function DottedStreamingSpanText({
 const sourceItems = [
   {
     author: '亦一行',
-    logo: sourceLogoAlice,
+    logo: sourceJulyYiLogo,
     title: '新疆伊犁环线10天自驾攻略，直接抄作业！',
     excerpt: [
-      '赛里木湖、果子沟、昭苏和夏塔串成一条顺路自驾线，',
-      '适合第一次去伊犁的朋友直接参考。',
+      '这是一份本人亲自走过的伊犁10天自驾环线，旅游原则',
+      '是“不赶路、少徒步、深度玩”，全程无踩雷，可以直接抄作业。跟着这份行程，10天可以把伊犁的美尽收眼底。',
     ],
-    images: [sourceImage1, sourceImage2, sourceImage3],
+    images: [sourceJulyYi1, sourceJulyYi2, sourceJulyYi3],
     sourceType: '笔记',
-    likes: '2765',
+    likes: '2387',
   },
   {
     author: 'sailormmoon',
-    logo: sourceLogoSailormmoon,
+    logo: sourceJulySailorLogo,
     title: '新疆伊犁环线10天9晚 （上）',
-    excerpt: ['10天9晚按伊犁环线慢慢走，把住宿、车程和景点顺序拆得很细。'],
-    images: [sourceImageSailormmoon1, sourceImageSailormmoon2, sourceImageSailormmoon3],
+    excerpt: [
+      '🌟Day1:成都✈️伊宁（同程次卡890/人）   20:50 落地',
+      '伊宁，天还大亮，打车回酒店放下行李直冲六星街！这里到处都是五颜六色的房子，有很多文创小店，非常适合买伴手礼。饿了在狼戈的苹果香吃饭，落日余晖，当地人载歌载舞，配上刚上桌的羊排，简直夯爆了！🏠伊宁',
+    ],
+    images: [sourceJulySailor1, sourceJulySailor2, sourceJulySailor3],
     sourceType: '笔记',
-    likes: '234',
+    likes: '2387',
   },
   {
     author: '小k',
-    logo: sourceLogoYt,
+    logo: sourceJulyKLogo,
     title: '记录一下伊犁环线自驾详细路线',
     excerpt: [
-      '从乌鲁木齐进出，把伊宁、昭苏、夏塔和那拉提按车程拆开，',
-      '每天保留拍照和休息时间。',
+      'DAY1北京落地乌鲁木齐，自驾到博乐（自驾520公里约',
+      '5.5h）北京上午出发中午到，机场取车后去吃辣子鸡、逛大巴扎，然后高速到博乐，全程高速+国道，注意限速很好开。',
     ],
-    images: [sourceImage2, sourceImage3, sourceImage1],
+    images: [sourceJulyK1, sourceJulyK2, sourceJulyK3],
     sourceType: '笔记',
-    likes: '1634',
+    likes: '2387',
   },
   {
     author: 'Oolong',
-    logo: sourceLogoBreeze,
+    logo: sourceJulyOolongLogo,
     title: '二刷新疆伊犁9天治愈环线攻略',
     excerpt: [
-      '二刷伊犁后更推荐松弛一点的路线，少赶路，多留给草原和雪山。',
+      '由于第一次新疆旅行太惊艳了，第二年我们又来到了伊',
+      '犁，这次走了不同的路线。第一次走了那拉提，恰西，琼库什台等，详情在去年的笔记。',
     ],
-    images: [sourceImage3, sourceImageSailormmoon1, sourceImageSailormmoon2],
+    images: [sourceJulyOolong1, sourceJulyOolong2, sourceJulyOolong3],
     sourceType: '笔记',
-    likes: '67',
+    likes: '2387',
   },
   {
     author: '橘子汽水',
-    logo: sourceLogoAlice,
+    logo: sourceJulyOrangeLogo,
     title: '新疆伊犁9天自驾🚗懒人不赶路天花板路线',
     excerpt: [
-      '更适合不想特种兵打卡的版本，重点放在住宿稳定、车程舒服和景色完整。',
+      '今年总要来一次新疆自驾游吧🚗​​北疆​​是自然风光天花',
+      '板⛰️南疆​是浓郁人文风情，跨越千里只为北疆盛夏，独库公路、赛里木湖、那拉提草原…每一帧都像极了电影画面🌿',
     ],
-    images: [sourceImageSailormmoon2, sourceImage1, sourceImageSailormmoon3],
+    images: [sourceJulyOrange1, sourceJulyOrange2, sourceJulyOrange3],
     sourceType: '笔记',
-    likes: '3452',
+    likes: '2387',
+  },
+  {
+    author: 'alice',
+    logo: sourceJulyAliceLogo,
+    excerpt: [
+      '在国内，能够自驾旅行的路线并不算太多，新疆绝对',
+      '算得上是自驾天堂的一个地方。如果让我推荐国内的自驾路线，我首推新疆，这是一条值得你此生花上一个月的时间来感受的体验之旅。这里有巍峨的雪山、荒芜的沙漠、鬼魅的雅丹、童话般的草原、国宝级的矿山、还有可以让人细细品读的悠久历史故事！',
+    ],
+    sourceType: '评论',
+    likes: '2387',
+  },
+  {
+    author: 'Breeze',
+    logo: sourceJulyBreezeLogo,
+    excerpt: [
+      '全国各地自驾新疆，一共可以从3个地方进入，分别',
+      '是甘肃、青海、西藏。甘肃进疆走G30连霍高速，青海进疆走G315国道火星公路，西藏进疆走G219国道新藏线。',
+    ],
+    sourceType: '评论',
+    likes: '2387',
   },
 ] as const
 const deepThinkingTitleCharacters = Array.from(deepThinkingTitleText)
@@ -446,7 +511,7 @@ function DottedToolSearchRows({
 function DottedToolSearchPreviewRows({
   className,
   visibleCount = 3,
-  webLabels = ['携程网', '马蜂窝'],
+  webLabels = ['知乎', '携程'],
 }: {
   className?: string
   visibleCount?: number
@@ -459,22 +524,22 @@ function DottedToolSearchPreviewRows({
       {normalizedVisibleCount >= 1 ? (
         <span className="dotted-demo__thinking-search-pill">
           <span className="dotted-demo__thinking-search-avatar-stack" aria-hidden="true">
-            <img src={sourceLogoAlice} alt="" />
-            <img src={sourceLogoSailormmoon} alt="" />
-            <img src={sourceLogoYt} alt="" />
+            <img src={sourceJulyPillXhs1} alt="" />
+            <img src={sourceJulyPillXhs2} alt="" />
+            <img src={sourceJulyPillXhs3} alt="" />
           </span>
           <span>小红书笔记</span>
         </span>
       ) : null}
       {normalizedVisibleCount >= 2 ? (
         <span className="dotted-demo__thinking-search-pill">
-          <img src={thinkInternet} alt="" aria-hidden="true" />
+          <img src={sourceJulyPillZhihu} alt="" aria-hidden="true" />
           <span>{webLabels[0]}</span>
         </span>
       ) : null}
       {normalizedVisibleCount >= 3 ? (
         <span className="dotted-demo__thinking-search-pill">
-          <img src={thinkInternet} alt="" aria-hidden="true" />
+          <img src={sourceJulyPillCtrip} alt="" aria-hidden="true" />
           <span>{webLabels[1]}</span>
         </span>
       ) : null}
@@ -502,9 +567,9 @@ function DottedToolSearchDetailCards() {
         </span>
       ))}
       {searchToolCallWebItems.map((item) => (
-        <span className="dotted-demo__thinking-search-detail-web" key={item}>
-          <img src={thinkInternet} alt="" aria-hidden="true" />
-          <span>{item}</span>
+        <span className="dotted-demo__thinking-search-detail-web" key={item.text}>
+          <img src={item.icon} alt="" aria-hidden="true" />
+          <span>{item.text}</span>
         </span>
       ))}
       <span className="dotted-demo__thinking-search-detail-more">展示更多 23 条内容</span>
@@ -541,9 +606,9 @@ function DottedDeepThinkingContent({
   const shouldShowBody = Boolean(targetBody) && (!useTailOpacity || titleComplete)
   const isSummaryCollapsing = item.deepThinkingSummaryCollapsing === true
   const stackScrollRef = useRef<HTMLSpanElement | null>(null)
+  const stackScrollContentRef = useRef<HTMLSpanElement | null>(null)
   const stackScrollFrameRef = useRef<number | null>(null)
   const stackScrollTargetRef = useRef(0)
-  const stackScrollTimeRef = useRef<number | null>(null)
   const [stackHasScrolled, setStackHasScrolled] = useState(false)
   const activeCheckKey = thinkingDisplayVariant === 'stacked' && item.deepThinkingComplete
     ? `${item.id}-${item.deepThinkingKind}-${visibleTitle.length}-${visibleBody.length}`
@@ -564,9 +629,40 @@ function DottedDeepThinkingContent({
     if (thinkingDisplayVariant !== 'stacked') return undefined
 
     const scrollElement = stackScrollRef.current
-    if (!scrollElement) return undefined
+    const contentElement = stackScrollContentRef.current
+    if (!scrollElement || !contentElement) return undefined
 
-    const frameId = window.requestAnimationFrame(() => {
+    const startScrollAnimation = (targetTop: number) => {
+      if (stackScrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(stackScrollFrameRef.current)
+        stackScrollFrameRef.current = null
+      }
+
+      const startTop = scrollElement.scrollTop
+      const delta = targetTop - startTop
+      if (Math.abs(delta) < 1) {
+        scrollElement.scrollTop = targetTop
+        return
+      }
+
+      const duration = 520
+      const startTime = performance.now()
+
+      const animateScroll = (now: number) => {
+        const progress = Math.min(1, (now - startTime) / duration)
+        scrollElement.scrollTop = startTop + delta * progress
+        if (progress < 1) {
+          stackScrollFrameRef.current = window.requestAnimationFrame(animateScroll)
+        } else {
+          scrollElement.scrollTop = targetTop
+          stackScrollFrameRef.current = null
+        }
+      }
+
+      stackScrollFrameRef.current = window.requestAnimationFrame(animateScroll)
+    }
+
+    const updateScrollTarget = () => {
       const maxScrollTop = scrollElement.scrollHeight - scrollElement.clientHeight
       if (maxScrollTop <= 0) {
         stackScrollTargetRef.current = 0
@@ -575,37 +671,22 @@ function DottedDeepThinkingContent({
       }
 
       setStackHasScrolled(maxScrollTop > 1)
+      if (Math.abs(maxScrollTop - stackScrollTargetRef.current) < 1) return
       stackScrollTargetRef.current = maxScrollTop
-      if (stackScrollFrameRef.current !== null) return
+      startScrollAnimation(maxScrollTop)
+    }
 
-      stackScrollTimeRef.current = null
-      const animateScroll = (now: number) => {
-        const targetTop = stackScrollTargetRef.current
-        const currentTop = scrollElement.scrollTop
-        const delta = targetTop - currentTop
+    const resizeObserver = new ResizeObserver(updateScrollTarget)
+    resizeObserver.observe(contentElement)
+    resizeObserver.observe(scrollElement)
 
-        if (Math.abs(delta) <= 0.5) {
-          scrollElement.scrollTop = targetTop
-          stackScrollFrameRef.current = null
-          stackScrollTimeRef.current = null
-          return
-        }
-
-        const previousTime = stackScrollTimeRef.current ?? now
-        const elapsed = Math.max(0, now - previousTime)
-        stackScrollTimeRef.current = now
-        const step = Math.max(0.5, elapsed * 0.42)
-        scrollElement.scrollTop = currentTop + Math.sign(delta) * Math.min(Math.abs(delta), step)
-        stackScrollFrameRef.current = window.requestAnimationFrame(animateScroll)
-      }
-
-      stackScrollFrameRef.current = window.requestAnimationFrame(animateScroll)
-    })
+    const frameId = window.requestAnimationFrame(updateScrollTarget)
 
     return () => {
       window.cancelAnimationFrame(frameId)
+      resizeObserver.disconnect()
     }
-  }, [thinkingDisplayVariant, item.deepThinkingKind, item.deepThinkingComplete, item.deepThinkingTitle, item.deepThinkingBody])
+  }, [thinkingDisplayVariant])
 
   useEffect(() => () => {
     if (stackScrollFrameRef.current !== null) {
@@ -636,6 +717,7 @@ function DottedDeepThinkingContent({
           <img className="dotted-demo__thinking-stack-entry-arrow" src={thinkResponseArrow} alt="" aria-hidden="true" />
         </span>
         <span className={['dotted-demo__thinking-stack-scroll', stackHasScrolled ? 'dotted-demo__thinking-stack-scroll--masked' : ''].filter(Boolean).join(' ')} ref={stackScrollRef}>
+        <span className="dotted-demo__thinking-stack-scroll-content" ref={stackScrollContentRef}>
         {visibleProcessKinds.map((kind) => {
           const isActive = kind === item.deepThinkingKind
           const rowTitle = isActive ? visibleTitle : getDeepThinkingTargetTitle(kind)
@@ -732,6 +814,7 @@ function DottedDeepThinkingContent({
             </span>
           )
         })}
+        </span>
         </span>
       </span>
     )
@@ -1036,10 +1119,21 @@ function DottedFinalResponseCard({
           {finalResponseSections.map((section, sectionIndex) => {
             const renderedBlocks = section.blocks.map((blockIndex) => {
               const block = finalResponseBlocks[blockIndex]
+              const previousLength = getFinalResponseTextLengthBeforeBlock(blockIndex)
+
+              if (block.type === 'image-row') {
+                if (visibleCount < previousLength) return null
+
+                return (
+                  <div className="dotted-demo__response-image-row" key={`image-row-${blockIndex}`} aria-label="伊犁行程图片">
+                    {block.images.map((imageUrl, imageIndex) => (
+                      <img src={imageUrl} alt="" key={imageUrl} style={{ '--response-image-index': imageIndex } as CSSProperties} />
+                    ))}
+                  </div>
+                )
+              }
+
               const blockLength = Array.from(block.text).length
-              const previousLength = finalResponseBlocks
-                .slice(0, blockIndex)
-                .reduce((total, previousBlock) => total + Array.from(previousBlock.text).length, 0)
               const visibleLength = Math.max(0, Math.min(visibleCount - previousLength, blockLength))
               const visibleText = Array.from(block.text).slice(0, visibleLength).join('')
               if (!visibleText) return null
@@ -1086,8 +1180,13 @@ function DottedFinalResponseCard({
           })}
         </div>}
       </div>
-      {complete && (
-        <div className="dotted-demo__response-actions">
+      <div
+        className={[
+          'dotted-demo__response-actions',
+          complete ? 'dotted-demo__response-actions--visible' : '',
+        ].filter(Boolean).join(' ')}
+        aria-hidden={!complete}
+      >
           <div className="dotted-demo__response-action-group">
             <button type="button" aria-label="复制">
               <img src={thinkResponseCopy} alt="" aria-hidden="true" />
@@ -1104,8 +1203,7 @@ function DottedFinalResponseCard({
               <img src={thinkResponseRefresh} alt="" aria-hidden="true" />
             </button>
           </div>
-        </div>
-      )}
+      </div>
     </article>
   )
 }
@@ -1130,6 +1228,8 @@ function DottedSourcesSheet({
   const [isExpanded, setIsExpanded] = useState(false)
   const [expandedProcessIndexes, setExpandedProcessIndexes] = useState<number[]>([])
   const dragStartYRef = useRef<number | null>(null)
+  const processCardRef = useRef<HTMLDivElement>(null)
+  const processScrollFrameRef = useRef<number | null>(null)
   const sourceProcessRows: DottedProcessRow[] = [
     {
       kind: 'think',
@@ -1175,8 +1275,46 @@ function DottedSourcesSheet({
     isThinkingComplete,
   })
   const processRows = mode === 'thinking' ? thinkingProcessRows : sourceProcessRows
-  const sheetTitle = mode === 'thinking' ? (isThinkingComplete ? '思考结束' : '思考中') : '思考过程'
+  const sheetTitle = mode === 'thinking' ? (isThinkingComplete ? '思考完成' : '正在思考') : '思考过程'
   const dialogLabel = mode === 'thinking' ? sheetTitle : '思考过程'
+
+  useEffect(() => {
+    if (mode !== 'thinking' || isThinkingComplete) return undefined
+
+    if (processScrollFrameRef.current !== null) {
+      window.cancelAnimationFrame(processScrollFrameRef.current)
+    }
+
+    const card = processCardRef.current
+    if (!card) return undefined
+
+    const startScrollTop = card.scrollTop
+    const targetScrollTop = Math.max(0, card.scrollHeight - card.clientHeight)
+    const delta = targetScrollTop - startScrollTop
+    if (Math.abs(delta) < 1) return undefined
+
+    const duration = 520
+    const startTime = performance.now()
+
+    const animateScroll = (now: number) => {
+      const progress = Math.min(1, (now - startTime) / duration)
+      card.scrollTop = startScrollTop + delta * progress
+      if (progress < 1) {
+        processScrollFrameRef.current = window.requestAnimationFrame(animateScroll)
+      } else {
+        processScrollFrameRef.current = null
+      }
+    }
+
+    processScrollFrameRef.current = window.requestAnimationFrame(animateScroll)
+
+    return () => {
+      if (processScrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(processScrollFrameRef.current)
+        processScrollFrameRef.current = null
+      }
+    }
+  }, [currentThinkingBody, currentThinkingKind, currentThinkingTitle, isThinkingComplete, mode, processRows.length])
 
   const handleSheetPointerDown = (event: ReactPointerEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest('button')) return
@@ -1269,11 +1407,24 @@ function DottedSourcesSheet({
           onWheel={handleSheetWheel}
           onScroll={handleSheetContentScroll}
         >
-          <div className="dotted-demo__sheet-block">
+          <div
+            className={[
+              'dotted-demo__sheet-block',
+              mode === 'thinking' ? 'dotted-demo__sheet-block--thinking' : '',
+              mode === 'sources' ? 'dotted-demo__sheet-block--sources' : '',
+            ].filter(Boolean).join(' ')}
+          >
             <header className="dotted-demo__sheet-header">
               <h2>{sheetTitle}</h2>
             </header>
-            <div className="dotted-demo__process-card">
+            <div
+              className={[
+                'dotted-demo__process-card',
+                mode === 'thinking' ? 'dotted-demo__process-card--thinking' : '',
+                mode === 'sources' ? 'dotted-demo__process-card--sources' : '',
+              ].filter(Boolean).join(' ')}
+              ref={processCardRef}
+            >
               {processRows.map((row, index) => {
                 const isRowExpanded = expandedProcessIndexes.includes(index)
                 const hasExpandableContent = Boolean(row.detail)
@@ -1358,15 +1509,18 @@ function DottedSourcesSheet({
 
           {mode === 'sources' && <div className="dotted-demo__source-block">
             <div className="dotted-demo__source-sticky">
-              <h3>参考来源 · 128</h3>
+              <h3>参考来源 · 56</h3>
               <div className="dotted-demo__source-tabs" aria-label="来源筛选">
                 <button type="button">全部</button>
-                <button type="button">笔记 106</button>
-                <button type="button">评论 16</button>
+                <button type="button">笔记 46</button>
+                <button type="button">评论 4</button>
                 <button type="button">全网 6</button>
               </div>
             </div>
-            {sourceItems.map((item) => (
+            {sourceItems.map((item) => {
+              const hasImages = 'images' in item && Boolean(item.images)
+
+              return (
               <article className="dotted-demo__source-card" key={item.author}>
                 <header className="dotted-demo__source-footer">
                   <span className="dotted-demo__source-logo">
@@ -1377,8 +1531,13 @@ function DottedSourcesSheet({
                 <div className="dotted-demo__source-copy">
                   {'title' in item && item.title && <h4>{item.title}</h4>}
                   <div className="dotted-demo__source-excerpt">
-                    <div className="dotted-demo__source-excerpt-row">
-                      <img src={sourceQuote} alt="" aria-hidden="true" />
+                    <div
+                      className={[
+                        'dotted-demo__source-excerpt-row',
+                        hasImages ? 'dotted-demo__source-excerpt-row--no-quote' : '',
+                      ].filter(Boolean).join(' ')}
+                    >
+                      {!hasImages && <img src={sourceQuote} alt="" aria-hidden="true" />}
                       <p>{item.excerpt[0]}</p>
                     </div>
                     {item.excerpt.slice(1).map((line) => (
@@ -1386,7 +1545,7 @@ function DottedSourcesSheet({
                     ))}
                   </div>
                 </div>
-                {'images' in item && item.images && (
+                {hasImages && 'images' in item && item.images && (
                   <div className="dotted-demo__source-images">
                     {item.images.map((imageUrl) => (
                       <img src={imageUrl} alt="" key={imageUrl} />
@@ -1402,7 +1561,8 @@ function DottedSourcesSheet({
                   </span>
                 </footer>
               </article>
-            ))}
+              )
+            })}
           </div>}
         </div>
       </section>
