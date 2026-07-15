@@ -830,7 +830,6 @@ function DottedDeepThinkingContent({
           const rowBodyComplete = countCharacters(rowBody) >= countCharacters(rowTargetBody)
           const keepToolcallPillsDuringCollapse = kind === 'toolcall' && isActive && item.deepThinkingComplete
           const rowShouldShowBody = Boolean(rowTargetBody) && isActive && ((!item.deepThinkingComplete && (!useTailOpacity || rowTitleComplete)) || keepToolcallPillsDuringCollapse)
-          const rowBodyProgress = rowTargetBody ? Math.min(1, countCharacters(rowBody) / countCharacters(rowTargetBody)) : rowShouldShowBody ? 1 : 0
           const detailTargetHeight = getStackDetailTargetHeight(kind, toolNoteDisplayVariant)
           const hasDetailContent = Boolean(rowTargetBody)
           const shouldRenderDetail = hasDetailContent
