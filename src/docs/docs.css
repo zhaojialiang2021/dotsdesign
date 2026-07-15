@@ -5014,6 +5014,64 @@ body.pitch-mode .docs-main__inner {
   opacity: 0.86;
 }
 
+@media (prefers-color-scheme: dark) {
+  .docs-report-demo-shell--immersive .docs-report-progress__line {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.92) 0 var(--progress),
+        rgba(255, 255, 255, 0.18) var(--progress) 100%
+      );
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__node {
+    color: rgba(255, 255, 255, 0.34);
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__node span {
+    position: relative;
+    z-index: 1;
+    border-color: rgba(255, 255, 255, 0.18);
+    background: var(--bg-0);
+    color: rgba(255, 255, 255, 0.34);
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__node--complete {
+    color: rgba(255, 255, 255, 0.62);
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__node--complete span {
+    border-color: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.92);
+    color: #242424;
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__node--active span {
+    border-color: rgba(255, 255, 255, 0.96);
+    background: var(--bg-0);
+    color: rgba(255, 255, 255, 0.96);
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__node--active strong {
+    color: rgba(255, 255, 255, 0.96);
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__button--primary {
+    background: rgba(255, 255, 255, 0.94);
+    color: #242424;
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__button--secondary {
+    border-color: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .docs-report-demo-shell--immersive .docs-report-progress__button--icon img {
+    filter: invert(1);
+    opacity: 0.86;
+  }
+}
+
 .docs-timestamp-table {
   border: 0.5px solid var(--line-non-opaque);
   border-radius: 12px;

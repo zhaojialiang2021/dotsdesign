@@ -2593,8 +2593,7 @@ export function DottedDemoScreen({
 
     const startQuickResponse = () => {
       timers.push(window.setTimeout(() => {
-        let finalResponseCursor = Math.min(1, quickAnswerResponseCharacters.length)
-        setFinalResponseReplyText(quickAnswerResponseCharacters.slice(0, finalResponseCursor).join(''))
+        setFinalResponseReplyText('')
         setDeepThinkingTitle('')
         setDeepThinkingBody('')
         setStreamingPhase('response')
@@ -2630,7 +2629,7 @@ export function DottedDemoScreen({
     if (paused || !quickAnswerMode || streamingPhase !== 'response') return undefined
 
     const timers: number[] = []
-    let finalResponseCursor = Math.max(1, countCharacters(finalResponseReplyText))
+    let finalResponseCursor = countCharacters(finalResponseReplyText)
 
     const typeFinalResponseCharacter = () => {
       if (finalResponseCursor >= quickAnswerResponseCharacters.length) {
