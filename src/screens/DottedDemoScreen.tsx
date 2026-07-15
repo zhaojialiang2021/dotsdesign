@@ -1723,6 +1723,7 @@ export function DottedDemoScreen({
   const jumpToBottomDismissedRef = useRef(false)
   const handledResumeSignalRef = useRef(0)
   const quickAnswerOverrideRef = useRef(false)
+  const answerRouteRef = useRef<'long' | 'quick'>('long')
   const playbackSnapshotRef = useRef({
     phase: 'thinking' as DottedStreamingPhase,
     simpleLength: 0,
@@ -1736,15 +1737,29 @@ export function DottedDemoScreen({
   const [deepThinkingTitle, setDeepThinkingTitle] = useState('')
   const [deepThinkingBody, setDeepThinkingBody] = useState('')
   const [finalResponseReplyText, setFinalResponseReplyText] = useState('')
+  const [quickAnswerResponseReplyText, setQuickAnswerResponseReplyText] = useState('')
   const [deepThinkingKind, setDeepThinkingKind] = useState<DottedProcessKind>('think')
   const [previousThinking, setPreviousThinking] = useState<{ kind: DottedProcessKind; title: string; body: string } | null>(null)
   const [streamingPhase, setStreamingPhase] = useState<DottedStreamingPhase>('thinking')
   const [thinkingStageIndex, setThinkingStageIndex] = useState(0)
   const [quickAnswerTitleSwitching, setQuickAnswerTitleSwitching] = useState(false)
   const [quickAnswerMode, setQuickAnswerMode] = useState(false)
+  const [answerRoute, setAnswerRoute] = useState<'long' | 'quick'>('long')
   const [showJumpToBottom, setShowJumpToBottom] = useState(false)
   const [activeSheetMode, setActiveSheetMode] = useState<DottedSheetMode | null>(null)
   const isStreamingReplyDemo = demoMode === 'streaming-reply'
+
+  useEffect(() => {
+    answerRouteRef.current = answerRoute
+  }, [answerRoute])
+
+  const resetQuickAnswerState = () => {
+    setQuickAnswerMode(false)
+    setAnswerRoute('long')
+    answerRouteRef.current = 'long'
+    setQuickAnswerResponseReplyText('')
+    setQuickAnswerTitleSwitching(false)
+  }
 
   useEffect(() => {
     playbackSnapshotRef.current = {
@@ -1766,6 +1781,7 @@ export function DottedDemoScreen({
 
   useEffect(() => {
     if (!onStepChange) return
+    if (answerRoute === 'quick') return
 
     const currentStep: DottedDemoStep =
       streamingPhase === 'judging' || streamingPhase === 'judgingHold'
@@ -1791,7 +1807,7 @@ export function DottedDemoScreen({
         : 'thinking'
 
     onStepChange(currentStep)
-  }, [onStepChange, streamingPhase])
+  }, [answerRoute, onStepChange, streamingPhase])
 
   useEffect(() => {
     const timers: number[] = []
@@ -2020,6 +2036,8 @@ export function DottedDemoScreen({
         }
 
         if (snapshot.phase === 'response') {
+          if (answerRouteRef.current === 'quick') return
+
           let finalResponseCursor = snapshot.finalResponseLength
 
           const continueFinalResponse = () => {
@@ -2051,6 +2069,7 @@ export function DottedDemoScreen({
         setDeepThinkingTitle('')
         setDeepThinkingBody('')
         setFinalResponseReplyText('')
+        resetQuickAnswerState()
         setDeepThinkingKind('think')
         setPreviousThinking(null)
         setStreamingPhase('thinking')
@@ -2062,7 +2081,7 @@ export function DottedDemoScreen({
     if (continueAfterStep && demoStep) {
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
-        setQuickAnswerMode(false)
+        resetQuickAnswerState()
         setStreamingReplyText(demoStep === 'thinking' || demoStep === 'judging-think' ? '' : streamingReplyTextFull)
         setSimpleJudgmentReplyText(demoStep === 'thinking' ? '' : simpleJudgmentText)
         setDeepThinkingTitle('')
@@ -2120,7 +2139,7 @@ export function DottedDemoScreen({
     if (demoStep === 'thinking') {
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
-        setQuickAnswerMode(false)
+        resetQuickAnswerState()
         setStreamingReplyText('')
         setSimpleJudgmentReplyText('')
         setDeepThinkingTitle('')
@@ -2137,7 +2156,7 @@ export function DottedDemoScreen({
     if (demoStep === 'judging-think') {
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
-        setQuickAnswerMode(false)
+        resetQuickAnswerState()
         let cursor = 0
         setStreamingReplyText('')
         setSimpleJudgmentReplyText('')
@@ -2168,7 +2187,7 @@ export function DottedDemoScreen({
     if (demoStep === 'context') {
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
-        setQuickAnswerMode(false)
+        resetQuickAnswerState()
         setStreamingReplyText('')
         setSimpleJudgmentReplyText(simpleJudgmentText)
         setDeepThinkingTitle('')
@@ -2186,7 +2205,7 @@ export function DottedDemoScreen({
     if (demoStep === 'think' || demoStep === 'toolcall' || demoStep === 'think-compact' || demoStep === 'toolcall-search' || demoStep === 'think-plan') {
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
-        setQuickAnswerMode(false)
+        resetQuickAnswerState()
         let titleCursor = 0
         const nextKind = demoStep === 'think-plan' ? 'thinkPlan' : demoStep === 'toolcall-search' ? 'toolcallSearch' : demoStep === 'toolcall' ? 'toolcall' : demoStep === 'think-compact' ? 'thinkCompact' : 'think'
         const titleCharacters = nextKind === 'thinkPlan' ? planThinkTitleCharacters : nextKind === 'toolcallSearch' ? searchToolCallTitleCharacters : nextKind === 'toolcall' ? toolCallTitleCharacters : nextKind === 'thinkCompact' ? compactThinkTitleCharacters : deepThinkingTitleCharacters
@@ -2239,7 +2258,7 @@ export function DottedDemoScreen({
     if (demoStep === 'response') {
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
-        setQuickAnswerMode(false)
+        resetQuickAnswerState()
         let responseCursor = 0
         setStreamingReplyText(streamingReplyTextFull)
         setSimpleJudgmentReplyText(simpleJudgmentText)
@@ -2269,7 +2288,7 @@ export function DottedDemoScreen({
     if (demoStep === 'complete') {
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
-        setQuickAnswerMode(false)
+        resetQuickAnswerState()
         setStreamingReplyText(streamingReplyTextFull)
         setSimpleJudgmentReplyText(simpleJudgmentText)
         setDeepThinkingTitle('')
@@ -2285,7 +2304,7 @@ export function DottedDemoScreen({
 
     timers.push(window.setTimeout(() => {
       quickAnswerOverrideRef.current = false
-      setQuickAnswerMode(false)
+      resetQuickAnswerState()
       let cursor = 0
       setStreamingReplyText('')
       setSimpleJudgmentReplyText('')
@@ -2522,13 +2541,14 @@ export function DottedDemoScreen({
     const chatStream = chatStreamRef.current
     if (!chatStream) return
 
-    const responseVisible = Boolean(finalResponseReplyText) || streamingPhase === 'response' || streamingPhase === 'done'
+    const currentResponseText = answerRoute === 'quick' ? quickAnswerResponseReplyText : finalResponseReplyText
+    const responseVisible = Boolean(currentResponseText) || streamingPhase === 'response' || streamingPhase === 'done'
     const scrollDistanceToBottom = chatStream.scrollHeight - chatStream.scrollTop - chatStream.clientHeight
     const hasOverflow = chatStream.scrollHeight - chatStream.clientHeight > 24
     const shouldShow = responseVisible && hasOverflow && scrollDistanceToBottom > 96 && !jumpToBottomDismissedRef.current
 
     setShowJumpToBottom(shouldShow)
-  }, [finalResponseReplyText, streamingPhase])
+  }, [answerRoute, finalResponseReplyText, quickAnswerResponseReplyText, streamingPhase])
 
   useEffect(() => {
     const chatStream = chatStreamRef.current
@@ -2547,13 +2567,14 @@ export function DottedDemoScreen({
   }, [updateJumpToBottomVisibility])
 
   useEffect(() => {
-    if (streamingPhase === 'response' && !finalResponseReplyText) {
+    const currentResponseText = answerRoute === 'quick' ? quickAnswerResponseReplyText : finalResponseReplyText
+    if (streamingPhase === 'response' && !currentResponseText) {
       jumpToBottomDismissedRef.current = false
     }
 
     const frameId = window.requestAnimationFrame(updateJumpToBottomVisibility)
     return () => window.cancelAnimationFrame(frameId)
-  }, [finalResponseReplyText, streamingPhase, updateJumpToBottomVisibility])
+  }, [answerRoute, finalResponseReplyText, quickAnswerResponseReplyText, streamingPhase, updateJumpToBottomVisibility])
 
   const handleJumpToBottom = () => {
     const chatStream = chatStreamRef.current
@@ -2572,11 +2593,14 @@ export function DottedDemoScreen({
 
     quickAnswerOverrideRef.current = true
     setQuickAnswerMode(true)
+    setAnswerRoute('quick')
+    answerRouteRef.current = 'quick'
     setPreviousThinking(null)
     setDeepThinkingKind('think')
     setDeepThinkingTitle('')
     setDeepThinkingBody('')
     setFinalResponseReplyText('')
+    setQuickAnswerResponseReplyText('')
     setStreamingPhase('quickAnswerThink')
   }
 
@@ -2593,7 +2617,7 @@ export function DottedDemoScreen({
 
     const startQuickResponse = () => {
       timers.push(window.setTimeout(() => {
-        setFinalResponseReplyText('')
+        setQuickAnswerResponseReplyText('')
         setDeepThinkingTitle('')
         setDeepThinkingBody('')
         setStreamingPhase('response')
@@ -2626,10 +2650,10 @@ export function DottedDemoScreen({
   }, [paused, streamingPhase])
 
   useEffect(() => {
-    if (paused || !quickAnswerMode || streamingPhase !== 'response') return undefined
+    if (paused || answerRoute !== 'quick' || streamingPhase !== 'response') return undefined
 
     const timers: number[] = []
-    let finalResponseCursor = countCharacters(finalResponseReplyText)
+    let finalResponseCursor = countCharacters(quickAnswerResponseReplyText)
 
     const typeFinalResponseCharacter = () => {
       if (finalResponseCursor >= quickAnswerResponseCharacters.length) {
@@ -2638,14 +2662,14 @@ export function DottedDemoScreen({
       }
 
       finalResponseCursor += 1
-      setFinalResponseReplyText(quickAnswerResponseCharacters.slice(0, finalResponseCursor).join(''))
+      setQuickAnswerResponseReplyText(quickAnswerResponseCharacters.slice(0, finalResponseCursor).join(''))
       timers.push(window.setTimeout(typeFinalResponseCharacter, 12))
     }
 
     timers.push(window.setTimeout(typeFinalResponseCharacter, responseStartDelayMs))
 
     return () => timers.forEach((timerId) => window.clearTimeout(timerId))
-  }, [finalResponseReplyText, paused, quickAnswerMode, streamingPhase])
+  }, [answerRoute, paused, quickAnswerResponseReplyText, streamingPhase])
 
   const simpleJudgmentProgress = simpleJudgmentReplyText.length / simpleJudgmentCharacters.length
   const activeDeepTitleLength = streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold' ? quickAnswerTitleCharacters.length : deepThinkingKind === 'thinkPlan' ? planThinkTitleCharacters.length : deepThinkingKind === 'toolcallSearch' ? searchToolCallTitleCharacters.length : deepThinkingKind === 'toolcall' ? toolCallTitleCharacters.length : deepThinkingKind === 'thinkCompact' ? compactThinkTitleCharacters.length : deepThinkingTitleCharacters.length
@@ -2695,6 +2719,7 @@ export function DottedDemoScreen({
       || streamingPhase === 'thinkPlan'
       || streamingPhase === 'thinkPlanHold'
     )
+  const responseReplyText = answerRoute === 'quick' ? quickAnswerResponseReplyText : finalResponseReplyText
   const chatItems: DotsHistoryItem[] = [
     {
       id: 'user-query',
@@ -2737,16 +2762,16 @@ export function DottedDemoScreen({
                 },
               ]
             : []),
-          ...(finalResponseReplyText || streamingPhase === 'response'
+          ...(responseReplyText || streamingPhase === 'response'
             ? [
                 {
                   id: 'dots-final-response',
                   type: 'message' as const,
                   role: 'dots' as const,
-                  text: finalResponseReplyText,
+                  text: responseReplyText,
                   isFinalResponse: true,
-                  isQuickFinalResponse: quickAnswerMode,
-                  isFinalResponseSummary: !quickAnswerMode && streamingPhase === 'thinkingSummary',
+                  isQuickFinalResponse: answerRoute === 'quick',
+                  isFinalResponseSummary: answerRoute !== 'quick' && streamingPhase === 'thinkingSummary',
                   isFinalResponseComplete: streamingPhase === 'done',
                 },
               ]
