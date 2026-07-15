@@ -27,6 +27,10 @@ import sourceQuote from '../assets/dotted/source-quote.svg'
 import responseIli1 from '../assets/dotted/response/ili-1.png'
 import responseIli2 from '../assets/dotted/response/ili-2.png'
 import responseIli3 from '../assets/dotted/response/ili-3.png'
+import quickAnswerUrumqi1 from '../assets/dotted/quick-answer-response/urumqi-1.png'
+import quickAnswerUrumqi2 from '../assets/dotted/quick-answer-response/urumqi-2.png'
+import quickAnswerUrumqi3 from '../assets/dotted/quick-answer-response/urumqi-3.png'
+import quickAnswerIcon from '../assets/dotted/quick-answer/capa-challenge-edit.svg'
 import sourceJulyAliceLogo from '../assets/dotted/sources-july/alice-logo.png'
 import sourceJulyBreezeLogo from '../assets/dotted/sources-july/breeze-logo.png'
 import sourceJulyKLogo from '../assets/dotted/sources-july/k-logo.png'
@@ -46,6 +50,9 @@ import sourceJulySailor1 from '../assets/dotted/sources-july/sailor-1.png'
 import sourceJulySailor2 from '../assets/dotted/sources-july/sailor-2.png'
 import sourceJulySailor3 from '../assets/dotted/sources-july/sailor-3.png'
 import sourceJulyPillCtrip from '../assets/dotted/sources-july/pills/ctrip.png'
+import sourceJulyPillWeb1 from '../assets/dotted/sources-july/pills/web-1.png'
+import sourceJulyPillWeb2 from '../assets/dotted/sources-july/pills/web-2.png'
+import sourceJulyPillWeb3 from '../assets/dotted/sources-july/pills/web-3.png'
 import sourceJulyPillXhs1 from '../assets/dotted/sources-july/pills/xhs-1.png'
 import sourceJulyPillXhs2 from '../assets/dotted/sources-july/pills/xhs-2.png'
 import sourceJulyPillXhs3 from '../assets/dotted/sources-july/pills/xhs-3.png'
@@ -63,6 +70,7 @@ export type DottedThinkingTransitionStyle = 'soft' | 'float' | 'blur' | 'breathe
 export type DottedStreamingVariant = 'default' | 'span-mask'
 export type DottedToolNoteDisplayVariant = 'consistent' | 'preview-detail'
 export type DottedThinkingDisplayVariant = 'single' | 'stacked'
+type DottedStreamingPhase = 'thinking' | 'judging' | 'judgingHold' | 'streaming' | 'quickAnswerPrompt' | 'quickAnswerThink' | 'quickAnswerThinkHold' | 'think' | 'thinkHold' | 'toolcall' | 'toolcallHold' | 'thinkCompact' | 'thinkCompactHold' | 'toolcallSearch' | 'toolcallSearchHold' | 'thinkPlan' | 'thinkPlanHold' | 'thinkingComplete' | 'thinkingSummary' | 'response' | 'done'
 type DottedProcessKind = 'think' | 'toolcall' | 'thinkCompact' | 'toolcallSearch' | 'thinkPlan'
 
 type DotsHistoryMessage = {
@@ -76,6 +84,8 @@ type DotsHistoryMessage = {
   isDeepThinking?: boolean
   isDeepThinkingTitleComplete?: boolean
   isStreaming?: boolean
+  isQuickAnswerThinking?: boolean
+  isQuickAnswerSwitching?: boolean
   thinkingStageIndex?: number
   thinkingProgress?: number
   deepThinkingTitle?: string
@@ -88,6 +98,7 @@ type DotsHistoryMessage = {
   previousDeepThinkingKind?: DottedProcessKind
   thinkingDisplayVariant?: DottedThinkingDisplayVariant
   isFinalResponse?: boolean
+  isQuickFinalResponse?: boolean
   isFinalResponseSummary?: boolean
   isFinalResponseComplete?: boolean
   deepThinkingSummaryCollapsing?: boolean
@@ -140,6 +151,10 @@ const compactThinkCompleteHoldMs = 1000
 const simpleJudgmentText = '分析新疆暑期旅行需求'
 const simpleJudgmentCharacters = Array.from(simpleJudgmentText)
 const simpleJudgmentCopyWidthPx = Math.ceil(simpleJudgmentCharacters.length * 15.5 + 6)
+const quickAnswerTitleText = '搜索伊犁经典玩法'
+const quickAnswerTitleCharacters = Array.from(quickAnswerTitleText)
+const quickAnswerSecondTitleText = '搜索核心景点信息'
+const quickAnswerCopyWidthPx = Math.ceil(Math.max(quickAnswerTitleCharacters.length, Array.from(quickAnswerSecondTitleText).length) * 15.5 + 6)
 const deepThinkingTitleText = '搭建新疆伊犁环线行程框架'
 const deepThinkingBodyText = '用户计划和5个朋友去新疆伊犁旅行10天，走伊犁环线，未限定预算。6人出行适合自驾，需要重点规划路线节奏、核心景点和住宿安排。'
 const toolCallTitleText = '搜集自驾路线与核心景点攻略'
@@ -236,10 +251,27 @@ const finalResponseSections = [
   { blocks: [8, 9], list: false },
 ] as const
 
+const quickAnswerResponseBlocks: DottedFinalResponseBlock[] = [
+  { type: 'paragraph', text: '旅程从乌鲁木齐开始。第一天抵达后，可以去国际大巴扎感受浓郁的西域风情。这里不仅是世界规模最大的巴扎，更是美食的聚集地。傍晚时分，在美食街寻觅地道风味是绝佳选择。推荐尝尝薄皮包子、手抓饭、烤羊蹄。住宿可以选择市中心交通便利的酒店，方便次日出发。' },
+  { type: 'image-row', images: [quickAnswerUrumqi1, quickAnswerUrumqi2, quickAnswerUrumqi3] },
+  { type: 'paragraph', text: '第二天从乌鲁木齐驱车前往赛里木湖，这是新疆海拔最高、面积最大的高山湖泊。建议下午进入景区，从东门进入后逆时针环湖，这样光线更好，且能避开部分旅行团。' },
+  { type: 'paragraph', text: '第三天离开赛里木湖，可以前往特克斯。这是一座没有红绿灯的八卦城，城市布局如迷宫般神奇。除了感受独特的城市规划，这里的美食也值得一试。可以和小伙伴们去吃斯尔达西烤肉、马白开来揪片子、味尔美手抓肉。县城内酒店选择多，价格适中。' },
+  { type: 'paragraph', text: '第四、五天将深度游玩那拉提草原。这里是世界四大高山河谷草原之一，建议至少留出一天半的时间。分为空中草原和河谷草原。空中草原是经典，雪山、森林、草原层次分明；河谷草原则更秀美，有“小那拉提”之称。如果时间充裕，盘龙古道不容错过。最后住在那拉提镇，餐饮和住宿设施非常成熟。' },
+  { type: 'paragraph', text: '行程后半段，可以前往唐布拉草原，感受“百里画廊”的流动之美。最后，通过独库公路北段返回乌鲁木齐。独库公路每年仅开放几个月，一日看四季的奇景是旅途中浓墨重彩的一笔。' },
+]
+const quickAnswerResponseText = quickAnswerResponseBlocks
+  .map((block) => block.type === 'image-row' ? '' : block.text)
+  .filter(Boolean)
+  .join('')
+const quickAnswerResponseSections = [
+  { blocks: [0, 1], list: false },
+  { blocks: [2, 3, 4, 5], list: false },
+] as const
+
 const countCharacters = (text: string) => Array.from(text).length
 
-const getFinalResponseTextLengthBeforeBlock = (blockIndex: number) => (
-  finalResponseBlocks
+const getResponseTextLengthBeforeBlock = (blocks: DottedFinalResponseBlock[], blockIndex: number) => (
+  blocks
     .slice(0, blockIndex)
     .reduce((total, previousBlock) => total + (previousBlock.type === 'image-row' ? 0 : Array.from(previousBlock.text).length), 0)
 )
@@ -267,7 +299,7 @@ function getDeepThinkingAnimationUrl(kind: DottedProcessKind | undefined) {
 }
 
 function getStackDetailTargetHeight(kind: DottedProcessKind | undefined, toolNoteDisplayVariant: DottedToolNoteDisplayVariant) {
-  if (kind === 'toolcall') return 28
+  if (kind === 'toolcall') return 64
   if (kind === 'toolcallSearch') return toolNoteDisplayVariant === 'preview-detail' ? 28 : 90
   if (kind === 'thinkPlan') return 72
   if (kind === 'thinkCompact') return 54
@@ -423,11 +455,19 @@ const searchToolCallBodyCharacters = Array.from(searchToolCallBodyText)
 const planThinkTitleCharacters = Array.from(planThinkTitleText)
 const planThinkBodyCharacters = Array.from(planThinkBodyText)
 const finalResponseCharacters = Array.from(finalResponseText)
+const quickAnswerResponseCharacters = Array.from(quickAnswerResponseText)
 const processTransitionDelayMs = 1000
 const thinkingCompleteConfirmMs = 600
 const thinkingSummaryMorphMs = 560
 const responseStartDelayMs = 0
 const toolcallSearchCompletePauseMs = 1500
+const quickAnswerThinkCompleteHoldMs = 1000
+const quickAnswerTitleSwapFadeMs = 240
+const sourcePillCountDurationMs = 1500
+const sourcePillBetweenDelayMs = 500
+const sourcePillFinalHoldMs = 0
+const sourcePillSequenceDelayMs = sourcePillCountDurationMs + sourcePillBetweenDelayMs
+const sourcePillTotalSequenceMs = sourcePillSequenceDelayMs + sourcePillCountDurationMs + sourcePillFinalHoldMs
 
 const thinkingStages = [
   { label: '判断中...', animationUrl: thinkCloudAnimationUrl },
@@ -508,39 +548,101 @@ function DottedToolSearchRows({
   )
 }
 
+function getSourceCountProgress(progress: number) {
+  if (progress < 0.34) {
+    const localProgress = progress / 0.34
+    return 0.22 * localProgress * localProgress
+  }
+
+  if (progress < 0.82) {
+    const localProgress = (progress - 0.34) / 0.48
+    return 0.22 + 0.68 * (1 - Math.pow(1 - localProgress, 3))
+  }
+
+  const localProgress = (progress - 0.82) / 0.18
+  return 0.9 + 0.1 * (1 - Math.pow(1 - localProgress, 2))
+}
+
+function DottedRollingSourceCount({ value, delayMs = 0 }: { value: number; delayMs?: number }) {
+  const [displayValue, setDisplayValue] = useState(0)
+
+  useEffect(() => {
+    let animationFrame = 0
+    let startTime = 0
+
+    const tick = (now: number) => {
+      const progress = Math.min(1, (now - startTime) / sourcePillCountDurationMs)
+      const easedProgress = getSourceCountProgress(progress)
+      setDisplayValue(Math.round(value * easedProgress))
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(tick)
+      }
+    }
+
+    const timer = window.setTimeout(() => {
+      startTime = performance.now()
+      animationFrame = requestAnimationFrame(tick)
+    }, delayMs)
+
+    return () => {
+      window.clearTimeout(timer)
+      cancelAnimationFrame(animationFrame)
+    }
+  }, [delayMs, value])
+
+  return <span className="dotted-demo__thinking-search-pill-count">{displayValue}</span>
+}
+
 function DottedToolSearchPreviewRows({
   className,
-  visibleCount = 3,
-  webLabels = ['知乎', '携程'],
+  visibleCount = 2,
 }: {
   className?: string
   visibleCount?: number
-  webLabels?: [string, string]
 }) {
-  const normalizedVisibleCount = Math.max(0, Math.min(3, visibleCount))
+  const normalizedVisibleCount = Math.max(0, Math.min(2, visibleCount))
+  const [stagedVisibleCount, setStagedVisibleCount] = useState(normalizedVisibleCount > 0 ? 1 : 0)
+
+  useEffect(() => {
+    const timers: number[] = []
+
+    if (normalizedVisibleCount <= 0) {
+      setStagedVisibleCount(0)
+      return () => timers.forEach((timerId) => window.clearTimeout(timerId))
+    }
+
+    setStagedVisibleCount(1)
+
+    if (normalizedVisibleCount >= 2) {
+      timers.push(window.setTimeout(() => {
+        setStagedVisibleCount(2)
+      }, sourcePillSequenceDelayMs))
+    }
+
+    return () => timers.forEach((timerId) => window.clearTimeout(timerId))
+  }, [normalizedVisibleCount])
 
   return (
     <span className={['dotted-demo__thinking-search-list', 'dotted-demo__thinking-search-list--preview', className].filter(Boolean).join(' ')}>
-      {normalizedVisibleCount >= 1 ? (
+      {stagedVisibleCount >= 1 ? (
         <span className="dotted-demo__thinking-search-pill">
           <span className="dotted-demo__thinking-search-avatar-stack" aria-hidden="true">
             <img src={sourceJulyPillXhs1} alt="" />
             <img src={sourceJulyPillXhs2} alt="" />
             <img src={sourceJulyPillXhs3} alt="" />
           </span>
-          <span>小红书笔记</span>
+          <span><DottedRollingSourceCount value={389} /> 篇小红书笔记</span>
         </span>
       ) : null}
-      {normalizedVisibleCount >= 2 ? (
+      {stagedVisibleCount >= 2 ? (
         <span className="dotted-demo__thinking-search-pill">
-          <img src={sourceJulyPillZhihu} alt="" aria-hidden="true" />
-          <span>{webLabels[0]}</span>
-        </span>
-      ) : null}
-      {normalizedVisibleCount >= 3 ? (
-        <span className="dotted-demo__thinking-search-pill">
-          <img src={sourceJulyPillCtrip} alt="" aria-hidden="true" />
-          <span>{webLabels[1]}</span>
+          <span className="dotted-demo__thinking-search-avatar-stack" aria-hidden="true">
+            <img src={sourceJulyPillWeb1} alt="" />
+            <img src={sourceJulyPillWeb2} alt="" />
+            <img src={sourceJulyPillWeb3} alt="" />
+          </span>
+          <span><DottedRollingSourceCount value={234} /> 条全网内容</span>
         </span>
       ) : null}
     </span>
@@ -707,7 +809,7 @@ function DottedDeepThinkingContent({
     return (
       <span className={['dotted-demo__thinking-stack', shouldShowEntrySheen ? 'dotted-demo__thinking-stack--streaming' : '', isSummaryCollapsing ? 'dotted-demo__thinking-stack--summary-collapse' : ''].filter(Boolean).join(' ')}>
         <span className="dotted-demo__thinking-stack-entry">
-          <span className="dotted-demo__thinking-stack-entry-text">{isSummaryCollapsing ? '思考完成，参考小红书与全网内容' : '正在思考'}</span>
+          <span className="dotted-demo__thinking-stack-entry-text">{isSummaryCollapsing ? '思考完成，参考小红书与全网56人真实经验' : '正在思考'}</span>
           {isSummaryCollapsing ? (
             <span className="dotted-demo__thinking-stack-entry-avatars" aria-hidden="true">
               <img src={thinkResponseAvatar1} alt="" />
@@ -726,7 +828,8 @@ function DottedDeepThinkingContent({
           const rowTargetBody = getDeepThinkingTargetBody(kind)
           const rowTitleComplete = countCharacters(rowTitle) >= countCharacters(rowTargetTitle)
           const rowBodyComplete = countCharacters(rowBody) >= countCharacters(rowTargetBody)
-          const rowShouldShowBody = Boolean(rowTargetBody) && isActive && !item.deepThinkingComplete && (!useTailOpacity || rowTitleComplete)
+          const keepToolcallPillsDuringCollapse = kind === 'toolcall' && isActive && item.deepThinkingComplete
+          const rowShouldShowBody = Boolean(rowTargetBody) && isActive && ((!item.deepThinkingComplete && (!useTailOpacity || rowTitleComplete)) || keepToolcallPillsDuringCollapse)
           const rowBodyProgress = rowTargetBody ? Math.min(1, countCharacters(rowBody) / countCharacters(rowTargetBody)) : rowShouldShowBody ? 1 : 0
           const detailTargetHeight = getStackDetailTargetHeight(kind, toolNoteDisplayVariant)
           const hasDetailContent = Boolean(rowTargetBody)
@@ -734,11 +837,10 @@ function DottedDeepThinkingContent({
           const detailMinHeight = kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? 28 : 18
           const detailHeight = rowShouldShowBody && shouldRenderDetail ? Math.max(detailMinHeight, detailTargetHeight) : 0
           const rowDetailOpen = rowShouldShowBody && shouldRenderDetail
-          const keepToolcallPillsDuringCollapse = kind === 'toolcall' && isActive && item.deepThinkingComplete
           const searchPreviewPillCount = rowShouldShowBody
-            ? Math.min(3, Math.max(1, Math.ceil(rowBodyProgress * 3)))
+            ? 2
             : keepToolcallPillsDuringCollapse
-              ? 3
+              ? 2
               : 0
           const isRowComplete = isActive
             ? item.deepThinkingComplete === true && activeCheckReady
@@ -788,7 +890,7 @@ function DottedDeepThinkingContent({
                     {kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
                       <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
                     ) : kind === 'toolcall' ? (
-                      <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} webLabels={['知乎', '携程']} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
+                      <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
                     ) : kind === 'toolcallSearch' ? (
                       <DottedToolSearchRows
                         text={rowBody}
@@ -820,7 +922,7 @@ function DottedDeepThinkingContent({
     )
   }
 
-  const searchPreviewPillCount = shouldShowBody ? Math.min(3, Math.max(1, Math.ceil((targetBody ? countCharacters(visibleBody) / countCharacters(targetBody) : 1) * 3))) : 0
+  const searchPreviewPillCount = shouldShowBody ? 2 : 0
 
   return (
     <>
@@ -946,7 +1048,7 @@ function DottedChatStream({
         return (
           item.isFinalResponse ? (
             <div key={item.id} className="dots-message-row dots-message-row--dots dots-message-row--response">
-              <DottedFinalResponseCard summaryOnly={item.isFinalResponseSummary} complete={item.isFinalResponseComplete} onSourcesClick={onSourcesClick} streamingVariant={streamingVariant}>{item.text}</DottedFinalResponseCard>
+              <DottedFinalResponseCard quick={item.isQuickFinalResponse} summaryOnly={item.isFinalResponseSummary} complete={item.isFinalResponseComplete} onSourcesClick={onSourcesClick} streamingVariant={streamingVariant}>{item.text}</DottedFinalResponseCard>
             </div>
           ) : (
             <DotsMessageBubble key={item.id} role={item.role} className={messageClassName}>
@@ -955,26 +1057,32 @@ function DottedChatStream({
                 key={item.id}
                 className={[
                   'dotted-demo__thinking',
-                  item.isDeepThinking ? `dotted-demo__thinking--transition-${thinkingTransitionStyle}` : '',
-                  item.isDeepThinking ? 'dotted-demo__thinking--clickable' : '',
+                  item.isDeepThinking && !item.isQuickAnswerThinking ? `dotted-demo__thinking--transition-${thinkingTransitionStyle}` : '',
+                  item.isDeepThinking && !item.isQuickAnswerThinking ? 'dotted-demo__thinking--clickable' : '',
                   item.isJudging ? 'dotted-demo__thinking--judging' : '',
                   item.isJudgingHold ? 'dotted-demo__thinking--judging-hold' : '',
-                  item.isDeepThinking ? 'dotted-demo__thinking--deep' : '',
+                  item.isDeepThinking && !item.isQuickAnswerThinking ? 'dotted-demo__thinking--deep' : '',
+                  item.isQuickAnswerThinking ? 'dotted-demo__thinking--quick-answer' : '',
                   item.deepThinkingKind === 'toolcall' ? 'dotted-demo__thinking--toolcall' : '',
                   item.deepThinkingKind === 'thinkCompact' && !item.deepThinkingBody ? 'dotted-demo__thinking--think-compact' : '',
                   item.deepThinkingKind === 'toolcallSearch' ? 'dotted-demo__thinking--toolcall-search' : '',
                   item.deepThinkingKind === 'thinkPlan' ? 'dotted-demo__thinking--think-plan' : '',
-                  item.thinkingDisplayVariant === 'stacked' ? 'dotted-demo__thinking--stacked' : '',
+                  item.thinkingDisplayVariant === 'stacked' && !item.isQuickAnswerThinking ? 'dotted-demo__thinking--stacked' : '',
                   item.isDeepThinkingTitleComplete ? 'dotted-demo__thinking--deep-title-complete' : '',
                   useSpanMask ? 'dotted-demo__thinking--tail-stream' : '',
                 ].filter(Boolean).join(' ')}
-                role={item.isDeepThinking ? 'button' : undefined}
-                tabIndex={item.isDeepThinking ? 0 : undefined}
-                onClick={item.isDeepThinking ? onThinkingClick : undefined}
-                onKeyDown={item.isDeepThinking ? handleThinkingKeyDown : undefined}
+                role={item.isDeepThinking && !item.isQuickAnswerThinking ? 'button' : undefined}
+                tabIndex={item.isDeepThinking && !item.isQuickAnswerThinking ? 0 : undefined}
+                onClick={item.isDeepThinking && !item.isQuickAnswerThinking ? onThinkingClick : undefined}
+                onKeyDown={item.isDeepThinking && !item.isQuickAnswerThinking ? handleThinkingKeyDown : undefined}
                 aria-label={item.text || '判断中'}
                 style={
-                  item.isDeepThinking
+                  item.isQuickAnswerThinking
+                    ? ({
+                        '--thinking-width': `${52 + quickAnswerCopyWidthPx * (item.deepThinkingTitleProgress ?? 0)}px`,
+                        '--thinking-copy-width': `${quickAnswerCopyWidthPx * (item.deepThinkingTitleProgress ?? 0)}px`,
+                      } as CSSProperties)
+                    : item.isDeepThinking
                     ? ({
                         '--thinking-deep-width': `${thinkingDisplayVariant === 'stacked' ? 361 : getDeepThinkingWidth(item.deepThinkingKind)}px`,
                       } as CSSProperties)
@@ -987,10 +1095,25 @@ function DottedChatStream({
                 }
               >
                 <DottedLottieAnimation
-                  src={item.isDeepThinking ? getDeepThinkingAnimationUrl(item.deepThinkingKind) : thinkingStages[item.thinkingStageIndex ?? 0].animationUrl}
+                  src={item.isQuickAnswerThinking ? thinkGlassAnimationUrl : item.isDeepThinking ? getDeepThinkingAnimationUrl(item.deepThinkingKind) : thinkingStages[item.thinkingStageIndex ?? 0].animationUrl}
                   className="dotted-demo__thinking-lottie"
                 />
-                {item.isDeepThinking ? (
+                {item.isQuickAnswerThinking ? (
+                  <span
+                    className={[
+                      'dotted-demo__thinking-copy',
+                      item.isQuickAnswerSwitching ? 'dotted-demo__thinking-copy--switching' : '',
+                    ].filter(Boolean).join(' ')}
+                  >
+                    <DottedStreamingSpanText
+                      text={item.deepThinkingTitle ?? ''}
+                      spanKey={`${item.id}-quick-title`}
+                      enabled={false}
+                      totalVisibleCharacters={countCharacters(item.deepThinkingTitle ?? '')}
+                      complete={item.deepThinkingComplete}
+                    />
+                  </span>
+                ) : item.isDeepThinking ? (
                   <DottedDeepThinkingContent
                     item={item}
                     streamingVariant={streamingVariant}
@@ -1091,24 +1214,28 @@ function DottedFinalResponseCard({
   children,
   complete = false,
   summaryOnly = false,
+  quick = false,
   onSourcesClick,
   streamingVariant = 'default',
 }: {
   children: ReactNode
   complete?: boolean
   summaryOnly?: boolean
+  quick?: boolean
   onSourcesClick?: () => void
   streamingVariant?: DottedStreamingVariant
 }) {
   const streamedText = String(children)
   const visibleCount = Array.from(streamedText).length
   const useSpanMask = streamingVariant === 'span-mask'
+  const responseBlocks = quick ? quickAnswerResponseBlocks : finalResponseBlocks
+  const responseSections = quick ? quickAnswerResponseSections : finalResponseSections
 
   return (
-    <article className={['dotted-demo__response-card', summaryOnly ? 'dotted-demo__response-card--summary' : ''].filter(Boolean).join(' ')} aria-label="Dots 最终回答">
+    <article className={['dotted-demo__response-card', quick ? 'dotted-demo__response-card--quick' : '', summaryOnly ? 'dotted-demo__response-card--summary' : ''].filter(Boolean).join(' ')} aria-label="Dots 最终回答">
       <div className="dotted-demo__response-main">
         <button className="dotted-demo__response-status" type="button" onClick={onSourcesClick}>
-          <span>思考完成，参考小红书与全网内容</span>
+          <span>{quick ? '思考完成，参考小红书与全网23人真实经验' : '思考完成，参考小红书与全网56人真实经验'}</span>
           <span className="dotted-demo__response-avatars" aria-hidden="true">
             <img src={thinkResponseAvatar1} alt="" />
             <img src={thinkResponseAvatar2} alt="" />
@@ -1116,10 +1243,10 @@ function DottedFinalResponseCard({
           <img className="dotted-demo__response-arrow" src={thinkResponseArrow} alt="" aria-hidden="true" />
         </button>
         {!summaryOnly && <div className="dotted-demo__response-content">
-          {finalResponseSections.map((section, sectionIndex) => {
+          {responseSections.map((section, sectionIndex) => {
             const renderedBlocks = section.blocks.map((blockIndex) => {
-              const block = finalResponseBlocks[blockIndex]
-              const previousLength = getFinalResponseTextLengthBeforeBlock(blockIndex)
+              const block = responseBlocks[blockIndex]
+              const previousLength = getResponseTextLengthBeforeBlock(responseBlocks, blockIndex)
 
               if (block.type === 'image-row') {
                 if (visibleCount < previousLength) return null
@@ -1596,8 +1723,9 @@ export function DottedDemoScreen({
   const chatStreamRef = useRef<HTMLDivElement>(null)
   const jumpToBottomDismissedRef = useRef(false)
   const handledResumeSignalRef = useRef(0)
+  const quickAnswerOverrideRef = useRef(false)
   const playbackSnapshotRef = useRef({
-    phase: 'thinking' as 'thinking' | 'judging' | 'judgingHold' | 'streaming' | 'think' | 'thinkHold' | 'toolcall' | 'toolcallHold' | 'thinkCompact' | 'thinkCompactHold' | 'toolcallSearch' | 'toolcallSearchHold' | 'thinkPlan' | 'thinkPlanHold' | 'thinkingComplete' | 'thinkingSummary' | 'response' | 'done',
+    phase: 'thinking' as DottedStreamingPhase,
     simpleLength: 0,
     streamingLength: 0,
     deepTitleLength: 0,
@@ -1611,8 +1739,10 @@ export function DottedDemoScreen({
   const [finalResponseReplyText, setFinalResponseReplyText] = useState('')
   const [deepThinkingKind, setDeepThinkingKind] = useState<DottedProcessKind>('think')
   const [previousThinking, setPreviousThinking] = useState<{ kind: DottedProcessKind; title: string; body: string } | null>(null)
-  const [streamingPhase, setStreamingPhase] = useState<'thinking' | 'judging' | 'judgingHold' | 'streaming' | 'think' | 'thinkHold' | 'toolcall' | 'toolcallHold' | 'thinkCompact' | 'thinkCompactHold' | 'toolcallSearch' | 'toolcallSearchHold' | 'thinkPlan' | 'thinkPlanHold' | 'thinkingComplete' | 'thinkingSummary' | 'response' | 'done'>('thinking')
+  const [streamingPhase, setStreamingPhase] = useState<DottedStreamingPhase>('thinking')
   const [thinkingStageIndex, setThinkingStageIndex] = useState(0)
+  const [quickAnswerTitleSwitching, setQuickAnswerTitleSwitching] = useState(false)
+  const [quickAnswerMode, setQuickAnswerMode] = useState(false)
   const [showJumpToBottom, setShowJumpToBottom] = useState(false)
   const [activeSheetMode, setActiveSheetMode] = useState<DottedSheetMode | null>(null)
   const isStreamingReplyDemo = demoMode === 'streaming-reply'
@@ -1641,8 +1771,10 @@ export function DottedDemoScreen({
     const currentStep: DottedDemoStep =
       streamingPhase === 'judging' || streamingPhase === 'judgingHold'
         ? 'judging-think'
-        : streamingPhase === 'streaming'
+        : streamingPhase === 'streaming' || streamingPhase === 'quickAnswerPrompt'
         ? 'context'
+        : streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold'
+        ? 'think'
         : streamingPhase === 'think' || streamingPhase === 'thinkHold'
         ? 'think'
         : streamingPhase === 'toolcall' || streamingPhase === 'toolcallHold'
@@ -1683,6 +1815,8 @@ export function DottedDemoScreen({
       return 'response'
     }
     const runResponse = () => {
+      if (quickAnswerOverrideRef.current) return
+
       let finalResponseCursor = 0
       setFinalResponseReplyText('')
       setPreviousThinking(null)
@@ -1716,11 +1850,16 @@ export function DottedDemoScreen({
       setStreamingPhase('streaming')
 
       const typeContextCharacter = () => {
+        if (quickAnswerOverrideRef.current) return
+
         replyCursor = Math.min(streamingReplyCharacters.length, replyCursor + contextCharacterStep)
         setStreamingReplyText(streamingReplyCharacters.slice(0, replyCursor).join(''))
         if (replyCursor >= streamingReplyCharacters.length) {
           if (continueToThink) {
-            timers.push(window.setTimeout(() => runProcessFromKind('think'), contextToThinkDelayMs))
+            timers.push(window.setTimeout(() => {
+              if (quickAnswerOverrideRef.current) return
+              runProcessFromKind('think')
+            }, contextToThinkDelayMs))
           }
           return
         }
@@ -1731,6 +1870,8 @@ export function DottedDemoScreen({
       timers.push(window.setTimeout(typeContextCharacter, 24))
     }
     const runProcessFromKind = (kind: DottedProcessKind, titleStart = 0, bodyStart = 0) => {
+      if (quickAnswerOverrideRef.current) return
+
       let titleCursor = titleStart
       let bodyCursor = bodyStart
       const { titleCharacters, bodyCharacters, holdPhase } = getProcessConfig(kind)
@@ -1743,6 +1884,7 @@ export function DottedDemoScreen({
         const enterHoldAndContinue = () => {
           setStreamingPhase(holdPhase)
           timers.push(window.setTimeout(() => {
+            if (quickAnswerOverrideRef.current) return
             const nextKind = getNextProcessKind(kind)
             if (nextKind === 'response') {
               runResponse()
@@ -1755,7 +1897,7 @@ export function DottedDemoScreen({
               bodyCharacters.join(''),
             )
             runProcessFromKind(nextKind)
-          }, processTransitionDelayMs))
+          }, kind === 'toolcall' ? sourcePillTotalSequenceMs : processTransitionDelayMs))
         }
 
         if (kind === 'toolcallSearch') {
@@ -1766,6 +1908,7 @@ export function DottedDemoScreen({
         if (kind === 'thinkCompact') {
           setStreamingPhase('thinkCompactHold')
           timers.push(window.setTimeout(() => {
+            if (quickAnswerOverrideRef.current) return
             showPreviousThinking('thinkCompact', compactThinkTitleText, compactThinkBodyText)
             runProcessFromKind('toolcallSearch')
           }, compactThinkCompleteHoldMs))
@@ -1776,6 +1919,8 @@ export function DottedDemoScreen({
       }
 
       const typeBodyCharacter = () => {
+        if (quickAnswerOverrideRef.current) return
+
         bodyCursor += 1
         setDeepThinkingBody(bodyCharacters.slice(0, bodyCursor).join(''))
         if (bodyCursor >= bodyCharacters.length) {
@@ -1787,6 +1932,8 @@ export function DottedDemoScreen({
       }
 
       const typeTitleCharacter = () => {
+        if (quickAnswerOverrideRef.current) return
+
         if (titleCursor < titleCharacters.length) {
           titleCursor += 1
           setDeepThinkingTitle(titleCharacters.slice(0, titleCursor).join(''))
@@ -1915,6 +2062,8 @@ export function DottedDemoScreen({
 
     if (continueAfterStep && demoStep) {
       timers.push(window.setTimeout(() => {
+        quickAnswerOverrideRef.current = false
+        setQuickAnswerMode(false)
         setStreamingReplyText(demoStep === 'thinking' || demoStep === 'judging-think' ? '' : streamingReplyTextFull)
         setSimpleJudgmentReplyText(demoStep === 'thinking' ? '' : simpleJudgmentText)
         setDeepThinkingTitle('')
@@ -1971,6 +2120,8 @@ export function DottedDemoScreen({
 
     if (demoStep === 'thinking') {
       timers.push(window.setTimeout(() => {
+        quickAnswerOverrideRef.current = false
+        setQuickAnswerMode(false)
         setStreamingReplyText('')
         setSimpleJudgmentReplyText('')
         setDeepThinkingTitle('')
@@ -1986,6 +2137,8 @@ export function DottedDemoScreen({
 
     if (demoStep === 'judging-think') {
       timers.push(window.setTimeout(() => {
+        quickAnswerOverrideRef.current = false
+        setQuickAnswerMode(false)
         let cursor = 0
         setStreamingReplyText('')
         setSimpleJudgmentReplyText('')
@@ -2015,6 +2168,8 @@ export function DottedDemoScreen({
 
     if (demoStep === 'context') {
       timers.push(window.setTimeout(() => {
+        quickAnswerOverrideRef.current = false
+        setQuickAnswerMode(false)
         setStreamingReplyText('')
         setSimpleJudgmentReplyText(simpleJudgmentText)
         setDeepThinkingTitle('')
@@ -2031,6 +2186,8 @@ export function DottedDemoScreen({
 
     if (demoStep === 'think' || demoStep === 'toolcall' || demoStep === 'think-compact' || demoStep === 'toolcall-search' || demoStep === 'think-plan') {
       timers.push(window.setTimeout(() => {
+        quickAnswerOverrideRef.current = false
+        setQuickAnswerMode(false)
         let titleCursor = 0
         const nextKind = demoStep === 'think-plan' ? 'thinkPlan' : demoStep === 'toolcall-search' ? 'toolcallSearch' : demoStep === 'toolcall' ? 'toolcall' : demoStep === 'think-compact' ? 'thinkCompact' : 'think'
         const titleCharacters = nextKind === 'thinkPlan' ? planThinkTitleCharacters : nextKind === 'toolcallSearch' ? searchToolCallTitleCharacters : nextKind === 'toolcall' ? toolCallTitleCharacters : nextKind === 'thinkCompact' ? compactThinkTitleCharacters : deepThinkingTitleCharacters
@@ -2082,6 +2239,8 @@ export function DottedDemoScreen({
 
     if (demoStep === 'response') {
       timers.push(window.setTimeout(() => {
+        quickAnswerOverrideRef.current = false
+        setQuickAnswerMode(false)
         let responseCursor = 0
         setStreamingReplyText(streamingReplyTextFull)
         setSimpleJudgmentReplyText(simpleJudgmentText)
@@ -2110,6 +2269,8 @@ export function DottedDemoScreen({
 
     if (demoStep === 'complete') {
       timers.push(window.setTimeout(() => {
+        quickAnswerOverrideRef.current = false
+        setQuickAnswerMode(false)
         setStreamingReplyText(streamingReplyTextFull)
         setSimpleJudgmentReplyText(simpleJudgmentText)
         setDeepThinkingTitle('')
@@ -2124,6 +2285,8 @@ export function DottedDemoScreen({
     }
 
     timers.push(window.setTimeout(() => {
+      quickAnswerOverrideRef.current = false
+      setQuickAnswerMode(false)
       let cursor = 0
       setStreamingReplyText('')
       setSimpleJudgmentReplyText('')
@@ -2145,22 +2308,26 @@ export function DottedDemoScreen({
           timers.push(window.setTimeout(() => {
             showContext(0, false)
             timers.push(window.setTimeout(() => {
+                if (quickAnswerOverrideRef.current) return
                 let titleCursor = 0
                 setDeepThinkingKind('think')
                 setStreamingPhase('think')
 
                 const typeDeepTitleCharacter = () => {
+                  if (quickAnswerOverrideRef.current) return
                   titleCursor += 1
                   setDeepThinkingTitle(deepThinkingTitleCharacters.slice(0, titleCursor).join(''))
                   if (titleCursor >= deepThinkingTitleCharacters.length) {
                     let bodyCursor = 0
 
                     const typeDeepBodyCharacter = () => {
+                      if (quickAnswerOverrideRef.current) return
                       bodyCursor += 1
                       setDeepThinkingBody(deepThinkingBodyCharacters.slice(0, bodyCursor).join(''))
                       if (bodyCursor >= deepThinkingBodyCharacters.length) {
                         setStreamingPhase('thinkHold')
                         timers.push(window.setTimeout(() => {
+                          if (quickAnswerOverrideRef.current) return
                           let toolTitleCursor = 0
                           showPreviousThinking('think', deepThinkingTitleText, deepThinkingBodyText)
                           setDeepThinkingKind('toolcall')
@@ -2169,17 +2336,20 @@ export function DottedDemoScreen({
                           setStreamingPhase('toolcall')
 
                           const typeToolTitleCharacter = () => {
+                            if (quickAnswerOverrideRef.current) return
                             toolTitleCursor += 1
                             setDeepThinkingTitle(toolCallTitleCharacters.slice(0, toolTitleCursor).join(''))
                             if (toolTitleCursor >= toolCallTitleCharacters.length) {
                               let toolBodyCursor = 0
 
                               const typeToolBodyCharacter = () => {
+                                if (quickAnswerOverrideRef.current) return
                                 toolBodyCursor += 1
                                 setDeepThinkingBody(toolCallBodyCharacters.slice(0, toolBodyCursor).join(''))
                                 if (toolBodyCursor >= toolCallBodyCharacters.length) {
                                   setStreamingPhase('toolcallHold')
                                   timers.push(window.setTimeout(() => {
+                                    if (quickAnswerOverrideRef.current) return
                                     let compactTitleCursor = 0
                                     showPreviousThinking('toolcall', toolCallTitleText, toolCallBodyText)
                                     setDeepThinkingKind('thinkCompact')
@@ -2188,17 +2358,20 @@ export function DottedDemoScreen({
                                     setStreamingPhase('thinkCompact')
 
                                     const typeCompactThinkTitleCharacter = () => {
+                                      if (quickAnswerOverrideRef.current) return
                                       compactTitleCursor += 1
                                       setDeepThinkingTitle(compactThinkTitleCharacters.slice(0, compactTitleCursor).join(''))
                                       if (compactTitleCursor >= compactThinkTitleCharacters.length) {
                                         let compactBodyCursor = 0
 
                                         const typeCompactThinkBodyCharacter = () => {
+                                          if (quickAnswerOverrideRef.current) return
                                           compactBodyCursor += 1
                                           setDeepThinkingBody(compactThinkBodyCharacters.slice(0, compactBodyCursor).join(''))
                                           if (compactBodyCursor >= compactThinkBodyCharacters.length) {
                                             setStreamingPhase('thinkCompactHold')
                                             timers.push(window.setTimeout(() => {
+                                              if (quickAnswerOverrideRef.current) return
                                               let searchToolTitleCursor = 0
                                               showPreviousThinking('thinkCompact', compactThinkTitleText, compactThinkBodyText)
                                               setDeepThinkingKind('toolcallSearch')
@@ -2207,18 +2380,22 @@ export function DottedDemoScreen({
                                               setStreamingPhase('toolcallSearch')
 
                                               const typeSearchToolTitleCharacter = () => {
+                                                if (quickAnswerOverrideRef.current) return
                                                 searchToolTitleCursor += 1
                                                 setDeepThinkingTitle(searchToolCallTitleCharacters.slice(0, searchToolTitleCursor).join(''))
                                                 if (searchToolTitleCursor >= searchToolCallTitleCharacters.length) {
                                                   let searchToolBodyCursor = 0
 
                                                   const typeSearchToolBodyCharacter = () => {
+                                                    if (quickAnswerOverrideRef.current) return
                                                     searchToolBodyCursor += 1
                                                     setDeepThinkingBody(searchToolCallBodyCharacters.slice(0, searchToolBodyCursor).join(''))
                                                     if (searchToolBodyCursor >= searchToolCallBodyCharacters.length) {
                                                       timers.push(window.setTimeout(() => {
+                                                        if (quickAnswerOverrideRef.current) return
                                                         setStreamingPhase('toolcallSearchHold')
                                                         timers.push(window.setTimeout(() => {
+                                                          if (quickAnswerOverrideRef.current) return
                                                           let planThinkTitleCursor = 0
                                                           showPreviousThinking('toolcallSearch', searchToolCallTitleText, searchToolCallBodyText)
                                                           setDeepThinkingKind('thinkPlan')
@@ -2227,17 +2404,20 @@ export function DottedDemoScreen({
                                                           setStreamingPhase('thinkPlan')
 
                                                           const typePlanThinkTitleCharacter = () => {
+                                                            if (quickAnswerOverrideRef.current) return
                                                             planThinkTitleCursor += 1
                                                             setDeepThinkingTitle(planThinkTitleCharacters.slice(0, planThinkTitleCursor).join(''))
                                                             if (planThinkTitleCursor >= planThinkTitleCharacters.length) {
                                                               let planThinkBodyCursor = 0
 
                                                               const typePlanThinkBodyCharacter = () => {
+                                                                if (quickAnswerOverrideRef.current) return
                                                                 planThinkBodyCursor += 1
                                                                 setDeepThinkingBody(planThinkBodyCharacters.slice(0, planThinkBodyCursor).join(''))
                                                                 if (planThinkBodyCursor >= planThinkBodyCharacters.length) {
                                                                   setStreamingPhase('thinkPlanHold')
                                                                   timers.push(window.setTimeout(() => {
+                                                                    if (quickAnswerOverrideRef.current) return
                                                                     runResponse()
                                                                   }, processTransitionDelayMs))
                                                                   return
@@ -2285,7 +2465,7 @@ export function DottedDemoScreen({
                                     }
 
                                     typeCompactThinkTitleCharacter()
-                                  }, processTransitionDelayMs))
+                                  }, sourcePillTotalSequenceMs))
                                   return
                                 }
 
@@ -2388,10 +2568,93 @@ export function DottedDemoScreen({
     })
   }
 
+  const handleQuickAnswerClick = () => {
+    if (streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold') return
+
+    quickAnswerOverrideRef.current = true
+    setQuickAnswerMode(true)
+    setPreviousThinking(null)
+    setDeepThinkingKind('think')
+    setDeepThinkingTitle('')
+    setDeepThinkingBody('')
+    setFinalResponseReplyText('')
+    setStreamingPhase('quickAnswerThink')
+  }
+
+  useEffect(() => {
+    if (paused || streamingPhase !== 'quickAnswerThink') return undefined
+
+    const timers: number[] = []
+    let titleCursor = 0
+    setDeepThinkingKind('think')
+    setDeepThinkingTitle('')
+    setDeepThinkingBody('')
+    setPreviousThinking(null)
+    setQuickAnswerTitleSwitching(false)
+
+    const startQuickResponse = () => {
+      timers.push(window.setTimeout(() => {
+        let finalResponseCursor = Math.min(1, quickAnswerResponseCharacters.length)
+        setFinalResponseReplyText(quickAnswerResponseCharacters.slice(0, finalResponseCursor).join(''))
+        setDeepThinkingTitle('')
+        setDeepThinkingBody('')
+        setStreamingPhase('response')
+      }, quickAnswerThinkCompleteHoldMs))
+    }
+
+    const typeQuickAnswerTitle = () => {
+      titleCursor += 1
+      setDeepThinkingTitle(quickAnswerTitleCharacters.slice(0, titleCursor).join(''))
+      if (titleCursor >= quickAnswerTitleCharacters.length) {
+        timers.push(window.setTimeout(() => {
+          setQuickAnswerTitleSwitching(true)
+          timers.push(window.setTimeout(() => {
+            setDeepThinkingTitle(quickAnswerSecondTitleText)
+            timers.push(window.setTimeout(() => {
+              setQuickAnswerTitleSwitching(false)
+              timers.push(window.setTimeout(startQuickResponse, quickAnswerTitleSwapFadeMs))
+            }, quickAnswerTitleSwapFadeMs))
+          }, quickAnswerTitleSwapFadeMs))
+        }, 2000))
+        return
+      }
+
+      timers.push(window.setTimeout(typeQuickAnswerTitle, 34))
+    }
+
+    typeQuickAnswerTitle()
+
+    return () => timers.forEach((timerId) => window.clearTimeout(timerId))
+  }, [paused, streamingPhase])
+
+  useEffect(() => {
+    if (paused || !quickAnswerMode || streamingPhase !== 'response') return undefined
+
+    const timers: number[] = []
+    let finalResponseCursor = Math.max(1, countCharacters(finalResponseReplyText))
+
+    const typeFinalResponseCharacter = () => {
+      if (finalResponseCursor >= quickAnswerResponseCharacters.length) {
+        setStreamingPhase('done')
+        return
+      }
+
+      finalResponseCursor += 1
+      setFinalResponseReplyText(quickAnswerResponseCharacters.slice(0, finalResponseCursor).join(''))
+      timers.push(window.setTimeout(typeFinalResponseCharacter, 12))
+    }
+
+    timers.push(window.setTimeout(typeFinalResponseCharacter, responseStartDelayMs))
+
+    return () => timers.forEach((timerId) => window.clearTimeout(timerId))
+  }, [finalResponseReplyText, paused, quickAnswerMode, streamingPhase])
+
   const simpleJudgmentProgress = simpleJudgmentReplyText.length / simpleJudgmentCharacters.length
-  const activeDeepTitleLength = deepThinkingKind === 'thinkPlan' ? planThinkTitleCharacters.length : deepThinkingKind === 'toolcallSearch' ? searchToolCallTitleCharacters.length : deepThinkingKind === 'toolcall' ? toolCallTitleCharacters.length : deepThinkingKind === 'thinkCompact' ? compactThinkTitleCharacters.length : deepThinkingTitleCharacters.length
+  const activeDeepTitleLength = streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold' ? quickAnswerTitleCharacters.length : deepThinkingKind === 'thinkPlan' ? planThinkTitleCharacters.length : deepThinkingKind === 'toolcallSearch' ? searchToolCallTitleCharacters.length : deepThinkingKind === 'toolcall' ? toolCallTitleCharacters.length : deepThinkingKind === 'thinkCompact' ? compactThinkTitleCharacters.length : deepThinkingTitleCharacters.length
   const deepThinkingTitleProgress = deepThinkingTitle.length / activeDeepTitleLength
   const deepThinkingComplete = (
+    streamingPhase === 'quickAnswerThinkHold'
+    ||
     (deepThinkingKind === 'think' && streamingPhase === 'thinkHold')
     || (deepThinkingKind === 'toolcall' && streamingPhase === 'toolcallHold')
     || (deepThinkingKind === 'thinkCompact' && streamingPhase === 'thinkCompactHold')
@@ -2406,6 +2669,8 @@ export function DottedDemoScreen({
       Boolean(deepThinkingTitle)
       || Boolean(deepThinkingBody)
       || streamingPhase === 'think'
+      || streamingPhase === 'quickAnswerThink'
+      || streamingPhase === 'quickAnswerThinkHold'
       || streamingPhase === 'thinkHold'
       || streamingPhase === 'toolcall'
       || streamingPhase === 'toolcallHold'
@@ -2417,6 +2682,21 @@ export function DottedDemoScreen({
       || streamingPhase === 'thinkPlanHold'
       || streamingPhase === 'thinkingComplete'
     )
+  const shouldShowQuickAnswerButton = isStreamingReplyDemo
+    && !quickAnswerMode
+    && (
+      streamingPhase === 'quickAnswerPrompt'
+      || streamingPhase === 'think'
+      || streamingPhase === 'thinkHold'
+      || streamingPhase === 'toolcall'
+      || streamingPhase === 'toolcallHold'
+      || streamingPhase === 'thinkCompact'
+      || streamingPhase === 'thinkCompactHold'
+      || streamingPhase === 'toolcallSearch'
+      || streamingPhase === 'toolcallSearchHold'
+      || streamingPhase === 'thinkPlan'
+      || streamingPhase === 'thinkPlanHold'
+    )
   const chatItems: DotsHistoryItem[] = [
     {
       id: 'user-query',
@@ -2424,7 +2704,7 @@ export function DottedDemoScreen({
       role: 'user',
       text: '帮我安排和五个朋友的暑假十天左右的新疆旅游计划，主要想玩伊犁环线，帮我安排行程规划和打卡攻略。',
     },
-    ...(streamingReplyText || streamingPhase === 'streaming' || deepThinkingTitle || deepThinkingBody
+    ...(streamingReplyText || streamingPhase === 'streaming' || shouldRenderDeepThinking || deepThinkingTitle || deepThinkingBody
       ? [
           {
             id: 'dots-streaming-reply',
@@ -2449,6 +2729,8 @@ export function DottedDemoScreen({
                   deepThinkingTitleProgress,
                   deepThinkingKind,
                   deepThinkingComplete,
+                  isQuickAnswerThinking: streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold',
+                  isQuickAnswerSwitching: quickAnswerTitleSwitching,
                   previousDeepThinkingTitle: previousThinking?.title,
                   previousDeepThinkingBody: previousThinking?.body,
                   previousDeepThinkingKind: previousThinking?.kind,
@@ -2465,7 +2747,8 @@ export function DottedDemoScreen({
                   role: 'dots' as const,
                   text: finalResponseReplyText,
                   isFinalResponse: true,
-                  isFinalResponseSummary: streamingPhase === 'thinkingSummary',
+                  isQuickFinalResponse: quickAnswerMode,
+                  isFinalResponseSummary: !quickAnswerMode && streamingPhase === 'thinkingSummary',
                   isFinalResponseComplete: streamingPhase === 'done',
                 },
               ]
@@ -2534,6 +2817,13 @@ export function DottedDemoScreen({
         {showJumpToBottom && (
           <button className="dotted-demo__jump-bottom" type="button" aria-label="跳转到回答底部" onClick={handleJumpToBottom}>
             <img src={thinkDescending} alt="" aria-hidden="true" />
+          </button>
+        )}
+
+        {shouldShowQuickAnswerButton && (
+          <button className="dotted-demo__quick-answer-button" type="button" onClick={handleQuickAnswerClick}>
+            <img className="dotted-demo__quick-answer-icon" src={quickAnswerIcon} alt="" aria-hidden="true" />
+            <span>获得快速回答</span>
           </button>
         )}
 
