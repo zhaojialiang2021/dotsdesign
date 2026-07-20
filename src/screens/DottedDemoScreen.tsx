@@ -632,7 +632,7 @@ function DottedToolSearchPreviewRows({
             <img src={sourceJulyPillXhs2} alt="" />
             <img src={sourceJulyPillXhs3} alt="" />
           </span>
-          <span><DottedRollingSourceCount value={389} /> 篇小红书笔记</span>
+          <span><DottedRollingSourceCount value={14} /> 篇小红书笔记</span>
         </span>
       ) : null}
       {stagedVisibleCount >= 2 ? (
@@ -642,7 +642,7 @@ function DottedToolSearchPreviewRows({
             <img src={sourceJulyPillWeb2} alt="" />
             <img src={sourceJulyPillWeb3} alt="" />
           </span>
-          <span><DottedRollingSourceCount value={234} /> 条全网内容</span>
+          <span><DottedRollingSourceCount value={8} />条全网信息</span>
         </span>
       ) : null}
     </span>
@@ -809,7 +809,7 @@ function DottedDeepThinkingContent({
     return (
       <span className={['dotted-demo__thinking-stack', shouldShowEntrySheen ? 'dotted-demo__thinking-stack--streaming' : '', isSummaryCollapsing ? 'dotted-demo__thinking-stack--summary-collapse' : ''].filter(Boolean).join(' ')}>
         <span className="dotted-demo__thinking-stack-entry">
-          <span className="dotted-demo__thinking-stack-entry-text">{isSummaryCollapsing ? '思考完成，参考小红书与全网56人真实经验' : '正在思考'}</span>
+          <span className="dotted-demo__thinking-stack-entry-text">{isSummaryCollapsing ? '思考完成，参考小红书与全网22人真实经验' : '正在思考'}</span>
           {isSummaryCollapsing ? (
             <span className="dotted-demo__thinking-stack-entry-avatars" aria-hidden="true">
               <img src={thinkResponseAvatar1} alt="" />
@@ -1234,7 +1234,7 @@ function DottedFinalResponseCard({
     <article className={['dotted-demo__response-card', quick ? 'dotted-demo__response-card--quick' : '', summaryOnly ? 'dotted-demo__response-card--summary' : ''].filter(Boolean).join(' ')} aria-label="Dots 最终回答">
       <div className="dotted-demo__response-main">
         <button className="dotted-demo__response-status" type="button" onClick={onSourcesClick}>
-          <span>{quick ? '思考完成，参考小红书与全网23人真实经验' : '思考完成，参考小红书与全网56人真实经验'}</span>
+          <span>{quick ? '思考完成，参考小红书与全网23人真实经验' : '思考完成，参考小红书与全网22人真实经验'}</span>
           <span className="dotted-demo__response-avatars" aria-hidden="true">
             <img src={thinkResponseAvatar1} alt="" />
             <img src={thinkResponseAvatar2} alt="" />
@@ -1635,12 +1635,12 @@ function DottedSourcesSheet({
 
           {mode === 'sources' && <div className="dotted-demo__source-block">
             <div className="dotted-demo__source-sticky">
-              <h3>参考来源 · 56</h3>
+              <h3>参考来源 · 22</h3>
               <div className="dotted-demo__source-tabs" aria-label="来源筛选">
                 <button type="button">全部</button>
-                <button type="button">笔记 46</button>
+                <button type="button">笔记 10</button>
                 <button type="button">评论 4</button>
-                <button type="button">全网 6</button>
+                <button type="button">全网 8</button>
               </div>
             </div>
             {sourceItems.map((item) => {
