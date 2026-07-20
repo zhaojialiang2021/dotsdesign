@@ -1234,7 +1234,7 @@ function DottedFinalResponseCard({
     <article className={['dotted-demo__response-card', quick ? 'dotted-demo__response-card--quick' : '', summaryOnly ? 'dotted-demo__response-card--summary' : ''].filter(Boolean).join(' ')} aria-label="Dots 最终回答">
       <div className="dotted-demo__response-main">
         <button className="dotted-demo__response-status" type="button" onClick={onSourcesClick}>
-          <span>{quick ? '思考完成，参考小红书与全网23人真实经验' : '思考完成，参考小红书与全网22人真实经验'}</span>
+          <span>{quick ? '思考完成，参考小红书与全网12人真实经验' : '思考完成，参考小红书与全网22人真实经验'}</span>
           <span className="dotted-demo__response-avatars" aria-hidden="true">
             <img src={thinkResponseAvatar1} alt="" />
             <img src={thinkResponseAvatar2} alt="" />
@@ -1342,6 +1342,7 @@ function DottedSourcesSheet({
   currentThinkingBody,
   isThinkingComplete,
   toolNoteDisplayVariant = 'consistent',
+  quick = false,
 }: {
   mode: DottedSheetMode
   onClose: () => void
@@ -1350,6 +1351,7 @@ function DottedSourcesSheet({
   currentThinkingBody: string
   isThinkingComplete: boolean
   toolNoteDisplayVariant?: DottedToolNoteDisplayVariant
+  quick?: boolean
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [expandedProcessIndexes, setExpandedProcessIndexes] = useState<number[]>([])
@@ -1533,114 +1535,116 @@ function DottedSourcesSheet({
           onWheel={handleSheetWheel}
           onScroll={handleSheetContentScroll}
         >
-          <div
-            className={[
-              'dotted-demo__sheet-block',
-              mode === 'thinking' ? 'dotted-demo__sheet-block--thinking' : '',
-              mode === 'sources' ? 'dotted-demo__sheet-block--sources' : '',
-            ].filter(Boolean).join(' ')}
-          >
-            <header className="dotted-demo__sheet-header">
-              <h2>{sheetTitle}</h2>
-            </header>
+          {!(mode === 'sources' && quick) && (
             <div
               className={[
-                'dotted-demo__process-card',
-                mode === 'thinking' ? 'dotted-demo__process-card--thinking' : '',
-                mode === 'sources' ? 'dotted-demo__process-card--sources' : '',
+                'dotted-demo__sheet-block',
+                mode === 'thinking' ? 'dotted-demo__sheet-block--thinking' : '',
+                mode === 'sources' ? 'dotted-demo__sheet-block--sources' : '',
               ].filter(Boolean).join(' ')}
-              ref={processCardRef}
             >
-              {processRows.map((row, index) => {
-                const isRowExpanded = expandedProcessIndexes.includes(index)
-                const hasExpandableContent = Boolean(row.detail)
-                const rowContent = (
-                  <>
-                    <div className="dotted-demo__process-progress" aria-hidden="true">
-                      <span className="dotted-demo__process-icon">
-                        {row.lottieUrl ? (
-                          <DottedLottieAnimation
-                            src={row.lottieUrl}
-                            className="dotted-demo__process-lottie"
-                            play={row.lottiePlaying === true}
-                          />
-                        ) : row.icon}
-                      </span>
-                      {!row.last && <span className="dotted-demo__process-line" />}
-                    </div>
-                    <div className="dotted-demo__process-text">
-                      <span className="dotted-demo__process-summary">
-                        <span>{row.title}</span>
-                        {mode === 'sources' && hasExpandableContent && (
-                          <span
-                            className={[
-                              'dotted-demo__process-chevron',
-                              isRowExpanded ? 'dotted-demo__process-chevron--open' : '',
-                            ].filter(Boolean).join(' ')}
-                            aria-hidden="true"
-                          />
-                        )}
-                      </span>
-                      {(mode === 'thinking' || isRowExpanded) && row.detail && (
-                        <span className="dotted-demo__process-detail-motion">
-                          {row.kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
-                            <DottedToolSearchDetailCards />
-                          ) : row.kind === 'toolcall' ? (
-                            <DottedToolSearchDetailCards />
-                          ) : row.kind === 'toolcallSearch' ? (
-                            <DottedToolSearchRows text={row.detail} />
-                          ) : (
-                            <span className="dotted-demo__process-detail">
-                              {row.detail}
-                            </span>
+              <header className="dotted-demo__sheet-header">
+                <h2>{sheetTitle}</h2>
+              </header>
+              <div
+                className={[
+                  'dotted-demo__process-card',
+                  mode === 'thinking' ? 'dotted-demo__process-card--thinking' : '',
+                  mode === 'sources' ? 'dotted-demo__process-card--sources' : '',
+                ].filter(Boolean).join(' ')}
+                ref={processCardRef}
+              >
+                {processRows.map((row, index) => {
+                  const isRowExpanded = expandedProcessIndexes.includes(index)
+                  const hasExpandableContent = Boolean(row.detail)
+                  const rowContent = (
+                    <>
+                      <div className="dotted-demo__process-progress" aria-hidden="true">
+                        <span className="dotted-demo__process-icon">
+                          {row.lottieUrl ? (
+                            <DottedLottieAnimation
+                              src={row.lottieUrl}
+                              className="dotted-demo__process-lottie"
+                              play={row.lottiePlaying === true}
+                            />
+                          ) : row.icon}
+                        </span>
+                        {!row.last && <span className="dotted-demo__process-line" />}
+                      </div>
+                      <div className="dotted-demo__process-text">
+                        <span className="dotted-demo__process-summary">
+                          <span>{row.title}</span>
+                          {mode === 'sources' && hasExpandableContent && (
+                            <span
+                              className={[
+                                'dotted-demo__process-chevron',
+                                isRowExpanded ? 'dotted-demo__process-chevron--open' : '',
+                              ].filter(Boolean).join(' ')}
+                              aria-hidden="true"
+                            />
                           )}
                         </span>
-                      )}
-                    </div>
-                  </>
-                )
+                        {(mode === 'thinking' || isRowExpanded) && row.detail && (
+                          <span className="dotted-demo__process-detail-motion">
+                            {row.kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
+                              <DottedToolSearchDetailCards />
+                            ) : row.kind === 'toolcall' ? (
+                              <DottedToolSearchDetailCards />
+                            ) : row.kind === 'toolcallSearch' ? (
+                              <DottedToolSearchRows text={row.detail} />
+                            ) : (
+                              <span className="dotted-demo__process-detail">
+                                {row.detail}
+                              </span>
+                            )}
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  )
 
-                return mode === 'thinking' || !hasExpandableContent ? (
-                  <div
-                    className={[
-                      'dotted-demo__process-row',
-                      'dotted-demo__process-row--static',
-                    ].filter(Boolean).join(' ')}
-                    key={`${row.title}-${index}`}
-                  >
-                    {rowContent}
-                  </div>
-                ) : (
-                  <button
-                    className={[
-                      'dotted-demo__process-row',
-                      isRowExpanded ? 'dotted-demo__process-row--expanded' : '',
-                    ].filter(Boolean).join(' ')}
-                    key={row.title}
-                    type="button"
-                    onClick={() => {
-                      setExpandedProcessIndexes((current) => (
-                        current.includes(index)
-                          ? current.filter((expandedIndex) => expandedIndex !== index)
-                          : [...current, index]
-                      ))
-                    }}
-                  >
-                    {rowContent}
-                  </button>
-                )
-              })}
+                  return mode === 'thinking' || !hasExpandableContent ? (
+                    <div
+                      className={[
+                        'dotted-demo__process-row',
+                        'dotted-demo__process-row--static',
+                      ].filter(Boolean).join(' ')}
+                      key={`${row.title}-${index}`}
+                    >
+                      {rowContent}
+                    </div>
+                  ) : (
+                    <button
+                      className={[
+                        'dotted-demo__process-row',
+                        isRowExpanded ? 'dotted-demo__process-row--expanded' : '',
+                      ].filter(Boolean).join(' ')}
+                      key={row.title}
+                      type="button"
+                      onClick={() => {
+                        setExpandedProcessIndexes((current) => (
+                          current.includes(index)
+                            ? current.filter((expandedIndex) => expandedIndex !== index)
+                            : [...current, index]
+                        ))
+                      }}
+                    >
+                      {rowContent}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          )}
 
           {mode === 'sources' && <div className="dotted-demo__source-block">
             <div className="dotted-demo__source-sticky">
-              <h3>参考来源 · 22</h3>
+              <h3>{quick ? '参考来源 · 12' : '参考来源 · 22'}</h3>
               <div className="dotted-demo__source-tabs" aria-label="来源筛选">
                 <button type="button">全部</button>
-                <button type="button">笔记 10</button>
+                <button type="button">{quick ? '笔记 6' : '笔记 10'}</button>
                 <button type="button">评论 4</button>
-                <button type="button">全网 8</button>
+                <button type="button">{quick ? '全网 2' : '全网 8'}</button>
               </div>
             </div>
             {sourceItems.map((item) => {
@@ -2879,6 +2883,7 @@ export function DottedDemoScreen({
             currentThinkingBody={deepThinkingBody}
             isThinkingComplete={streamingPhase === 'thinkingComplete' || streamingPhase === 'thinkingSummary' || streamingPhase === 'response' || streamingPhase === 'done'}
             toolNoteDisplayVariant={toolNoteDisplayVariant}
+            quick={answerRoute === 'quick'}
             onClose={() => setActiveSheetMode(null)}
           />
         )}
