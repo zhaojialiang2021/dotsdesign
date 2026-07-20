@@ -69,6 +69,7 @@ export type DottedDemoStep = 'thinking' | 'judging-think' | 'context' | 'think' 
 export type DottedThinkingTransitionStyle = 'soft' | 'float' | 'blur' | 'breathe'
 export type DottedStreamingVariant = 'default' | 'span-mask'
 export type DottedToolNoteDisplayVariant = 'consistent' | 'preview-detail'
+export type DottedSourceImageMotionVariant = 'static' | 'slide' | 'fade' | 'flip' | 'stack'
 export type DottedThinkingDisplayVariant = 'single' | 'stacked'
 type DottedStreamingPhase = 'thinking' | 'judging' | 'judgingHold' | 'streaming' | 'quickAnswerPrompt' | 'quickAnswerThink' | 'quickAnswerThinkHold' | 'think' | 'thinkHold' | 'toolcall' | 'toolcallHold' | 'thinkCompact' | 'thinkCompactHold' | 'toolcallSearch' | 'toolcallSearchHold' | 'thinkPlan' | 'thinkPlanHold' | 'thinkingComplete' | 'thinkingSummary' | 'response' | 'done'
 type DottedProcessKind = 'think' | 'toolcall' | 'thinkCompact' | 'toolcallSearch' | 'thinkPlan'
@@ -299,8 +300,8 @@ function getDeepThinkingAnimationUrl(kind: DottedProcessKind | undefined) {
 }
 
 function getStackDetailTargetHeight(kind: DottedProcessKind | undefined, toolNoteDisplayVariant: DottedToolNoteDisplayVariant) {
-  if (kind === 'toolcall') return 64
-  if (kind === 'toolcallSearch') return toolNoteDisplayVariant === 'preview-detail' ? 28 : 90
+  if (kind === 'toolcall') return toolNoteDisplayVariant === 'preview-detail' ? 62 : 64
+  if (kind === 'toolcallSearch') return 28
   if (kind === 'thinkPlan') return 72
   if (kind === 'thinkCompact') return 54
   return 72
@@ -649,6 +650,155 @@ function DottedToolSearchPreviewRows({
   )
 }
 
+function DottedToolSourceMetricCards({
+  className,
+  visibleCount = 2,
+  imageMotionVariant = 'slide',
+}: {
+  className?: string
+  visibleCount?: number
+  imageMotionVariant?: DottedSourceImageMotionVariant
+}) {
+  const normalizedVisibleCount = Math.max(0, Math.min(2, visibleCount))
+  const [stagedVisibleCount, setStagedVisibleCount] = useState(normalizedVisibleCount > 0 ? 1 : 0)
+
+  useEffect(() => {
+    const timers: number[] = []
+
+    if (normalizedVisibleCount <= 0) {
+      setStagedVisibleCount(0)
+      return () => timers.forEach((timerId) => window.clearTimeout(timerId))
+    }
+
+    setStagedVisibleCount(1)
+
+    if (normalizedVisibleCount >= 2) {
+      timers.push(window.setTimeout(() => {
+        setStagedVisibleCount(2)
+      }, 500))
+    }
+
+    return () => timers.forEach((timerId) => window.clearTimeout(timerId))
+  }, [normalizedVisibleCount])
+
+  return (
+    <span className={['dotted-demo__thinking-source-cards', `dotted-demo__thinking-source-cards--${imageMotionVariant}`, className].filter(Boolean).join(' ')}>
+      {stagedVisibleCount >= 1 ? (
+        <span className="dotted-demo__thinking-source-card dotted-demo__thinking-source-card--xhs">
+          <span className="dotted-demo__thinking-source-card-copy">
+            <span className="dotted-demo__thinking-source-card-label">小红书</span>
+            <span className="dotted-demo__thinking-source-card-value">
+              <DottedRollingSourceCount value={14} />
+              <span>篇笔记和评论</span>
+            </span>
+          </span>
+          {imageMotionVariant === 'stack' || imageMotionVariant === 'static' ? (
+            <DottedStackedSourcePhotos sources={[sourceJulyYi1, sourceJulySailor1, sourceJulyK1, sourceJulyOolong1, sourceJulyOrange1]} />
+          ) : (
+            <span className="dotted-demo__thinking-source-card-media dotted-demo__thinking-source-card-media--xhs" aria-hidden="true">
+              <span className="dotted-demo__thinking-source-card-photo dotted-demo__thinking-source-card-photo--item">
+                <img src={sourceJulyPillXhs1} alt="" />
+              </span>
+              <span className="dotted-demo__thinking-source-card-photo dotted-demo__thinking-source-card-photo--item">
+                <img src={sourceJulyPillXhs2} alt="" />
+              </span>
+              <span className="dotted-demo__thinking-source-card-photo dotted-demo__thinking-source-card-photo--item">
+                <img src={sourceJulyPillXhs3} alt="" />
+              </span>
+            </span>
+          )}
+        </span>
+      ) : null}
+      {stagedVisibleCount >= 2 ? (
+        <span className="dotted-demo__thinking-source-card dotted-demo__thinking-source-card--web">
+          <span className="dotted-demo__thinking-source-card-copy">
+            <span className="dotted-demo__thinking-source-card-label">全网</span>
+            <span className="dotted-demo__thinking-source-card-value">
+              <DottedRollingSourceCount value={8} />
+              <span>个网页</span>
+            </span>
+          </span>
+          {imageMotionVariant === 'stack' ? (
+            <DottedStackedSourceIcons sources={[sourceJulyPillCtrip, sourceJulyPillZhihu, sourceJulyPillWeb3]} />
+          ) : imageMotionVariant === 'static' ? (
+            <span className="dotted-demo__thinking-source-card-icons dotted-demo__thinking-source-card-icons--static" aria-hidden="true">
+              <img className="dotted-demo__thinking-source-card-icon--static-back" src={sourceJulyPillZhihu} alt="" />
+              <img className="dotted-demo__thinking-source-card-icon--static-front" src={sourceJulyPillCtrip} alt="" />
+            </span>
+          ) : (
+            <span className="dotted-demo__thinking-source-card-icons" aria-hidden="true">
+              <img src={sourceJulyPillCtrip} alt="" />
+              <img src={sourceJulyPillZhihu} alt="" />
+              <img src={sourceJulyPillWeb3} alt="" />
+            </span>
+          )}
+        </span>
+      ) : null}
+    </span>
+  )
+}
+
+function useDottedStackedSourceIndexes(length: number, animationMs = 620) {
+  const [frontIndex, setFrontIndex] = useState(0)
+  const [backIndex, setBackIndex] = useState(1)
+  const [isSwapping, setIsSwapping] = useState(false)
+
+  useEffect(() => {
+    if (length <= 1) return undefined
+
+    const holdTimer = window.setTimeout(() => {
+      setIsSwapping(true)
+    }, 900)
+    const swapTimer = window.setTimeout(() => {
+      setFrontIndex((currentFrontIndex) => {
+        const nextFrontIndex = (currentFrontIndex + 1) % length
+        setBackIndex((nextFrontIndex + 1) % length)
+        return nextFrontIndex
+      })
+      setIsSwapping(false)
+    }, 900 + animationMs)
+
+    return () => {
+      window.clearTimeout(holdTimer)
+      window.clearTimeout(swapTimer)
+    }
+  }, [animationMs, frontIndex, length])
+
+  return { frontIndex, backIndex, isSwapping }
+}
+
+function DottedStackedSourcePhotos({ sources }: { sources: string[] }) {
+  const { frontIndex, backIndex, isSwapping } = useDottedStackedSourceIndexes(sources.length)
+  const incomingIndex = (backIndex + 1) % sources.length
+
+  return (
+    <span className={['dotted-demo__thinking-source-card-media dotted-demo__thinking-source-card-media--xhs dotted-demo__thinking-source-card-media--stack', isSwapping ? 'dotted-demo__thinking-source-card-media--stack-swapping' : ''].filter(Boolean).join(' ')} aria-hidden="true">
+      <span className="dotted-demo__thinking-source-card-photo dotted-demo__thinking-source-card-photo--stack-incoming">
+        <img src={sources[incomingIndex]} alt="" />
+      </span>
+      <span className="dotted-demo__thinking-source-card-photo dotted-demo__thinking-source-card-photo--stack-back">
+        <img src={sources[backIndex]} alt="" />
+      </span>
+      <span className="dotted-demo__thinking-source-card-photo dotted-demo__thinking-source-card-photo--stack-front">
+        <img src={sources[frontIndex]} alt="" />
+      </span>
+    </span>
+  )
+}
+
+function DottedStackedSourceIcons({ sources }: { sources: string[] }) {
+  const { frontIndex, backIndex, isSwapping } = useDottedStackedSourceIndexes(sources.length)
+  const incomingIndex = (backIndex + 1) % sources.length
+
+  return (
+    <span className={['dotted-demo__thinking-source-card-icons dotted-demo__thinking-source-card-icons--stack', isSwapping ? 'dotted-demo__thinking-source-card-icons--stack-swapping' : ''].filter(Boolean).join(' ')} aria-hidden="true">
+      <img className="dotted-demo__thinking-source-card-icon--stack-incoming" src={sources[incomingIndex]} alt="" />
+      <img className="dotted-demo__thinking-source-card-icon--stack-back" src={sources[backIndex]} alt="" />
+      <img className="dotted-demo__thinking-source-card-icon--stack-front" src={sources[frontIndex]} alt="" />
+    </span>
+  )
+}
+
 function DottedToolSearchDetailCards() {
   return (
     <span className="dotted-demo__thinking-search-detail">
@@ -691,11 +841,13 @@ function DottedDeepThinkingContent({
   item,
   streamingVariant,
   toolNoteDisplayVariant,
+  sourceImageMotionVariant,
   thinkingDisplayVariant,
 }: {
   item: DotsHistoryMessage
   streamingVariant: DottedStreamingVariant
   toolNoteDisplayVariant: DottedToolNoteDisplayVariant
+  sourceImageMotionVariant: DottedSourceImageMotionVariant
   thinkingDisplayVariant: DottedThinkingDisplayVariant
 }) {
   const useTailOpacity = streamingVariant === 'span-mask'
@@ -886,7 +1038,9 @@ function DottedDeepThinkingContent({
                     ].join(' ')}
                     style={{ '--thinking-stack-detail-height': `${detailHeight}px` } as CSSProperties}
                   >
-                    {kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
+                    {kind === 'toolcall' && toolNoteDisplayVariant === 'preview-detail' ? (
+                      <DottedToolSourceMetricCards visibleCount={searchPreviewPillCount} imageMotionVariant={sourceImageMotionVariant} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
+                    ) : kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
                       <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
                     ) : kind === 'toolcall' ? (
                       <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
@@ -934,10 +1088,12 @@ function DottedDeepThinkingContent({
           complete={titleComplete}
         />
       </span>
-      {shouldShowBody && item.deepThinkingKind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
+      {shouldShowBody && item.deepThinkingKind === 'toolcall' && toolNoteDisplayVariant === 'preview-detail' ? (
+        <DottedToolSourceMetricCards visibleCount={searchPreviewPillCount} imageMotionVariant={sourceImageMotionVariant} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
+      ) : shouldShowBody && item.deepThinkingKind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
         <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
       ) : shouldShowBody && item.deepThinkingKind === 'toolcall' ? (
-        <DottedToolSearchDetailCards />
+        <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
       ) : shouldShowBody && item.deepThinkingKind === 'toolcallSearch' ? (
         <DottedToolSearchRows
           text={visibleBody}
@@ -1011,6 +1167,7 @@ function DottedChatStream({
   thinkingTransitionStyle = 'soft',
   streamingVariant = 'default',
   toolNoteDisplayVariant = 'consistent',
+  sourceImageMotionVariant = 'slide',
   thinkingDisplayVariant = 'single',
 }: {
   items: DotsHistoryItem[]
@@ -1020,6 +1177,7 @@ function DottedChatStream({
   thinkingTransitionStyle?: DottedThinkingTransitionStyle
   streamingVariant?: DottedStreamingVariant
   toolNoteDisplayVariant?: DottedToolNoteDisplayVariant
+  sourceImageMotionVariant?: DottedSourceImageMotionVariant
   thinkingDisplayVariant?: DottedThinkingDisplayVariant
 }) {
   const useSpanMask = streamingVariant === 'span-mask'
@@ -1117,6 +1275,7 @@ function DottedChatStream({
                     item={item}
                     streamingVariant={streamingVariant}
                     toolNoteDisplayVariant={toolNoteDisplayVariant}
+                    sourceImageMotionVariant={sourceImageMotionVariant}
                     thinkingDisplayVariant={thinkingDisplayVariant}
                   />
                 ) : (
@@ -1710,6 +1869,7 @@ export function DottedDemoScreen({
   thinkingTransitionStyle = 'float',
   streamingVariant = 'default',
   toolNoteDisplayVariant = 'consistent',
+  sourceImageMotionVariant = 'slide',
   thinkingDisplayVariant = 'single',
 }: {
   demoMode?: DottedDemoMode
@@ -1721,6 +1881,7 @@ export function DottedDemoScreen({
   thinkingTransitionStyle?: DottedThinkingTransitionStyle
   streamingVariant?: DottedStreamingVariant
   toolNoteDisplayVariant?: DottedToolNoteDisplayVariant
+  sourceImageMotionVariant?: DottedSourceImageMotionVariant
   thinkingDisplayVariant?: DottedThinkingDisplayVariant
 } = {}) {
   const chatStreamRef = useRef<HTMLDivElement>(null)
@@ -2837,6 +2998,7 @@ export function DottedDemoScreen({
             thinkingTransitionStyle={thinkingTransitionStyle}
             streamingVariant={streamingVariant}
             toolNoteDisplayVariant={toolNoteDisplayVariant}
+            sourceImageMotionVariant={sourceImageMotionVariant}
             thinkingDisplayVariant={thinkingDisplayVariant}
           />
         </main>
