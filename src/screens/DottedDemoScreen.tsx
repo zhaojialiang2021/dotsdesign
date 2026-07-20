@@ -64,11 +64,18 @@ import sourceJulyYi3 from '../assets/dotted/sources-july/yi-3.png'
 import thinkUserAvatar from '../assets/dotted/think-user-avatar.svg'
 import { DotsMessageBubble, type DotsMessageRole } from './dotted/DotsMessageBubble'
 
+const realLoadingCardStatusPool = ['check', 'warning', 'check', 'warning', 'check'] as const
+type DottedRealLoadingCard = {
+  id: number
+  status: typeof realLoadingCardStatusPool[number]
+}
+
 export type DottedDemoMode = 'default' | 'streaming-reply'
 export type DottedDemoStep = 'thinking' | 'judging-think' | 'context' | 'think' | 'toolcall' | 'think-compact' | 'toolcall-search' | 'think-plan' | 'response' | 'complete'
 export type DottedThinkingTransitionStyle = 'soft' | 'float' | 'blur' | 'breathe'
 export type DottedStreamingVariant = 'default' | 'span-mask'
 export type DottedToolNoteDisplayVariant = 'consistent' | 'preview-detail'
+export type DottedToolCallDetailVariant = 'default' | 'real-loading'
 export type DottedSourceImageMotionVariant = 'static' | 'slide' | 'fade' | 'flip' | 'stack'
 export type DottedThinkingDisplayVariant = 'single' | 'stacked'
 type DottedStreamingPhase = 'thinking' | 'judging' | 'judgingHold' | 'streaming' | 'quickAnswerPrompt' | 'quickAnswerThink' | 'quickAnswerThinkHold' | 'think' | 'thinkHold' | 'toolcall' | 'toolcallHold' | 'thinkCompact' | 'thinkCompactHold' | 'toolcallSearch' | 'toolcallSearchHold' | 'thinkPlan' | 'thinkPlanHold' | 'thinkingComplete' | 'thinkingSummary' | 'response' | 'done'
@@ -138,9 +145,9 @@ type DottedFinalResponseImageBlock = {
 type DottedFinalResponseBlock = DottedFinalResponseTextBlock | DottedFinalResponseImageBlock
 
 const streamingReplyChunks = [
-  '暑期伊犁环线是个很经典的选择，',
-  '我先帮你把路线框架、核心景点、住宿交通这些关键信息都搜集好，',
-  '整理出一份适合六人出行的攻略。',
+  '先看看去除营销软广后，',
+  '小红书内真人推荐最多的电视机型号；',
+  '然后帮你研究怎么选。',
 ]
 
 const streamingReplyTextFull = streamingReplyChunks.join('')
@@ -149,22 +156,19 @@ const contextCharacterStep = 2
 const contextCharacterDelayMs = 16
 const contextToThinkDelayMs = 600
 const compactThinkCompleteHoldMs = 1000
-const simpleJudgmentText = '分析新疆暑期旅行需求'
+const simpleJudgmentText = '搜索真人经验并过滤营销软广'
 const simpleJudgmentCharacters = Array.from(simpleJudgmentText)
 const simpleJudgmentCopyWidthPx = Math.ceil(simpleJudgmentCharacters.length * 15.5 + 6)
 const quickAnswerTitleText = '搜索伊犁经典玩法'
 const quickAnswerTitleCharacters = Array.from(quickAnswerTitleText)
 const quickAnswerSecondTitleText = '搜索核心景点信息'
 const quickAnswerCopyWidthPx = Math.ceil(Math.max(quickAnswerTitleCharacters.length, Array.from(quickAnswerSecondTitleText).length) * 15.5 + 6)
-const deepThinkingTitleText = '搭建新疆伊犁环线行程框架'
-const deepThinkingBodyText = '用户计划和5个朋友去新疆伊犁旅行10天，走伊犁环线，未限定预算。6人出行适合自驾，需要重点规划路线节奏、核心景点和住宿安排。'
-const toolCallTitleText = '搜集自驾路线与核心景点攻略'
+const deepThinkingTitleText = '研究电视机怎么选'
+const deepThinkingBodyText = ''
+const toolCallTitleText = '搜索 6千以内电视机推荐'
 const toolCallBodyText = [
-  '网页｜那拉提旅游风景区官方网站',
-  '网页｜喀拉峻国际生态旅游区官方信息',
-  '网页｜夏塔景区开放时间与票务信息',
-  '网页｜赛里木湖景区游客服务信息',
-  '更多官方信息检索中...',
+  '已查找 1165 条真人经验',
+  '已过滤 223 条营销软广',
 ].join('\n')
 const compactThinkTitleText = '整理景区的开放时间与预约规则'
 const compactThinkBodyText = '需要确认那拉提、喀拉峻、夏塔景区和赛里木湖的开放时间与预约规则，以官方最新信息为准，完善行程安排。'
@@ -299,7 +303,8 @@ function getDeepThinkingAnimationUrl(kind: DottedProcessKind | undefined) {
   return thinkCloudAnimationUrl
 }
 
-function getStackDetailTargetHeight(kind: DottedProcessKind | undefined, toolNoteDisplayVariant: DottedToolNoteDisplayVariant) {
+function getStackDetailTargetHeight(kind: DottedProcessKind | undefined, toolNoteDisplayVariant: DottedToolNoteDisplayVariant, toolCallDetailVariant: DottedToolCallDetailVariant) {
+  if (kind === 'toolcall' && toolCallDetailVariant === 'real-loading') return 60
   if (kind === 'toolcall') return toolNoteDisplayVariant === 'preview-detail' ? 62 : 64
   if (kind === 'toolcallSearch') return 28
   if (kind === 'thinkPlan') return 72
@@ -464,7 +469,7 @@ const responseStartDelayMs = 0
 const toolcallSearchCompletePauseMs = 1500
 const quickAnswerThinkCompleteHoldMs = 1000
 const quickAnswerTitleSwapFadeMs = 240
-const sourcePillCountDurationMs = 1500
+const sourcePillCountDurationMs = 4000
 const sourcePillBetweenDelayMs = 500
 const sourcePillFinalHoldMs = 0
 const sourcePillSequenceDelayMs = sourcePillCountDurationMs + sourcePillBetweenDelayMs
@@ -550,18 +555,28 @@ function DottedToolSearchRows({
 }
 
 function getSourceCountProgress(progress: number) {
-  if (progress < 0.34) {
-    const localProgress = progress / 0.34
-    return 0.22 * localProgress * localProgress
+  if (progress < 0.18) {
+    const localProgress = progress / 0.18
+    return 0.08 * localProgress * localProgress
   }
 
-  if (progress < 0.82) {
-    const localProgress = (progress - 0.34) / 0.48
-    return 0.22 + 0.68 * (1 - Math.pow(1 - localProgress, 3))
+  if (progress < 0.48) {
+    const localProgress = (progress - 0.18) / 0.3
+    return 0.08 + 0.5 * (1 - Math.pow(1 - localProgress, 3))
   }
 
-  const localProgress = (progress - 0.82) / 0.18
-  return 0.9 + 0.1 * (1 - Math.pow(1 - localProgress, 2))
+  if (progress < 0.58) {
+    const localProgress = (progress - 0.48) / 0.1
+    return 0.58 + 0.04 * localProgress
+  }
+
+  if (progress < 0.86) {
+    const localProgress = (progress - 0.58) / 0.28
+    return 0.62 + 0.3 * (1 - Math.pow(1 - localProgress, 2))
+  }
+
+  const localProgress = (progress - 0.86) / 0.14
+  return 0.92 + 0.08 * (1 - Math.pow(1 - localProgress, 2))
 }
 
 function DottedRollingSourceCount({ value, delayMs = 0 }: { value: number; delayMs?: number }) {
@@ -837,18 +852,119 @@ function DottedThinkingCheckIcon() {
   )
 }
 
+function DottedRealLoadingToolCallDetail({
+  exiting = false,
+  onComplete,
+}: {
+  exiting?: boolean
+  onComplete?: () => void
+}) {
+  const [cardDeck, setCardDeck] = useState<[DottedRealLoadingCard, DottedRealLoadingCard, DottedRealLoadingCard]>(() => [
+    { id: 0, status: 'check' },
+    { id: 1, status: 'warning' },
+    { id: 2, status: 'check' },
+  ])
+  const [nextCardIndex, setNextCardIndex] = useState(0)
+  const [isCardCycling, setIsCardCycling] = useState(false)
+  const nextCardIndexRef = useRef(0)
+  const nextCardIdRef = useRef(3)
+
+  useEffect(() => {
+    if (!onComplete || exiting) return undefined
+
+    const timerId = window.setTimeout(onComplete, sourcePillCountDurationMs + 120)
+    return () => window.clearTimeout(timerId)
+  }, [exiting, onComplete])
+
+  useEffect(() => {
+    if (exiting) {
+      setIsCardCycling(false)
+      return undefined
+    }
+
+    const cycleMs = 181
+    const motionMs = 91
+    let motionTimerId: number | undefined
+    const cycleCards = () => {
+      setIsCardCycling(true)
+      motionTimerId = window.setTimeout(() => {
+        setCardDeck((currentDeck) => {
+          const incomingCard = {
+            id: nextCardIdRef.current,
+            status: realLoadingCardStatusPool[nextCardIndexRef.current % realLoadingCardStatusPool.length],
+          }
+          nextCardIdRef.current += 1
+          return [incomingCard, currentDeck[0], currentDeck[1]]
+        })
+        nextCardIndexRef.current = (nextCardIndexRef.current + 1) % realLoadingCardStatusPool.length
+        setNextCardIndex(nextCardIndexRef.current)
+        setIsCardCycling(false)
+      }, motionMs)
+    }
+    const intervalId = window.setInterval(cycleCards, cycleMs)
+
+    return () => {
+      window.clearInterval(intervalId)
+      if (motionTimerId !== undefined) window.clearTimeout(motionTimerId)
+    }
+  }, [exiting])
+
+  const cards = [
+    { ...cardDeck[0], modifier: 'front' },
+    { ...cardDeck[1], modifier: 'middle' },
+    { ...cardDeck[2], modifier: 'back' },
+    { id: nextCardIdRef.current, status: realLoadingCardStatusPool[nextCardIndex], modifier: 'incoming' },
+  ] as const
+
+  return (
+    <span className={`dotted-demo__real-loading-detail${exiting ? ' dotted-demo__real-loading-detail--exiting' : ''}`}>
+      <span className="dotted-demo__real-loading-metrics">
+        <span className="dotted-demo__real-loading-metric">
+          <span>已查找</span>
+          <strong>
+            <DottedRollingSourceCount value={1165} />
+          </strong>
+          <span>条真人经验</span>
+        </span>
+        <span className="dotted-demo__real-loading-metric">
+          <span>已过滤</span>
+          <strong className="dotted-demo__real-loading-metric-number--muted">
+            <DottedRollingSourceCount value={223} delayMs={120} />
+          </strong>
+          <span>条营销软广</span>
+        </span>
+      </span>
+      <span className={`dotted-demo__real-loading-cards${isCardCycling ? ' dotted-demo__real-loading-cards--cycling' : ''}`} aria-hidden="true">
+        {cards.map((card) => (
+          <span className={`dotted-demo__real-loading-card dotted-demo__real-loading-card--${card.modifier}`} key={card.id}>
+            <span className={`dotted-demo__real-loading-card-status dotted-demo__real-loading-card-status--${card.status}`} />
+            <span className="dotted-demo__real-loading-card-lines">
+              <i />
+              <i />
+            </span>
+          </span>
+        ))}
+      </span>
+    </span>
+  )
+}
+
 function DottedDeepThinkingContent({
   item,
   streamingVariant,
   toolNoteDisplayVariant,
   sourceImageMotionVariant,
   thinkingDisplayVariant,
+  toolCallDetailVariant,
+  onRealLoadingComplete,
 }: {
   item: DotsHistoryMessage
   streamingVariant: DottedStreamingVariant
   toolNoteDisplayVariant: DottedToolNoteDisplayVariant
   sourceImageMotionVariant: DottedSourceImageMotionVariant
   thinkingDisplayVariant: DottedThinkingDisplayVariant
+  toolCallDetailVariant: DottedToolCallDetailVariant
+  onRealLoadingComplete?: () => void
 }) {
   const useTailOpacity = streamingVariant === 'span-mask'
   const visibleTitle = item.deepThinkingTitle ?? ''
@@ -864,11 +980,43 @@ function DottedDeepThinkingContent({
   const stackScrollFrameRef = useRef<number | null>(null)
   const stackScrollTargetRef = useRef(0)
   const [stackHasScrolled, setStackHasScrolled] = useState(false)
+  const [realLoadingDetailComplete, setRealLoadingDetailComplete] = useState(false)
+  const [realLoadingDetailExiting, setRealLoadingDetailExiting] = useState(false)
+  const realLoadingExitTimerRef = useRef<number | null>(null)
   const activeCheckKey = thinkingDisplayVariant === 'stacked' && item.deepThinkingComplete
     ? `${item.id}-${item.deepThinkingKind}-${visibleTitle.length}-${visibleBody.length}`
     : ''
   const [activeCheckReadyKey, setActiveCheckReadyKey] = useState('')
   const activeCheckReady = activeCheckReadyKey === activeCheckKey
+
+  const handleRealLoadingComplete = useCallback(() => {
+    if (realLoadingDetailComplete || realLoadingDetailExiting) return
+    setRealLoadingDetailExiting(true)
+    if (realLoadingExitTimerRef.current !== null) {
+      window.clearTimeout(realLoadingExitTimerRef.current)
+    }
+    realLoadingExitTimerRef.current = window.setTimeout(() => {
+      realLoadingExitTimerRef.current = null
+      setRealLoadingDetailComplete(true)
+      onRealLoadingComplete?.()
+    }, 1360)
+  }, [onRealLoadingComplete, realLoadingDetailComplete, realLoadingDetailExiting])
+
+  useEffect(() => {
+    setRealLoadingDetailComplete(false)
+    setRealLoadingDetailExiting(false)
+    if (realLoadingExitTimerRef.current !== null) {
+      window.clearTimeout(realLoadingExitTimerRef.current)
+      realLoadingExitTimerRef.current = null
+    }
+  }, [item.id, item.deepThinkingKind, toolCallDetailVariant])
+
+  useEffect(() => () => {
+    if (realLoadingExitTimerRef.current !== null) {
+      window.clearTimeout(realLoadingExitTimerRef.current)
+      realLoadingExitTimerRef.current = null
+    }
+  }, [])
 
   useEffect(() => {
     if (!activeCheckKey) {
@@ -980,9 +1128,11 @@ function DottedDeepThinkingContent({
           const rowTargetBody = getDeepThinkingTargetBody(kind)
           const rowTitleComplete = countCharacters(rowTitle) >= countCharacters(rowTargetTitle)
           const rowBodyComplete = countCharacters(rowBody) >= countCharacters(rowTargetBody)
-          const keepToolcallPillsDuringCollapse = kind === 'toolcall' && isActive && item.deepThinkingComplete
-          const rowShouldShowBody = Boolean(rowTargetBody) && isActive && ((!item.deepThinkingComplete && (!useTailOpacity || rowTitleComplete)) || keepToolcallPillsDuringCollapse)
-          const detailTargetHeight = getStackDetailTargetHeight(kind, toolNoteDisplayVariant)
+          const realLoadingRowComplete = kind === 'toolcall' && toolCallDetailVariant === 'real-loading' && realLoadingDetailComplete
+          const rowLayoutComplete = item.deepThinkingComplete === true || realLoadingRowComplete
+          const keepToolcallPillsDuringCollapse = kind === 'toolcall' && isActive && item.deepThinkingComplete && !realLoadingRowComplete
+          const rowShouldShowBody = Boolean(rowTargetBody) && isActive && ((!rowLayoutComplete && (!useTailOpacity || rowTitleComplete)) || keepToolcallPillsDuringCollapse)
+          const detailTargetHeight = getStackDetailTargetHeight(kind, toolNoteDisplayVariant, toolCallDetailVariant)
           const hasDetailContent = Boolean(rowTargetBody)
           const shouldRenderDetail = hasDetailContent
           const detailMinHeight = kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? 28 : 18
@@ -994,8 +1144,9 @@ function DottedDeepThinkingContent({
               ? 2
               : 0
           const isRowComplete = isActive
-            ? item.deepThinkingComplete === true && activeCheckReady
+            ? (realLoadingRowComplete ? true : item.deepThinkingComplete === true && activeCheckReady)
             : rowTitleComplete && (!rowTargetBody || rowBodyComplete)
+          const keepsSearchIcon = kind === 'toolcall' && !(toolCallDetailVariant === 'real-loading' && realLoadingDetailComplete)
 
           return (
             <span
@@ -1005,18 +1156,19 @@ function DottedDeepThinkingContent({
                 isRowComplete ? 'dotted-demo__thinking-stack-row--complete' : '',
                 rowDetailOpen ? 'dotted-demo__thinking-stack-row--detail-open' : '',
                 kind === 'toolcall' ? 'dotted-demo__thinking-stack-row--toolcall' : '',
+                realLoadingRowComplete ? 'dotted-demo__thinking-stack-row--real-loading-complete' : '',
                 kind === 'toolcallSearch' ? 'dotted-demo__thinking-stack-row--search' : '',
               ].filter(Boolean).join(' ')}
               key={kind}
             >
               <span className="dotted-demo__thinking-stack-icon" aria-hidden="true">
-                {isRowComplete ? (
+                {isRowComplete && !keepsSearchIcon ? (
                   <DottedThinkingCheckIcon />
                 ) : (
                   <DottedLottieAnimation
-                    src={kind === 'toolcall' ? thinkGlassAnimationUrl : getDeepThinkingAnimationUrl(kind)}
+                    src={keepsSearchIcon ? thinkGlassAnimationUrl : getDeepThinkingAnimationUrl(kind)}
                     className="dotted-demo__thinking-stack-lottie"
-                    play={isActive}
+                    play={keepsSearchIcon || (isActive && !isRowComplete)}
                   />
                 )}
               </span>
@@ -1038,7 +1190,9 @@ function DottedDeepThinkingContent({
                     ].join(' ')}
                     style={{ '--thinking-stack-detail-height': `${detailHeight}px` } as CSSProperties}
                   >
-                    {kind === 'toolcall' && toolNoteDisplayVariant === 'preview-detail' ? (
+                    {kind === 'toolcall' && toolCallDetailVariant === 'real-loading' ? (
+                      <DottedRealLoadingToolCallDetail exiting={realLoadingDetailExiting} onComplete={handleRealLoadingComplete} />
+                    ) : kind === 'toolcall' && toolNoteDisplayVariant === 'preview-detail' ? (
                       <DottedToolSourceMetricCards visibleCount={searchPreviewPillCount} imageMotionVariant={sourceImageMotionVariant} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
                     ) : kind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
                       <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
@@ -1088,7 +1242,9 @@ function DottedDeepThinkingContent({
           complete={titleComplete}
         />
       </span>
-      {shouldShowBody && item.deepThinkingKind === 'toolcall' && toolNoteDisplayVariant === 'preview-detail' ? (
+      {shouldShowBody && item.deepThinkingKind === 'toolcall' && toolCallDetailVariant === 'real-loading' ? (
+        <DottedRealLoadingToolCallDetail exiting={realLoadingDetailExiting} onComplete={handleRealLoadingComplete} />
+      ) : shouldShowBody && item.deepThinkingKind === 'toolcall' && toolNoteDisplayVariant === 'preview-detail' ? (
         <DottedToolSourceMetricCards visibleCount={searchPreviewPillCount} imageMotionVariant={sourceImageMotionVariant} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
       ) : shouldShowBody && item.deepThinkingKind === 'toolcallSearch' && toolNoteDisplayVariant === 'preview-detail' ? (
         <DottedToolSearchPreviewRows visibleCount={searchPreviewPillCount} className={useTailOpacity ? 'dotted-demo__stream-tail-delayed' : undefined} />
@@ -1169,6 +1325,7 @@ function DottedChatStream({
   toolNoteDisplayVariant = 'consistent',
   sourceImageMotionVariant = 'slide',
   thinkingDisplayVariant = 'single',
+  toolCallDetailVariant = 'default',
 }: {
   items: DotsHistoryItem[]
   streamRef?: RefObject<HTMLDivElement | null>
@@ -1179,8 +1336,16 @@ function DottedChatStream({
   toolNoteDisplayVariant?: DottedToolNoteDisplayVariant
   sourceImageMotionVariant?: DottedSourceImageMotionVariant
   thinkingDisplayVariant?: DottedThinkingDisplayVariant
+  toolCallDetailVariant?: DottedToolCallDetailVariant
 }) {
   const useSpanMask = streamingVariant === 'span-mask'
+  const [realLoadingCompleteItemId, setRealLoadingCompleteItemId] = useState('')
+  const realLoadingActiveItemId = items.find((item) => item.isDeepThinking && item.deepThinkingKind === 'toolcall')?.id ?? ''
+
+  useEffect(() => {
+    setRealLoadingCompleteItemId('')
+  }, [realLoadingActiveItemId, toolCallDetailVariant])
+
   const handleThinkingKeyDown = (event: ReactKeyboardEvent<HTMLSpanElement>) => {
     if (!onThinkingClick) return
     if (event.key !== 'Enter' && event.key !== ' ') return
@@ -1251,10 +1416,16 @@ function DottedChatStream({
                     : undefined
                 }
               >
-                <DottedLottieAnimation
-                  src={item.isQuickAnswerThinking ? thinkGlassAnimationUrl : item.isDeepThinking ? getDeepThinkingAnimationUrl(item.deepThinkingKind) : thinkingStages[item.thinkingStageIndex ?? 0].animationUrl}
-                  className="dotted-demo__thinking-lottie"
-                />
+                {item.isDeepThinking && item.deepThinkingKind === 'toolcall' && toolCallDetailVariant === 'real-loading' && realLoadingCompleteItemId === item.id ? (
+                  <span className="dotted-demo__thinking-lottie dotted-demo__thinking-lottie--check">
+                    <DottedThinkingCheckIcon />
+                  </span>
+                ) : (
+                  <DottedLottieAnimation
+                    src={item.isQuickAnswerThinking ? thinkGlassAnimationUrl : item.isDeepThinking ? getDeepThinkingAnimationUrl(item.deepThinkingKind) : thinkingStages[item.thinkingStageIndex ?? 0].animationUrl}
+                    className="dotted-demo__thinking-lottie"
+                  />
+                )}
                 {item.isQuickAnswerThinking ? (
                   <span
                     className={[
@@ -1277,6 +1448,8 @@ function DottedChatStream({
                     toolNoteDisplayVariant={toolNoteDisplayVariant}
                     sourceImageMotionVariant={sourceImageMotionVariant}
                     thinkingDisplayVariant={thinkingDisplayVariant}
+                    toolCallDetailVariant={toolCallDetailVariant}
+                    onRealLoadingComplete={() => setRealLoadingCompleteItemId(item.id)}
                   />
                 ) : (
                   item.isJudging && (
@@ -1871,6 +2044,8 @@ export function DottedDemoScreen({
   toolNoteDisplayVariant = 'consistent',
   sourceImageMotionVariant = 'slide',
   thinkingDisplayVariant = 'single',
+  quickAnswerEnabled = true,
+  toolCallDetailVariant = 'default',
 }: {
   demoMode?: DottedDemoMode
   demoStep?: DottedDemoStep
@@ -1883,6 +2058,8 @@ export function DottedDemoScreen({
   toolNoteDisplayVariant?: DottedToolNoteDisplayVariant
   sourceImageMotionVariant?: DottedSourceImageMotionVariant
   thinkingDisplayVariant?: DottedThinkingDisplayVariant
+  quickAnswerEnabled?: boolean
+  toolCallDetailVariant?: DottedToolCallDetailVariant
 } = {}) {
   const chatStreamRef = useRef<HTMLDivElement>(null)
   const jumpToBottomDismissedRef = useRef(false)
@@ -2869,7 +3046,8 @@ export function DottedDemoScreen({
       || streamingPhase === 'thinkPlanHold'
       || streamingPhase === 'thinkingComplete'
     )
-  const shouldShowQuickAnswerButton = isStreamingReplyDemo
+  const shouldShowQuickAnswerButton = quickAnswerEnabled
+    && isStreamingReplyDemo
     && !quickAnswerMode
     && (
       streamingPhase === 'quickAnswerPrompt'
@@ -2890,7 +3068,7 @@ export function DottedDemoScreen({
       id: 'user-query',
       type: 'message',
       role: 'user',
-      text: '帮我安排和五个朋友的暑假十天左右的新疆旅游计划，主要想玩伊犁环线，帮我安排行程规划和打卡攻略。',
+      text: '6千以内电视机推荐',
     },
     ...(streamingReplyText || streamingPhase === 'streaming' || shouldRenderDeepThinking || deepThinkingTitle || deepThinkingBody
       ? [
@@ -3000,6 +3178,7 @@ export function DottedDemoScreen({
             toolNoteDisplayVariant={toolNoteDisplayVariant}
             sourceImageMotionVariant={sourceImageMotionVariant}
             thinkingDisplayVariant={thinkingDisplayVariant}
+            toolCallDetailVariant={toolCallDetailVariant}
           />
         </main>
 

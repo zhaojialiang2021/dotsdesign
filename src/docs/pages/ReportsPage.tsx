@@ -1,4 +1,4 @@
-import { useCallback, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { reportDemos } from '../manifest'
 import { navigate } from '../router'
 import { NotFoundPage } from './NotFoundPage'
@@ -22,8 +22,65 @@ export function ReportsPage({ slug }: { slug: string }) {
   const meta = reportDemos.find((p) => p.slug === slug)
   if (!meta) return <NotFoundPage path={`reports/${slug}`} />
   if (slug === 'conversation-streaming') return <ConversationStreamingReport />
+  if (slug === 'long-thinking') return <LongThinkingReport />
   if (slug === 'floating-cards-animation') return <FloatingCardsAnimationReport />
   return <NotFoundPage path={`reports/${slug}`} />
+}
+
+function ReportDemoSwitcher({ activeSlug }: { activeSlug: string }) {
+  const [open, setOpen] = useState(false)
+  const switcherRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!open) return undefined
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (!switcherRef.current) return
+      if (switcherRef.current.contains(event.target as Node)) return
+      setOpen(false)
+    }
+
+    window.addEventListener('pointerdown', handlePointerDown)
+    return () => window.removeEventListener('pointerdown', handlePointerDown)
+  }, [open])
+
+  return (
+    <div ref={switcherRef} className={['docs-report-demo-switcher', open ? 'docs-report-demo-switcher--open' : ''].filter(Boolean).join(' ')}>
+      <button
+        className="docs-report-demo-switcher__trigger"
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        aria-label="切换项目 demo"
+        aria-expanded={open}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+      {open ? (
+        <div className="docs-report-demo-switcher__panel" role="menu" aria-label="项目 demo 列表">
+          {reportDemos.map((demo) => {
+            const isActive = demo.slug === activeSlug
+            return (
+              <button
+                className={['docs-report-demo-switcher__item', isActive ? 'docs-report-demo-switcher__item--active' : ''].filter(Boolean).join(' ')}
+                type="button"
+                key={demo.slug}
+                role="menuitem"
+                onClick={() => {
+                  setOpen(false)
+                  if (!isActive) navigate(`/docs/reports/${demo.slug}`)
+                }}
+              >
+                <span>{demo.name}</span>
+                <small>{demo.desc}</small>
+              </button>
+            )
+          })}
+        </div>
+      ) : null}
+    </div>
+  )
 }
 
 function FloatingCardsAnimationReport() {
@@ -31,6 +88,7 @@ function FloatingCardsAnimationReport() {
 
   return (
     <div className="docs-report-demo-shell docs-report-demo-shell--immersive docs-report-demo-shell--floating-cards">
+      <ReportDemoSwitcher activeSlug="floating-cards-animation" />
       <button className="docs-report-demo-close" type="button" onClick={() => navigate('/docs')} aria-label="关闭项目 demo">
         关闭
       </button>
@@ -110,9 +168,45 @@ function FloatingCardsAnimationReport() {
   )
 }
 
-function ConversationStreamingReport() {
-  const [demoStep, setDemoStep] = useState<DottedDemoStep | undefined>('thinking')
-  const [activeStep, setActiveStep] = useState<DottedDemoStep>('thinking')
+function LongThinkingReport() {
+  return (
+    <ConversationStreamingReport
+      activeSlug="long-thinking"
+      title="真实感 loading"
+      phoneLabel="点点对话页长思考链路 demo"
+      quickAnswerEnabled={false}
+      steps={[{ id: 'toolcall', label: 'tool call' }]}
+      initialStep="toolcall"
+      showStepProgress={false}
+      showReportOptions={false}
+      toolCallDetailVariant="real-loading"
+    />
+  )
+}
+
+function ConversationStreamingReport({
+  activeSlug = 'conversation-streaming',
+  title = '回答loading新增长思考模式',
+  phoneLabel = '点点对话页回答流式 demo',
+  quickAnswerEnabled = true,
+  steps = demoSteps,
+  initialStep = 'thinking',
+  showStepProgress = true,
+  showReportOptions = true,
+  toolCallDetailVariant = 'default',
+}: {
+  activeSlug?: string
+  title?: string
+  phoneLabel?: string
+  quickAnswerEnabled?: boolean
+  steps?: Array<{ id: DottedDemoStep; label: string }>
+  initialStep?: DottedDemoStep
+  showStepProgress?: boolean
+  showReportOptions?: boolean
+  toolCallDetailVariant?: 'default' | 'real-loading'
+}) {
+  const [demoStep, setDemoStep] = useState<DottedDemoStep | undefined>(initialStep)
+  const [activeStep, setActiveStep] = useState<DottedDemoStep>(initialStep)
   const [playState, setPlayState] = useState<'idle' | 'playing' | 'paused'>('idle')
   const [continueAfterStep, setContinueAfterStep] = useState(false)
   const [demoRunId, setDemoRunId] = useState(0)
@@ -132,8 +226,8 @@ function ConversationStreamingReport() {
 
   const startDemo = () => {
     setPlayState('playing')
-    setActiveStep('thinking')
-    setDemoStep(undefined)
+    setActiveStep(initialStep)
+    setDemoStep(steps.length === 1 ? initialStep : undefined)
     setContinueAfterStep(false)
     setDemoRunId((current) => current + 1)
   }
@@ -149,30 +243,32 @@ function ConversationStreamingReport() {
 
   const restartDemo = () => {
     setPlayState('playing')
-    setActiveStep('thinking')
-    setDemoStep(undefined)
+    setActiveStep(initialStep)
+    setDemoStep(steps.length === 1 ? initialStep : undefined)
     setContinueAfterStep(false)
     setDemoRunId((current) => current + 1)
   }
 
   const handleStepChange = useCallback((step: DottedDemoStep) => {
+    if (!steps.some((item) => item.id === step)) return
     setActiveStep(step)
     if (step === 'complete') {
       setPlayState('idle')
       setContinueAfterStep(false)
     }
-  }, [])
+  }, [steps])
 
-  const activeStepIndex = Math.max(0, demoSteps.findIndex((step) => step.id === activeStep))
-  const progressPercent = demoSteps.length > 1 ? (activeStepIndex / (demoSteps.length - 1)) * 100 : 0
+  const activeStepIndex = Math.max(0, steps.findIndex((step) => step.id === activeStep))
+  const progressPercent = steps.length > 1 ? (activeStepIndex / (steps.length - 1)) * 100 : 100
 
   return (
     <div className="docs-report-demo-shell docs-report-demo-shell--immersive">
+      <ReportDemoSwitcher activeSlug={activeSlug} />
       <button className="docs-report-demo-close" type="button" onClick={() => navigate('/docs')} aria-label="关闭项目 demo">
         关闭
       </button>
       <section className="docs-timestamp-hero">
-        <div className="docs-timestamp-phone" aria-label="点点对话页回答流式 demo">
+        <div className="docs-timestamp-phone" aria-label={phoneLabel}>
           <DottedDemoScreen
             key={`${demoStep ?? 'auto'}-${demoRunId}`}
             demoMode="streaming-reply"
@@ -185,36 +281,40 @@ function ConversationStreamingReport() {
             toolNoteDisplayVariant={toolNoteDisplayVariant}
             sourceImageMotionVariant={sourceImageMotionVariant}
             thinkingDisplayVariant={thinkingDisplayVariant}
+            quickAnswerEnabled={quickAnswerEnabled}
+            toolCallDetailVariant={toolCallDetailVariant}
           />
         </div>
 
-        <aside className="docs-report-progress" aria-label="回答状态进度控制">
-          <h1 className="docs-report-demo-title">回答loading新增长思考模式</h1>
-          <div className="docs-report-progress__track" style={{ '--progress': `${progressPercent}%` } as CSSProperties}>
-            <div className="docs-report-progress__line" aria-hidden="true" />
-            <div className="docs-report-progress__nodes">
-              {demoSteps.map((step, index) => {
-                const isActive = index === activeStepIndex
-                const isComplete = index < activeStepIndex
-                return (
-                  <button
-                    className={[
-                      'docs-report-progress__node',
-                      isActive ? 'docs-report-progress__node--active' : '',
-                      isComplete ? 'docs-report-progress__node--complete' : '',
-                    ].filter(Boolean).join(' ')}
-                    type="button"
-                    key={step.id}
-                    onClick={() => jumpToStep(step.id)}
-                    aria-current={isActive ? 'step' : undefined}
-                  >
-                    <span>{String(index + 1).padStart(2, '0')}</span>
-                    <strong>{step.label}</strong>
-                  </button>
-                )
-              })}
+          <aside className="docs-report-progress" aria-label="回答状态进度控制">
+          <h1 className="docs-report-demo-title">{title}</h1>
+          {showStepProgress ? (
+            <div className="docs-report-progress__track" style={{ '--progress': `${progressPercent}%` } as CSSProperties}>
+              <div className="docs-report-progress__line" aria-hidden="true" />
+              <div className="docs-report-progress__nodes">
+                {steps.map((step, index) => {
+                  const isActive = index === activeStepIndex
+                  const isComplete = index < activeStepIndex
+                  return (
+                    <button
+                      className={[
+                        'docs-report-progress__node',
+                        isActive ? 'docs-report-progress__node--active' : '',
+                        isComplete ? 'docs-report-progress__node--complete' : '',
+                      ].filter(Boolean).join(' ')}
+                      type="button"
+                      key={step.id}
+                      onClick={() => jumpToStep(step.id)}
+                      aria-current={isActive ? 'step' : undefined}
+                    >
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      <strong>{step.label}</strong>
+                    </button>
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          ) : null}
           <div className="docs-report-progress__actions">
             {playState === 'playing' || playState === 'paused' ? (
               <>
@@ -237,6 +337,7 @@ function ConversationStreamingReport() {
               </button>
             )}
           </div>
+          {showReportOptions ? (
           <div className="docs-report-options-bottom">
             <div className="docs-report-option docs-report-option--subtle" aria-label="工具调用样式切换">
               <span>tool call 样式</span>
@@ -279,6 +380,7 @@ function ConversationStreamingReport() {
               </div>
             ) : null}
           </div>
+          ) : null}
         </aside>
       </section>
     </div>
