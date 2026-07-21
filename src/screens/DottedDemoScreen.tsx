@@ -1146,7 +1146,7 @@ function DottedDeepThinkingContent({
           const isRowComplete = isActive
             ? (realLoadingRowComplete ? true : item.deepThinkingComplete === true && activeCheckReady)
             : rowTitleComplete && (!rowTargetBody || rowBodyComplete)
-          const keepsSearchIcon = kind === 'toolcall' && !(toolCallDetailVariant === 'real-loading' && realLoadingDetailComplete)
+          const keepsSearchIcon = kind === 'toolcall' && toolCallDetailVariant === 'real-loading' && isActive && !realLoadingDetailComplete
 
           return (
             <span
