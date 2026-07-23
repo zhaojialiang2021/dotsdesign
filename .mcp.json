@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "dots-design": {
+      "command": "npm",
+      "args": ["run", "mcp", "--silent"]
+    }
+  }
+}

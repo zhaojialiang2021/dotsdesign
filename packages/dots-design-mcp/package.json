@@ -1,0 +1,21 @@
+{
+  "name": "dots-design-mcp",
+  "version": "0.1.0",
+  "description": "Dots 设计系统 MCP Server，用于 Codex、Claude Code 等 AI 工具读取规范、模板和 demo 工作流。",
+  "type": "module",
+  "bin": {
+    "dots-design-mcp": "bin/dots-design-mcp.mjs"
+  },
+  "files": [
+    "bin",
+    "references",
+    "public",
+    "README.md"
+  ],
+  "keywords": [
+    "mcp",
+    "design-system",
+    "dots"
+  ],
+  "license": "UNLICENSED"
+}

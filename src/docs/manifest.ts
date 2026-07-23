@@ -78,7 +78,7 @@ export const patterns: PatternMeta[] = [
 
 // === 项目demo ===
 export type ReportDemoMeta = {
-  slug: 'conversation-streaming' | 'long-thinking' | 'floating-cards-animation'
+  slug: 'conversation-streaming' | 'long-thinking'
   name: string
   desc: string
   status: 'placeholder' | 'draft' | 'complete'
@@ -87,7 +87,6 @@ export type ReportDemoMeta = {
 export const reportDemos: ReportDemoMeta[] = [
   { slug: 'conversation-streaming', name: '回答loading新增长思考模式', desc: 'AI 回答前的思考态和回答中的流式输出', status: 'draft' },
   { slug: 'long-thinking', name: '真实感 loading', desc: '连续思考、工具调用和最终回答的完整演示', status: 'draft' },
-  { slug: 'floating-cards-animation', name: '景深浮动卡片动画', desc: '多层卡片、应用图标和背景景深的营销动效 demo', status: 'draft' },
 ]
 
 // === Writing（5 篇思考）===
