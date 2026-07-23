@@ -1,56 +1,56 @@
 # Dots MCP Server
 
-最小可用 MCP server，让 Cursor / Claude Code 直接查 Dots 的设计令牌和组件契约。
+Dots 的 MCP 接入有两种方式：外部使用默认走 npm 包；本目录下的 `server.mjs` 只给仓库维护者做本地调试。
+
+## 推荐接入：npm 包
+
+把以下配置加到 Codex、Claude Code、Cursor 或其他 MCP Client：
+
+```json
+{
+  "mcpServers": {
+    "dots-design": {
+      "command": "npx",
+      "args": ["-y", "dots-design-mcp"]
+    }
+  }
+}
+```
+
+这个方式读取 npm 包内置的 `references/` 文档快照，不依赖当前电脑是否 clone 了仓库。
+
+## 本地项目模式
+
+维护 Dots 设计系统时，可以读取当前工作区的实时文档：
+
+```bash
+npm run mcp
+```
+
+项目级 `.mcp.json` 已经指向这个命令。改完 `references/` 后，不需要重新发包也能在本机验证。
 
 ## 工具
 
 | 工具 | 说明 |
 |------|------|
-| `list_tokens` | 列出全部令牌，可按 category 过滤 |
-| `get_token` | 根据令牌名取详情（含 dark 模式覆盖） |
-| `list_components` | 列出 5 个深度组件简表 |
-| `get_component` | 根据 slug 取组件完整契约 |
-| `get_skill` | 拉一站式 Skill markdown（design + components + 使用约定） |
+| `search_design_system` | 搜索设计系统规范、页面模板、组件文档和 demo 规则 |
+| `read_design_doc` | 读取指定文档 |
+| `get_demo_workflow` | 返回 demo 制作前必须读取的文档顺序、页面基座规则和回答 loading 规范 |
+| `validate_demo_request` | 生成实现前检查清单 |
+| `get_component_spec` | 读取组件规格 |
+| `get_page_template` | 读取页面模板 |
 
-## 安装到 Claude Code
-
-把以下加到 `~/Library/Application Support/Claude/claude_desktop_config.json`：
-
-```json
-{
-  "mcpServers": {
-    "dots-design": {
-      "command": "node",
-      "args": ["/Users/<you>/dots/mcp/server.mjs"]
-    }
-  }
-}
-```
-
-重启 Claude Desktop / Code，工具会出现在 MCP 工具列表里。
-
-## 安装到 Cursor
-
-`.cursor/mcp.json`：
-
-```json
-{
-  "mcpServers": {
-    "dots-design": {
-      "command": "node",
-      "args": ["./mcp/server.mjs"]
-    }
-  }
-}
-```
-
-## 测试
+## 本地测试
 
 ```bash
 node mcp/server.mjs <<< '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
 
-## 不引入 npm 依赖
+## 发布前同步
 
-纯 Node + stdio + JSON-RPC 2.0 实现，~200 行。MCP 协议规范：
-https://spec.modelcontextprotocol.io/specification/
+```bash
+npm run mcp:sync
+npm publish ./packages/dots-design-mcp --access public
+```
+
+`npm run mcp:sync` 会把仓库里的 `references/` 和公开 AI 文档复制进 npm 包，保证外部 AI 工具读到的是最新规范。

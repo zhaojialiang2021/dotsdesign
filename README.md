@@ -29,7 +29,7 @@ dots-design/
 │   ├── card.schema.json
 │   ├── sheet.schema.json
 │   └── empty-state.schema.json
-├── mcp/                     MCP server（让 Cursor / Claude 实时查 token 和 component）
+├── mcp/                     本地 MCP server（维护者调试用）
 │   ├── server.mjs           ~200 行，0 npm 依赖
 │   └── README.md            接入指南
 ├── public/                  AI HTTP 端点静态产物（生产部署后可访问）
@@ -78,30 +78,36 @@ npm run dev
 
 顶部两组：System（方法论与契约）/ Writing（构建的思考）。
 
-### 3. AI 接入（Cursor / Claude / 任何 agent）
+### 3. AI 接入（Codex / Claude Code / Cursor）
 
-**最快路径**：
-
-```bash
-curl https://docs.dots.design/skill.md
-```
-
-把内容粘到 Cursor `.cursorrules` 或 Claude Code `CLAUDE.md`。AI 接下来生成的所有 UI 都会被这套契约约束。
-
-**MCP 接入**（Cursor / Claude Desktop）：
+**推荐路径：npm MCP 包**
 
 ```json
 {
   "mcpServers": {
     "dots-design": {
-      "command": "node",
-      "args": ["./mcp/server.mjs"]
+      "command": "npx",
+      "args": ["-y", "dots-design-mcp"]
     }
   }
 }
 ```
 
-详见 [mcp/README.md](mcp/README.md) 和 [/docs/ai-workflows](https://docs.dots.design/#/docs/ai-workflows)。
+这个方式不依赖本地路径。产品、设计、业务工程师换电脑也能直接把 Dots 设计系统接进自己的 AI 工具。
+
+**线上文档**适合人看 demo 和临时喂上下文：
+
+```bash
+curl https://docs.dots.design/skill.md
+```
+
+**本地项目模式**只给设计系统维护者调试实时文档：
+
+```bash
+npm run mcp
+```
+
+详见 [references/ai-integration.md](references/ai-integration.md)、[mcp/README.md](mcp/README.md) 和 [/docs/ai-workflows](https://docs.dots.design/#/docs/ai-workflows)。
 
 ## 命令清单
 
@@ -129,7 +135,7 @@ npm run eval:zero-shot
 
 - **Frontend**: Vite + React 19 + TypeScript (strict)
 - **Token**: W3C Design Tokens (DTCG) 格式
-- **MCP**: 自写 stdio + JSON-RPC 2.0，0 依赖
+- **MCP**: npm 包分发 + 本地项目调试两条链路
 - **样式**: CSS 变量，所有数值禁止硬编码
 
 详见 [Manifesto](https://docs.dots.design/#/docs/writing/manifesto) 和 [实操路径](https://docs.dots.design/#/docs/writing/how-i-fed-my-design-system-to-ai)。

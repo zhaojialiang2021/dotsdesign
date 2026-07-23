@@ -90,14 +90,6 @@ export function LandingPage() {
       </section>
 
       <section className="docs-landing__research">
-        <div className="docs-landing__section-head">
-          <h2>{isZh ? '研究沉淀' : 'Research'}</h2>
-          <p>
-            {isZh
-              ? '把每一次点点页面验证，沉淀成下一次可复用的规则。'
-              : 'Turn every Dian Dian page experiment into reusable design rules.'}
-          </p>
-        </div>
         <div className="docs-landing__research-grid">
           {productEntries.map((entry) => (
             <button key={entry.title} className="docs-landing__research-card" onClick={() => navigate(entry.path)}>

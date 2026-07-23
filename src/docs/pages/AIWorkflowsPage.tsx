@@ -82,7 +82,14 @@ export function AIWorkflowsPage() {
 
 function SectionThreeStep({ onCopy }: { onCopy: (s: string) => void }) {
   const t = useT()
-  const cmd = `curl https://docs.dots.design/skill.md`
+  const config = `{
+  "mcpServers": {
+    "dots-design": {
+      "command": "npx",
+      "args": ["-y", "dots-design-mcp"]
+    }
+  }
+}`
   return (
     <section className="docs-section-block">
       <h2 className="docs-section-block__heading">{t('aiw.step.title')}</h2>
@@ -94,8 +101,8 @@ function SectionThreeStep({ onCopy }: { onCopy: (s: string) => void }) {
             <div className="docs-step__title">{t('aiw.step1.title')}</div>
             <div className="docs-step__body">
               <pre className="docs-codeblock">
-                <code>{cmd}</code>
-                <button className="docs-codeblock__copy" onClick={() => onCopy(cmd)}>
+                <code>{config}</code>
+                <button className="docs-codeblock__copy" onClick={() => onCopy(config)}>
                   <Icon.Copy size={13} />
                 </button>
               </pre>
@@ -107,9 +114,8 @@ function SectionThreeStep({ onCopy }: { onCopy: (s: string) => void }) {
             <div className="docs-step__title">{t('aiw.step2.title')}</div>
             <div className="docs-step__body">
               {t('aiw.step2.body.before')}
-              <code>.cursorrules</code>
+              <code>get_demo_workflow</code>
               {t('aiw.step2.body.middle')}
-              <code>CLAUDE.md</code>
               {t('aiw.step2.body.after')}
             </div>
           </div>
@@ -177,8 +183,8 @@ function SectionMcp({ onCopy }: { onCopy: (s: string) => void }) {
   const config = `{
   "mcpServers": {
     "dots-design": {
-      "command": "node",
-      "args": ["./mcp/server.mjs"]
+      "command": "npm",
+      "args": ["run", "mcp", "--silent"]
     }
   }
 }`
@@ -191,19 +197,22 @@ function SectionMcp({ onCopy }: { onCopy: (s: string) => void }) {
         <div className="docs-card__title">{t('aiw.mcp.tools-title')}</div>
         <ul className="docs-text--subhead docs-text--secondary" style={{ margin: 0, paddingLeft: 'var(--space-5)', lineHeight: 1.75 }}>
           <li>
-            <code>list_tokens</code> · 列出全部令牌（可按 category 过滤）
+            <code>search_design_system</code> · 搜索设计系统规范、页面模板、组件文档和 demo 规则
           </li>
           <li>
-            <code>get_token</code> · 根据令牌名取详情（含 dark 模式覆盖）
+            <code>read_design_doc</code> · 读取指定文档
           </li>
           <li>
-            <code>list_components</code> · 列出 5 个深度组件简表
+            <code>get_demo_workflow</code> · 返回 demo 制作前必须读取的文档顺序和关键规则
           </li>
           <li>
-            <code>get_component</code> · 取组件完整契约
+            <code>validate_demo_request</code> · 生成实现前检查清单
           </li>
           <li>
-            <code>get_skill</code> · 拉一站式 Skill markdown
+            <code>get_component_spec</code> · 读取组件规格
+          </li>
+          <li>
+            <code>get_page_template</code> · 读取页面模板
           </li>
         </ul>
       </div>

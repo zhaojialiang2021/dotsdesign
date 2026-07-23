@@ -77,3 +77,19 @@ npm run mcp
 - 要临时喂上下文：用 `/skill.md`。
 
 MCP 和 Vercel 是互补关系：MCP 给 AI 工具读规范，Vercel 给人看页面和 demo。
+
+## 推荐工作流
+
+### 产品 / 设计使用者
+
+1. 在自己的 AI 工具里配置 `npx -y dots-design-mcp`。
+2. 让 AI 先调用 `get_demo_workflow`，确认页面基座、文档读取顺序和 demo 规则。
+3. 需要查组件、页面或回答 loading 规则时，用 `search_design_system` 和 `read_design_doc` 按需读取。
+4. 做完 demo 后，用 Vercel 站点预览，避免只看 AI 文本描述。
+
+### 设计系统维护者
+
+1. 先改 `references/`，再改代码和 demo。
+2. 本地用 `npm run mcp` 验证实时文档。
+3. 发给别人前运行 `npm run mcp:sync`，再发布 `dots-design-mcp`。
+4. 同步部署 Vercel，让人看的文档和 AI 读的 npm 包保持同一版本。
