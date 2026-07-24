@@ -173,20 +173,20 @@ const DICT: Dict = {
 
   // AI Workflows 页 UI 文案
   'aiw.title': {
-    zh: '把这套设计系统接进 AI',
-    en: 'Plug this design system into your AI',
+    zh: '把 Dots 接进 AI 工具',
+    en: 'Plug Dots into AI tools',
   },
   'aiw.lead': {
-    zh: '默认用 npm MCP 包接入 Codex、Claude Code 或 Cursor；Vercel 负责给人看 demo 和文档，本地模式只用于维护者调试。',
-    en: 'Use the npm MCP package for Codex, Claude Code, or Cursor by default. Vercel is for human docs and demos; local mode is for maintainers.',
+    zh: '默认用 npm MCP 包接入 Codex、Claude Code 或 Cursor。AI 先在本地读取规范、生成并预览 demo；需要给别人看时，再发布到 Vercel。',
+    en: 'Use the npm MCP package with Codex, Claude Code, or Cursor. The AI reads specs and previews demos locally first; publish to Vercel only when sharing.',
   },
   'aiw.step.title': {
-    zh: '三步接入 AI 工具',
-    en: 'Three steps to plug into AI tools',
+    zh: '从接入到做 demo',
+    en: 'From setup to demo',
   },
   'aiw.step.lead': {
-    zh: '推荐把 Dots 作为 MCP server 接进 AI 工具，让 agent 按需读取规范、页面模板和 demo 工作流。',
-    en: 'Add Dots as an MCP server so the agent can read specs, page templates, and demo workflows on demand.',
+    zh: '先让 AI 接上 Dots，再让它读工作流。能本地打开 demo，就可以继续制作；Vercel 只用于分享。',
+    en: 'Connect the AI to Dots, then ask it to read the workflow. If the demo opens locally, keep iterating; use Vercel only for sharing.',
   },
   'aiw.step1.title': { zh: '配置 npm MCP 包', en: 'Configure the npm MCP package' },
   'aiw.step2.title': { zh: '让 AI 先读工作流', en: 'Ask the AI to read the workflow first' },
@@ -199,34 +199,38 @@ const DICT: Dict = {
     zh: '',
     en: '',
   },
-  'aiw.step3.title': { zh: '用 Vercel 看结果', en: 'Review the result on Vercel' },
+  'aiw.step3.title': { zh: '本地预览，必要时发布', en: 'Preview locally, publish when needed' },
   'aiw.step3.body.before': {
-    zh: 'MCP 给 AI 读规范，Vercel 给人看 demo。维护者发包前运行 ',
-    en: 'MCP feeds specs to AI; Vercel shows demos to humans. Before publishing, maintainers run ',
+    zh: '让 AI 先在本地跑出 HTML / 页面 demo，确认后再用 Vercel 发给别人预览。',
+    en: 'Ask the AI to run a local HTML or page demo first, then use Vercel only when sharing a preview.',
   },
   'aiw.step3.body.after': {
-    zh: '，保证 npm 包里的文档快照和仓库一致。',
-    en: ' to keep the npm package snapshot aligned with the repo.',
+    zh: '',
+    en: '',
   },
   'aiw.endpoints.title': { zh: 'HTTP 端点', en: 'HTTP Endpoints' },
   'aiw.endpoints.lead': {
-    zh: '构建产物直接 expose 为 HTTP 路由。任何 fetch / curl 都能拉到当前最新契约，无需 clone 仓库。',
-    en: 'Build artifacts are exposed as HTTP routes. Any fetch / curl returns the current contract — no need to clone the repo.',
+    zh: '这些是给 AI 或脚本直接读取的静态文档地址。临时使用可以直接拉，长期使用仍推荐 MCP。',
+    en: 'These static endpoints are for AI tools or scripts. Use them directly for quick checks; use MCP for the normal workflow.',
   },
   'aiw.endpoints.col.method': { zh: '方法', en: 'Method' },
   'aiw.endpoints.col.path': { zh: '路径', en: 'Path' },
   'aiw.endpoints.col.desc': { zh: '说明', en: 'Description' },
   'aiw.mcp.title': { zh: 'MCP 工具能力', en: 'MCP tools' },
   'aiw.mcp.lead': {
-    zh: '让 AI 在生成过程中实时查询页面基座、组件规格和回答 loading 规则，而不是把全量契约塞进上下文。',
-    en: 'Let the AI query page bases, component specs, and answer-loading rules during generation instead of stuffing the full contract into context.',
+    zh: '这是 AI 接入成功后可以调用的能力。普通使用者不用手动调工具，只要让 AI 先读 get_demo_workflow 即可。',
+    en: 'These are the tools available after integration succeeds. Users do not need to call them manually; ask the AI to read get_demo_workflow first.',
   },
   'aiw.mcp.tools-title': { zh: '6 个工具', en: '6 tools' },
-  'aiw.mcp.config-title': { zh: '维护者本地模式', en: 'Maintainer local mode' },
+  'aiw.mcp.config-title': { zh: '维护者调试用：本地实时文档', en: 'Maintainer debug mode: live local docs' },
+  'aiw.mcp.config-note': {
+    zh: '这不是普通接入方式。只有已经 clone dots-design 仓库、需要调试最新 references 文档时才用。普通使用者请用上面的 npx -y dots-design-mcp。',
+    en: 'This is not the normal integration path. Use it only after cloning dots-design and when debugging the latest references docs. Regular users should use npx -y dots-design-mcp above.',
+  },
   'aiw.prompts.title': { zh: 'Prompt 示例库', en: 'Prompt Library' },
   'aiw.prompts.lead': {
-    zh: '点击复制 prompt 直接粘到 Cursor / Claude。所有 prompt 都已包含「用令牌名、不许 hardcode」的约束。',
-    en: 'Copy a prompt and paste it into Cursor / Claude. Every prompt already contains the "use token names, no hardcoding" constraint.',
+    zh: '这些 prompt 可以直接复制给 AI，用来生成页面、组件，或检查代码是否符合 Dots。',
+    en: 'Copy these prompts into an AI tool to generate pages, build components, or check whether code follows Dots.',
   },
 
   // 404

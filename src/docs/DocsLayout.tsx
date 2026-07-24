@@ -222,11 +222,11 @@ function SystemNav({ route }: { route: DocsRoute }) {
   return (
     <>
       <Section title={t('group.start')}>
-        <NavItem href="/docs/intro" active={route.kind === 'intro'}>
+        <NavItem href="/docs/intro" active={route.kind === 'intro' || route.kind === 'workflow'}>
           {t('nav.intro')}
         </NavItem>
-        <NavItem href="/docs/workflow" active={route.kind === 'workflow'}>
-          {t('nav.workflow')}
+        <NavItem href="/docs/ai-workflows" active={route.kind === 'ai-workflows'}>
+          {t('nav.ai-workflows')}
         </NavItem>
       </Section>
 
@@ -322,9 +322,6 @@ function SystemNav({ route }: { route: DocsRoute }) {
       </Section>
 
       <Section title={t('group.resources')}>
-        <NavItem href="/docs/ai-workflows" active={route.kind === 'ai-workflows'}>
-          {t('nav.ai-workflows')}
-        </NavItem>
         <NavItem href="/docs/pitch" active={route.kind === 'pitch'}>
           {'项目汇报'}
         </NavItem>

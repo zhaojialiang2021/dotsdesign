@@ -8,7 +8,6 @@ import { NotFoundPage } from './pages/NotFoundPage'
 const DocsHome = lazy(() => import('./pages/DocsHome').then((m) => ({ default: m.DocsHome })))
 
 // 路由懒加载：每个 page 独立 chunk，按需下载
-const WorkflowPage = lazy(() => import('./pages/WorkflowPage').then((m) => ({ default: m.WorkflowPage })))
 const FoundationsPage = lazy(() =>
   import('./pages/FoundationsPage').then((m) => ({ default: m.FoundationsPage })),
 )
@@ -97,7 +96,7 @@ export function DocsApp() {
       <Suspense fallback={<PageFallback />}>
         {route.kind === 'home' && <LandingPage />}
         {route.kind === 'intro' && <DocsHome />}
-        {route.kind === 'workflow' && <WorkflowPage />}
+        {route.kind === 'workflow' && <DocsHome />}
         {route.kind === 'foundations' && <FoundationsPage sub={route.sub} />}
         {route.kind === 'principles' && <PrinciplesPage />}
         {route.kind === 'haptics' && <HapticsPage />}

@@ -4299,36 +4299,60 @@ body.pitch-mode .docs-main__inner {
 
 .docs-codeblock {
   position: relative;
-  background: var(--bg-1);
+  display: block;
+  width: 100%;
+  min-width: 0;
+  background: var(--fill-quaternary);
   border: 0.5px solid var(--line-non-opaque);
-  border-radius: 10px;
-  padding: 14px 16px;
+  border-radius: 12px;
+  padding: 16px 18px;
   margin: 0;
-  overflow-x: auto;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: auto;
   font-family: var(--font-mono);
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--label-primary);
+  isolation: isolate;
 }
 
 .docs-codeblock--prompt {
   white-space: pre-wrap;
   word-break: break-word;
+  overflow-wrap: anywhere;
   line-height: 1.7;
-  padding-right: 100px;
+  padding-right: 104px;
+}
+
+.docs-codeblock--config {
+  min-height: 150px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  overflow-x: hidden;
+  padding: 18px 58px 18px 18px;
+  line-height: 1.75;
 }
 
 .docs-codeblock code {
+  display: block;
+  max-width: 100%;
   background: transparent;
+  box-shadow: none;
   padding: 0;
+  border-radius: 0;
   font: inherit;
   color: inherit;
+  white-space: inherit;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .docs-codeblock__copy {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 14px;
+  right: 14px;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -4357,24 +4381,24 @@ body.pitch-mode .docs-main__inner {
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .docs-step-list li {
   counter-increment: step;
   display: grid;
-  grid-template-columns: 32px 1fr;
-  gap: 16px;
-  padding: 16px 18px;
+  grid-template-columns: 38px 1fr;
+  gap: 18px;
+  padding: 22px;
   background: var(--bg-0);
   border: 0.5px solid var(--line-non-opaque);
-  border-radius: 12px;
+  border-radius: 16px;
 }
 
 .docs-step-list li::before {
   content: counter(step, decimal-leading-zero);
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--label-tertiary);
   font-weight: 500;
   letter-spacing: 0.05em;
@@ -4387,15 +4411,15 @@ body.pitch-mode .docs-main__inner {
 }
 
 .docs-step__title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   letter-spacing: -0.005em;
 }
 
 .docs-step__body {
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.72;
   color: var(--label-secondary);
 }
 
@@ -4404,13 +4428,124 @@ body.pitch-mode .docs-main__inner {
   padding: 1px 6px;
   border-radius: 4px;
   font-family: var(--font-mono);
-  font-size: 12.5px;
+  font-size: 13px;
   color: var(--label-primary);
   white-space: nowrap;
 }
 
+.docs-step__body .docs-codeblock--config code {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
 .docs-step__body .docs-codeblock {
-  margin-top: 8px;
+  margin-top: 12px;
+  margin-bottom: 14px;
+}
+
+.docs-step__body pre.docs-codeblock > code,
+pre.docs-codeblock > code {
+  display: block;
+  max-width: 100%;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+  white-space: inherit;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.docs-ai-check-grid,
+.docs-ai-path-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.docs-ai-check-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.docs-ai-check-card,
+.docs-ai-path-card {
+  min-width: 0;
+}
+
+.docs-ai-check-card {
+  padding: 20px;
+}
+
+.docs-ai-check-list {
+  margin: 12px 0 0;
+  padding-left: 1.1em;
+  line-height: 1.75;
+}
+
+.docs-ai-check-list li + li {
+  margin-top: 6px;
+}
+
+.docs-ai-path-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.docs-ai-path-card {
+  position: relative;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.docs-ai-path-card__index {
+  margin-bottom: 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--label-tertiary);
+}
+
+.docs-ai-path-card p {
+  margin: 8px 0 0;
+  line-height: 1.7;
+}
+
+@media (max-width: 1080px) {
+  .docs-ai-check-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .docs-ai-path-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .docs-step-list li {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .docs-codeblock {
+    font-size: 12px;
+  }
+
+  .docs-codeblock--config,
+  .docs-codeblock--prompt {
+    padding-right: 50px;
+  }
+
+  .docs-ai-path-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* prompt tabs */

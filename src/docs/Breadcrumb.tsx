@@ -14,8 +14,7 @@ function buildCrumbs(route: DocsRoute, t: Translator): Crumb[] {
     case 'workflow':
       return [
         { label: t('area.system') },
-        { label: t('group.guidelines') },
-        { label: t('nav.workflow') },
+        { label: t('nav.intro') },
       ]
     case 'principles':
       return [
@@ -69,7 +68,7 @@ function buildCrumbs(route: DocsRoute, t: Translator): Crumb[] {
     case 'ai-workflows':
       return [
         { label: t('area.system') },
-        { label: t('group.resources') },
+        { label: t('group.start') },
         { label: t('nav.ai-workflows') },
       ]
     case 'changelog':

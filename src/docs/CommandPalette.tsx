@@ -29,8 +29,7 @@ type Item = {
 
 const STATIC: Item[] = [
   { href: '/docs', label: '首页 · Landing', group: 'System', keywords: 'home landing' },
-  { href: '/docs/intro', label: '关于 Dots', group: 'System', keywords: 'intro about' },
-  { href: '/docs/workflow', label: '设计工作流', group: 'System', keywords: 'workflow agent skill' },
+  { href: '/docs/intro', label: '关于 Dots', group: 'System', keywords: 'intro about workflow agent skill' },
   { href: '/docs/foundations/color', label: 'Color', group: 'Foundations', keywords: 'tokens color label brand accent' },
   { href: '/docs/foundations/typography', label: 'Typography', group: 'Foundations', keywords: 'font type pingfang' },
   { href: '/docs/foundations/spacing', label: 'Spacing', group: 'Foundations', keywords: 'space gap padding' },

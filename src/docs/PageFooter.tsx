@@ -13,7 +13,7 @@ function buildSequence(): Item[] {
   const seq: Item[] = []
   // System 区
   seq.push({ href: '/docs/intro', label: '关于 / Introduction' })
-  seq.push({ href: '/docs/workflow', label: '设计工作流 / Workflow' })
+  seq.push({ href: '/docs/ai-workflows', label: 'AI Workflows' })
 
   for (const sub of ['color', 'typography', 'spacing', 'radius', 'motion'] as const) {
     seq.push({ href: `/docs/foundations/${sub}`, label: sub })
@@ -38,7 +38,6 @@ function buildSequence(): Item[] {
     seq.push({ href: `/docs/reports/${p.slug}`, label: p.name })
   }
 
-  seq.push({ href: '/docs/ai-workflows', label: 'AI Workflows' })
   seq.push({ href: '/docs/changelog', label: 'Changelog' })
 
   // Dots 区
@@ -61,7 +60,7 @@ function routeToHref(route: DocsRoute): string | null {
     case 'intro':
       return '/docs/intro'
     case 'workflow':
-      return '/docs/workflow'
+      return '/docs/intro'
     case 'foundations':
       return `/docs/foundations/${route.sub}`
     case 'principles':
