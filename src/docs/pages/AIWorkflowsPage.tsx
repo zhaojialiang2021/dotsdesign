@@ -58,16 +58,33 @@ const PROMPTS: { title: string; body: string }[] = [
 const STEP_COPY = {
   zh: {
     step1Intro: '把下面这段配置放进 Codex、Claude Code、Cursor 等 AI 工具的 MCP 配置里，然后重启 AI 工具。这里用的是 npm 包，不绑定你的电脑路径，别人换一台电脑也能通过 npx 拉到同一套 Dots 规范。',
-    step1Result: '接入成功的标志很简单：AI 工具里能看到 dots-design，并且让它调用 get_demo_workflow 时能返回内容。如果看不到，先重启工具，再检查包名、命令和网络。',
+    step1Result: '接入成功不是看配置贴没贴上，而是看 AI 能不能真的调用 Dots。',
     step2Body: '开始做 demo 前，先让 AI 调用 get_demo_workflow。它会告诉 AI：先读哪些规范、要基于哪个页面模板、哪些 demo 规则不能漏。这个步骤是为了让 AI 按当前系统做事，而不是凭记忆拼页面。',
     step3Body: '制作阶段先让 AI 在本地跑出 HTML 或页面 demo。你能打开 localhost 地址并看到效果，就可以继续改；localhost 只能自己看。需要给产品、设计或同事看时，再把确认过的版本发布到 Vercel。',
   },
   en: {
     step1Intro: 'Paste this config into the MCP settings of Codex, Claude Code, Cursor, or another AI tool, then restart the tool. It uses the npm package, so it is not tied to one local path.',
-    step1Result: 'Success means dots-design appears in the AI tool and get_demo_workflow returns content. If not, restart the tool and check the package name, command, and network.',
+    step1Result: 'Success is not just pasting the config. The AI tool must be able to call Dots.',
     step2Body: 'Before building a demo, ask the AI to call get_demo_workflow. It tells the AI which specs to read first, which page base to use, and which demo rules cannot be skipped.',
     step3Body: 'Preview locally during production. If a localhost URL opens and the demo looks right, keep iterating there. localhost is private to your computer; publish to Vercel only when you need a shareable link.',
   },
+}
+
+const STEP1_VERIFY_STEPS = {
+  zh: [
+    '保存配置后，完全退出并重启 AI 工具。',
+    '在工具的 MCP / Tools / Integrations 列表里找 dots-design。能看到它，说明配置文件已经被工具读到了。',
+    '新开一个对话，让 AI 调用 get_demo_workflow。不要只问“你知道 Dots 吗”，要明确让它调用工具。',
+    '如果返回 demo 制作流程、页面基座规则、文档读取顺序或验收清单，就说明接入成功。',
+    '如果看不到 dots-design，先重启工具；再检查包名、命令、参数和 npm 网络。',
+  ],
+  en: [
+    'Save the config, fully quit the AI tool, then reopen it.',
+    'Find dots-design in the MCP / Tools / Integrations list. If it appears, the tool has loaded the config.',
+    'Start a new chat and ask the AI to call get_demo_workflow. Do not only ask whether it knows Dots.',
+    'If it returns the demo workflow, page-base rules, reading order, or checklist, the integration works.',
+    'If dots-design does not appear, restart the tool first, then check the package name, command, args, and npm network access.',
+  ],
 }
 
 const CHECK_BLOCKS = {
@@ -75,8 +92,8 @@ const CHECK_BLOCKS = {
     {
       title: '怎么才算接入成功',
       items: [
-        'AI 工具的 MCP 列表里能看到 dots-design。',
-        '让 AI 调用 get_demo_workflow，能返回 demo 制作流程、页面基座规则和验收清单。',
+        'AI 工具的 MCP / Tools 列表里能看到 dots-design。',
+        '新开对话后，让 AI 调用 get_demo_workflow，能返回 demo 制作流程、页面基座规则和验收清单。',
         '搜索“回答 loading”或“页面模板”时，AI 能读到对应规范。',
         '让 AI 做 demo 时，它会先跑一个本地地址给你看，而不是一上来要求发布。',
       ],
@@ -104,8 +121,8 @@ const CHECK_BLOCKS = {
     {
       title: 'What success looks like',
       items: [
-        'The AI tool shows a dots-design MCP server.',
-        'Calling get_demo_workflow returns the demo workflow, page-base rules, and checklist.',
+        'The AI tool shows a dots-design server in MCP / Tools.',
+        'In a new chat, calling get_demo_workflow returns the demo workflow, page-base rules, and checklist.',
         'Searching “answer loading” or “page template” returns the matching specs.',
         'When asked to build a demo, the AI gives you a local preview URL instead of asking you to publish first.',
       ],
@@ -183,53 +200,6 @@ const QUICK_PATH = {
   ],
 }
 
-const TROUBLESHOOTING = {
-  zh: [
-    {
-      symptom: 'MCP 列表里没有 dots-design',
-      fix: '先重启 AI 工具，再检查配置是不是放在当前工具真正读取的 MCP 配置文件里。',
-    },
-    {
-      symptom: '提示找不到 dots-design-mcp',
-      fix: '先确认这台电脑能访问 npm；再检查包名是否写成 dots-design-mcp，命令是否是 npx，参数是否有 -y。',
-    },
-    {
-      symptom: 'AI 看得到工具，但还是凭空写 demo',
-      fix: '直接要求它先调用 get_demo_workflow，再调用 search_design_system 查页面模板或组件规范。',
-    },
-    {
-      symptom: '本地地址打不开',
-      fix: '通常是本地预览服务没启动，或者端口变了。让 AI 重新启动本地服务，并给你最新地址。',
-    },
-    {
-      symptom: 'Vercel 链接不是最新效果',
-      fix: '检查代码是否已经推到 GitHub，以及 Vercel 部署是否完成。Vercel 只是分享链接，不影响 MCP 接入。',
-    },
-  ],
-  en: [
-    {
-      symptom: 'dots-design does not appear in the MCP list',
-      fix: 'Restart the AI tool first, then confirm the config is in the MCP config file that this tool actually reads.',
-    },
-    {
-      symptom: 'dots-design-mcp cannot be found',
-      fix: 'Confirm the computer can reach npm. Then check that the package is dots-design-mcp, the command is npx, and args include -y.',
-    },
-    {
-      symptom: 'The AI sees the tools but still invents the demo',
-      fix: 'Ask it to call get_demo_workflow first, then search_design_system for the page template or component spec.',
-    },
-    {
-      symptom: 'The local URL does not open',
-      fix: 'The local preview server is probably not running, or the port changed. Ask the AI to restart it and give you the latest URL.',
-    },
-    {
-      symptom: 'The Vercel link is not showing the latest work',
-      fix: 'Check whether the code was pushed to GitHub and whether the Vercel deployment finished. Vercel is only for sharing and does not affect MCP.',
-    },
-  ],
-}
-
 export function AIWorkflowsPage() {
   const t = useT()
   const { show, node: toastNode } = useToast()
@@ -249,7 +219,6 @@ export function AIWorkflowsPage() {
       <SectionThreeStep onCopy={copy} />
       <SectionReadiness />
       <SectionVerifyPrompt onCopy={copy} />
-      <SectionTroubleshooting />
       <SectionEndpoints onCopy={copy} />
       <SectionMcp />
       <SectionPromptLibrary onCopy={copy} />
@@ -263,6 +232,7 @@ function SectionThreeStep({ onCopy }: { onCopy: (s: string) => void }) {
   const t = useT()
   const { locale } = useLocale()
   const copy = STEP_COPY[locale]
+  const verifySteps = STEP1_VERIFY_STEPS[locale]
   const config = `{
   "mcpServers": {
     "dots-design": {
@@ -288,7 +258,12 @@ function SectionThreeStep({ onCopy }: { onCopy: (s: string) => void }) {
                   <Icon.Copy size={13} />
                 </button>
               </pre>
-              <p style={{ marginBottom: 0 }}>{copy.step1Result}</p>
+              <p>{copy.step1Result}</p>
+              <ol className="docs-step__verify-list">
+                {verifySteps.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ol>
             </div>
           </div>
         </li>
@@ -383,39 +358,6 @@ function SectionVerifyPrompt({ onCopy }: { onCopy: (s: string) => void }) {
           <Icon.Copy size={13} /> Copy
         </button>
       </pre>
-    </section>
-  )
-}
-
-function SectionTroubleshooting() {
-  const { locale } = useLocale()
-  const items = TROUBLESHOOTING[locale]
-  return (
-    <section className="docs-section-block">
-      <h2 className="docs-section-block__heading">{locale === 'zh' ? '失败了怎么办' : 'If it fails'}</h2>
-      <p className="docs-section-block__subheading">
-        {locale === 'zh'
-          ? '先看现象，再处理。大多数问题不是设计系统坏了，而是 MCP 配置没加载、本地服务没启动，或者线上部署还没完成。'
-          : 'Start from the symptom. Most issues are config reloads, local preview servers, or unfinished deployments.'}
-      </p>
-      <div className="docs-card" style={{ padding: 0 }}>
-        <table className="docs-table">
-          <thead>
-            <tr>
-              <th>{locale === 'zh' ? '现象' : 'Symptom'}</th>
-              <th>{locale === 'zh' ? '处理方式' : 'Fix'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.symptom}>
-                <td style={{ fontWeight: 600 }}>{item.symptom}</td>
-                <td style={{ color: 'var(--label-secondary)', lineHeight: 1.7 }}>{item.fix}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
     </section>
   )
 }

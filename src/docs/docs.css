@@ -4451,6 +4451,41 @@ body.pitch-mode .docs-main__inner {
   margin-bottom: 14px;
 }
 
+.docs-step__verify-list {
+  list-style: none;
+  counter-reset: verify;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 0;
+}
+
+.docs-step__verify-list li {
+  counter-increment: verify;
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  color: var(--label-secondary);
+}
+
+.docs-step__verify-list li::before {
+  content: counter(verify, decimal-leading-zero);
+  display: block;
+  padding: 0;
+  color: var(--label-tertiary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: inherit;
+}
+
 .docs-step__body pre.docs-codeblock > code,
 pre.docs-codeblock > code {
   display: block;
