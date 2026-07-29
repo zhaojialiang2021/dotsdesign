@@ -23,8 +23,8 @@ used_by: [home, memory-review, search, settings]
 | 属性 | Active | Inactive |
 |------|--------|----------|
 | 形状 | Pill（Radius-Full） | Pill（Radius-Full） |
-| 背景 | `Bg Black` / Dark: `Dark Title` | 透明 |
-| 字色 | `#FFFFFF` / Dark: `#101010` | Label-Secondary |
+| 背景 | `Black` / `--always-black` | 透明 |
+| 字色 | `White` / `--always-white` | `Description` |
 | 字体 | Subhead (14px/500) | Subhead (14px/400) |
 | 水平内边距 | Space-3 (12px) | Space-3 (12px) |
 

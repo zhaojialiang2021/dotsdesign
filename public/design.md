@@ -11,88 +11,83 @@
 
 | 令牌 | 值 | 说明 |
 |---|---|---|
-| `color.bg.0` | `#FFFFFF` (dark: `#323232`) | 兼容旧 schema：BG-0，映射到 Bg 3 |
-| `color.bg.1` | `#F7F7F7` (dark: `#282828`) | Bg 1：底部栏、导航栏背景 |
-| `color.bg.2` | `#FAFAFA` (dark: `#2D2D2D`) | Bg 2：键盘升起低栏背景 |
-| `color.bg.3` | `#FFFFFF` (dark: `#323232`) | Bg 3：半屏、弹窗、弹出层背景 |
-| `color.bg.base` | `#F3F3F3` (dark: `#242424`) | Bg：主背景色，对话流等一级界面 |
-| `color.bg.light` | `#FFFFFF` | Bg Light：纯白背景，不随主题切换 |
-| `color.bg.black` | `#141414` | Bg Black：纯黑背景，不随主题切换 |
-| `color.bg.mask-1` | `rgba(0,0,0,0.2)` | Mask Bg 1：浅遮罩 |
-| `color.bg.mask-2` | `rgba(0,0,0,0.4)` | Mask Bg 2：深遮罩 |
-| `color.title` | `#141414` (dark: `rgba(255,255,255,0.94)`) | Title：一级标题、对话流文本 |
-| `color.paragraph` | `rgba(20,20,20,0.8)` (dark: `rgba(255,255,255,0.8)`) | Paragraph：二级标题、段落、icon |
-| `color.description` | `rgba(20,20,20,0.6)` (dark: `rgba(255,255,255,0.6)`) | Description：描述、未选中字色 |
-| `color.description-lighter` | `rgba(20,20,20,0.4)` (dark: `rgba(255,255,255,0.4)`) | Description Lighter：更弱描述 |
-| `color.placeholder` | `rgba(20,20,20,0.16)` (dark: `rgba(255,255,255,0.16)`) | Placeholder：输入栏、loading 占位文本 |
-| `color.disabled` | `rgba(20,20,20,0.09)` (dark: `rgba(255,255,255,0.09)`) | Disabled：禁用色 |
-| `color.link` | `#0D4087` (dark: `#93BFF1`) | Link：文字链 |
-| `color.label.primary` | `#141414` (dark: `rgba(255,255,255,0.94)`) | 兼容旧 schema：Label-Primary，映射到 Title |
-| `color.label.secondary` | `rgba(20,20,20,0.6)` (dark: `rgba(255,255,255,0.6)`) | 兼容旧 schema：Label-Secondary，映射到 Description |
-| `color.label.tertiary` | `rgba(20,20,20,0.16)` (dark: `rgba(255,255,255,0.16)`) | 兼容旧 schema：Label-Tertiary，映射到 Placeholder |
-| `color.label.quaternary` | `rgba(20,20,20,0.09)` (dark: `rgba(255,255,255,0.09)`) | 兼容旧 schema：Label-Quaternary，映射到 Disabled |
-| `color.dark.title` | `rgba(255,255,255,0.94)` (dark: `#141414`) | Dark Title：浅色背景上的反色一级标题 |
-| `color.dark.paragraph` | `rgba(255,255,255,0.8)` (dark: `rgba(20,20,20,0.8)`) | Dark Paragraph：浅色背景上的反色段落/icon |
-| `color.dark.description` | `rgba(255,255,255,0.6)` (dark: `rgba(20,20,20,0.6)`) | Dark Description |
-| `color.dark.placeholder` | `rgba(255,255,255,0.16)` (dark: `rgba(20,20,20,0.16)`) | Dark Placeholder |
-| `color.dark.link` | `#93BFF1` (dark: `#0D4087`) | Dark Link |
-| `color.light.title` | `#141414` | Light Title：Always Mode 一级标题 |
-| `color.light.paragraph` | `rgba(20,20,20,0.8)` | Light Paragraph：Always Mode 段落/icon |
-| `color.light.description` | `rgba(20,20,20,0.6)` | Light Description |
-| `color.light.description-1` | `rgba(20,20,20,0.4)` | Light Description 1 |
-| `color.light.placeholder` | `rgba(20,20,20,0.16)` | Light Placeholder |
-| `color.light.disabled` | `rgba(20,20,20,0.09)` | Light Disabled |
-| `color.light.link` | `#133667` | Light Link |
-| `color.fill.1` | `rgba(255,255,255,0.05)` (dark: `rgba(50,50,50,0.05)`) | Fill 1：loading 气泡等色 |
-| `color.fill.2` | `rgba(255,255,255,0.1)` (dark: `rgba(50,50,50,0.1)`) | Fill 2：富文本、分享卡悬浮容器底色 |
-| `color.fill.3` | `rgba(255,255,255,0.2)` (dark: `rgba(50,50,50,0.2)`) | Fill 3 |
-| `color.fill.4` | `rgba(255,255,255,0.5)` (dark: `rgba(50,50,50,0.5)`) | Fill 4 |
-| `color.fill.5` | `rgba(255,255,255,0.8)` (dark: `rgba(50,50,50,0.8)`) | Fill 5：AI 卡片/富文本背景 |
-| `color.fill.a` | `#FFFFFF` (dark: `#323232`) | Fill A：输入框、模型侧气泡底色 |
-| `color.fill.b` | `#E6E6E6` (dark: `#1C1C1C`) | Fill B：用户侧气泡/轻提示底色 |
-| `color.fill.c` | `rgba(50,50,50,0.92)` (dark: `rgba(68,68,68,0.8)`) | Fill C：长按面板底色 |
-| `color.fill.primary` | `rgba(50,50,50,0.2)` (dark: `rgba(255,255,255,0.2)`) | 兼容旧 schema：Fill-Primary，映射到 Inverted Fill 3 |
-| `color.fill.secondary` | `rgba(50,50,50,0.1)` (dark: `rgba(255,255,255,0.1)`) | 兼容旧 schema：Fill-Secondary，映射到 Inverted Fill 2 |
-| `color.fill.tertiary` | `rgba(50,50,50,0.05)` (dark: `rgba(255,255,255,0.05)`) | 兼容旧 schema：Fill-Tertiary，映射到 Inverted Fill 1 |
-| `color.fill.quaternary` | `rgba(20,20,20,0.02)` (dark: `rgba(91,88,88,0.26)`) | 兼容旧 schema：Fill-Quaternary，映射到 info 3 |
-| `color.inverted-fill.1` | `rgba(50,50,50,0.05)` (dark: `rgba(255,255,255,0.05)`) | Inverted Fill 1 |
-| `color.inverted-fill.2` | `rgba(50,50,50,0.1)` (dark: `rgba(255,255,255,0.1)`) | Inverted Fill 2 |
-| `color.inverted-fill.3` | `rgba(50,50,50,0.2)` (dark: `rgba(255,255,255,0.2)`) | Inverted Fill 3 |
-| `color.inverted-fill.4` | `rgba(50,50,50,0.5)` (dark: `rgba(255,255,255,0.5)`) | Inverted Fill 4 |
-| `color.inverted-fill.5` | `rgba(50,50,50,0.8)` (dark: `rgba(255,255,255,0.8)`) | Inverted Fill 5 |
-| `color.separator.2` | `rgba(20,20,20,0.08)` (dark: `rgba(255,255,255,0.08)`) | Separator 2：模型侧气泡、容器描边 |
-| `color.separator.3` | `rgba(20,20,20,0.1)` (dark: `rgba(255,255,255,0.1)`) | Separator 3：query 气泡描边 |
-| `color.separator.4` | `rgba(255,255,255,0.2)` (dark: `rgba(50,50,50,0.2)`) | Separator 4：容器白色描边 |
-| `color.separator.base` | `rgba(255,255,255,0.75)` (dark: `rgba(255,255,255,0.1)`) | Separator：用户侧气泡描边 |
-| `color.separator.light-1` | `rgba(255,255,255,0.08)` | Light Separator 1 |
-| `color.separator.light-2` | `rgba(255,255,255,0.2)` | Light Separator 2 |
-| `color.separator.light-3` | `rgba(255,255,255,0.75)` | Light Separator 3 |
-| `color.separator.light-4` | `rgba(20,20,20,0.08)` | Light Separator 4 |
-| `color.separator.light-5` | `rgba(50,50,50,0.2)` | Light Separator 5 |
-| `color.line.opaque` | `rgba(20,20,20,0.1)` (dark: `rgba(255,255,255,0.1)`) | 兼容旧 schema：Line-Opaque，映射到 Separator 3 |
-| `color.line.non-opaque` | `rgba(20,20,20,0.08)` (dark: `rgba(255,255,255,0.08)`) | 兼容旧 schema：Line-NonOpaque，映射到 Separator 2 |
-| `color.info.2` | `rgba(175,217,241,0.2)` (dark: `rgba(71,94,106,0.2)`) | info 2：富文本蓝色 |
-| `color.info.3` | `rgba(20,20,20,0.02)` (dark: `rgba(91,88,88,0.26)`) | info 3：富文本灰色 |
-| `color.info.4` | `rgba(111,210,189,0.3)` | info 4：文本选中绿色 |
-| `color.info.5` | `#6FD2BD` | info 5：品牌主色/纯绿色 |
-| `color.info.6` | `#21C3A1` | info 6：文本选中分割栏绿色 |
-| `color.info.base` | `rgba(253,240,145,0.2)` (dark: `rgba(108,104,69,0.2)`) | info：富文本黄色 |
-| `color.primary` | `#FF2442` | 小红书社区红，仅用于社区关注/发布场景 |
-| `color.brand.blue` | `#6FD2BD` | 兼容旧 schema：Brand-Blue，映射到 info 5 |
-| `color.brand.blue-light` | `rgba(111,210,189,0.3)` | 兼容旧 schema：Brand-Blue-Light，映射到 info 4 |
-| `color.brand.blue-border` | `#21C3A1` | 兼容旧 schema：Brand-Blue-Border，映射到 info 6 |
-| `color.brand.blue-text` | `#21C3A1` | 兼容旧 schema：Brand-Blue-Text，映射到 info 6 |
-| `color.backdrop` | `rgba(0,0,0,0.4)` | 兼容旧 schema：弹层遮罩，映射到 Mask Bg 2 |
-| `color.accent.yellow` | `#FFCC00` | 兼容：待办标签 |
-| `color.accent.green` | `#34C759` | 兼容：日记标签 |
-| `color.accent.pink` | `#FF6482` | 兼容：持续月录标签 |
-| `color.accent.brown` | `#916964` | 兼容：文件标签 |
-| `color.accent.event-blue` | `#5B9BDB` | 兼容：事件追踪标签 |
-| `color.deco.teal` | `#81D5CA` | 兼容：Live 图功能图标背景 |
-| `color.deco.sky` | `#84B1EB` | 兼容：Web 端 / 时间碎片图标背景 |
-| `color.deco.lavender` | `#9F8CCF` | 兼容：AI 溯源图标背景 |
-| `color.deco.sage` | `#A0C484` | 兼容：频道数量图标背景 |
-| `color.deco.rose` | `#AA7D78` | 兼容：音视频解析图标背景 |
+| `color.bg.0` | `#F5F5F5` (dark: `#19191E`) | Bg 0：最底层，卡片容器后层背景 |
+| `color.bg.1` | `#F5F5F5` (dark: `#222226`) | Bg 1：基准层上模块背景 |
+| `color.bg.2` | `#FFFFFF` (dark: `#29292E`) | Bg 2：弹出层等最高层背景 |
+| `color.bg.base` | `#FFFFFF` (dark: `#29292E`) | Bg：基准层，主背景色 |
+| `color.bg.0-lighter` | `#FAFAFA` (dark: `#141418`) | Bg 0 Lighter：最底层浅色背景 |
+| `color.title` | `rgba(0,0,0,0.8)` (dark: `rgba(255,255,255,0.84)`) | Title：一级标题 |
+| `color.paragraph` | `rgba(0,0,0,0.62)` (dark: `rgba(255,255,255,0.56)`) | Paragraph：二级标题、段落 |
+| `color.description` | `rgba(0,0,0,0.45)` (dark: `rgba(255,255,255,0.36)`) | Description：描述、未选中文字 |
+| `color.disabled` | `rgba(0,0,0,0.27)` (dark: `rgba(255,255,255,0.21)`) | Disabled：禁用色 |
+| `color.placeholder` | `rgba(0,0,0,0.27)` (dark: `rgba(255,255,255,0.21)`) | Placeholder：占位文本色 |
+| `color.link` | `#133667` (dark: `#C6D9EF`) | Link：段落和话题链接 |
+| `color.link-accent` | `#3D8AF5` (dark: `#C6D9EF`) | Link Accent：强调链接 |
+| `color.fill.1` | `rgba(48,48,52,0.05)` (dark: `rgba(255,255,255,0.04)`) | Fill 1：次级按钮、标签、输入框底色 |
+| `color.fill.2` | `rgba(48,48,52,0.1)` (dark: `rgba(255,255,255,0.08)`) | Fill 2：操作组件按下色 |
+| `color.fill.3` | `rgba(48,48,52,0.2)` (dark: `rgba(255,255,255,0.125)`) | Fill 3：弱标签色 |
+| `color.fill.4` | `rgba(48,48,52,0.5)` (dark: `rgba(255,255,255,0.32)`) | Fill 4：标签色 |
+| `color.fill.5` | `rgba(48,48,52,0.99)` (dark: `rgba(255,255,255,0.99)`) | Fill 5：强标签、气泡、轻提示底色 |
+| `color.inverted-fill.1` | `rgba(255,255,255,0.04)` (dark: `rgba(48,48,52,0.05)`) | Inverted Fill 1：反色次级按钮、标签、输入框底色 |
+| `color.inverted-fill.2` | `rgba(255,255,255,0.08)` (dark: `rgba(48,48,52,0.1)`) | Inverted Fill 2：反色操作组件按下色 |
+| `color.inverted-fill.3` | `rgba(255,255,255,0.125)` (dark: `rgba(48,48,52,0.2)`) | Inverted Fill 3：反色弱标签色 |
+| `color.inverted-fill.4` | `rgba(255,255,255,0.32)` (dark: `rgba(48,48,52,0.5)`) | Inverted Fill 4：反色标签色 |
+| `color.inverted-fill.5` | `rgba(255,255,255,0.99)` (dark: `rgba(48,48,52,0.99)`) | Inverted Fill 5：反色强标签、气泡、轻提示底色 |
+| `color.separator.2` | `rgba(0,0,0,0.2)` (dark: `rgba(255,255,255,0.16)`) | Separator 2：较深色二级描边 |
+| `color.separator.base` | `rgba(0,0,0,0.08)` (dark: `rgba(255,255,255,0.12)`) | Separator：分割线、描边 |
+| `color.separator.opaque` | `#EAEAEA` (dark: `#222226`) | Opaque Separator：多条线重叠时使用 |
+| `color.xhs.red` | `#FF2442` (dark: `#FF2E4D`) | XHS Red：小红书品牌强调色 |
+| `color.xhs.red-soft` | `#FFEDF0` (dark: `#301C1F`) | XHS Red Soft：小红书品牌弱强调背景 |
+| `color.warning` | `#FF7D03` (dark: `#FF9E3D`) | Warning：警告填充及浅色填充上的文字 |
+| `color.warning-soft` | `#FFF2E6` (dark: `#30271F`) | Warning Soft：警告浅色填充 |
+| `color.success` | `#02B940` (dark: `#36E271`) | Success：成功填充及浅色填充上的文字 |
+| `color.success-soft` | `#EAF8EF` (dark: `#1C2E22`) | Success Soft：成功浅色填充 |
+| `color.info` | `#3D8AF5` (dark: `#4790F5`) | Info：信息填充及浅色填充上的文字 |
+| `color.info-soft` | `#ECF4FE` (dark: `#1D2633`) | Info Soft：信息浅色填充 |
+| `color.neutral.white` | `#FFFFFF` (dark: `#000000`) | White：主题自适应白色 |
+| `color.neutral.black` | `#000000` (dark: `#FFFFFF`) | Black：主题自适应黑色 |
+| `color.dots-accent.surface` | `rgba(86,209,191,0.08)` (dark: `rgba(86,209,191,0.12)`) | Dots Accent Surface：标签等浅品牌背景 |
+| `color.dots-accent.text` | `#56D1BF` | Dots Accent Text：品牌文字和图标 |
+| `color.dots-accent.fill` | `#56D1BF` | Dots Accent Fill：按钮、开关等交互底色 |
+| `color.dots-accent.border-subtle` | `rgba(86,209,191,0.1)` | Dots Accent Border Subtle：标签低强调描边 |
+| `color.dots-accent.border` | `rgba(86,209,191,0.4)` | Dots Accent Border：按钮中强调描边 |
+| `color.dots-accent.icon-muted` | `rgba(52,179,157,0.4)` | Dots Accent Icon Muted：弱化辅助图标 |
+| `color.dots-accent.highlight` | `rgba(86,209,191,0.12)` | Dots Accent Highlight：高亮答案底色 |
+| `color.mask-bg` | `rgba(0,0,0,0.4)` | Mask Bg：Always Mode 遮罩背景 |
+| `color.light.title` | `rgba(255,255,255,0.84)` | Light Title：亮色一级标题 |
+| `color.light.paragraph` | `rgba(255,255,255,0.56)` | Light Paragraph：亮色二级标题、段落 |
+| `color.light.description` | `rgba(255,255,255,0.36)` | Light Description：亮色描述 |
+| `color.light.disabled` | `rgba(255,255,255,0.21)` | Light Disabled：亮色禁用 |
+| `color.light.fill-1` | `rgba(255,255,255,0.04)` | Light Fill 1 |
+| `color.light.fill-2` | `rgba(255,255,255,0.08)` | Light Fill 2 |
+| `color.light.fill-3` | `rgba(255,255,255,0.125)` | Light Fill 3 |
+| `color.light.fill-4` | `rgba(255,255,255,0.32)` | Light Fill 4 |
+| `color.light.fill-5` | `rgba(255,255,255,0.99)` | Light Fill 5 |
+| `color.light.separator` | `rgba(255,255,255,0.07)` | Light Separator |
+| `color.light.separator-2` | `rgba(255,255,255,0.16)` | Light Separator 2 |
+| `color.dark.title` | `rgba(0,0,0,0.8)` | Dark Title：暗色一级标题 |
+| `color.dark.paragraph` | `rgba(0,0,0,0.62)` | Dark Paragraph：暗色二级标题、段落 |
+| `color.dark.description` | `rgba(0,0,0,0.45)` | Dark Description：暗色描述 |
+| `color.dark.disabled` | `rgba(0,0,0,0.27)` | Dark Disabled：暗色禁用 |
+| `color.dark.fill-1` | `rgba(48,48,52,0.05)` | Dark Fill 1 |
+| `color.dark.fill-2` | `rgba(48,48,52,0.1)` | Dark Fill 2 |
+| `color.dark.fill-3` | `rgba(48,48,52,0.2)` | Dark Fill 3 |
+| `color.dark.fill-4` | `rgba(48,48,52,0.5)` | Dark Fill 4 |
+| `color.dark.fill-5` | `rgba(48,48,52,0.99)` | Dark Fill 5 |
+| `color.dark.separator` | `rgba(0,0,0,0.08)` | Dark Separator |
+| `color.dark.separator-2` | `rgba(0,0,0,0.2)` | Dark Separator 2 |
+| `color.always.white` | `#FFFFFF` | White：Always Mode 白色 |
+| `color.always.black` | `#000000` | Black：Always Mode 黑色 |
+| `color.legacy.accent-yellow` | `#FFCC00` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.accent-green` | `#34C759` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.accent-pink` | `#FF6482` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.accent-brown` | `#916964` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.accent-event-blue` | `#5B9BDB` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.deco-teal` | `#81D5CA` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.deco-sky` | `#84B1EB` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.deco-lavender` | `#9F8CCF` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.deco-sage` | `#A0C484` | 兼容旧页面，不属于现行颜色规范 |
+| `color.legacy.deco-rose` | `#AA7D78` | 兼容旧页面，不属于现行颜色规范 |
 
 ## phone
 
@@ -100,7 +95,7 @@
 |---|---|---|
 | `phone.width` | `430px` | iOS 大屏设计稿宽度 |
 | `phone.height` | `932px` | iOS 大屏设计稿高度 |
-| `phone.radius` | `54px` | 模拟真机外壳圆角 |
+| `phone.radius` | `80px` | 模拟真机外壳超级圆角 |
 
 ## safe
 

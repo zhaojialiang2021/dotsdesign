@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef } from 'react'
 import { navigate, useHash, parseDocsRoute } from './router'
 import { DocsLayout } from './DocsLayout'
+import { useTheme } from './useTheme'
 // LandingPage 是首屏关键路径，保持同步
 import { LandingPage } from './pages/LandingPage'
 import { NotFoundPage } from './pages/NotFoundPage'
@@ -35,6 +36,12 @@ const WritingIndexPage = lazy(() =>
 
 function PageFallback() {
   return null // 极简：闪一下空白比 spinner 更不打扰
+}
+
+function ThemedReportPage({ slug }: { slug: string }) {
+  // 沉浸式项目 demo 绕过 DocsLayout，但仍需挂载站点主题状态。
+  useTheme()
+  return <ReportsPage slug={slug} />
 }
 
 export function DocsApp() {
@@ -86,7 +93,7 @@ export function DocsApp() {
   if (route.kind === 'report') {
     return (
       <Suspense fallback={<PageFallback />}>
-        <ReportsPage slug={route.slug} />
+        <ThemedReportPage slug={route.slug} />
       </Suspense>
     )
   }

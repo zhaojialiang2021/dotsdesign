@@ -18,8 +18,8 @@ used_by: [ai-preferences]
 | 轨道圆角 | Radius-Full (9999px) | 胶囊形 |
 | 轨道背景 | Fill-Quaternary | 极弱填充 |
 | 滑块尺寸 | 36×36px | 圆形 |
-| 滑块颜色 | `Bg 3` | 白色滑块在品牌色填充上清晰 |
-| 填充色 | `info 5` `#6FD2BD` | 品牌色做点缀，填充区是合法的点缀场景 |
+| 滑块颜色 | `Bg 2` | 白色滑块在品牌色填充上清晰 |
+| 填充色 | `Dots Accent Fill` / `--dots-accent-fill` | 品牌色做点缀，填充区是合法的点缀场景 |
 | 中线标记 | 2px 宽，8px 高，Fill-Secondary | 标示中点位置 |
 
 ## 标签

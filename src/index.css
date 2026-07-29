@@ -112,7 +112,7 @@
 
 body {
   margin: 0;
-  background: var(--bg-1);
+  background: var(--bg-base);
   color: var(--label-primary);
   font-family: var(--font-ui);
 }

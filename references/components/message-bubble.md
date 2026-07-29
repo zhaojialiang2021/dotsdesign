@@ -6,6 +6,8 @@
 
 消息体是点点对话页的基础单元，承载用户消息、Dots 文本回复、判断态、流式输出和 response 卡片。页面 demo 只能引用该组件规范，不允许复制私有气泡样式。
 
+组件文档里的连续对话预览用于核对 iOS 浅色消息规范，必须作为显式 Light-only 预览岛渲染；站点外壳、说明文字和控制器仍跟随当前主题。
+
 ## Harness 定义
 
 MessageBubble 是点点对话流的核心 Component Harness，不是普通气泡样式。
@@ -29,7 +31,7 @@ MessageBubble 是点点对话流的核心 Component Harness，不是普通气泡
 | 属性 | User | Dots |
 |------|------|------|
 | 对齐 | 右对齐 | 左对齐 |
-| 背景 | 弱灰填充 | `Fill A` |
+| 背景 | 弱灰填充 | `Bg` |
 | 边框 | 0.5px 白色弱描边 | 无 |
 | 圆角 | 单行 18px，多行 22px | 单行 18px，多行 22px |
 | padding | 12px 16px | 12px 16px |
@@ -47,6 +49,7 @@ MessageBubble 是点点对话流的核心 Component Harness，不是普通气泡
 组件侧只提供这些稳定能力：
 
 - 左侧 36×36 Lottie / icon 状态位。
+- 状态位统一复用 [`ProcessIndicator`](./process-indicator.md)，MessageBubble 不直接选择动画资源。
 - 脑雾背景容器，背景透明度和 blur 由框架控制。
 - 标题、正文、来源内容的正常文档流布局。
 - 当前内容流式输出，已完成内容保持静态。
@@ -73,7 +76,7 @@ response 卡片属于 Dots 消息体，不是浮层。
 | 属性 | 值 |
 |------|------|
 | 宽度 | 361px |
-| 背景 | `Fill A` |
+| 背景 | `Bg` |
 | 边框 | 0.5px `Separator 2` |
 | 圆角 | 22px |
 | padding | 20px 16px |

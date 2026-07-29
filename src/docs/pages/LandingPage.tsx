@@ -50,9 +50,8 @@ export function LandingPage() {
           <h1 className="docs-landing__studio-title">
             {isZh ? (
               <>
-                为AI工作流
-                <br />
-                创建的设计系统
+                <span className="docs-landing__studio-title-line">为AI工作流</span>
+                <span className="docs-landing__studio-title-line">创建的设计系统</span>
               </>
             ) : (
               <>
@@ -63,9 +62,14 @@ export function LandingPage() {
             )}
           </h1>
           <p className="docs-landing__studio-lead">
-            {isZh
-              ? '把点点的设计系统、组件规范、Figma 还原和上线流程放进同一个工作台。文档是源头，demo 是验证，Harness 是 AI 执行轨道。'
-              : 'A studio-style design system workspace for Dian Dian: docs as source, demos as proof, harnesses as AI execution rails.'}
+            {isZh ? (
+              <>
+                <span className="docs-landing__studio-lead-line">把点点的设计系统、组件规范、Figma 还原和上线流程放进同一个工作台。</span>
+                <span className="docs-landing__studio-lead-line">文档是源头，demo 是验证，Harness 是 AI 执行轨道。</span>
+              </>
+            ) : (
+              'A studio-style design system workspace for Dian Dian: docs as source, demos as proof, harnesses as AI execution rails.'
+            )}
           </p>
           <div className="docs-landing__studio-actions">
             <button className="docs-landing__studio-button" onClick={() => navigate('/docs/intro')}>

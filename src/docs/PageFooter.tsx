@@ -14,11 +14,11 @@ function buildSequence(): Item[] {
   // System 区
   seq.push({ href: '/docs/intro', label: '关于 / Introduction' })
   seq.push({ href: '/docs/ai-workflows', label: 'AI Workflows' })
+  seq.push({ href: '/docs/principles', label: '设计原则 / Principles' })
 
   for (const sub of ['color', 'typography', 'spacing', 'radius', 'motion'] as const) {
     seq.push({ href: `/docs/foundations/${sub}`, label: sub })
   }
-  seq.push({ href: '/docs/principles', label: '设计原则 / Principles' })
   seq.push({ href: '/docs/haptics', label: '触觉反馈 / Haptics' })
 
   // Deep first，浅后

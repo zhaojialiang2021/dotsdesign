@@ -7,7 +7,7 @@
 
 1. [`strategy.md`](strategy.md) — 任务属于哪个 Track、影响什么指标
 2. [`agent-persona.md`](agent-persona.md) — AI 协作者的能力边界和常见错误
-3. [`design-tokens.md`](design-tokens.md) — 颜色/字号/间距/圆角/阴影/动效令牌
+3. [`design-tokens.md`](design-tokens.md) — 视觉令牌总览；颜色细表读取 [`color-tokens.md`](color-tokens.md)
 4. [`design-principles.md`](design-principles.md) — 13 条设计规则（含"为什么"）
 5. [`haptics.md`](haptics.md) — 5 级触觉意图和波形参数
 6. 目标组件/页面文档（`components/` 或 `pages/`）
@@ -29,6 +29,7 @@
 | `agent-persona.md` | 元规则：AI 代理在系统中的行为契约 | 引入新工具/发现新错误模式时更新 |
 | `design-principles.md` | 13 条设计规则 + 每条的"设计备注"（为什么） | 设计 Lead；新增规则需团队对齐 |
 | `design-tokens.md` | 视觉令牌：颜色/字号/间距/圆角/阴影/动效 | 设计 Lead；改动会通过构建脚本同步到代码 |
+| `color-tokens.md` | 颜色令牌：Light/Dark、Always Mode、品牌与语义分类 | 设计 Lead；色值和命名变更时同步 `tokens/color.json` |
 | `haptics.md` | 触觉令牌：5 级意图 + 多平台波形参数 | 设计 Lead |
 | `figma-component-ids.md` | Figma 组件/图标 node ID 索引（Figma → 真相源的桥接） | 同步 Figma 后由脚本/人工更新 |
 | `ai-integration.md` | AI 工具接入：MCP npm 包、线上文档、本地项目模式 | 维护 AI 接入链路时更新 |

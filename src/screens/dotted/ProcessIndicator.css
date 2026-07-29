@@ -1,0 +1,32 @@
+.process-indicator {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 1;
+  line-height: 0;
+}
+
+.process-indicator svg,
+.process-indicator img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.process-indicator--complete {
+  overflow: hidden;
+}
+
+.process-indicator--complete img {
+  object-fit: contain;
+}
+
+.process-indicator-overview {
+  display: block;
+  overflow: hidden;
+}
+
+.process-indicator-overview svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}

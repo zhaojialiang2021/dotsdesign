@@ -57,7 +57,9 @@ export function SheetDemo() {
 
   return (
     <DemoFrame
-      caption="Sheet · Live"
+      caption="Sheet"
+      title="临时操作层"
+      description="切换出现方向、展开比例和开合状态，检查遮罩、圆角与内容层级是否保持稳定。"
       code={code}
       stage={
         <div style={phoneStyle}>

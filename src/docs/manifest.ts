@@ -11,6 +11,7 @@ export type ComponentSlug =
   | 'divider'
   | 'toast'
   | 'message-bubble'
+  | 'process-indicator'
   | 'live-waveform'
 
 export type PageSlug =
@@ -36,10 +37,9 @@ export type PageMeta = {
 }
 
 export const components: ComponentMeta[] = [
-  // 5 个深度组件 —— brief §5.3
+  // 深度组件 —— brief §5.3
   { slug: 'button', name: 'Button', status: 'draft', depth: 'deep' },
   { slug: 'input', name: 'Input', status: 'placeholder', depth: 'deep' },
-  { slug: 'card', name: 'Card', status: 'draft', depth: 'deep' },
   { slug: 'sheet', name: 'Sheet', status: 'placeholder', depth: 'deep' },
   { slug: 'empty-state', name: 'Empty State', status: 'placeholder', depth: 'deep' },
   // 其余浅组件 —— backlog
@@ -47,6 +47,7 @@ export const components: ComponentMeta[] = [
   { slug: 'divider', name: 'Divider', status: 'placeholder', depth: 'shallow' },
   { slug: 'toast', name: 'Toast', status: 'placeholder', depth: 'shallow' },
   { slug: 'message-bubble', name: 'MessageBubble', status: 'complete', depth: 'deep' },
+  { slug: 'process-indicator', name: 'ProcessIndicator', status: 'draft', depth: 'deep' },
   { slug: 'live-waveform', name: 'LiveWaveform', status: 'draft', depth: 'deep' },
 ]
 
@@ -56,7 +57,7 @@ export const pages: PageMeta[] = [
     name: '点点对话页',
     subtitle: '聊天 · Skill · AI 生成卡片',
     screenId: 'dotted-demo',
-    uses: ['message-bubble', 'input', 'card'],
+    uses: ['message-bubble', 'process-indicator', 'input', 'card'],
   },
 ]
 

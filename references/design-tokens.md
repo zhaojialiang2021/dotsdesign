@@ -11,7 +11,7 @@
 |------|------|------|
 | `phone.width` | `430px` | iOS 大屏设计稿宽度 |
 | `phone.height` | `932px` | iOS 大屏设计稿高度 |
-| `phone.radius` | `54px` | 模拟真机外壳圆角 |
+| `phone.radius` | `80px` | 模拟真机外壳超级圆角 |
 | `safe.top` | `59px` | 状态栏/安全区顶部 |
 | `safe.bottom` | `34px` | 底部安全区 |
 | `safe.nav` | `65px` | 导航栏高度 |
@@ -22,70 +22,66 @@
 
 ## 颜色
 
-### Backgrounds
+> 人类可读真相源：`references/color-tokens.md`。执行真相源：`tokens/color.json`。
 
-| Token | Light | Dark | 用途 |
-|------|------|------|------|
-| `Bg` / `--bg-base` | `#F3F3F3` | `#242424` | 主背景色，对话流等一级界面 |
-| `Bg 1` / `--bg-1` | `#F7F7F7` | `#282828` | 底部栏、导航栏背景 |
-| `Bg 2` / `--bg-2` | `#FAFAFA` | `#2D2D2D` | 键盘升起低栏背景 |
-| `Bg 3` / `--bg-3` | `#FFFFFF` | `#323232` | 半屏、弹窗、弹出层背景 |
-| `Mask Bg 1` / `--bg-mask-1` | `rgba(0,0,0,0.2)` | Always | 退后界面的浅遮罩 |
-| `Mask Bg 2` / `--bg-mask-2` | `rgba(0,0,0,0.4)` | Always | 退后界面的深遮罩 |
-| `Bg Light` / `--bg-light` | `#FFFFFF` | Always | 纯白背景 |
-| `Bg Black` / `--bg-black` | `#141414` | Always | 纯黑背景 |
+### Adaptive colors
 
-### Labels
+| Type | Token / CSS variable | Light | Dark | 用途 |
+|------|------|------|------|------|
+| Backgrounds | `Bg` / `--bg-base` | `#FFFFFF` | `#29292E` | 基准层：主背景色 |
+| Backgrounds | `Bg 0` / `--bg-0` | `#F5F5F5` | `#19191E` | 最底层：卡片容器后层背景 |
+| Backgrounds | `Bg 0 Lighter` / `--bg-0-lighter` | `#FAFAFA` | `#141418` | 最底层浅色背景 |
+| Backgrounds | `Bg 1` / `--bg-1` | `#F5F5F5` | `#222226` | 基准层上模块背景 |
+| Backgrounds | `Bg 2` / `--bg-2` | `#FFFFFF` | `#29292E` | Alert 等弹出层背景 |
+| Labels | `Title` / `--title` | `#000000 80%` | `#FFFFFF 84%` | 一级标题 |
+| Labels | `Paragraph` / `--paragraph` | `#000000 62%` | `#FFFFFF 56%` | 二级标题、段落 |
+| Labels | `Description` / `--description` | `#000000 45%` | `#FFFFFF 36%` | 描述、未选中文字 |
+| Labels | `Disabled` / `--disabled` | `#000000 27%` | `#FFFFFF 21%` | 禁用色 |
+| Labels | `Placeholder` / `--placeholder` | `#000000 27%` | `#FFFFFF 21%` | 占位文本 |
+| Labels | `Link` / `--link` | `#133667` | `#C6D9EF` | 段落和话题链接 |
+| Labels | `Link Accent` / `--link-accent` | `#3D8AF5` | `#C6D9EF` | 强调链接 |
+| Fills | `Fill 1-5` / `--fill-1` … `--fill-5` | `#303034 5% / 10% / 20% / 50% / 99%` | `#FFFFFF 4% / 8% / 12.5% / 32% / 99%` | 从次级控件到强标签、气泡、轻提示 |
+| Fills | `Inverted Fill 1-5` / `--inverted-fill-1` … `--inverted-fill-5` | `#FFFFFF 4% / 8% / 12.5% / 32% / 99%` | `#303034 5% / 10% / 20% / 50% / 99%` | 反色填充阶梯 |
+| Separators | `Separator` / `--separator-base` | `#000000 8%` | `#FFFFFF 12%` | 分割线、描边 |
+| Separators | `Separator 2` / `--separator-2` | `#000000 20%` | `#FFFFFF 16%` | 较深色二级描边 |
+| Separators | `Opaque Separator` / `--separator-opaque` | `#EAEAEA` | `#222226` | 多条线重叠时使用 |
 
-| Token | Light | Dark | 用途 |
-|------|------|------|------|
-| `Title` / `--title` | `#141414` | `rgba(255,255,255,0.94)` | 一级标题、对话流文本 |
-| `Paragraph` / `--paragraph` | `rgba(20,20,20,0.8)` | `rgba(255,255,255,0.8)` | 段落、二级标题、icon |
-| `Description` / `--description` | `rgba(20,20,20,0.6)` | `rgba(255,255,255,0.6)` | 描述、未选中字色 |
-| `Description Lighter` / `--description-lighter` | `rgba(20,20,20,0.4)` | `rgba(255,255,255,0.4)` | 更弱描述 |
-| `Placeholder` / `--placeholder` | `rgba(20,20,20,0.16)` | `rgba(255,255,255,0.16)` | 输入栏、loading 占位文字 |
-| `Disabled` / `--disabled` | `rgba(20,20,20,0.09)` | `rgba(255,255,255,0.09)` | 禁用色 |
-| `Link` / `--link` | `#0D4087` | `#93BFF1` | 文字链 |
+### Brand and semantic colors
 
-Always Mode 文本使用 `--light-title` / `--light-paragraph` / `--light-description`；反色场景使用 `--dark-title` / `--dark-paragraph` / `--dark-description`。
+| Type | Token / CSS variable | Light | Dark | 用途 |
+|------|------|------|------|------|
+| XHS brand | `XHS Red` / `--xhs-red` | `#FF2442` | `#FF2E4D` | 小红书品牌强调色 |
+| XHS brand | `XHS Red Soft` / `--xhs-red-soft` | `#FFEDF0` | `#301C1F` | 小红书品牌弱强调背景 |
+| Semantic | `Warning` / `--warning` | `#FF7D03` | `#FF9E3D` | 警告填充及文字 |
+| Semantic | `Warning Soft` / `--warning-soft` | `#FFF2E6` | `#30271F` | 警告浅色填充 |
+| Semantic | `Success` / `--success` | `#02B940` | `#36E271` | 成功填充及文字 |
+| Semantic | `Success Soft` / `--success-soft` | `#EAF8EF` | `#1C2E22` | 成功浅色填充 |
+| Semantic | `Info` / `--info` | `#3D8AF5` | `#4790F5` | 信息填充及文字 |
+| Semantic | `Info Soft` / `--info-soft` | `#ECF4FE` | `#1D2633` | 信息浅色填充 |
+| Dots brand | `Dots Accent Surface` / `--dots-accent-surface` | `#56D1BF 8%` | `#56D1BF 12%` | 标签等浅品牌背景 |
+| Dots brand | `Dots Accent Text` / `--dots-accent-text` | `#56D1BF` | `#56D1BF` | 品牌文字和图标 |
+| Dots brand | `Dots Accent Fill` / `--dots-accent-fill` | `#56D1BF` | `#56D1BF` | 按钮、开关等交互底色 |
 
-### Fills
+### Always Mode
 
-| Token | Light | Dark | 用途 |
-|------|------|------|------|
-| `Fill 1` / `--fill-1` | `rgba(255,255,255,0.05)` | `rgba(50,50,50,0.05)` | loading 气泡等色 |
-| `Fill 2` / `--fill-2` | `rgba(255,255,255,0.1)` | `rgba(50,50,50,0.1)` | 富文本、分享卡悬浮容器底色 |
-| `Fill 3` / `--fill-3` | `rgba(255,255,255,0.2)` | `rgba(50,50,50,0.2)` | 填充 3 |
-| `Fill 4` / `--fill-4` | `rgba(255,255,255,0.5)` | `rgba(50,50,50,0.5)` | 填充 4 |
-| `Fill 5` / `--fill-5` | `rgba(255,255,255,0.8)` | `rgba(50,50,50,0.8)` | AI 卡片/富文本背景 |
-| `Fill A` / `--fill-a` | `#FFFFFF` | `#323232` | 输入框、模型侧气泡底色 |
-| `Fill B` / `--fill-b` | `#E6E6E6` | `#1C1C1C` | 用户侧气泡、轻提示组件底色 |
-| `Fill C` / `--fill-c` | `rgba(50,50,50,0.92)` | `rgba(68,68,68,0.8)` | 长按面板底色 |
+固定颜色包括：
 
-反色填充使用 `--inverted-fill-1` 到 `--inverted-fill-5`。
+- Dots brand：`--dots-accent-border-subtle`、`--dots-accent-border`、`--dots-accent-icon-muted`、`--dots-accent-highlight`
+- 遮罩：`--mask-bg`
+- 文本：`--light-title/paragraph/description/disabled` 与 `--dark-title/paragraph/description/disabled`
+- 填充：`--light-fill-1` 到 `--light-fill-5` 与 `--dark-fill-1` 到 `--dark-fill-5`
+- 描边：`--light-separator`、`--light-separator-2`、`--dark-separator`、`--dark-separator-2`
+- 中性色：`--always-white`、`--always-black`
 
-### Separators
+兼容旧页面的变量只在生成 CSS 中保留别名，不再用于新规范和新代码。禁止自行定义颜色；不要把 `XHS Red` 用于点点对话、系统组件或文档站。
 
-| Token | Light | Dark | 用途 |
-|------|------|------|------|
-| `Separator` / `--separator-base` | `rgba(255,255,255,0.75)` | `rgba(255,255,255,0.1)` | 用户侧气泡描边 |
-| `Separator 2` / `--separator-2` | `rgba(20,20,20,0.08)` | `rgba(255,255,255,0.08)` | 模型侧回复气泡、容器描边 |
-| `Separator 3` / `--separator-3` | `rgba(20,20,20,0.1)` | `rgba(255,255,255,0.1)` | query 气泡、输入框描边 |
-| `Separator 4` / `--separator-4` | `rgba(255,255,255,0.2)` | `rgba(50,50,50,0.2)` | 容器白色描边 |
+### 主题作用域
 
-### Primary / Community
-
-| Token | 值 | 用途 |
-|------|------|------|
-| `info` / `--info-base` | `rgba(253,240,145,0.2)` | 富文本黄色 |
-| `info 2` / `--info-2` | `rgba(175,217,241,0.2)` | 富文本蓝色 |
-| `info 3` / `--info-3` | `rgba(20,20,20,0.02)` | 富文本灰色 |
-| `info 4` / `--info-4` | `rgba(111,210,189,0.3)` | 文本选中绿色 |
-| `info 5` / `--info-5` | `#6FD2BD` | 品牌主色/CTA |
-| `info 6` / `--info-6` | `#21C3A1` | 文本选中分割栏绿色 |
-| `--primary` | `#FF2442` | 小红书社区红，仅限社区关注/发布场景 |
-
-禁止事项：不使用纯黑 `#000000` 做文字；不自行定义颜色；不把社区红用于点点对话场景。
+- 站点壳层、文档画布、浮层和工具栏使用自适应令牌，跟随当前主题。
+- iOS 手机画板和产品内页面 Demo 是明确的 Light-only 主题岛，使用浅色背景、深色文字与浅色分割线，不继承站点深色模式。
+- 品牌色块等固定色表面必须同时固定前景色。例如薄荷绿 Hero 始终使用深色文字，黑色 CTA 始终使用白色文字。
+- 正文使用 `--paragraph`；辅助说明、注释和元数据使用 `--description`。禁止在令牌之外再叠加 opacity 降低对比度。
+- 深色模式的卡片和代码块使用 `--bg-1` / `--bg-2` 建立层级；`--bg-0-lighter` 只用于最底层深色画布，不作为普通卡片背景。
 
 ---
 
@@ -116,6 +112,20 @@ Always Mode 文本使用 `--light-title` / `--light-paragraph` / `--light-descri
 
 规范文案中如果写 `PingFang SC`，实际组件预览也必须使用 `--font-component`。文档页导航、首页 Hero、说明段落可以使用展示字体，但组件容器内部不能继承展示字体。
 
+Typography 规范页使用扁平 Token 列表，不包卡片背景、外边框或圆角；各字阶直接展示在 `Bg` 页面内容区域上，仅用行间距和分隔线组织信息。
+
+### Docs 展示字阶
+
+Docs 字阶只用于文档站的信息层级，不进入组件规范和 Dots App UI。
+
+| 层级 | 字号 | 行高 | 字重 | 用途 |
+|------|------|------|------|------|
+| Docs H1 | `36px` | `1.15` | `700` | 介绍、索引、Foundation、组件、Pattern、页面详情 |
+| Docs Section H2 | `24px` | `1.25` | `600` | 页面一级章节 |
+| Docs Module Title | `17px` | `1.4` | `600` | 卡片、步骤、列表模块标题 |
+| Docs Body | `15-16px` | `1.65` | `400` | 规范正文和解释 |
+| Docs Compact | `14px` | `1.65` | `400` | 紧凑模块描述、目录辅助信息 |
+
 ### 富文本字号
 
 | Token | 字号 | 行高 | 字重 | 字距 | 用途 |
@@ -140,6 +150,39 @@ Always Mode 文本使用 `--light-title` / `--light-paragraph` / `--light-descri
 ---
 
 ## 间距
+
+Spacing 规范页只展示页面内元素通用的 10 级 `space` 封闭枚举。`phone.*`、`safe.*` 属于设备画布，尺寸和圆角不进入 Spacing 页；对话流与富文本语义间距保留在对应专项规范中。
+
+### 通用间距
+
+| Token | 值 | 用途 |
+|------|------|------|
+| `space.1` / `--space-1` | `4px` | 微调 |
+| `space.2` / `--space-2` | `8px` | 紧凑间距 |
+| `space.3` / `--space-3` | `12px` | 小元素内边距 |
+| `space.4` / `--space-4` | `16px` | 常规间距 |
+| `space.5` / `--space-5` | `20px` | 关联区块间距 |
+| `space.6` / `--space-6` | `24px` | 常规页面内边距 |
+| `space.7` / `--space-7` | `32px` | 模块间距 |
+| `space.8` / `--space-8` | `40px` | 大区块间距 |
+| `space.9` / `--space-9` | `48px` | 区域留白 |
+| `space.10` / `--space-10` | `64px` | 大段留白 |
+
+### Docs 布局节奏
+
+| 场景 | 值 | 用途 |
+|------|------|------|
+| 桌面内容区左右留白 | `64px` | Docs 主内容与视口边界 |
+| 移动端内容区左右留白 | `24px` | 窄屏 Docs 主内容 |
+| 正文阅读列最大宽度 | `760px` | 标题说明、规范正文 |
+| 桌面页头顶部内边距 | `32px` | 与介绍页 Hero 起始位置对齐 |
+| 标题到副标题 | `12px` | 同一标题模块内部 |
+| 副标题到首个内容 | `32px` | 标题模块与内容 |
+| 普通章节间距 | `64px` | 相邻章节 |
+| 强分段章节间距 | `80px` | 信息结构发生明显切换 |
+| 分组表面内边距 | `32px` | 流程、步骤、成组入口 |
+
+这些值描述文档站布局，不新增可供 App 组件调用的通用 spacing token。实现时优先映射到现有 `--space-*`，不得反向污染组件间距规范。
 
 ### 富文本模块
 
@@ -171,6 +214,8 @@ Always Mode 文本使用 `--light-title` / `--light-paragraph` / `--light-descri
 
 ## 圆角
 
+Radius 规范页直接在 `Bg` 页面内容区域展示形状样例，不包外层卡片背景、边框或圆角。
+
 | Token | 值 | 用途 |
 |------|------|------|
 | `radius.bubble` / `--radius-bubble` | `22px` | 气泡 |
@@ -180,6 +225,7 @@ Always Mode 文本使用 `--light-title` / `--light-paragraph` / `--light-descri
 | `radius.input` / `--radius-input` | `16px` | 输入框 |
 | `radius.option` / `--radius-option` | `12px` | 选项标签 |
 | `radius.cta` / `--radius-cta` | `24px` | CTA 按钮 |
+| `radius.workflow-card` / `--radius-workflow-card` | `24px` | 文档站卡片与工作流组合卡片 |
 | `radius.input-container` | `28px 28px 0 0` | 输入栏容器 |
 | `radius.sheet` | `20px 20px 0 0` | 底部弹窗 |
 | `radius.community-card` | `8px` | 社区笔记卡片 |
@@ -188,6 +234,10 @@ Always Mode 文本使用 `--light-title` / `--light-paragraph` / `--light-descri
 ---
 
 ## 动效
+
+Motion 规范页直接在 `Bg` 页面内容区域展示，不包外层卡片。Duration 使用大位移轨道感知速度，Curve 同时播放 Linear 基准与 Token 曲线，Press 使用真实按钮尺寸展示缩放和透明度反馈。
+
+交互展示参考 [Motion](https://github.com/motiondivision/motion) 的大位移 / spring 示例与 [bezier-easing](https://github.com/gre/bezier-easing) 的曲线对比思路；两者均为 MIT License。本项目使用原生 CSS Animation 实现，不新增运行时依赖。
 
 | Token | 值 | 用途 |
 |------|------|------|

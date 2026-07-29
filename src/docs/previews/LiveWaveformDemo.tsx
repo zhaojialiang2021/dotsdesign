@@ -71,7 +71,9 @@ export function LiveWaveformDemo() {
 
   return (
     <DemoFrame
-      caption="LiveWaveform · Dots spec"
+      caption="LiveWaveform"
+      title="声音与处理状态"
+      description="用真实麦克风或示例数据检查监听、处理、密度与颜色语义，波形舞台保留更大的观察宽度。"
       code={code}
       stage={
         <div className="dots-waveform-spec">

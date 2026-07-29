@@ -119,12 +119,12 @@
     }
   ],
   "tokens": {
-    "tone.brand.active": "brand-blue",
-    "tone.brand.processing": "info-6",
+    "tone.brand.active": "dots-accent-fill",
+    "tone.brand.processing": "dots-accent-text",
     "tone.brand.idle": "separator-2",
     "tone.ink.active": "title",
-    "tone.inverse.active": "bg-light",
-    "surface.bg": "fill-a",
+    "tone.inverse.active": "always-white",
+    "surface.bg": "bg-base",
     "surface.border": "separator-2",
     "surface.radius": "radius-inner-card",
     "size.compact.height": "64px",

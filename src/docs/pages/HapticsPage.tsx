@@ -61,52 +61,34 @@ export function HapticsPage() {
 
       <section className="docs-section-block">
         <h2 className="docs-section-block__heading">意图分级</h2>
-        <div className="docs-card">
-          {/* token-lint-disable-line grid 最小列宽是几何尺寸 */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 'var(--space-4)' }}>
-            {haptics.map((h) => (
-              <div
-                key={h.intent}
-                onClick={() => play(h.pattern)}
-                style={{
-                  background: 'var(--bg-1)',
-                  borderRadius: 'var(--radius-large)',
-                  padding: 'var(--space-4)',
-                  cursor: 'pointer',
-                  border: '0.5px solid var(--line-non-opaque)',
-                  transition: 'transform var(--duration-fast) var(--curve-default)',
-                }}
-                onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.98)')}
-                onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-                onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', marginBottom: 'var(--space-2)' }}>
-                  <span
-                    style={{
-                      width: 10,
-                      height: 10,
-                      borderRadius: '50%',
-                      background: intentColor[h.intent],
-                    }}
-                  />
-                  <strong className="docs-text--body-primary">{h.intent}</strong>
-                </div>
-                <div
-                  className="docs-text--subhead docs-text--secondary"
-                  style={{ marginBottom: 'var(--space-2)' }}
-                >
-                  {h.desc}
-                </div>
-                <div className="docs-text--caption-1 docs-text--tertiary">{h.scenarios}</div>
+        {/* token-lint-disable-line grid 最小列宽是几何尺寸 */}
+        <div className="docs-haptics-grid">
+          {haptics.map((h) => (
+            <div
+              className="docs-haptic-item"
+              key={h.intent}
+              onClick={() => play(h.pattern)}
+              onMouseDown={(e) => (e.currentTarget.style.transform = 'scale(0.98)')}
+              onMouseUp={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
+            >
+              <div className="docs-haptic-item__title">
+                <span
+                  className="docs-haptic-item__dot"
+                  style={{ background: intentColor[h.intent] }}
+                />
+                <strong>{h.intent}</strong>
               </div>
-            ))}
-          </div>
+              <div className="docs-haptic-item__desc">{h.desc}</div>
+              <div className="docs-haptic-item__scenarios">{h.scenarios}</div>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="docs-section-block">
         <h2 className="docs-section-block__heading">组件触觉映射</h2>
-        <div className="docs-card">
+        <div className="docs-table-surface">
           <table className="docs-table">
             <thead>
               <tr>

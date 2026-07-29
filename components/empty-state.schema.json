@@ -60,13 +60,13 @@
   "tokens": {
     "container.padding": "space-7",
     "title.font": "headline-h3",
-    "title.color": "label-primary",
+    "title.color": "title",
     "description.font": "body-secondary",
-    "description.color": "label-secondary",
+    "description.color": "description",
     "title.gap": "space-3",
     "description.gap": "space-2",
     "action.gap": "space-5",
-    "icon.color": "label-tertiary",
+    "icon.color": "placeholder",
     "icon.size.icon": "64px",
     "icon.size.spot": "120px",
     "icon.size.scene": "200px"

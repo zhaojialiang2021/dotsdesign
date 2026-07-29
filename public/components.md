@@ -6,7 +6,7 @@
 
 **Category**: action
 
-触发即时任务的动作单元。Dots Button 继承 ReDs 的六档尺寸、宽度和场景规则，主色映射为 info 5，图底场景使用 ghost。
+触发即时任务的动作单元。Dots Button 继承 ReDs 的六档尺寸、宽度和场景规则，主色映射为 Dots Accent Fill，图底场景使用 ghost。
 
 ### Harness
 - **Semantic**: 用于触发即时任务的动作单元，负责表达当前界面的行动优先级。
@@ -16,7 +16,7 @@
   - 图片或彩色背景只允许使用 filled 或 ghost。
 - **Validation**
   - 同一视图 filled 不超过 1 个。
-  - filled 背景为 info 5，文字为纯白。
+  - filled 背景为 Dots Accent Fill，文字为固定白色。
   - fullWidth 只出现在主流程、表单底部或固定操作栏。
 
 ### Props
@@ -55,7 +55,7 @@
 
 ### Don't
 - 不要在同一视图放两个 variant=filled 的按钮。
-- 不要把小红书红 --primary 用作点点主按钮。
+- 不要把小红书红 --xhs-red 用作点点主按钮。
 - 不要在图底按钮上展示 disabled 态。
 - 不要让 xLarge 或 micro 成为默认尺寸。
 - 不要在 button 内嵌 button 或链接。
@@ -85,7 +85,7 @@
 - `padding`: "compact" | "standard" | "comfortable" _(default: `"standard"`)_
   compact space-3 / standard space-4 / comfortable space-5
 - `interactive`: false | true _(default: `false`)_
-  是否可点击。true 时 hover 加 fill-quaternary 背景，cursor=pointer
+  是否可点击。true 时 hover 加 Fill 1 背景，cursor=pointer
 
 ### States
 `idle`, `hover`, `pressed`, `disabled`
@@ -227,7 +227,7 @@ AI 最容易忘记的状态。空容器不是 bug，是产品的一个 view —�
 ### Don't
 - 不要复用旧 search/password 输入框逻辑覆盖 TextField 规范。
 - 不要用 placeholder 当 label；需要 label 时在容器外单独提供。
-- 不要把 --primary 小红书红用于光标、后缀按钮或聚焦反馈。
+- 不要把 --xhs-red 小红书红用于光标、后缀按钮或聚焦反馈。
 - 不要在 focused 态改变容器尺寸，清除按钮出现不应造成布局跳动。
 - 不要把 ReDs 临时色直接提升为全局 token；需要沉淀时先补 token 文档。
 
@@ -316,7 +316,7 @@ AI 最容易忘记的状态。空容器不是 bug，是产品的一个 view —�
   - 连续消息根据 role 调整间距，换侧消息拉开距离。
 - **Validation**
   - 用户消息右对齐，Dots 消息左对齐。
-  - 用户气泡使用 Fill B，AI 文本气泡使用 Fill A，AI 卡片使用 Fill 5。
+  - 用户气泡使用 Fill 5，AI 文本气泡使用 Bg，AI 卡片使用 Fill 5。
   - 气泡尖角颜色必须与气泡背景一致。
   - 发送新消息后键盘收起，消息流滚动到最新。
 

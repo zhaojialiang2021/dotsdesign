@@ -1,673 +1,616 @@
 {
-  "$generatedAt": "2026-06-23T07:18:02.041Z",
-  "$count": 176,
+  "$generatedAt": "2026-07-29T13:06:14.875Z",
+  "$count": 171,
   "tokens": [
     {
       "name": "color.bg.0",
-      "value": "#FFFFFF",
+      "value": "#F5F5F5",
       "type": "color",
-      "description": "兼容旧 schema：BG-0，映射到 Bg 3",
+      "description": "Bg 0：最底层，卡片容器后层背景",
       "modes": {
-        "dark": "#323232"
+        "dark": "#19191E"
       }
     },
     {
       "name": "color.bg.1",
-      "value": "#F7F7F7",
+      "value": "#F5F5F5",
       "type": "color",
-      "description": "Bg 1：底部栏、导航栏背景",
+      "description": "Bg 1：基准层上模块背景",
       "modes": {
-        "dark": "#282828"
+        "dark": "#222226"
       }
     },
     {
       "name": "color.bg.2",
-      "value": "#FAFAFA",
-      "type": "color",
-      "description": "Bg 2：键盘升起低栏背景",
-      "modes": {
-        "dark": "#2D2D2D"
-      }
-    },
-    {
-      "name": "color.bg.3",
       "value": "#FFFFFF",
       "type": "color",
-      "description": "Bg 3：半屏、弹窗、弹出层背景",
+      "description": "Bg 2：弹出层等最高层背景",
       "modes": {
-        "dark": "#323232"
+        "dark": "#29292E"
       }
     },
     {
       "name": "color.bg.base",
-      "value": "#F3F3F3",
+      "value": "#FFFFFF",
       "type": "color",
-      "description": "Bg：主背景色，对话流等一级界面",
+      "description": "Bg：基准层，主背景色",
       "modes": {
-        "dark": "#242424"
+        "dark": "#29292E"
       }
     },
     {
-      "name": "color.bg.light",
-      "value": "#FFFFFF",
+      "name": "color.bg.0-lighter",
+      "value": "#FAFAFA",
       "type": "color",
-      "description": "Bg Light：纯白背景，不随主题切换",
-      "modes": null
-    },
-    {
-      "name": "color.bg.black",
-      "value": "#141414",
-      "type": "color",
-      "description": "Bg Black：纯黑背景，不随主题切换",
-      "modes": null
-    },
-    {
-      "name": "color.bg.mask-1",
-      "value": "rgba(0,0,0,0.2)",
-      "type": "color",
-      "description": "Mask Bg 1：浅遮罩",
-      "modes": null
-    },
-    {
-      "name": "color.bg.mask-2",
-      "value": "rgba(0,0,0,0.4)",
-      "type": "color",
-      "description": "Mask Bg 2：深遮罩",
-      "modes": null
+      "description": "Bg 0 Lighter：最底层浅色背景",
+      "modes": {
+        "dark": "#141418"
+      }
     },
     {
       "name": "color.title",
-      "value": "#141414",
+      "value": "rgba(0,0,0,0.8)",
       "type": "color",
-      "description": "Title：一级标题、对话流文本",
+      "description": "Title：一级标题",
       "modes": {
-        "dark": "rgba(255,255,255,0.94)"
+        "dark": "rgba(255,255,255,0.84)"
       }
     },
     {
       "name": "color.paragraph",
-      "value": "rgba(20,20,20,0.8)",
+      "value": "rgba(0,0,0,0.62)",
       "type": "color",
-      "description": "Paragraph：二级标题、段落、icon",
+      "description": "Paragraph：二级标题、段落",
       "modes": {
-        "dark": "rgba(255,255,255,0.8)"
+        "dark": "rgba(255,255,255,0.56)"
       }
     },
     {
       "name": "color.description",
-      "value": "rgba(20,20,20,0.6)",
+      "value": "rgba(0,0,0,0.45)",
       "type": "color",
-      "description": "Description：描述、未选中字色",
+      "description": "Description：描述、未选中文字",
       "modes": {
-        "dark": "rgba(255,255,255,0.6)"
-      }
-    },
-    {
-      "name": "color.description-lighter",
-      "value": "rgba(20,20,20,0.4)",
-      "type": "color",
-      "description": "Description Lighter：更弱描述",
-      "modes": {
-        "dark": "rgba(255,255,255,0.4)"
-      }
-    },
-    {
-      "name": "color.placeholder",
-      "value": "rgba(20,20,20,0.16)",
-      "type": "color",
-      "description": "Placeholder：输入栏、loading 占位文本",
-      "modes": {
-        "dark": "rgba(255,255,255,0.16)"
+        "dark": "rgba(255,255,255,0.36)"
       }
     },
     {
       "name": "color.disabled",
-      "value": "rgba(20,20,20,0.09)",
+      "value": "rgba(0,0,0,0.27)",
       "type": "color",
       "description": "Disabled：禁用色",
       "modes": {
-        "dark": "rgba(255,255,255,0.09)"
+        "dark": "rgba(255,255,255,0.21)"
+      }
+    },
+    {
+      "name": "color.placeholder",
+      "value": "rgba(0,0,0,0.27)",
+      "type": "color",
+      "description": "Placeholder：占位文本色",
+      "modes": {
+        "dark": "rgba(255,255,255,0.21)"
       }
     },
     {
       "name": "color.link",
-      "value": "#0D4087",
-      "type": "color",
-      "description": "Link：文字链",
-      "modes": {
-        "dark": "#93BFF1"
-      }
-    },
-    {
-      "name": "color.label.primary",
-      "value": "#141414",
-      "type": "color",
-      "description": "兼容旧 schema：Label-Primary，映射到 Title",
-      "modes": {
-        "dark": "rgba(255,255,255,0.94)"
-      }
-    },
-    {
-      "name": "color.label.secondary",
-      "value": "rgba(20,20,20,0.6)",
-      "type": "color",
-      "description": "兼容旧 schema：Label-Secondary，映射到 Description",
-      "modes": {
-        "dark": "rgba(255,255,255,0.6)"
-      }
-    },
-    {
-      "name": "color.label.tertiary",
-      "value": "rgba(20,20,20,0.16)",
-      "type": "color",
-      "description": "兼容旧 schema：Label-Tertiary，映射到 Placeholder",
-      "modes": {
-        "dark": "rgba(255,255,255,0.16)"
-      }
-    },
-    {
-      "name": "color.label.quaternary",
-      "value": "rgba(20,20,20,0.09)",
-      "type": "color",
-      "description": "兼容旧 schema：Label-Quaternary，映射到 Disabled",
-      "modes": {
-        "dark": "rgba(255,255,255,0.09)"
-      }
-    },
-    {
-      "name": "color.dark.title",
-      "value": "rgba(255,255,255,0.94)",
-      "type": "color",
-      "description": "Dark Title：浅色背景上的反色一级标题",
-      "modes": {
-        "dark": "#141414"
-      }
-    },
-    {
-      "name": "color.dark.paragraph",
-      "value": "rgba(255,255,255,0.8)",
-      "type": "color",
-      "description": "Dark Paragraph：浅色背景上的反色段落/icon",
-      "modes": {
-        "dark": "rgba(20,20,20,0.8)"
-      }
-    },
-    {
-      "name": "color.dark.description",
-      "value": "rgba(255,255,255,0.6)",
-      "type": "color",
-      "description": "Dark Description",
-      "modes": {
-        "dark": "rgba(20,20,20,0.6)"
-      }
-    },
-    {
-      "name": "color.dark.placeholder",
-      "value": "rgba(255,255,255,0.16)",
-      "type": "color",
-      "description": "Dark Placeholder",
-      "modes": {
-        "dark": "rgba(20,20,20,0.16)"
-      }
-    },
-    {
-      "name": "color.dark.link",
-      "value": "#93BFF1",
-      "type": "color",
-      "description": "Dark Link",
-      "modes": {
-        "dark": "#0D4087"
-      }
-    },
-    {
-      "name": "color.light.title",
-      "value": "#141414",
-      "type": "color",
-      "description": "Light Title：Always Mode 一级标题",
-      "modes": null
-    },
-    {
-      "name": "color.light.paragraph",
-      "value": "rgba(20,20,20,0.8)",
-      "type": "color",
-      "description": "Light Paragraph：Always Mode 段落/icon",
-      "modes": null
-    },
-    {
-      "name": "color.light.description",
-      "value": "rgba(20,20,20,0.6)",
-      "type": "color",
-      "description": "Light Description",
-      "modes": null
-    },
-    {
-      "name": "color.light.description-1",
-      "value": "rgba(20,20,20,0.4)",
-      "type": "color",
-      "description": "Light Description 1",
-      "modes": null
-    },
-    {
-      "name": "color.light.placeholder",
-      "value": "rgba(20,20,20,0.16)",
-      "type": "color",
-      "description": "Light Placeholder",
-      "modes": null
-    },
-    {
-      "name": "color.light.disabled",
-      "value": "rgba(20,20,20,0.09)",
-      "type": "color",
-      "description": "Light Disabled",
-      "modes": null
-    },
-    {
-      "name": "color.light.link",
       "value": "#133667",
       "type": "color",
-      "description": "Light Link",
-      "modes": null
+      "description": "Link：段落和话题链接",
+      "modes": {
+        "dark": "#C6D9EF"
+      }
+    },
+    {
+      "name": "color.link-accent",
+      "value": "#3D8AF5",
+      "type": "color",
+      "description": "Link Accent：强调链接",
+      "modes": {
+        "dark": "#C6D9EF"
+      }
     },
     {
       "name": "color.fill.1",
-      "value": "rgba(255,255,255,0.05)",
+      "value": "rgba(48,48,52,0.05)",
       "type": "color",
-      "description": "Fill 1：loading 气泡等色",
+      "description": "Fill 1：次级按钮、标签、输入框底色",
       "modes": {
-        "dark": "rgba(50,50,50,0.05)"
+        "dark": "rgba(255,255,255,0.04)"
       }
     },
     {
       "name": "color.fill.2",
-      "value": "rgba(255,255,255,0.1)",
+      "value": "rgba(48,48,52,0.1)",
       "type": "color",
-      "description": "Fill 2：富文本、分享卡悬浮容器底色",
-      "modes": {
-        "dark": "rgba(50,50,50,0.1)"
-      }
-    },
-    {
-      "name": "color.fill.3",
-      "value": "rgba(255,255,255,0.2)",
-      "type": "color",
-      "description": "Fill 3",
-      "modes": {
-        "dark": "rgba(50,50,50,0.2)"
-      }
-    },
-    {
-      "name": "color.fill.4",
-      "value": "rgba(255,255,255,0.5)",
-      "type": "color",
-      "description": "Fill 4",
-      "modes": {
-        "dark": "rgba(50,50,50,0.5)"
-      }
-    },
-    {
-      "name": "color.fill.5",
-      "value": "rgba(255,255,255,0.8)",
-      "type": "color",
-      "description": "Fill 5：AI 卡片/富文本背景",
-      "modes": {
-        "dark": "rgba(50,50,50,0.8)"
-      }
-    },
-    {
-      "name": "color.fill.a",
-      "value": "#FFFFFF",
-      "type": "color",
-      "description": "Fill A：输入框、模型侧气泡底色",
-      "modes": {
-        "dark": "#323232"
-      }
-    },
-    {
-      "name": "color.fill.b",
-      "value": "#E6E6E6",
-      "type": "color",
-      "description": "Fill B：用户侧气泡/轻提示底色",
-      "modes": {
-        "dark": "#1C1C1C"
-      }
-    },
-    {
-      "name": "color.fill.c",
-      "value": "rgba(50,50,50,0.92)",
-      "type": "color",
-      "description": "Fill C：长按面板底色",
-      "modes": {
-        "dark": "rgba(68,68,68,0.8)"
-      }
-    },
-    {
-      "name": "color.fill.primary",
-      "value": "rgba(50,50,50,0.2)",
-      "type": "color",
-      "description": "兼容旧 schema：Fill-Primary，映射到 Inverted Fill 3",
-      "modes": {
-        "dark": "rgba(255,255,255,0.2)"
-      }
-    },
-    {
-      "name": "color.fill.secondary",
-      "value": "rgba(50,50,50,0.1)",
-      "type": "color",
-      "description": "兼容旧 schema：Fill-Secondary，映射到 Inverted Fill 2",
-      "modes": {
-        "dark": "rgba(255,255,255,0.1)"
-      }
-    },
-    {
-      "name": "color.fill.tertiary",
-      "value": "rgba(50,50,50,0.05)",
-      "type": "color",
-      "description": "兼容旧 schema：Fill-Tertiary，映射到 Inverted Fill 1",
-      "modes": {
-        "dark": "rgba(255,255,255,0.05)"
-      }
-    },
-    {
-      "name": "color.fill.quaternary",
-      "value": "rgba(20,20,20,0.02)",
-      "type": "color",
-      "description": "兼容旧 schema：Fill-Quaternary，映射到 info 3",
-      "modes": {
-        "dark": "rgba(91,88,88,0.26)"
-      }
-    },
-    {
-      "name": "color.inverted-fill.1",
-      "value": "rgba(50,50,50,0.05)",
-      "type": "color",
-      "description": "Inverted Fill 1",
-      "modes": {
-        "dark": "rgba(255,255,255,0.05)"
-      }
-    },
-    {
-      "name": "color.inverted-fill.2",
-      "value": "rgba(50,50,50,0.1)",
-      "type": "color",
-      "description": "Inverted Fill 2",
-      "modes": {
-        "dark": "rgba(255,255,255,0.1)"
-      }
-    },
-    {
-      "name": "color.inverted-fill.3",
-      "value": "rgba(50,50,50,0.2)",
-      "type": "color",
-      "description": "Inverted Fill 3",
-      "modes": {
-        "dark": "rgba(255,255,255,0.2)"
-      }
-    },
-    {
-      "name": "color.inverted-fill.4",
-      "value": "rgba(50,50,50,0.5)",
-      "type": "color",
-      "description": "Inverted Fill 4",
-      "modes": {
-        "dark": "rgba(255,255,255,0.5)"
-      }
-    },
-    {
-      "name": "color.inverted-fill.5",
-      "value": "rgba(50,50,50,0.8)",
-      "type": "color",
-      "description": "Inverted Fill 5",
-      "modes": {
-        "dark": "rgba(255,255,255,0.8)"
-      }
-    },
-    {
-      "name": "color.separator.2",
-      "value": "rgba(20,20,20,0.08)",
-      "type": "color",
-      "description": "Separator 2：模型侧气泡、容器描边",
+      "description": "Fill 2：操作组件按下色",
       "modes": {
         "dark": "rgba(255,255,255,0.08)"
       }
     },
     {
-      "name": "color.separator.3",
-      "value": "rgba(20,20,20,0.1)",
+      "name": "color.fill.3",
+      "value": "rgba(48,48,52,0.2)",
       "type": "color",
-      "description": "Separator 3：query 气泡描边",
+      "description": "Fill 3：弱标签色",
       "modes": {
-        "dark": "rgba(255,255,255,0.1)"
+        "dark": "rgba(255,255,255,0.125)"
       }
     },
     {
-      "name": "color.separator.4",
-      "value": "rgba(255,255,255,0.2)",
+      "name": "color.fill.4",
+      "value": "rgba(48,48,52,0.5)",
       "type": "color",
-      "description": "Separator 4：容器白色描边",
+      "description": "Fill 4：标签色",
       "modes": {
-        "dark": "rgba(50,50,50,0.2)"
+        "dark": "rgba(255,255,255,0.32)"
+      }
+    },
+    {
+      "name": "color.fill.5",
+      "value": "rgba(48,48,52,0.99)",
+      "type": "color",
+      "description": "Fill 5：强标签、气泡、轻提示底色",
+      "modes": {
+        "dark": "rgba(255,255,255,0.99)"
+      }
+    },
+    {
+      "name": "color.inverted-fill.1",
+      "value": "rgba(255,255,255,0.04)",
+      "type": "color",
+      "description": "Inverted Fill 1：反色次级按钮、标签、输入框底色",
+      "modes": {
+        "dark": "rgba(48,48,52,0.05)"
+      }
+    },
+    {
+      "name": "color.inverted-fill.2",
+      "value": "rgba(255,255,255,0.08)",
+      "type": "color",
+      "description": "Inverted Fill 2：反色操作组件按下色",
+      "modes": {
+        "dark": "rgba(48,48,52,0.1)"
+      }
+    },
+    {
+      "name": "color.inverted-fill.3",
+      "value": "rgba(255,255,255,0.125)",
+      "type": "color",
+      "description": "Inverted Fill 3：反色弱标签色",
+      "modes": {
+        "dark": "rgba(48,48,52,0.2)"
+      }
+    },
+    {
+      "name": "color.inverted-fill.4",
+      "value": "rgba(255,255,255,0.32)",
+      "type": "color",
+      "description": "Inverted Fill 4：反色标签色",
+      "modes": {
+        "dark": "rgba(48,48,52,0.5)"
+      }
+    },
+    {
+      "name": "color.inverted-fill.5",
+      "value": "rgba(255,255,255,0.99)",
+      "type": "color",
+      "description": "Inverted Fill 5：反色强标签、气泡、轻提示底色",
+      "modes": {
+        "dark": "rgba(48,48,52,0.99)"
+      }
+    },
+    {
+      "name": "color.separator.2",
+      "value": "rgba(0,0,0,0.2)",
+      "type": "color",
+      "description": "Separator 2：较深色二级描边",
+      "modes": {
+        "dark": "rgba(255,255,255,0.16)"
       }
     },
     {
       "name": "color.separator.base",
-      "value": "rgba(255,255,255,0.75)",
+      "value": "rgba(0,0,0,0.08)",
       "type": "color",
-      "description": "Separator：用户侧气泡描边",
+      "description": "Separator：分割线、描边",
       "modes": {
-        "dark": "rgba(255,255,255,0.1)"
+        "dark": "rgba(255,255,255,0.12)"
       }
     },
     {
-      "name": "color.separator.light-1",
-      "value": "rgba(255,255,255,0.08)",
+      "name": "color.separator.opaque",
+      "value": "#EAEAEA",
       "type": "color",
-      "description": "Light Separator 1",
+      "description": "Opaque Separator：多条线重叠时使用",
+      "modes": {
+        "dark": "#222226"
+      }
+    },
+    {
+      "name": "color.xhs.red",
+      "value": "#FF2442",
+      "type": "color",
+      "description": "XHS Red：小红书品牌强调色",
+      "modes": {
+        "dark": "#FF2E4D"
+      }
+    },
+    {
+      "name": "color.xhs.red-soft",
+      "value": "#FFEDF0",
+      "type": "color",
+      "description": "XHS Red Soft：小红书品牌弱强调背景",
+      "modes": {
+        "dark": "#301C1F"
+      }
+    },
+    {
+      "name": "color.warning",
+      "value": "#FF7D03",
+      "type": "color",
+      "description": "Warning：警告填充及浅色填充上的文字",
+      "modes": {
+        "dark": "#FF9E3D"
+      }
+    },
+    {
+      "name": "color.warning-soft",
+      "value": "#FFF2E6",
+      "type": "color",
+      "description": "Warning Soft：警告浅色填充",
+      "modes": {
+        "dark": "#30271F"
+      }
+    },
+    {
+      "name": "color.success",
+      "value": "#02B940",
+      "type": "color",
+      "description": "Success：成功填充及浅色填充上的文字",
+      "modes": {
+        "dark": "#36E271"
+      }
+    },
+    {
+      "name": "color.success-soft",
+      "value": "#EAF8EF",
+      "type": "color",
+      "description": "Success Soft：成功浅色填充",
+      "modes": {
+        "dark": "#1C2E22"
+      }
+    },
+    {
+      "name": "color.info",
+      "value": "#3D8AF5",
+      "type": "color",
+      "description": "Info：信息填充及浅色填充上的文字",
+      "modes": {
+        "dark": "#4790F5"
+      }
+    },
+    {
+      "name": "color.info-soft",
+      "value": "#ECF4FE",
+      "type": "color",
+      "description": "Info Soft：信息浅色填充",
+      "modes": {
+        "dark": "#1D2633"
+      }
+    },
+    {
+      "name": "color.neutral.white",
+      "value": "#FFFFFF",
+      "type": "color",
+      "description": "White：主题自适应白色",
+      "modes": {
+        "dark": "#000000"
+      }
+    },
+    {
+      "name": "color.neutral.black",
+      "value": "#000000",
+      "type": "color",
+      "description": "Black：主题自适应黑色",
+      "modes": {
+        "dark": "#FFFFFF"
+      }
+    },
+    {
+      "name": "color.dots-accent.surface",
+      "value": "rgba(86,209,191,0.08)",
+      "type": "color",
+      "description": "Dots Accent Surface：标签等浅品牌背景",
+      "modes": {
+        "dark": "rgba(86,209,191,0.12)"
+      }
+    },
+    {
+      "name": "color.dots-accent.text",
+      "value": "#56D1BF",
+      "type": "color",
+      "description": "Dots Accent Text：品牌文字和图标",
       "modes": null
     },
     {
-      "name": "color.separator.light-2",
-      "value": "rgba(255,255,255,0.2)",
+      "name": "color.dots-accent.fill",
+      "value": "#56D1BF",
+      "type": "color",
+      "description": "Dots Accent Fill：按钮、开关等交互底色",
+      "modes": null
+    },
+    {
+      "name": "color.dots-accent.border-subtle",
+      "value": "rgba(86,209,191,0.1)",
+      "type": "color",
+      "description": "Dots Accent Border Subtle：标签低强调描边",
+      "modes": null
+    },
+    {
+      "name": "color.dots-accent.border",
+      "value": "rgba(86,209,191,0.4)",
+      "type": "color",
+      "description": "Dots Accent Border：按钮中强调描边",
+      "modes": null
+    },
+    {
+      "name": "color.dots-accent.icon-muted",
+      "value": "rgba(52,179,157,0.4)",
+      "type": "color",
+      "description": "Dots Accent Icon Muted：弱化辅助图标",
+      "modes": null
+    },
+    {
+      "name": "color.dots-accent.highlight",
+      "value": "rgba(86,209,191,0.12)",
+      "type": "color",
+      "description": "Dots Accent Highlight：高亮答案底色",
+      "modes": null
+    },
+    {
+      "name": "color.mask-bg",
+      "value": "rgba(0,0,0,0.4)",
+      "type": "color",
+      "description": "Mask Bg：Always Mode 遮罩背景",
+      "modes": null
+    },
+    {
+      "name": "color.light.title",
+      "value": "rgba(255,255,255,0.84)",
+      "type": "color",
+      "description": "Light Title：亮色一级标题",
+      "modes": null
+    },
+    {
+      "name": "color.light.paragraph",
+      "value": "rgba(255,255,255,0.56)",
+      "type": "color",
+      "description": "Light Paragraph：亮色二级标题、段落",
+      "modes": null
+    },
+    {
+      "name": "color.light.description",
+      "value": "rgba(255,255,255,0.36)",
+      "type": "color",
+      "description": "Light Description：亮色描述",
+      "modes": null
+    },
+    {
+      "name": "color.light.disabled",
+      "value": "rgba(255,255,255,0.21)",
+      "type": "color",
+      "description": "Light Disabled：亮色禁用",
+      "modes": null
+    },
+    {
+      "name": "color.light.fill-1",
+      "value": "rgba(255,255,255,0.04)",
+      "type": "color",
+      "description": "Light Fill 1",
+      "modes": null
+    },
+    {
+      "name": "color.light.fill-2",
+      "value": "rgba(255,255,255,0.08)",
+      "type": "color",
+      "description": "Light Fill 2",
+      "modes": null
+    },
+    {
+      "name": "color.light.fill-3",
+      "value": "rgba(255,255,255,0.125)",
+      "type": "color",
+      "description": "Light Fill 3",
+      "modes": null
+    },
+    {
+      "name": "color.light.fill-4",
+      "value": "rgba(255,255,255,0.32)",
+      "type": "color",
+      "description": "Light Fill 4",
+      "modes": null
+    },
+    {
+      "name": "color.light.fill-5",
+      "value": "rgba(255,255,255,0.99)",
+      "type": "color",
+      "description": "Light Fill 5",
+      "modes": null
+    },
+    {
+      "name": "color.light.separator",
+      "value": "rgba(255,255,255,0.07)",
+      "type": "color",
+      "description": "Light Separator",
+      "modes": null
+    },
+    {
+      "name": "color.light.separator-2",
+      "value": "rgba(255,255,255,0.16)",
       "type": "color",
       "description": "Light Separator 2",
       "modes": null
     },
     {
-      "name": "color.separator.light-3",
-      "value": "rgba(255,255,255,0.75)",
+      "name": "color.dark.title",
+      "value": "rgba(0,0,0,0.8)",
       "type": "color",
-      "description": "Light Separator 3",
+      "description": "Dark Title：暗色一级标题",
       "modes": null
     },
     {
-      "name": "color.separator.light-4",
-      "value": "rgba(20,20,20,0.08)",
+      "name": "color.dark.paragraph",
+      "value": "rgba(0,0,0,0.62)",
       "type": "color",
-      "description": "Light Separator 4",
+      "description": "Dark Paragraph：暗色二级标题、段落",
       "modes": null
     },
     {
-      "name": "color.separator.light-5",
-      "value": "rgba(50,50,50,0.2)",
+      "name": "color.dark.description",
+      "value": "rgba(0,0,0,0.45)",
       "type": "color",
-      "description": "Light Separator 5",
+      "description": "Dark Description：暗色描述",
       "modes": null
     },
     {
-      "name": "color.line.opaque",
-      "value": "rgba(20,20,20,0.1)",
+      "name": "color.dark.disabled",
+      "value": "rgba(0,0,0,0.27)",
       "type": "color",
-      "description": "兼容旧 schema：Line-Opaque，映射到 Separator 3",
-      "modes": {
-        "dark": "rgba(255,255,255,0.1)"
-      }
-    },
-    {
-      "name": "color.line.non-opaque",
-      "value": "rgba(20,20,20,0.08)",
-      "type": "color",
-      "description": "兼容旧 schema：Line-NonOpaque，映射到 Separator 2",
-      "modes": {
-        "dark": "rgba(255,255,255,0.08)"
-      }
-    },
-    {
-      "name": "color.info.2",
-      "value": "rgba(175,217,241,0.2)",
-      "type": "color",
-      "description": "info 2：富文本蓝色",
-      "modes": {
-        "dark": "rgba(71,94,106,0.2)"
-      }
-    },
-    {
-      "name": "color.info.3",
-      "value": "rgba(20,20,20,0.02)",
-      "type": "color",
-      "description": "info 3：富文本灰色",
-      "modes": {
-        "dark": "rgba(91,88,88,0.26)"
-      }
-    },
-    {
-      "name": "color.info.4",
-      "value": "rgba(111,210,189,0.3)",
-      "type": "color",
-      "description": "info 4：文本选中绿色",
+      "description": "Dark Disabled：暗色禁用",
       "modes": null
     },
     {
-      "name": "color.info.5",
-      "value": "#6FD2BD",
+      "name": "color.dark.fill-1",
+      "value": "rgba(48,48,52,0.05)",
       "type": "color",
-      "description": "info 5：品牌主色/纯绿色",
+      "description": "Dark Fill 1",
       "modes": null
     },
     {
-      "name": "color.info.6",
-      "value": "#21C3A1",
+      "name": "color.dark.fill-2",
+      "value": "rgba(48,48,52,0.1)",
       "type": "color",
-      "description": "info 6：文本选中分割栏绿色",
+      "description": "Dark Fill 2",
       "modes": null
     },
     {
-      "name": "color.info.base",
-      "value": "rgba(253,240,145,0.2)",
+      "name": "color.dark.fill-3",
+      "value": "rgba(48,48,52,0.2)",
       "type": "color",
-      "description": "info：富文本黄色",
-      "modes": {
-        "dark": "rgba(108,104,69,0.2)"
-      }
-    },
-    {
-      "name": "color.primary",
-      "value": "#FF2442",
-      "type": "color",
-      "description": "小红书社区红，仅用于社区关注/发布场景",
+      "description": "Dark Fill 3",
       "modes": null
     },
     {
-      "name": "color.brand.blue",
-      "value": "#6FD2BD",
+      "name": "color.dark.fill-4",
+      "value": "rgba(48,48,52,0.5)",
       "type": "color",
-      "description": "兼容旧 schema：Brand-Blue，映射到 info 5",
+      "description": "Dark Fill 4",
       "modes": null
     },
     {
-      "name": "color.brand.blue-light",
-      "value": "rgba(111,210,189,0.3)",
+      "name": "color.dark.fill-5",
+      "value": "rgba(48,48,52,0.99)",
       "type": "color",
-      "description": "兼容旧 schema：Brand-Blue-Light，映射到 info 4",
+      "description": "Dark Fill 5",
       "modes": null
     },
     {
-      "name": "color.brand.blue-border",
-      "value": "#21C3A1",
+      "name": "color.dark.separator",
+      "value": "rgba(0,0,0,0.08)",
       "type": "color",
-      "description": "兼容旧 schema：Brand-Blue-Border，映射到 info 6",
+      "description": "Dark Separator",
       "modes": null
     },
     {
-      "name": "color.brand.blue-text",
-      "value": "#21C3A1",
+      "name": "color.dark.separator-2",
+      "value": "rgba(0,0,0,0.2)",
       "type": "color",
-      "description": "兼容旧 schema：Brand-Blue-Text，映射到 info 6",
+      "description": "Dark Separator 2",
       "modes": null
     },
     {
-      "name": "color.backdrop",
-      "value": "rgba(0,0,0,0.4)",
+      "name": "color.always.white",
+      "value": "#FFFFFF",
       "type": "color",
-      "description": "兼容旧 schema：弹层遮罩，映射到 Mask Bg 2",
+      "description": "White：Always Mode 白色",
       "modes": null
     },
     {
-      "name": "color.accent.yellow",
+      "name": "color.always.black",
+      "value": "#000000",
+      "type": "color",
+      "description": "Black：Always Mode 黑色",
+      "modes": null
+    },
+    {
+      "name": "color.legacy.accent-yellow",
       "value": "#FFCC00",
       "type": "color",
-      "description": "兼容：待办标签",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.accent.green",
+      "name": "color.legacy.accent-green",
       "value": "#34C759",
       "type": "color",
-      "description": "兼容：日记标签",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.accent.pink",
+      "name": "color.legacy.accent-pink",
       "value": "#FF6482",
       "type": "color",
-      "description": "兼容：持续月录标签",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.accent.brown",
+      "name": "color.legacy.accent-brown",
       "value": "#916964",
       "type": "color",
-      "description": "兼容：文件标签",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.accent.event-blue",
+      "name": "color.legacy.accent-event-blue",
       "value": "#5B9BDB",
       "type": "color",
-      "description": "兼容：事件追踪标签",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.deco.teal",
+      "name": "color.legacy.deco-teal",
       "value": "#81D5CA",
       "type": "color",
-      "description": "兼容：Live 图功能图标背景",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.deco.sky",
+      "name": "color.legacy.deco-sky",
       "value": "#84B1EB",
       "type": "color",
-      "description": "兼容：Web 端 / 时间碎片图标背景",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.deco.lavender",
+      "name": "color.legacy.deco-lavender",
       "value": "#9F8CCF",
       "type": "color",
-      "description": "兼容：AI 溯源图标背景",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.deco.sage",
+      "name": "color.legacy.deco-sage",
       "value": "#A0C484",
       "type": "color",
-      "description": "兼容：频道数量图标背景",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
-      "name": "color.deco.rose",
+      "name": "color.legacy.deco-rose",
       "value": "#AA7D78",
       "type": "color",
-      "description": "兼容：音视频解析图标背景",
+      "description": "兼容旧页面，不属于现行颜色规范",
       "modes": null
     },
     {
@@ -686,9 +629,9 @@
     },
     {
       "name": "phone.radius",
-      "value": "54px",
+      "value": "80px",
       "type": "dimension",
-      "description": "模拟真机外壳圆角",
+      "description": "模拟真机外壳超级圆角",
       "modes": null
     },
     {

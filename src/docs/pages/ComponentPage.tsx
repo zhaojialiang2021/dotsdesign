@@ -1,3 +1,4 @@
+import { useId, type ReactNode } from 'react'
 import type { ComponentSlug } from '../manifest'
 import { components } from '../manifest'
 import { renderMarkdown, getFrontmatter } from '../markdown'
@@ -12,17 +13,16 @@ import { InputPreview } from '../previews/InputPreview'
 import { DividerPreview } from '../previews/DividerPreview'
 import { ToastPreview } from '../previews/ToastPreview'
 import { MessageBubblePreview } from '../previews/MessageBubblePreview'
-// 5 个深度组件 live demo —— Day 4 逐个实现
+// 深度组件 live demo —— Day 4 逐个实现
 import { ButtonDemo } from '../previews/ButtonDemo'
 import { InputDemo } from '../previews/InputDemo'
-import { CardDemo } from '../previews/CardDemo'
 import { SheetDemo } from '../previews/SheetDemo'
 import { EmptyStateDemo } from '../previews/EmptyStateDemo'
 import { LiveWaveformDemo } from '../previews/LiveWaveformDemo'
+import { ProcessIndicatorDemo } from '../previews/ProcessIndicatorDemo'
 // Anatomy SVG 图解 —— Day 10
 import { ButtonAnatomy } from '../previews/anatomy/ButtonAnatomy'
 import { InputAnatomy } from '../previews/anatomy/InputAnatomy'
-import { CardAnatomy } from '../previews/anatomy/CardAnatomy'
 import { SheetAnatomy } from '../previews/anatomy/SheetAnatomy'
 import { EmptyStateAnatomy } from '../previews/anatomy/EmptyStateAnatomy'
 
@@ -48,17 +48,16 @@ const shallowPreviewMap: Partial<Record<ComponentSlug, () => React.ReactNode>> =
 const deepDemoMap: Partial<Record<ComponentSlug, React.ComponentType>> = {
   button: ButtonDemo,
   input: InputDemo,
-  card: CardDemo,
   sheet: SheetDemo,
   'empty-state': EmptyStateDemo,
   'message-bubble': MessageBubblePreview,
+  'process-indicator': ProcessIndicatorDemo,
   'live-waveform': LiveWaveformDemo,
 }
 
 const anatomyMap: Partial<Record<ComponentSlug, React.ComponentType>> = {
   button: ButtonAnatomy,
   input: InputAnatomy,
-  card: CardAnatomy,
   sheet: SheetAnatomy,
   'empty-state': EmptyStateAnatomy,
 }
@@ -102,11 +101,44 @@ export function ComponentPage({ slug }: { slug: string }) {
       </section>
       <section className="docs-section-block">
         <h2 className="docs-section-block__heading">规格文档</h2>
-        <div className="docs-card">
+        <div className="docs-flat-doc">
           {src ? renderMarkdown(src) : <p className="docs-hint">未找到规格文档。</p>}
         </div>
       </section>
     </>
+  )
+}
+
+function SectionHeading({
+  children,
+  tooltip,
+}: {
+  children: ReactNode
+  tooltip?: string
+}) {
+  const tooltipId = useId()
+
+  return (
+    <h2 className="docs-section-block__heading">
+      {tooltip ? (
+        <span
+          aria-describedby={tooltipId}
+          className="docs-section-heading__trigger"
+          tabIndex={0}
+        >
+          {children}
+          <span
+            className="docs-section-heading__tooltip"
+            id={tooltipId}
+            role="tooltip"
+          >
+            {tooltip}
+          </span>
+        </span>
+      ) : (
+        children
+      )}
+    </h2>
   )
 }
 
@@ -137,16 +169,6 @@ function DeepComponentPage({
     )
   }
 
-  const sections: Array<[string, string]> = [
-    ['harness', t('component.harness')],
-    ['live-demo', t('component.live-demo')],
-    ['props', t('component.props')],
-    ['states', t('component.states')],
-    ['anatomy', t('component.anatomy')],
-    ['constraints', t('component.constraints')],
-    ['do-dont', t('component.do-dont')],
-  ]
-
   return (
     <>
       <DocsPageHeader
@@ -167,28 +189,13 @@ function DeepComponentPage({
         }
       />
 
-      {/* 段落锚点：让用户直接跳到 Props / States / Anatomy 等 */}
-      <nav className="docs-component-anchors" aria-label="page sections">
-        {sections.map(([id, label]) => (
-          <a
-            key={id}
-            href={`#${id}`}
-            onClick={(e) => {
-              e.preventDefault()
-              document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            }}
-          >
-            {label}
-          </a>
-        ))}
-      </nav>
-
       {schema.harness && (
         <section className="docs-section-block" id="harness">
-          <h2 className="docs-section-block__heading">{t('component.harness')}</h2>
-          <p className="docs-section-block__subheading">{t('component.harness.lead')}</p>
+          <SectionHeading tooltip={t('component.harness.lead')}>
+            {t('component.harness')}
+          </SectionHeading>
           <div className="docs-harness-grid">
-            <div className="docs-harness-card docs-harness-card--wide">
+            <div className="docs-harness-card">
               <div className="docs-harness-card__label">Semantic</div>
               <p>{schema.harness.semantic}</p>
             </div>
@@ -213,8 +220,9 @@ function DeepComponentPage({
       )}
 
       <section className="docs-section-block" id="live-demo">
-        <h2 className="docs-section-block__heading">{t('component.live-demo')}</h2>
-        <p className="docs-section-block__subheading">{t('component.live-demo.lead')}</p>
+        <SectionHeading tooltip={t('component.live-demo.lead')}>
+          {t('component.live-demo')}
+        </SectionHeading>
         {Demo ? (
           <Demo />
         ) : (
@@ -225,9 +233,10 @@ function DeepComponentPage({
       </section>
 
       <section className="docs-section-block" id="props">
-        <h2 className="docs-section-block__heading">{t('component.props')}</h2>
-        <p className="docs-section-block__subheading">{t('component.props.lead')}</p>
-        <div className="docs-card" style={{ padding: 0 }}>
+        <SectionHeading tooltip={t('component.props.lead')}>
+          {t('component.props')}
+        </SectionHeading>
+        <div className="docs-table-surface">
           <table className="docs-table">
             <thead>
               <tr>
@@ -262,8 +271,9 @@ function DeepComponentPage({
       </section>
 
       <section className="docs-section-block" id="states">
-        <h2 className="docs-section-block__heading">{t('component.states')}</h2>
-        <p className="docs-section-block__subheading">{t('component.states.lead')}</p>
+        <SectionHeading tooltip={t('component.states.lead')}>
+          {t('component.states')}
+        </SectionHeading>
         <div className="docs-state-row">
           {schema.states.map((s) => (
             <code key={s} className="docs-state-chip">
@@ -274,14 +284,15 @@ function DeepComponentPage({
       </section>
 
       <section className="docs-section-block" id="anatomy">
-        <h2 className="docs-section-block__heading">{t('component.anatomy')}</h2>
-        <p className="docs-section-block__subheading">{t('component.anatomy.lead')}</p>
+        <SectionHeading tooltip={t('component.anatomy.lead')}>
+          {t('component.anatomy')}
+        </SectionHeading>
         {Anatomy && (
-          <div className="docs-card" style={{ marginBottom: 'var(--space-4)' }}>
+          <div className="docs-group-surface docs-group-surface--anatomy">
             <Anatomy />
           </div>
         )}
-        <div className="docs-card">
+        <div className="docs-table-surface">
           <table className="docs-table">
             <thead>
               <tr>
@@ -311,9 +322,10 @@ function DeepComponentPage({
       </section>
 
       <section className="docs-section-block" id="constraints">
-        <h2 className="docs-section-block__heading">{t('component.constraints')}</h2>
-        <p className="docs-section-block__subheading">{t('component.constraints.lead')}</p>
-        <div className="docs-card" style={{ padding: 0 }}>
+        <SectionHeading tooltip={t('component.constraints.lead')}>
+          {t('component.constraints')}
+        </SectionHeading>
+        <div className="docs-table-surface">
           <table className="docs-table">
             <thead>
               <tr>

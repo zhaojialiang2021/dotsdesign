@@ -60,7 +60,7 @@ Dots 普通气泡左对齐，白底，文字 16px / 28px。response 卡片使用
 
 ## 状态 Icon
 
-当前最新一项播放对应 Lottie：think 使用 `cloud.json`，tool call 可用 `pen.json` 或 `glass.json`，搜索类 tool call 使用 `glass.json`。非当前行停在 JSON 第一帧。
+当前最新一项复用 [`ProcessIndicator`](../components/process-indicator.md)：think 使用 `thinking`，普通工具调用使用 `tool-call`，搜索类 tool call 使用 `search`。非当前行停在第一帧。
 
 完成态使用设计稿导出的完成对勾资源：32×32px，浅灰圆形底、弱描边圆环和弱勾线。不要用 CSS 手画大对勾替代。Lottie 到对勾的过渡时长 640-680ms，先淡出 Lottie，再淡入对勾。
 

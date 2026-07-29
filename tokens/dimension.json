@@ -3,7 +3,7 @@
   "phone": {
     "width": { "$value": "430px", "$type": "dimension", "$description": "iOS 大屏设计稿宽度" },
     "height": { "$value": "932px", "$type": "dimension", "$description": "iOS 大屏设计稿高度" },
-    "radius": { "$value": "54px", "$type": "dimension", "$description": "模拟真机外壳圆角" }
+    "radius": { "$value": "80px", "$type": "dimension", "$description": "模拟真机外壳超级圆角" }
   },
   "safe": {
     "top": { "$value": "59px", "$type": "dimension", "$description": "状态栏/安全区顶部" },

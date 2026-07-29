@@ -368,7 +368,7 @@ function SectionEndpoints({ onCopy }: { onCopy: (s: string) => void }) {
     <section className="docs-section-block">
       <h2 className="docs-section-block__heading">{t('aiw.endpoints.title')}</h2>
       <p className="docs-section-block__subheading">{t('aiw.endpoints.lead')}</p>
-      <div className="docs-card" style={{ padding: 0 }}>
+      <div className="docs-table-surface">
         <table className="docs-table">
           <thead>
             <tr>

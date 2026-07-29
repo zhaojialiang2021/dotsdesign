@@ -1,9 +1,24 @@
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from 'react'
 import { reportDemos } from '../manifest'
 import { navigate } from '../router'
 import { NotFoundPage } from './NotFoundPage'
 import { DottedDemoScreen, type DottedDemoStep, type DottedSourceImageMotionVariant, type DottedThinkingDisplayVariant, type DottedToolNoteDisplayVariant } from '../../screens/DottedDemoScreen'
 import restartIcon from '../../assets/dotted/think-response-refresh.svg'
+import demoShellMenuIcon from '../../assets/docs/demo-shell-menu.svg'
+import demoShellArrowRightIcon from '../../assets/docs/demo-shell-arrow-right.svg'
+import demoShellShareIcon from '../../assets/docs/demo-shell-share.svg'
+import demoShellCloseIcon from '../../assets/docs/demo-shell-close.svg'
+import demoShellZoomInIcon from '../../assets/docs/demo-shell-zoom-in.svg'
+import demoShellZoomOutIcon from '../../assets/docs/demo-shell-zoom-out.svg'
+import demoShellSchemeIcon from '../../assets/docs/demo-shell-scheme.svg'
+import demoShellPanelCloseIcon from '../../assets/docs/demo-shell-panel-close.svg'
 
 const demoSteps: Array<{ id: DottedDemoStep; label: string }> = [
   { id: 'thinking', label: '判断' },
@@ -17,6 +32,26 @@ const demoSteps: Array<{ id: DottedDemoStep; label: string }> = [
   { id: 'response', label: 'response' },
   { id: 'complete', label: '完成' },
 ]
+
+const copyToastEnterDurationMs = 250
+const copyToastHoldDurationMs = 2000
+const copyToastExitDurationMs = 250
+const demoCanvasScaleMin = 50
+const demoCanvasScaleMax = 150
+const demoCanvasScaleStep = 5
+
+type CopyToastPhase = 'hidden' | 'visible' | 'leaving'
+
+interface DemoCanvasOffset {
+  x: number
+  y: number
+}
+
+interface DemoCanvasDragStart extends DemoCanvasOffset {
+  pointerId: number
+  clientX: number
+  clientY: number
+}
 
 export function ReportsPage({ slug }: { slug: string }) {
   const meta = reportDemos.find((p) => p.slug === slug)
@@ -53,9 +88,7 @@ function ReportDemoSwitcher({ activeSlug }: { activeSlug: string }) {
         aria-label="切换项目 demo"
         aria-expanded={open}
       >
-        <span />
-        <span />
-        <span />
+        <img className="docs-report-demo-switcher__icon" src={demoShellMenuIcon} alt="" />
       </button>
       {open ? (
         <div className="docs-report-demo-switcher__panel" role="menu" aria-label="项目 demo 列表">
@@ -63,7 +96,7 @@ function ReportDemoSwitcher({ activeSlug }: { activeSlug: string }) {
             const isActive = demo.slug === activeSlug
             return (
               <button
-                className={['docs-report-demo-switcher__item', isActive ? 'docs-report-demo-switcher__item--active' : ''].filter(Boolean).join(' ')}
+                className="docs-report-demo-switcher__item"
                 type="button"
                 key={demo.slug}
                 role="menuitem"
@@ -72,8 +105,8 @@ function ReportDemoSwitcher({ activeSlug }: { activeSlug: string }) {
                   if (!isActive) navigate(`/docs/reports/${demo.slug}`)
                 }}
               >
-                <span>{demo.name}</span>
-                <small>{demo.desc}</small>
+                <span className="docs-report-demo-switcher__label">{demo.name}</span>
+                <img className="docs-report-demo-switcher__arrow" src={demoShellArrowRightIcon} alt="" />
               </button>
             )
           })}
@@ -83,15 +116,186 @@ function ReportDemoSwitcher({ activeSlug }: { activeSlug: string }) {
   )
 }
 
+function ReportDemoChrome({ activeSlug }: { activeSlug: string }) {
+  const [copyToastPhase, setCopyToastPhase] = useState<CopyToastPhase>('hidden')
+  const copyToastLeaveTimeoutRef = useRef<number | undefined>(undefined)
+  const copyToastRemoveTimeoutRef = useRef<number | undefined>(undefined)
+  const copied = copyToastPhase !== 'hidden'
+
+  useEffect(() => () => {
+    if (copyToastLeaveTimeoutRef.current !== undefined) window.clearTimeout(copyToastLeaveTimeoutRef.current)
+    if (copyToastRemoveTimeoutRef.current !== undefined) window.clearTimeout(copyToastRemoveTimeoutRef.current)
+  }, [])
+
+  const copyCurrentPageLink = async () => {
+    await navigator.clipboard.writeText(window.location.href)
+    if (copyToastLeaveTimeoutRef.current !== undefined) window.clearTimeout(copyToastLeaveTimeoutRef.current)
+    if (copyToastRemoveTimeoutRef.current !== undefined) window.clearTimeout(copyToastRemoveTimeoutRef.current)
+    setCopyToastPhase('visible')
+    copyToastLeaveTimeoutRef.current = window.setTimeout(
+      () => setCopyToastPhase('leaving'),
+      copyToastEnterDurationMs + copyToastHoldDurationMs,
+    )
+    copyToastRemoveTimeoutRef.current = window.setTimeout(
+      () => setCopyToastPhase('hidden'),
+      copyToastEnterDurationMs + copyToastHoldDurationMs + copyToastExitDurationMs,
+    )
+  }
+
+  return (
+    <>
+      <ReportDemoSwitcher activeSlug={activeSlug} />
+      <div className="docs-report-demo-actions" aria-label="项目 demo 操作">
+        <button
+          className="docs-report-demo-action"
+          type="button"
+          onClick={copyCurrentPageLink}
+          aria-label={copied ? '已复制当前页面链接' : '复制当前页面链接'}
+          title={copied ? '已复制' : '分享'}
+        >
+          <img src={demoShellShareIcon} alt="" />
+        </button>
+        <span className="docs-report-demo-actions__separator" aria-hidden="true" />
+        <button
+          className="docs-report-demo-action"
+          type="button"
+          onClick={() => navigate('/docs')}
+          aria-label="关闭项目 demo"
+          title="关闭"
+        >
+          <img src={demoShellCloseIcon} alt="" />
+        </button>
+      </div>
+      {copied ? (
+        <div
+          className={[
+            'docs-report-demo-toast',
+            copyToastPhase === 'leaving' ? 'docs-report-demo-toast--leaving' : '',
+          ].filter(Boolean).join(' ')}
+          role="status"
+          aria-live="polite"
+        >
+          链接已复制
+        </div>
+      ) : null}
+    </>
+  )
+}
+
+function ReportDemoCanvasTools({
+  scale,
+  onScaleChange,
+  toolNoteDisplayVariant,
+  onToolNoteDisplayVariantChange,
+  sourceImageMotionEnabled,
+  onSourceImageMotionEnabledChange,
+}: {
+  scale: number
+  onScaleChange: (scale: number) => void
+  toolNoteDisplayVariant: DottedToolNoteDisplayVariant
+  onToolNoteDisplayVariantChange: (variant: DottedToolNoteDisplayVariant) => void
+  sourceImageMotionEnabled: boolean
+  onSourceImageMotionEnabledChange: (enabled: boolean) => void
+}) {
+  const [schemePanelOpen, setSchemePanelOpen] = useState(false)
+
+  const changeScale = (direction: -1 | 1) => {
+    const nextScale = Math.min(
+      demoCanvasScaleMax,
+      Math.max(demoCanvasScaleMin, scale + direction * demoCanvasScaleStep),
+    )
+    onScaleChange(nextScale)
+  }
+
+  return (
+    <>
+      {schemePanelOpen ? (
+        <aside className="docs-report-demo-scheme-panel" aria-label="方案切换">
+          <header className="docs-report-demo-scheme-panel__header">
+            <h2>方案切换</h2>
+            <button type="button" onClick={() => setSchemePanelOpen(false)} aria-label="关闭方案切换面板">
+              <img src={demoShellPanelCloseIcon} alt="" />
+            </button>
+          </header>
+          <div className="docs-report-demo-scheme-panel__content">
+            <div className="docs-report-demo-scheme-control">
+              <span>tool call 样式</span>
+              <div className="docs-report-demo-scheme-control__segmented" role="group" aria-label="tool call 样式">
+                <button
+                  className={toolNoteDisplayVariant === 'consistent' ? 'is-active' : undefined}
+                  type="button"
+                  onClick={() => onToolNoteDisplayVariantChange('consistent')}
+                  aria-pressed={toolNoteDisplayVariant === 'consistent'}
+                >
+                  胶囊
+                </button>
+                <button
+                  className={toolNoteDisplayVariant === 'preview-detail' ? 'is-active' : undefined}
+                  type="button"
+                  onClick={() => onToolNoteDisplayVariantChange('preview-detail')}
+                  aria-pressed={toolNoteDisplayVariant === 'preview-detail'}
+                >
+                  信息卡
+                </button>
+              </div>
+            </div>
+            <div className="docs-report-demo-scheme-control">
+              <span>右侧图标动画</span>
+              <button
+                className={[
+                  'docs-report-demo-scheme-control__switch',
+                  sourceImageMotionEnabled ? 'is-active' : '',
+                ].filter(Boolean).join(' ')}
+                type="button"
+                onClick={() => onSourceImageMotionEnabledChange(!sourceImageMotionEnabled)}
+                role="switch"
+                aria-checked={sourceImageMotionEnabled}
+                aria-label="右侧图标动画"
+              >
+                <span />
+              </button>
+            </div>
+          </div>
+        </aside>
+      ) : null}
+
+      <div className="docs-report-demo-canvas-tools" aria-label="画布工具">
+        <button
+          type="button"
+          onClick={() => changeScale(1)}
+          aria-label={`放大画布，当前 ${scale}%`}
+          title={`放大至 ${Math.min(demoCanvasScaleMax, scale + demoCanvasScaleStep)}%`}
+        >
+          <img className="docs-report-demo-canvas-tools__zoom-icon" src={demoShellZoomInIcon} alt="" />
+        </button>
+        <button
+          type="button"
+          onClick={() => changeScale(-1)}
+          aria-label={`缩小画布，当前 ${scale}%`}
+          title={`缩小至 ${Math.max(demoCanvasScaleMin, scale - demoCanvasScaleStep)}%`}
+        >
+          <img className="docs-report-demo-canvas-tools__zoom-icon" src={demoShellZoomOutIcon} alt="" />
+        </button>
+        <span className="docs-report-demo-canvas-tools__separator" aria-hidden="true" />
+        <button
+          type="button"
+          onClick={() => setSchemePanelOpen(true)}
+          aria-label="打开方案切换面板"
+          aria-expanded={schemePanelOpen}
+        >
+          <img className="docs-report-demo-canvas-tools__scheme-icon" src={demoShellSchemeIcon} alt="" />
+        </button>
+      </div>
+    </>
+  )
+}
+
 function FloatingCardsAnimationReport() {
   const [runId, setRunId] = useState(0)
 
   return (
     <div className="docs-report-demo-shell docs-report-demo-shell--immersive docs-report-demo-shell--floating-cards">
-      <ReportDemoSwitcher activeSlug="floating-cards-animation" />
-      <button className="docs-report-demo-close" type="button" onClick={() => navigate('/docs')} aria-label="关闭项目 demo">
-        关闭
-      </button>
+      <ReportDemoChrome activeSlug="floating-cards-animation" />
       <section className="docs-floating-cards-demo" aria-labelledby="floating-cards-title">
         <div className="docs-floating-cards-copy">
           <p className="docs-floating-cards-copy__eyebrow">Motion demo</p>
@@ -178,7 +382,6 @@ function LongThinkingReport() {
       steps={[{ id: 'toolcall', label: 'tool call' }]}
       initialStep="toolcall"
       showStepProgress={false}
-      showReportOptions={false}
       toolCallDetailVariant="real-loading"
     />
   )
@@ -192,7 +395,6 @@ function ConversationStreamingReport({
   steps = demoSteps,
   initialStep = 'thinking',
   showStepProgress = true,
-  showReportOptions = true,
   toolCallDetailVariant = 'default',
 }: {
   activeSlug?: string
@@ -202,7 +404,6 @@ function ConversationStreamingReport({
   steps?: Array<{ id: DottedDemoStep; label: string }>
   initialStep?: DottedDemoStep
   showStepProgress?: boolean
-  showReportOptions?: boolean
   toolCallDetailVariant?: 'default' | 'real-loading'
 }) {
   const [demoStep, setDemoStep] = useState<DottedDemoStep | undefined>(initialStep)
@@ -211,10 +412,49 @@ function ConversationStreamingReport({
   const [continueAfterStep, setContinueAfterStep] = useState(false)
   const [demoRunId, setDemoRunId] = useState(0)
   const [resumeSignal, setResumeSignal] = useState(0)
+  const [canvasScale, setCanvasScale] = useState(100)
+  const [canvasOffset, setCanvasOffset] = useState<DemoCanvasOffset>({ x: 0, y: 0 })
+  const [canvasDragging, setCanvasDragging] = useState(false)
   const [toolNoteDisplayVariant, setToolNoteDisplayVariant] = useState<DottedToolNoteDisplayVariant>('preview-detail')
   const [sourceImageMotionEnabled, setSourceImageMotionEnabled] = useState(false)
+  const canvasDragStartRef = useRef<DemoCanvasDragStart | null>(null)
   const sourceImageMotionVariant: DottedSourceImageMotionVariant = sourceImageMotionEnabled ? 'stack' : 'static'
   const thinkingDisplayVariant: DottedThinkingDisplayVariant = 'stacked'
+
+  const startCanvasDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!event.isPrimary || event.button !== 0) return
+
+    canvasDragStartRef.current = {
+      pointerId: event.pointerId,
+      clientX: event.clientX,
+      clientY: event.clientY,
+      x: canvasOffset.x,
+      y: canvasOffset.y,
+    }
+    event.currentTarget.setPointerCapture(event.pointerId)
+    setCanvasDragging(true)
+    event.preventDefault()
+  }
+
+  const moveCanvas = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const dragStart = canvasDragStartRef.current
+    if (!dragStart || dragStart.pointerId !== event.pointerId) return
+
+    setCanvasOffset({
+      x: dragStart.x + event.clientX - dragStart.clientX,
+      y: dragStart.y + event.clientY - dragStart.clientY,
+    })
+  }
+
+  const stopCanvasDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (canvasDragStartRef.current?.pointerId !== event.pointerId) return
+
+    canvasDragStartRef.current = null
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId)
+    }
+    setCanvasDragging(false)
+  }
 
   const jumpToStep = (step: DottedDemoStep) => {
     setPlayState('playing')
@@ -262,127 +502,115 @@ function ConversationStreamingReport({
   const progressPercent = steps.length > 1 ? (activeStepIndex / (steps.length - 1)) * 100 : 100
 
   return (
-    <div className="docs-report-demo-shell docs-report-demo-shell--immersive">
-      <ReportDemoSwitcher activeSlug={activeSlug} />
-      <button className="docs-report-demo-close" type="button" onClick={() => navigate('/docs')} aria-label="关闭项目 demo">
-        关闭
-      </button>
-      <section className="docs-timestamp-hero">
-        <div className="docs-timestamp-phone" aria-label={phoneLabel}>
-          <DottedDemoScreen
-            key={`${demoStep ?? 'auto'}-${demoRunId}`}
-            demoMode="streaming-reply"
-            demoStep={demoStep}
-            continueAfterStep={continueAfterStep}
-            paused={playState === 'paused'}
-            resumeSignal={resumeSignal}
-            onStepChange={handleStepChange}
-            streamingVariant="span-mask"
-            toolNoteDisplayVariant={toolNoteDisplayVariant}
-            sourceImageMotionVariant={sourceImageMotionVariant}
-            thinkingDisplayVariant={thinkingDisplayVariant}
-            quickAnswerEnabled={quickAnswerEnabled}
-            toolCallDetailVariant={toolCallDetailVariant}
-          />
-        </div>
+    <div
+      className={[
+        'docs-report-demo-shell',
+        'docs-report-demo-shell--immersive',
+        canvasDragging ? 'docs-report-demo-shell--panning' : '',
+      ].filter(Boolean).join(' ')}
+    >
+      <div
+        className="docs-report-demo-pan-surface"
+        aria-hidden="true"
+        onPointerDown={startCanvasDrag}
+        onPointerMove={moveCanvas}
+        onPointerUp={stopCanvasDrag}
+        onPointerCancel={stopCanvasDrag}
+      />
+      <ReportDemoChrome activeSlug={activeSlug} />
+      <ReportDemoCanvasTools
+        scale={canvasScale}
+        onScaleChange={setCanvasScale}
+        toolNoteDisplayVariant={toolNoteDisplayVariant}
+        onToolNoteDisplayVariantChange={setToolNoteDisplayVariant}
+        sourceImageMotionEnabled={sourceImageMotionEnabled}
+        onSourceImageMotionEnabledChange={setSourceImageMotionEnabled}
+      />
+      <div
+        className="docs-report-demo-pan-layer"
+        style={
+          {
+            '--demo-canvas-x': `${canvasOffset.x}px`,
+            '--demo-canvas-y': `${canvasOffset.y}px`,
+          } as CSSProperties
+        }
+      >
+        <section
+          className="docs-timestamp-hero"
+          style={{ '--demo-canvas-scale': canvasScale / 100 } as CSSProperties}
+        >
+          <div className="docs-timestamp-phone" aria-label={phoneLabel}>
+            <DottedDemoScreen
+              key={`${demoStep ?? 'auto'}-${demoRunId}`}
+              demoMode="streaming-reply"
+              demoStep={demoStep}
+              continueAfterStep={continueAfterStep}
+              paused={playState === 'paused'}
+              resumeSignal={resumeSignal}
+              onStepChange={handleStepChange}
+              streamingVariant="span-mask"
+              toolNoteDisplayVariant={toolNoteDisplayVariant}
+              sourceImageMotionVariant={sourceImageMotionVariant}
+              thinkingDisplayVariant={thinkingDisplayVariant}
+              quickAnswerEnabled={quickAnswerEnabled}
+              toolCallDetailVariant={toolCallDetailVariant}
+            />
+          </div>
 
           <aside className="docs-report-progress" aria-label="回答状态进度控制">
-          <h1 className="docs-report-demo-title">{title}</h1>
-          {showStepProgress ? (
-            <div className="docs-report-progress__track" style={{ '--progress': `${progressPercent}%` } as CSSProperties}>
-              <div className="docs-report-progress__line" aria-hidden="true" />
-              <div className="docs-report-progress__nodes">
-                {steps.map((step, index) => {
-                  const isActive = index === activeStepIndex
-                  const isComplete = index < activeStepIndex
-                  return (
-                    <button
-                      className={[
-                        'docs-report-progress__node',
-                        isActive ? 'docs-report-progress__node--active' : '',
-                        isComplete ? 'docs-report-progress__node--complete' : '',
-                      ].filter(Boolean).join(' ')}
-                      type="button"
-                      key={step.id}
-                      onClick={() => jumpToStep(step.id)}
-                      aria-current={isActive ? 'step' : undefined}
-                    >
-                      <span>{String(index + 1).padStart(2, '0')}</span>
-                      <strong>{step.label}</strong>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
-          ) : null}
-          <div className="docs-report-progress__actions">
-            {playState === 'playing' || playState === 'paused' ? (
-              <>
-                <button className="docs-report-progress__button docs-report-progress__button--primary" type="button" onClick={playState === 'paused' ? resumeDemo : pauseDemo}>
-                  {playState === 'paused' ? '继续' : '暂停'}
-                </button>
-                <button
-                  className="docs-report-progress__button docs-report-progress__button--secondary docs-report-progress__button--icon"
-                  type="button"
-                  onClick={restartDemo}
-                  aria-label="重新开始"
-                  title="重新开始"
-                >
-                  <img src={restartIcon} alt="" aria-hidden="true" />
-                </button>
-              </>
-            ) : (
-              <button className="docs-report-progress__button docs-report-progress__button--primary" type="button" onClick={startDemo}>
-                开始演示
-              </button>
-            )}
-          </div>
-          {showReportOptions ? (
-          <div className="docs-report-options-bottom">
-            <div className="docs-report-option docs-report-option--subtle" aria-label="工具调用样式切换">
-              <span>tool call 样式</span>
-              <div className="docs-report-option__control">
-                <button
-                  className={['docs-report-option__button', toolNoteDisplayVariant === 'consistent' ? 'docs-report-option__button--active' : ''].filter(Boolean).join(' ')}
-                  type="button"
-                  onClick={() => setToolNoteDisplayVariant('consistent')}
-                >
-                  胶囊样式
-                </button>
-                <button
-                  className={['docs-report-option__button', toolNoteDisplayVariant === 'preview-detail' ? 'docs-report-option__button--active' : ''].filter(Boolean).join(' ')}
-                  type="button"
-                  onClick={() => setToolNoteDisplayVariant('preview-detail')}
-                >
-                  信息卡样式
-                </button>
-              </div>
-            </div>
-            {toolNoteDisplayVariant === 'preview-detail' ? (
-              <div className="docs-report-option docs-report-option--subtle" aria-label="右侧图标动效切换">
-                <span>右侧图标动效</span>
-                <div className="docs-report-option__control docs-report-option__control--compact">
-                  <button
-                    className={['docs-report-option__button', !sourceImageMotionEnabled ? 'docs-report-option__button--active' : ''].filter(Boolean).join(' ')}
-                    type="button"
-                    onClick={() => setSourceImageMotionEnabled(false)}
-                  >
-                    无
-                  </button>
-                  <button
-                    className={['docs-report-option__button', sourceImageMotionEnabled ? 'docs-report-option__button--active' : ''].filter(Boolean).join(' ')}
-                    type="button"
-                    onClick={() => setSourceImageMotionEnabled(true)}
-                  >
-                    开启
-                  </button>
+            <h1 className="docs-report-demo-title">{title}</h1>
+            {showStepProgress ? (
+              <div className="docs-report-progress__track" style={{ '--progress': `${progressPercent}%` } as CSSProperties}>
+                <div className="docs-report-progress__line" aria-hidden="true" />
+                <div className="docs-report-progress__nodes">
+                  {steps.map((step, index) => {
+                    const isActive = index === activeStepIndex
+                    const isComplete = index < activeStepIndex
+                    return (
+                      <button
+                        className={[
+                          'docs-report-progress__node',
+                          isActive ? 'docs-report-progress__node--active' : '',
+                          isComplete ? 'docs-report-progress__node--complete' : '',
+                        ].filter(Boolean).join(' ')}
+                        type="button"
+                        key={step.id}
+                        onClick={() => jumpToStep(step.id)}
+                        aria-current={isActive ? 'step' : undefined}
+                      >
+                        <span>{String(index + 1).padStart(2, '0')}</span>
+                        <strong>{step.label}</strong>
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             ) : null}
-          </div>
-          ) : null}
-        </aside>
-      </section>
+            <div className="docs-report-progress__actions">
+              {playState === 'playing' || playState === 'paused' ? (
+                <>
+                  <button className="docs-report-progress__button docs-report-progress__button--primary" type="button" onClick={playState === 'paused' ? resumeDemo : pauseDemo}>
+                    {playState === 'paused' ? '继续' : '暂停'}
+                  </button>
+                  <button
+                    className="docs-report-progress__button docs-report-progress__button--secondary docs-report-progress__button--icon"
+                    type="button"
+                    onClick={restartDemo}
+                    aria-label="重新开始"
+                    title="重新开始"
+                  >
+                    <img src={restartIcon} alt="" aria-hidden="true" />
+                  </button>
+                </>
+              ) : (
+                <button className="docs-report-progress__button docs-report-progress__button--primary" type="button" onClick={startDemo}>
+                  开始演示
+                </button>
+              )}
+            </div>
+          </aside>
+        </section>
+      </div>
     </div>
   )
 }

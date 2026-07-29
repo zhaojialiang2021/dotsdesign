@@ -30,14 +30,14 @@ type Item = {
 const STATIC: Item[] = [
   { href: '/docs', label: '首页 · Landing', group: 'System', keywords: 'home landing' },
   { href: '/docs/intro', label: '关于 Dots', group: 'System', keywords: 'intro about workflow agent skill' },
+  { href: '/docs/ai-workflows', label: 'AI Workflows', group: 'AI', keywords: 'cursor claude mcp skill prompt' },
+  { href: '/docs/principles', label: '设计原则', group: 'AI', keywords: 'principles 12 rules' },
   { href: '/docs/foundations/color', label: 'Color', group: 'Foundations', keywords: 'tokens color label brand accent' },
   { href: '/docs/foundations/typography', label: 'Typography', group: 'Foundations', keywords: 'font type pingfang' },
   { href: '/docs/foundations/spacing', label: 'Spacing', group: 'Foundations', keywords: 'space gap padding' },
   { href: '/docs/foundations/radius', label: 'Radius', group: 'Foundations', keywords: 'border-radius rounded' },
   { href: '/docs/foundations/motion', label: 'Motion', group: 'Foundations', keywords: 'duration curve animation' },
-  { href: '/docs/principles', label: '设计原则', group: 'Foundations', keywords: 'principles 12 rules' },
   { href: '/docs/haptics', label: '触觉反馈', group: 'Foundations', keywords: 'haptics vibrate touch' },
-  { href: '/docs/ai-workflows', label: 'AI Workflows', group: 'AI', keywords: 'cursor claude mcp skill prompt' },
   { href: '/docs/pitch', label: '项目汇报', group: 'AI', keywords: 'pitch slides' },
   { href: '/docs/changelog', label: 'Changelog', group: 'AI', keywords: 'version semver release' },
 ]

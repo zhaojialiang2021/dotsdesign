@@ -1,11 +1,14 @@
 import { DotsGeneratedCard } from '../../screens/dotted/DotsGeneratedCard'
 import { DotsMessage, DotsMessageBubble } from '../../screens/dotted/DotsMessageBubble'
+import { DemoFrame } from './_DemoStub'
 
 export function MessageBubblePreview() {
   return (
-    <div className="docs-stage">
-      <div className="docs-stage__caption">DotsMessageBubble · Live</div>
-      <div className="docs-stage__inner">
+    <DemoFrame
+      caption="Message Bubble"
+      title="真实消息流组合"
+      description="同时检查用户、点点和 AI 富文本卡片在连续消息中的对齐、间距与引脚关系。"
+      stage={
         <div
           className="dots-message-surface"
           style={{
@@ -31,7 +34,7 @@ export function MessageBubblePreview() {
             <DotsGeneratedCard />
           </DotsMessage>
         </div>
-      </div>
-    </div>
+      }
+    />
   )
 }

@@ -29,8 +29,8 @@ Sheet
 
 | 项 | 规格 |
 |------|------|
-| container 背景 | `Bg 3` / `--bg-3` |
-| mask | `Mask Bg 1`，需要弱化底层但不制造深色压迫 |
+| container 背景 | `Bg 2` / `--bg-2` |
+| mask | `Mask Bg`，需要弱化底层但不制造深色压迫 |
 | 圆角 | `radius.sheet`，20px 20px 0 0 |
 | header 高度 | 56px |
 | title | `Title`，PingFang SC 17px / 600 |

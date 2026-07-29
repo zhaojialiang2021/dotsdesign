@@ -13,8 +13,8 @@ used_by: [bottom-sheet, skill-selector, dotted-demo]
 
 | 属性 | 值 |
 |------|------|
-| 遮罩 | `Mask Bg 2` = rgba(0,0,0,0.4) |
-| 背景 | `Bg 3` |
+| 遮罩 | `Mask Bg` / `--mask-bg` |
+| 背景 | `Bg 2` |
 | 圆角 | `radius.sheet` = 20px 20px 0 0 |
 | 拖拽条 | 36×4px，圆角 2px，颜色 `Disabled` |
 | 阴影 | `shadow.2` |
@@ -24,7 +24,7 @@ used_by: [bottom-sheet, skill-selector, dotted-demo]
 
 | 属性 | 值 |
 |------|------|
-| 背景 | `Bg 3` |
+| 背景 | `Bg 2` |
 | 圆角 | 20px |
 | 阴影 | `shadow.2` |
 | 最大宽度 | 540px |

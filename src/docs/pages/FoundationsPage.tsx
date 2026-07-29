@@ -15,7 +15,7 @@ const META: Record<
 > = {
   color: {
     title: 'Color',
-    subtitle: '按用途分组。色块带半透明棋盘底，方便观察 alpha 通道。',
+    subtitle: '按用途分组，右上角可切换 Light / Dark。规范与 CSS 均来自 Token-Color.pdf。',
     render: () => <ColorSection />,
   },
   typography: {

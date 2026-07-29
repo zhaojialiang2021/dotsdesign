@@ -29,10 +29,10 @@ export function ColorSection() {
   return (
     <>
       {colorGroups.map((g) => (
-        <div className="docs-card" key={g.title} style={{ marginBottom: 16 }}>
-          <div className="docs-card__title">{g.title}</div>
+        <section className="docs-token-section" key={g.title}>
+          <h2 className="docs-token-section__title">{g.title}</h2>
           {g.desc && (
-            <div className="docs-hint" style={{ marginBottom: 16 }}>
+            <div className="docs-hint docs-token-section__hint">
               <Icon.Sparkles size={14} />
               {g.desc}
             </div>
@@ -42,7 +42,7 @@ export function ColorSection() {
               <Swatch key={t.name} token={t} onCopy={(s) => copy(s, show)} />
             ))}
           </div>
-        </div>
+        </section>
       ))}
       {node}
     </>
@@ -51,7 +51,7 @@ export function ColorSection() {
 
 export function TypographySection() {
   return (
-    <div className="docs-card">
+    <div className="docs-token-list">
       {typographyTokens.map((t) => (
         <div key={t.name} className="docs-type-row">
           <code className="docs-text--caption-1 docs-text--secondary docs-text--mono">{t.name}</code>
@@ -78,7 +78,7 @@ export function SpacingSection() {
   const { show, node } = useToast()
   return (
     <>
-      <div className="docs-card">
+      <div className="docs-token-list">
         {spacingTokens.map((t) => (
           <SpacingRow key={t.name} token={t} onCopy={(s) => copy(s, show)} />
         ))}
@@ -92,7 +92,7 @@ export function RadiusSection() {
   const { show, node } = useToast()
   return (
     <>
-      <div className="docs-card">
+      <div className="docs-token-list">
         <div className="docs-radius-grid">
           {radiusTokens.map((t) => (
             <RadiusChip key={t.name} token={t} onCopy={(s) => copy(s, show)} />
@@ -108,22 +108,10 @@ export function MotionSection() {
   const { show, node } = useToast()
   return (
     <>
-      <div className="docs-card">
-        <table className="docs-table">
-          <thead>
-            <tr>
-              <th>令牌</th>
-              <th>值</th>
-              <th>用途</th>
-              <th style={{ width: 240 }}>预览</th>
-            </tr>
-          </thead>
-          <tbody>
-            {motionTokens.map((t) => (
-              <MotionRow key={t.name} token={t} onCopy={(s) => copy(s, show)} />
-            ))}
-          </tbody>
-        </table>
+      <div className="docs-motion-list">
+        {motionTokens.map((t) => (
+          <MotionRow key={t.name} token={t} onCopy={(s) => copy(s, show)} />
+        ))}
       </div>
       {node}
     </>
@@ -192,21 +180,30 @@ function Swatch({ token, onCopy }: { token: TokenItem; onCopy: (s: string) => vo
       style={{ ['--swatch-color' as string]: `var(${token.name})` } as React.CSSProperties}
     >
       <span className="docs-swatch__chip" />
-      <div style={{ minWidth: 0 }}>
-        <div className="docs-swatch__name">{token.name}</div>
+      <div className="docs-swatch__content">
+        <div className="docs-swatch__name">{token.name.replace(/^--/, '')}</div>
         <div className="docs-swatch__usage">{token.usage}</div>
+        <div className="docs-swatch__value">{val || '...'}</div>
       </div>
-      <div className="docs-swatch__value">{val || '...'}</div>
     </div>
   )
 }
 
 function SpacingRow({ token, onCopy }: { token: TokenItem; onCopy: (s: string) => void }) {
+  const [value, usage] = token.usage.split(' · ')
   return (
     <div className="docs-spacing-row" onClick={() => onCopy(`var(${token.name})`)}>
-      <code className="docs-text--caption-1 docs-text--secondary docs-text--mono">{token.name}</code>
-      <div className="docs-spacing-row__bar" style={{ width: `var(${token.name})` }} />
-      <span className="docs-text--caption-1 docs-text--tertiary">{token.usage}</span>
+      <code className="docs-spacing-row__name">{token.name}</code>
+      <div className="docs-spacing-row__measure" aria-hidden="true">
+        <span
+          className="docs-spacing-row__bar"
+          style={{ width: `calc(var(${token.name}) * 3)` }}
+        />
+      </div>
+      <div className="docs-spacing-row__meta">
+        <span className="docs-spacing-row__value">{value}</span>
+        <span>{usage}</span>
+      </div>
     </div>
   )
 }
@@ -231,68 +228,74 @@ function MotionRow({ token, onCopy }: { token: TokenItem; onCopy: (s: string) =>
   const [playing, setPlaying] = useState(0)
   const isDuration = token.name.startsWith('--duration')
   const isCurve = token.name.startsWith('--curve')
+  const isPress = token.name.startsWith('--press')
+  const previewStyle = {
+    '--motion-preview-duration': isDuration ? `var(${token.name})` : 'var(--duration-slow)',
+    '--motion-preview-easing': isCurve ? `var(${token.name})` : 'var(--curve-out)',
+    '--motion-preview-scale': token.name.startsWith('--press-scale') ? `var(${token.name})` : '1',
+    '--motion-preview-opacity': token.name === '--press-opacity' ? `var(${token.name})` : '1',
+  } as React.CSSProperties
+
   return (
-    <tr>
-      <td>
-        <code onClick={() => onCopy(`var(${token.name})`)} style={{ cursor: 'pointer' }}>
+    <article className="docs-motion-row" style={previewStyle}>
+      <div className="docs-motion-row__meta">
+        <button
+          className="docs-motion-row__token"
+          onClick={() => onCopy(`var(${token.name})`)}
+          type="button"
+        >
           {token.name}
-        </code>
-      </td>
-      <td className="docs-text--caption-1 docs-text--secondary docs-text--mono">{val}</td>
-      <td style={{ color: 'var(--label-secondary)' }}>{token.usage}</td>
-      <td>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-3)' }}>
-          {/* token-lint-disable-line 迷你按钮几何 */}
-          <button
-            className="docs-text--caption-1"
-            onClick={() => setPlaying((p) => p + 1)}
-            style={{
-              background: 'var(--fill-quaternary)',
-              border: 0,
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-medium)',
-              cursor: 'pointer',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 'var(--space-1)',
-              color: 'var(--label-primary)',
-              fontFamily: 'inherit',
-            }}
-          >
-            <Icon.Play size={11} />
-            播放
-          </button>
-          <div
-            style={{
-              flex: 1,
-              height: 2,
-              background: 'var(--line-non-opaque)',
-              borderRadius: 1,
-              position: 'relative',
-            }}
-          >
+        </button>
+        <div className="docs-motion-row__value">{val}</div>
+        <div className="docs-motion-row__usage">{token.usage}</div>
+      </div>
+
+      <div className="docs-motion-preview">
+        <button
+          className="docs-motion-preview__play"
+          onClick={() => setPlaying((p) => p + 1)}
+          type="button"
+        >
+          <Icon.Play size={12} />
+          播放
+        </button>
+
+        {isPress ? (
+          <div className="docs-motion-press-stage">
             <span
               key={playing}
-              style={{
-                position: 'absolute',
-                top: -4,
-                left: 0,
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                background: 'var(--brand-blue)',
-                /* token-lint-disable-line 动画轨道宽度 */
-                transform: playing % 2 === 0 ? 'translateX(0)' : 'translateX(140px)',
-                transition: isDuration
-                  ? `transform var(${token.name}) var(--curve-default)`
-                  : isCurve
-                  ? `transform var(--duration-slow) var(${token.name})`
-                  : 'none',
-              }}
-            />
+              className={`docs-motion-press-target ${playing > 0 ? 'is-playing' : ''}`}
+            >
+              按住
+            </span>
           </div>
-        </div>
-      </td>
-    </tr>
+        ) : (
+          <div className="docs-motion-tracks">
+            {isCurve && (
+              <div className="docs-motion-track-row">
+                <span className="docs-motion-track-row__label">Linear</span>
+                <div className="docs-motion-track">
+                  <span
+                    key={`linear-${playing}`}
+                    className={`docs-motion-runner docs-motion-runner--reference ${
+                      playing > 0 ? 'is-playing' : ''
+                    }`}
+                  />
+                </div>
+              </div>
+            )}
+            <div className="docs-motion-track-row">
+              <span className="docs-motion-track-row__label">{isCurve ? 'Token' : val}</span>
+              <div className="docs-motion-track">
+                <span
+                  key={`token-${playing}`}
+                  className={`docs-motion-runner ${playing > 0 ? 'is-playing' : ''}`}
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </article>
   )
 }

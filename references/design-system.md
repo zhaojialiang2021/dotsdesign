@@ -41,7 +41,7 @@ Dots 设计系统的底层逻辑是 Harness Engineering：给 AI 搭一套可执
 ## 1. 设备画布
 
 - **设计稿尺寸**：430 × 932px（iOS 大屏），模拟真机使用 `.app` 或 `.phone` 容器
-- **圆角**：外壳 54px（模拟 iOS 圆角）
+- **圆角**：外壳 80px（模拟 iOS 超级圆角）
 - **小屏适配**：`@media (max-width: 460px)` 时切全屏，去圆角和阴影
 - **缩放**：通过 `--phone-scale` CSS 变量控制整体缩放
 
@@ -49,142 +49,19 @@ Dots 设计系统的底层逻辑是 Harness Engineering：给 AI 搭一套可执
 
 ## 2. 颜色体系（Dots-Tokens）
 
-> 来源：Figma Dots-Tokens · Color 颜色
-> 所有颜色必须使用 token 名引用，不要硬编码色值。
-> 同时支持 Light Mode 和 Dark Mode。
+> 人类可读真相源：`references/color-tokens.md`。执行真相源：`tokens/color.json`。
+> 本文件不重复维护色值表，避免与颜色真相源漂移。
 
-### 2.1 Backgrounds 背景
+颜色使用边界：
 
-| Token | 说明 | Light | Dark |
-|-------|------|-------|------|
-| `Bg` | 基准层：主背景色（对话流等一级界面） | `#F3F3F3` | `#242424` |
-| `Bg 1` | 次高层：底部栏背景色 | `#F7F7F7` | `#282828` |
-| `Bg 2` | 半高层：键盘升起低栏背景 | `#FAFAFA` | `#2D2D2D` |
-| `Bg 3` | 弹出层（半屏、弹窗背景色） | `#FFFFFF` | `#323232` |
-
-**Always Mode（不随主题切换）：**
-
-| Token | 说明 | 值 |
-|-------|------|-----|
-| `Mask Bg 1` | 遮罩层浅色：用于退后界面 | `#000000 20%` |
-| `Mask Bg 2` | 遮罩层深色：用于退后界面 | `#000000 40%` |
-| `Bg Light` | 纯白背景 | `#FFFFFF` |
-| `Bg Black` | 纯黑背景 | `#141414` |
-
-### 2.2 Labels 标签（文字色）
-
-| Token | 说明 | Light | Dark |
-|-------|------|-------|------|
-| `Title` | 一级标题、对话流文本 | `#141414 100%` | `#FFFFFF 94%` |
-| `Paragraph` | 二级标题、段落、icon | `#141414 80%` | `#FFFFFF 80%` |
-| `Description` | 描述、未选中字色 | `#141414 60%` | `#FFFFFF 60%` |
-| `Description Lighter` | 描述、未选中字色（更淡） | `#141414 40%` | `#FFFFFF 40%` |
-| `Placeholder` | 输入栏、loading 等占位文本色 | `#141414 16%` | `#FFFFFF 16%` |
-| `Disabled` | 禁用色 | `#141414 9%` | `#FFFFFF 9%` |
-| `Link` | 文字链 | `#0D4087` | `#93BFF1` |
-
-**深色文字（用于浅色背景上的反色场景）：**
-
-| Token | 说明 | Light | Dark |
-|-------|------|-------|------|
-| `Dark Title` | 一级标题 | `#FFFFFF 94%` | `#141414 100%` |
-| `Dark Paragraph` | 二级标题、段落、icon | `#FFFFFF 80%` | `#141414 80%` |
-| `Dark Description` | 描述 | `#FFFFFF 60%` | `#141414 60%` |
-| `Dark Description Lighter` | 描述（更淡） | `#FFFFFF 40%` | `#141414 40%` |
-| `Dark Placeholder` | 占位文本 | `#FFFFFF 16%` | `#141414 16%` |
-| `Dark Disabled` | 禁用色 | `#FFFFFF 9%` | `#141414 9%` |
-| `Dark Link` | 文字链 | `#93BFF1` | `#0D4087` |
-
-**Always Mode 文字色（不随主题切换）：**
-
-| Token | 说明 | 值 |
-|-------|------|-----|
-| `Light Title` | 一级标题 | `#141414 100%` |
-| `Light Paragraph` | 二级标题、段落、icon | `#141414 80%` |
-| `Light Description` | 描述 | `#141414 60%` |
-| `Light Description 1` | 描述（更淡） | `#141414 40%` |
-| `Light Placeholder` | 占位文本 | `#141414 16%` |
-| `Light Disabled` | 禁用色 | `#141414 9%` |
-| `Light Link` | 文字链 | `#133667` |
-
-### 2.3 Fills 填充
-
-| Token | 说明 | Light | Dark |
-|-------|------|-------|------|
-| `Fill 1` | loading 气泡等色 | `#FFFFFF 5%` | `#323232 5%` |
-| `Fill 2` | 富文本、分享卡等悬浮容器底色 | `#FFFFFF 10%` | `#323232 10%` |
-| `Fill 3` | 填充3 | `#FFFFFF 20%` | `#323232 20%` |
-| `Fill 4` | 填充4 | `#FFFFFF 50%` | `#323232 50%` |
-| `Fill 5` | AI 卡片/富文本背景 | `#FFFFFF 80%` | `#323232 80%` |
-| `Inverted Fill 1` | 反色填充：底色中间色等 | `#323232 5%` | `#FFFFFF 5%` |
-| `Inverted Fill 2` | 反色填充：亮底图底色等 | `#323232 10%` | `#FFFFFF 10%` |
-| `Inverted Fill 3` | 反色填充3 | `#323232 20%` | `#FFFFFF 20%` |
-| `Inverted Fill 4` | 反色填充4 | `#323232 50%` | `#FFFFFF 50%` |
-| `Inverted Fill 5` | 反色填充5 | `#323232 80%` | `#FFFFFF 80%` |
-
-**对话专用填充：**
-
-| Token | 说明 | Light | Dark |
-|-------|------|-------|------|
-| `Fill A` | 输入框、模型侧气泡底色 | `#FFFFFF` | `#323232` |
-| `Fill B` | 用户侧气泡/轻提示组件底色 | `#E6E6E6` | `#1C1C1C` |
-| `Fill C` | 长按面板底色 | `#323232 92%` | `#444444 80%` |
-
-### 2.4 Separators 分割器
-
-| Token | 说明 | Light | Dark |
-|-------|------|-------|------|
-| `Separator` | 用户侧气泡描边 | `#FFFFFF 75%` | `#FFFFFF 10%` |
-| `Separator 2` | 模型侧回复气泡、容器描边 | `#141414 8%` | `#FFFFFF 8%` |
-| `Separator 3` | query 气泡描边 | `#141414 10%` | `#FFFFFF 10%` |
-| `Separator 4` | 容器白色描边 | `#FFFFFF 20%` | `#323232 20%` |
-
-**Always Mode 分割器：**
-
-| Token | 说明 | 值 |
-|-------|------|-----|
-| `Light Separator 1` | query 气泡描边 | `#FFFFFF 8%` |
-| `Light Separator 2` | 模型侧回复气泡、容器描边 | `#FFFFFF 20%` |
-| `Light Separator 3` | 用户侧气泡描边 | `#FFFFFF 75%` |
-| `Light Separator 4` | 容器白色描边 | `#141414 8%` |
-| `Light Separator 5` | 容器白色描边 | `#323232 20%` |
-
-### 2.5 Primary 主题色
-
-| Token | 说明 | Light | Dark |
-|-------|------|-------|------|
-| `info` | 富文本-黄色 | `#FDF091 20%` | `#6C6845 20%` |
-| `info 2` | 富文本-蓝色 | `#AFD9F1 20%` | `#475E6A 20%` |
-| `info 3` | 富文本-灰色 | `#141414 2%` | `#5B5858 26%` |
-
-**Always Mode 主题色：**
-
-| Token | 说明 | 值 |
-|-------|------|-----|
-| `info 4` | 文本选中-绿色 | `#6FD2BD 30%` |
-| `info 5` | 纯绿色（品牌主色） | `#6FD2BD` |
-| `info 6` | 文本选中分割栏-绿色 | `#21C3A1` |
-
-### 2.6 Shadow 阴影
-
-| Token | 说明 | Light | Dark |
-|-------|------|-------|------|
-| `shadow 1` | 卡片、容器阴影 | `#141414 4%` | `#141414 8%` |
-| `shadow 2` | 面板阴影 | `#141414 12%` | `#141414 24%` |
-| `shadow 3` | 面板阴影 | `#141414 20%` | `#141414 40%` |
-
-### 2.7 小红书社区色（补充）
-
-| Token | 说明 | 值 |
-|-------|------|-----|
-| `--primary` | 小红书红（仅用于社区场景如关注/发布，点点对话场景不使用） | `#FF2442` |
-
-### ⛔ 颜色使用禁止事项
-
-- **不要使用纯黑 `#000000`** 作为文字色，使用 `#141414` 或带透明度
-- **不要自行定义颜色**，所有颜色必须来自上方 token
-- **不要忽略 Dark Mode**，确保所有颜色 token 有对应暗色值
-- **不要混用 Light/Dark token**，根据场景使用正确的 token 类别
+- 页面层级使用 `Bg / Bg 0 / Bg 0 Lighter / Bg 1 / Bg 2`。
+- 文本使用 `Title / Paragraph / Description / Disabled / Placeholder / Link`。
+- 控件与气泡按强度使用 `Fill 1-5` 或 `Inverted Fill 1-5`。
+- 点点品牌色使用 `Dots Accent Fill / Text / Surface / Border / Highlight`。
+- 小红书品牌色使用 `XHS Red / XHS Red Soft`，不得用于点点对话和系统组件。
+- 语义色使用 `Warning / Success / Info` 及对应 `Soft` token。
+- Always Mode 使用 `Light / Dark` 文本、填充、描边，以及固定 `White / Black`。
+- 旧 `info 4-6`、`Fill A-C`、`Bg 3` 和 `--primary` 只保留 CSS 迁移别名，新规范和新代码禁止继续使用。
 
 ---
 
@@ -350,8 +227,8 @@ Docs / Studio / Landing 等非规范展示 UI 使用独立字体边界：
 
 ### 7.1 对话气泡
 
-- **用户气泡**：背景 `Fill B`，描边 `Separator`，圆角 22px，右对齐
-- **AI 气泡**：背景 `Fill A`，描边 `Separator 2`，圆角 22px，左对齐
+- **用户气泡**：背景 `Fill 5`，描边 `Separator`，圆角 22px，右对齐
+- **AI 气泡**：背景 `Bg`，描边 `Separator 2`，圆角 22px，左对齐
 - **AI 富文本卡片**：背景 `Fill 5`，描边 `Separator 2`，圆角 36px
 - **气泡 padding**：12px 20px
 - **最大宽度**：346px
@@ -371,14 +248,14 @@ Docs / Studio / Landing 等非规范展示 UI 使用独立字体边界：
 - **高度**：48px（输入区域），96px（含安全区总高）
 - **背景**：`Bg 1`
 - **圆角**：输入框 16px，容器 28px 28px 0 0
-- **边框**：0.5px solid `Separator 3`
+- **边框**：0.5px solid `Separator 2`
 - **图标尺寸**：24×24px
 
 ### 7.4 CTA 按钮
 
 - **高度**：48px
 - **圆角**：24px
-- **背景**：仅品牌绿 `info 5`（#6FD2BD），禁止黑色和红色
+- **背景**：仅品牌绿 `Dots Accent Fill`（#56D1BF），禁止黑色和红色
 - **字号**：16px，font-weight 500
 - **按压态**：`scale(.97)`, `opacity: .6`
 
@@ -400,8 +277,8 @@ Docs / Studio / Landing 等非规范展示 UI 使用独立字体边界：
 
 ### 7.7 底部弹窗
 
-- **遮罩**：`Mask Bg 2`（#000000 40%）
-- **背景**：`Bg 3`（#FFFFFF）
+- **遮罩**：`Mask Bg`（#000000 40%）
+- **背景**：`Bg 2`（#FFFFFF）
 - **圆角**：20px 20px 0 0
 - **拖拽条**：36×4px，圆角 2px，颜色 `Disabled`
 
@@ -541,7 +418,7 @@ Docs / Studio / Landing 等非规范展示 UI 使用独立字体边界：
 
 - **状态栏高度**：54～59px
 - **底部安全区**：34px
-- **Home Indicator**：宽 139px，高 5px，圆角 2.5px，颜色 `Bg Black` opacity 12%
+- **Home Indicator**：宽 139px，高 5px，圆角 2.5px，颜色 `Black` opacity 12%
 - **顶部渐变遮罩**：132px 高，三段式渐变（96% → 30% → 0%）
 
 ---
@@ -590,7 +467,7 @@ button { font-family: inherit; }
 │                                 │
 ├─────────────────────────────────┤
 │ 底栏  bg: Bg 1 / shadow 1      │
-│ ☰ [输入框 bg:Fill A] 📷        │
+│ ☰ [输入框 bg:Bg] 📷        │
 │ 水印: "内容由 AI 生成"          │
 │ ─── Home Indicator ───         │
 └─────────────────────────────────┘
@@ -602,16 +479,16 @@ button { font-family: inherit; }
 | 顶栏 | `Bg 1` | `Title` | — | — | `shadow 1` |
 | 导航标题 | — | `Title` | — | — | — |
 | 底栏容器 | `Bg 1` | — | — | 28px 28px 0 0 | `shadow 1` |
-| 输入框 | `Fill A` | `Title` | 0.5px `Separator 3` | 16px | 内阴影 |
+| 输入框 | `Bg` | `Title` | 0.5px `Separator 2` | 16px | 内阴影 |
 | 输入占位文字 | — | `Placeholder` | — | — | — |
 | 时间戳 | — | `Placeholder` | — | — | — |
-| 水印文字 | — | `Description Lighter` | — | — | — |
+| 水印文字 | — | `Description` | — | — | — |
 
 ### 11.2 用户气泡
 
 | 属性 | Token |
 |------|-------|
-| 背景 | `Fill B` (#E6E6E6) |
+| 背景 | `Fill 5` |
 | 文字 | `Title` |
 | 边框 | 0.5px `Separator` |
 | 圆角 | 22px |
@@ -624,7 +501,7 @@ button { font-family: inherit; }
 
 | 属性 | Token |
 |------|-------|
-| 背景 | `Fill A` (#FFFFFF) 或透明 |
+| 背景 | `Bg` (#FFFFFF) 或透明 |
 | 文字 | `Title` |
 | 边框 | 0.5px `Separator 2` |
 | 圆角 | 22px |
@@ -711,7 +588,7 @@ button { font-family: inherit; }
 | 最大宽度 | 280px |
 | 标题 | `Title`，13px，600 weight，**单行截断**（`white-space: nowrap; overflow: hidden; text-overflow: ellipsis`） |
 | 描述/副文案 | `Paragraph`，12px，最多 2 行 |
-| 来源标识 | 16×16 图标 + 11px `Description Lighter` 平台名 |
+| 来源标识 | 16×16 图标 + 11px `Description` 平台名 |
 | 缩略图 | 44×44px，12px 圆角（个人页为圆形 `border-radius: 50%`） |
 
 **各类型卡片的差异仅在内容：**
@@ -728,15 +605,15 @@ button { font-family: inherit; }
 
 ### 11.12 按钮
 
-> ⚠️ **填充按钮仅用品牌绿 `#6FD2BD`，禁止黑色和红色填充按钮。**
+> ⚠️ **填充按钮仅用品牌绿 `#56D1BF`，禁止黑色和红色填充按钮。**
 > 红色 `#FF2442` 仅用于 Bottom Sheet 的危险操作文字。
 
 | 按钮类型 | 背景 | 文字色 | 边框 | 圆角 | 高度 |
 |---------|------|--------|------|------|------|
-| 主要按钮(品牌绿填充) | `info 5` `#6FD2BD` | 白色 | — | 24px | Large 48px / Medium 36px |
+| 主要按钮(品牌绿填充) | `Dots Accent Fill` `#56D1BF` | 白色 | — | 24px | Large 48px / Medium 36px |
 | 次要按钮(灰色描边) | 透明 | `Title` | 1px `Separator 2` | 24px | Large 48px / Medium 36px |
 | 幽灵按钮(ghost) | 透明 | `Title` | — | 24px | 按需 |
-| 文本按钮(text) | 透明 | 品牌绿 `info 5` / `Title` | — | — | 按需 |
+| 文本按钮(text) | 透明 | 品牌绿 `Dots Accent Fill` / `Title` | — | — | 按需 |
 | 禁用态 | 对应底色 opacity 40% | 对应文字色 opacity 40% | 同上 | 同上 | 同上 |
 
 **按钮尺寸规范：**
@@ -757,8 +634,8 @@ button { font-family: inherit; }
 | 状态 | 背景 | 文字色 | 边框 | 圆角 |
 |------|------|--------|------|------|
 | 默认 | `Inverted Fill 1` | `Paragraph` | 0.5px `Separator 2` | 12px |
-| 选中 | `info 5` 10% | `info 5` 加深 | 1px `info 5` | 12px |
-| 禁用 | `Disabled` | `Description Lighter` | — | 12px |
+| 选中 | `Dots Accent Fill` 10% | `Dots Accent Fill` 加深 | 1px `Dots Accent Fill` | 12px |
+| 禁用 | `Disabled` | `Description` | — | 12px |
 
 **标签尺寸：**
 - 高度 28px, padding 8px 14px, 字号 14px
@@ -767,11 +644,11 @@ button { font-family: inherit; }
 
 | 元素 | Token |
 |------|-------|
-| 容器背景 | `Fill A` 或 `Bg 3` |
+| 容器背景 | `Bg` 或 `Bg 2` |
 | 文字 | `Title` |
 | 占位文字 | `Placeholder` |
 | 边框(默认) | 1px `Separator 2` |
-| 边框(聚焦) | 1px `info 5` |
+| 边框(聚焦) | 1px `Dots Accent Fill` |
 | 圆角 | 8px |
 | 行高 | 单行 44px, 多行按内容 |
 | 前缀图标 | 24px, `Description` 色 |
@@ -783,7 +660,7 @@ button { font-family: inherit; }
 | 状态 | 形状 | 背景 | 边框 | 图标色 |
 |------|------|------|------|--------|
 | 未选中 | 圆形 20px | 透明 | 1.5px `Description` | — |
-| 选中 | 圆形 20px | `info 5` | — | 白色勾 |
+| 选中 | 圆形 20px | `Dots Accent Fill` | — | 白色勾 |
 | 禁用未选中 | 圆形 20px | 透明 | 1.5px `Disabled` | — |
 
 ### 11.16 分割线
@@ -797,8 +674,8 @@ button { font-family: inherit; }
 
 | 元素 | Token |
 |------|-------|
-| 遮罩 | `Mask Bg 2` (#000000 40%) |
-| 面板背景 | `Bg 3` (#FFFFFF) |
+| 遮罩 | `Mask Bg` (#000000 40%) |
+| 面板背景 | `Bg 2` (#FFFFFF) |
 | 面板圆角 | 20px 20px 0 0 |
 | 拖拽条 | 36×4px, `Disabled`, 圆角 2px |
 | 标题 | `Title`, 16px, 600 |
@@ -829,7 +706,7 @@ button { font-family: inherit; }
 ```
 Bg (最底层，页面)
  └─ Bg 1 (中间层，栏/工具条)
-     └─ Bg 3 / Fill 5 (顶层，卡片/面板/弹窗)
+     └─ Bg 2 / Fill 5 (顶层，卡片/面板/弹窗)
          └─ Inverted Fill 1~2 (卡片内的子区域)
 ```
 
@@ -843,7 +720,7 @@ Bg (最底层，页面)
 Title (100%)     → 标题、正文、关键信息
 Paragraph (80%)  → 副标题、段落、图标
 Description (60%) → 描述、辅助信息、标签
-Description Lighter (40%) → 更轻的提示
+Description (40%) → 更轻的提示
 Placeholder (16%) → 占位、loading
 Disabled (9%)    → 禁用态
 ```
@@ -855,7 +732,7 @@ Disabled (9%)    → 禁用态
 圆角从外层到内层递减，形成包含关系：
 
 ```
-设备外壳: 54px
+设备外壳: 80px
  └─ 富文本卡片: 36px
      └─ 气泡/普通卡片: 22px
          └─ 输入框/标签: 16px / 12px
@@ -896,8 +773,8 @@ shadow 3 (20%)  → 极少使用，仅全屏面板
 ```
 Separator (75% 白色)  → 用户气泡边框（亮色模式下几乎不可见）
 Separator 2 (8%)      → 最常用：AI 气泡、卡片内部元素、分割线
-Separator 3 (10%)     → 输入框边框
-Separator 4 (20%)     → 较重的容器边框
+Separator 2 (10%)     → 输入框边框
+Light Separator 2 (20%)     → 较重的容器边框
 ```
 
 **规则**：边框粗细统一 0.5px。不要使用 1px 以上的边框（按钮除外）。当有阴影时，边框可以省略。
@@ -971,7 +848,7 @@ Separator 4 (20%)     → 较重的容器边框
 }
 
 .list-item__arrow {
-  color: var(--description-lighter); /* Description Lighter 40% */
+  color: var(--description); /* Description 40% */
 }
 ```
 
@@ -1007,7 +884,7 @@ Separator 4 (20%)     → 较重的容器边框
     --title: rgba(255,255,255,.94);
     --paragraph: rgba(255,255,255,.8);
     --description: rgba(255,255,255,.6);
-    --description-lighter: rgba(255,255,255,.4);
+    --description: rgba(255,255,255,.4);
     --placeholder: rgba(255,255,255,.16);
     --separator2: rgba(255,255,255,.08);
     --shadow-card: 0 4px 10px rgba(20,20,20,.08);

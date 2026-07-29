@@ -235,6 +235,7 @@ function ConversationTimestampPage() {
             只有当时间间隔让上下文可能断开时才出现。
           </p>
           <div className="docs-timestamp-checks">
+            {/* token-lint-disable-line 这里展示 dialog-time 的规范值，不是布局声明 */}
             <span>13px dialog-time</span>
             <span>Placeholder 色</span>
             <span>不带背景</span>

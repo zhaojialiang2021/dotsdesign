@@ -3,7 +3,7 @@
   "slug": "button",
   "name": "Button",
   "category": "action",
-  "description": "触发即时任务的动作单元。Dots Button 继承 ReDs 的六档尺寸、宽度和场景规则，主色映射为 info 5，图底场景使用 ghost。",
+  "description": "触发即时任务的动作单元。Dots Button 继承 ReDs 的六档尺寸、宽度和场景规则，主色映射为 Dots Accent Fill，图底场景使用 ghost。",
   "props": {
     "variant": {
       "values": [
@@ -94,18 +94,18 @@
     }
   ],
   "tokens": {
-    "variant.filled.bg": "info-5",
-    "variant.filled.fg": "bg-light",
-    "variant.filled.border": "info-5",
+    "variant.filled.bg": "dots-accent-fill",
+    "variant.filled.fg": "always-white",
+    "variant.filled.border": "dots-accent-fill",
     "variant.outline.bg": "transparent",
-    "variant.outline.fg": "info-6",
-    "variant.outline.border": "info-6",
+    "variant.outline.fg": "dots-accent-text",
+    "variant.outline.border": "dots-accent-border",
     "variant.neutral.bg": "transparent",
     "variant.neutral.fg": "title",
     "variant.neutral.border": "separator-2",
-    "variant.ghost.bg": "fill-c",
-    "variant.ghost.fg": "bg-light",
-    "variant.ghost.border": "separator-light-5",
+    "variant.ghost.bg": "dark-fill-5",
+    "variant.ghost.fg": "always-white",
+    "variant.ghost.border": "light-separator-2",
     "state.disabled.bg": "disabled",
     "state.disabled.fg": "placeholder",
     "size.xLarge.height": "48px",
@@ -175,7 +175,7 @@
     ],
     "dont": [
       "不要在同一视图放两个 variant=filled 的按钮。",
-      "不要把小红书红 --primary 用作点点主按钮。",
+      "不要把小红书红 --xhs-red 用作点点主按钮。",
       "不要在图底按钮上展示 disabled 态。",
       "不要让 xLarge 或 micro 成为默认尺寸。",
       "不要在 button 内嵌 button 或链接。"
@@ -190,7 +190,7 @@
     ],
     "validation": [
       "同一视图 filled 不超过 1 个。",
-      "filled 背景为 info 5，文字为纯白。",
+      "filled 背景为 Dots Accent Fill，文字为固定白色。",
       "fullWidth 只出现在主流程、表单底部或固定操作栏。"
     ]
   }

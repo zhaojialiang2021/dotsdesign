@@ -8,16 +8,21 @@ export function DemoFrame({
   stage,
   controls,
   caption,
+  title,
+  description,
   code,
 }: {
   stage: ReactNode
-  controls: ReactNode
+  controls?: ReactNode
   caption?: string
+  title?: string
+  description?: string
   /** 当前 props 序列化的 JSX 字符串。提供时显示「复制 JSX」按钮 */
   code?: string
 }) {
   const t = useT()
   const { show, node: toastNode } = useToast()
+  const hasIntro = Boolean(title || description)
 
   function copy() {
     if (!code) return
@@ -29,12 +34,25 @@ export function DemoFrame({
 
   return (
     <>
-      <div className="docs-demo">
+      <div
+        className={[
+          'docs-demo',
+          controls ? 'docs-demo--with-controls' : 'docs-demo--stage-only',
+          hasIntro ? 'docs-demo--with-intro' : '',
+        ].join(' ')}
+      >
+        {hasIntro ? (
+          <div className="docs-demo__intro">
+            {caption ? <div className="docs-demo__eyebrow">{caption}</div> : null}
+            {title ? <h3 className="docs-demo__title">{title}</h3> : null}
+            {description ? <p className="docs-demo__description">{description}</p> : null}
+          </div>
+        ) : null}
         <div className="docs-demo__stage">
-          {caption ? <div className="docs-stage__caption">{caption}</div> : null}
+          {!hasIntro && caption ? <div className="docs-stage__caption">{caption}</div> : null}
           <div className="docs-stage__inner">{stage}</div>
         </div>
-        <div className="docs-demo__controls">{controls}</div>
+        {controls ? <div className="docs-demo__controls">{controls}</div> : null}
       </div>
       {code && (
         <div className="docs-demo__code-wrap">

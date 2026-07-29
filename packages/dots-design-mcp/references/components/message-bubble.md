@@ -29,7 +29,7 @@ MessageBubble 是点点对话流的核心 Component Harness，不是普通气泡
 | 属性 | User | Dots |
 |------|------|------|
 | 对齐 | 右对齐 | 左对齐 |
-| 背景 | 弱灰填充 | `Fill A` |
+| 背景 | 弱灰填充 | `Bg` |
 | 边框 | 0.5px 白色弱描边 | 无 |
 | 圆角 | 单行 18px，多行 22px | 单行 18px，多行 22px |
 | padding | 12px 16px | 12px 16px |
@@ -73,7 +73,7 @@ response 卡片属于 Dots 消息体，不是浮层。
 | 属性 | 值 |
 |------|------|
 | 宽度 | 361px |
-| 背景 | `Fill A` |
+| 背景 | `Bg` |
 | 边框 | 0.5px `Separator 2` |
 | 圆角 | 22px |
 | padding | 20px 16px |

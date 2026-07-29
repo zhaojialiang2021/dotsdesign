@@ -29,7 +29,7 @@
         true
       ],
       "default": false,
-      "description": "是否可点击。true 时 hover 加 fill-quaternary 背景，cursor=pointer"
+      "description": "是否可点击。true 时 hover 加 Fill 1 背景，cursor=pointer"
     }
   },
   "states": [
@@ -57,7 +57,7 @@
   ],
   "tokens": {
     "default.bg": "transparent",
-    "default.border": "line-non-opaque",
+    "default.border": "separator-2",
     "tinted.bg": "bg-1",
     "tinted.border": "transparent",
     "elevated.bg": "bg-0",
@@ -68,7 +68,7 @@
     "padding.compact": "space-3",
     "padding.standard": "space-4",
     "padding.comfortable": "space-5",
-    "interactive.hover.bg": "fill-quaternary"
+    "interactive.hover.bg": "fill-1"
   },
   "anatomy": [
     {

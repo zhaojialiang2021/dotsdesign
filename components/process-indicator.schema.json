@@ -1,0 +1,95 @@
+{
+  "$schema": "https://dots.design/schemas/component.schema.json",
+  "slug": "process-indicator",
+  "name": "ProcessIndicator",
+  "category": "conversation",
+  "description": "AI 回答过程状态组件。用封闭语义映射阅读、洞察、思考、文档、检查、搜索、工具调用、亮点和完成状态，避免页面直接依赖 Lottie 资源。",
+  "harness": {
+    "semantic": "表达 AI 当前处于思考、工具调用、搜索或完成阶段，只负责状态呈现，不负责推进回答流程。",
+    "generation": [
+      "先根据业务阶段选择 kind，不允许按动画外观随意选择。",
+      "根据阅读、洞察、思考、文档、检查、搜索、工具调用和亮点语义选择 kind。",
+      "只有当前最新过程播放动画；历史过程停在第一帧或进入 complete。"
+    ],
+    "validation": [
+      "kind 必须命中 schema 中的封闭枚举。",
+      "页面不得直接引用 Lottie JSON 文件。",
+      "prefers-reduced-motion=true 时 Lottie 必须停在第一帧。",
+      "完成态必须使用设计资源，不能用 CSS 手画对勾。"
+    ]
+  },
+  "props": {
+    "kind": {
+      "values": ["reading", "insight", "thinking", "document", "review", "search", "tool-call", "highlight", "complete"],
+      "default": "thinking",
+      "description": "过程语义。组件内部把语义映射到固定 Lottie 或完成对勾资源。"
+    },
+    "playing": {
+      "values": [true, false],
+      "default": true,
+      "description": "是否播放当前 Lottie。false 时停在第一帧；complete 不受该属性影响。"
+    },
+    "loop": {
+      "values": [true, false],
+      "default": true,
+      "description": "是否循环播放。持续过程使用 true，一次性演示可使用 false。"
+    }
+  },
+  "states": ["playing", "paused", "complete", "reduced-motion"],
+  "constraints": [
+    {
+      "rule": "semantic_asset_mapping_is_closed",
+      "value": true,
+      "description": "业务只能选择 kind，不能把 Lottie URL 作为 prop 传入。"
+    },
+    {
+      "rule": "default_slot_size",
+      "value": "36px",
+      "description": "默认状态位为 36×36px；紧凑列表由父级缩放到 32px 或 24px。"
+    },
+    {
+      "rule": "motion_respects_user_setting",
+      "value": true,
+      "description": "减少动态效果开启时，动画必须停在第一帧。"
+    },
+    {
+      "rule": "process_state_is_controlled",
+      "value": true,
+      "description": "kind 和 playing 由上层状态机传入，组件内部不能自行推进回答流程。"
+    }
+  ],
+  "tokens": {
+    "slot.size": "36px",
+    "transition.duration": "duration-expand",
+    "transition.curve": "curve-out"
+  },
+  "anatomy": [
+    {
+      "part": "slot",
+      "tokens": ["slot.size"],
+      "description": "稳定占位，避免状态切换时文字和连接线跳动。"
+    },
+    {
+      "part": "motion",
+      "tokens": ["transition.duration", "transition.curve"],
+      "description": "thinking、tool-call 和 search 对应的 Lottie 渲染层。"
+    },
+    {
+      "part": "complete-icon",
+      "description": "完成态设计资源，与 Lottie 在同一位置原地切换。"
+    }
+  ],
+  "doDont": {
+    "do": [
+      "根据回答状态机选择 kind。",
+      "只让当前最新过程播放。",
+      "独立使用且没有可见文案时提供 label。"
+    ],
+    "dont": [
+      "不要在页面里直接 import Lottie JSON。",
+      "不要把动画当装饰随机使用。",
+      "不要让组件内部猜测回答流程。",
+      "不要忽略减少动态效果设置。"
+    ]
+  }
+}

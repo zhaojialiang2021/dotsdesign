@@ -29,8 +29,8 @@
 │   ├── Web 端内测 (Deco-Sky 图标, "邀请好友获取")
 │   └── Live 图发送 (Deco-Teal 图标, "即将上线")
 ├── 底部渐变 + CTA 按钮
-│   └── "邀请好友 获得限时奖励" (`info 5` CTA, radius.cta 24px)
-└── 邀请码卡片 (`Bg 3`, 0.5px `Separator 2`, radius.bubble 22px)
+│   └── "邀请好友 获得限时奖励" (`Dots Accent Fill` CTA, radius.cta 24px)
+└── 邀请码卡片 (`Bg 2`, 0.5px `Separator 2`, radius.bubble 22px)
     ├── 标题 "填写邀请码，获得新人礼包 🎁"
     ├── 副标题 "可领取时间碎片、音视频解析等能力"
     ├── "填写领取" 按钮 (品牌色 0.1 透明度背景, 品牌色文字)

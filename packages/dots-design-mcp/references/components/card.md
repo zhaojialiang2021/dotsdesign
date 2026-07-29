@@ -84,7 +84,7 @@ used_by: [dotted-demo, message-bubble, rich-text]
 
 | 属性 | 值 |
 |------|------|
-| 外框 | `Fill A`，12px 圆角，0.4px `Separator 2` |
+| 外框 | `Bg`，12px 圆角，0.4px `Separator 2` |
 | padding | leading 4px，trailing 8px，vertical 4px |
 | 缩略图 | 44×44px，8px 圆角 |
 | 标题 | 单行截断 |

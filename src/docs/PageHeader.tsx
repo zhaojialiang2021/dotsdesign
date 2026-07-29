@@ -5,13 +5,13 @@ import { type ReactNode } from 'react'
  *
  * 两种用法（按 page 类型选）：
  *
- * 1. <DocsPageHeader>      —— 详情页用。h1 = 28-30px，subtitle 15px。
+ * 1. <DocsPageHeader>      —— 详情页用。h1 = 36px，subtitle 16px。
  *    Foundations / Components / Patterns 子页 / AI Workflows / Changelog / Tokens / Pages / Writing
  *
- * 2. <DocsHero>            —— 入口页用。h1 = 36-44px，subtitle 17px。
+ * 2. <DocsHero>            —— 入口页用。h1 = 36px，subtitle 17px。
  *    DocsHome / Patterns 索引 / 404
  *
- * 选用规则：详情页用 PageHeader，引导/概览页用 Hero。两者字号梯度有意拉开。
+ * 选用规则：详情页用 PageHeader，引导/概览页用 Hero。两者主标题字号一致，容器语义不同。
  */
 
 type Props = {
@@ -29,8 +29,8 @@ export function DocsPageHeader({ eyebrow, title, subtitle, actions, meta }: Prop
         {eyebrow && <div className="docs-page-header__eyebrow">{eyebrow}</div>}
         <h1 className="docs-page-header__title">{title}</h1>
         {subtitle && <p className="docs-page-header__subtitle">{subtitle}</p>}
+        {actions && <div className="docs-page-header__actions">{actions}</div>}
       </div>
-      {actions && <div className="docs-page-header__actions">{actions}</div>}
       {meta && <div className="docs-page-header__meta">{meta}</div>}
     </header>
   )

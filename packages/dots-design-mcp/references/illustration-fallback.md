@@ -52,8 +52,8 @@
 
 推荐主色：
 
-- `info 5` / `#6FD2BD`
-- `info 4` / `rgba(111,210,189,0.3)`
+- `Dots Accent Fill` / `#56D1BF`
+- `Dots Accent Highlight` / `rgba(111,210,189,0.3)`
 - Deco-Teal `#81D5CA`
 - Deco-Sky `#84B1EB`
 - Deco-Lavender `#9F8CCF`

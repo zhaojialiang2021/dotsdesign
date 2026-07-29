@@ -9,11 +9,11 @@ import { DocsHero } from '../PageHeader'
  */
 export function DocsHome() {
   return (
-    <>
+    <div className="docs-intro-page">
       <DocsHero
         title={
           <>
-            给 AI 也设计的<em>设计系统</em>
+            与 AI 协作的<em>设计系统</em>
           </>
         }
         lead="Dots 把设计意图写成可读取、可生成、可检查的契约。文档是真相源，组件和页面是验证夹具，AI agent 先读规则再生成界面。"
@@ -28,25 +28,28 @@ export function DocsHome() {
         }
       />
 
-      <section className="docs-section-block">
-        <h2 className="docs-section-block__heading">Dots 是什么</h2>
+      <section className="docs-section-block docs-section-block--pillars">
+        <h2 className="docs-section-block__heading">Dots Design System 是什么</h2>
         <p className="docs-section-block__subheading">
           这不是组件陈列页，而是一套让人和 AI 共同执行的设计系统。
         </p>
-        <div className="docs-problem-grid">
+        <div className="docs-problem-grid docs-problem-grid--pillars">
           <div className="docs-problem">
+            <Icon.Check className="docs-problem__icon" size={24} aria-hidden="true" />
             <div className="docs-problem__num">Token 是边界</div>
             <p className="docs-problem__text">
               颜色、字号、间距、圆角和动效都来自封闭令牌，减少随手写值带来的偏差。
             </p>
           </div>
           <div className="docs-problem">
+            <Icon.Layers className="docs-problem__icon" size={24} aria-hidden="true" />
             <div className="docs-problem__num">组件是契约</div>
             <p className="docs-problem__text">
               每个组件都说明语义、状态、约束和验收方式，开发和 agent 都按同一份规则实现。
             </p>
           </div>
           <div className="docs-problem">
+            <Icon.FileJson className="docs-problem__icon" size={24} aria-hidden="true" />
             <div className="docs-problem__num">Demo 是验证</div>
             <p className="docs-problem__text">
               页面 demo 用真实业务流检查组件组合是否成立，结论再回写成下一次可复用的规范。
@@ -67,12 +70,14 @@ export function DocsHome() {
               从需求进入，确认场景、目标、状态和验收标准。复杂需求先拆成可验证的页面或组件。
             </p>
           </div>
+          <Icon.ChevronRight className="docs-flow-arrow" size={18} aria-hidden="true" />
           <div className="docs-problem">
             <div className="docs-problem__num">2. 读取规则</div>
             <p className="docs-problem__text">
               按 strategy、persona、tokens、principles、haptics 和目标文档读取，先对齐系统边界。
             </p>
           </div>
+          <Icon.ChevronRight className="docs-flow-arrow" size={18} aria-hidden="true" />
           <div className="docs-problem">
             <div className="docs-problem__num">3. 生成与检查</div>
             <p className="docs-problem__text">
@@ -93,11 +98,13 @@ export function DocsHome() {
             <div className="docs-stat__value">MCP</div>
             <div className="docs-stat__hint">agent 获取规则、页面模板和 demo 工作流。</div>
           </div>
+          <Icon.ChevronRight className="docs-flow-arrow" size={18} aria-hidden="true" />
           <div className="docs-stat">
             <div className="docs-stat__label">再做</div>
             <div className="docs-stat__value">Demo</div>
             <div className="docs-stat__hint">基于真实页面基座生成，不脱离产品场景。</div>
           </div>
+          <Icon.ChevronRight className="docs-flow-arrow" size={18} aria-hidden="true" />
           <div className="docs-stat">
             <div className="docs-stat__label">最后收敛</div>
             <div className="docs-stat__value">Docs</div>
@@ -112,6 +119,10 @@ export function DocsHome() {
           按当前任务选入口。做页面看 demo，接入 AI 看工作流，落地实现看 token 和组件。
         </p>
         <div className="docs-explore__grid">
+          <div className="docs-explore__header" aria-hidden="true">
+            <span>入口</span>
+            <span>说明</span>
+          </div>
           <ExploreLink
             label="AI 工作流"
             desc="npm / MCP 接入和 demo 制作规则"
@@ -149,7 +160,7 @@ export function DocsHome() {
           />
         </div>
       </section>
-    </>
+    </div>
   )
 }
 
@@ -164,11 +175,9 @@ function ExploreLink({
 }) {
   return (
     <button className="docs-explore__item" onClick={onClick}>
-      <div className="docs-explore__label">
-        {label}
-        <Icon.ChevronRight size={14} />
-      </div>
+      <div className="docs-explore__label">{label}</div>
       <div className="docs-explore__desc">{desc}</div>
+      <Icon.ChevronRight className="docs-explore__arrow" size={14} />
     </button>
   )
 }

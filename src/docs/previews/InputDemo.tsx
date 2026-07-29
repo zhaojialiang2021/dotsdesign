@@ -64,7 +64,9 @@ export function InputDemo() {
 
   return (
     <DemoFrame
-      caption="Input / TextField · Live"
+      caption="Input / TextField"
+      title="真实输入与状态联动"
+      description="直接输入或切换状态，检查前后缀、清除动作、字数限制和错误反馈是否保持同一布局节奏。"
       code={code}
       stage={
         <div className="dots-input-spec" data-state={effectiveState}>

@@ -13,8 +13,8 @@ used_by: [dotted-demo, skill-selector, rich-card]
 
 | 属性 | 默认态 | 选中态 |
 |------|------|------|
-| 背景 | `Inverted Fill 1` | `Bg 3` |
-| 边框 | 0.5px `Separator 2` | 0.5px `info 5` |
+| 背景 | `Inverted Fill 1` | `Bg 2` |
+| 边框 | 0.5px `Separator 2` | 0.5px `Dots Accent Border` |
 | 字色 | `Description` | `Title` |
 | icon 色 | `Description` | `Title` |
 | 圆角 | `radius.tag` 20px | `radius.tag` 20px |

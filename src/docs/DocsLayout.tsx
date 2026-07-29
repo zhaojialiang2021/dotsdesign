@@ -228,6 +228,9 @@ function SystemNav({ route }: { route: DocsRoute }) {
         <NavItem href="/docs/ai-workflows" active={route.kind === 'ai-workflows'}>
           {t('nav.ai-workflows')}
         </NavItem>
+        <NavItem href="/docs/principles" active={route.kind === 'principles'}>
+          {t('nav.principles')}
+        </NavItem>
       </Section>
 
       <Section title={t('group.foundations')}>
@@ -260,12 +263,6 @@ function SystemNav({ route }: { route: DocsRoute }) {
           active={foundationsActive && route.sub === 'motion'}
         >
           {t('foundation.motion')}
-        </NavItem>
-      </Section>
-
-      <Section title={t('group.guidelines')}>
-        <NavItem href="/docs/principles" active={route.kind === 'principles'}>
-          {t('nav.principles')}
         </NavItem>
         <NavItem href="/docs/haptics" active={route.kind === 'haptics'}>
           {t('nav.haptics')}

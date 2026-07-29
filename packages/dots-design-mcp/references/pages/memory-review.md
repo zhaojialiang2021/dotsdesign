@@ -20,10 +20,10 @@
 │       └── Placeholder "搜索你的回忆"
 ├── 推荐标签区 (横向滚动)
 │   └── 推荐卡片 × N (168×58px, 带渐变背景和阴影)
-│       ├── 标题 (14px Medium, `info 5`)
+│       ├── 标题 (14px Medium, `Dots Accent Fill`)
 │       └── 副标题 (12px, Label-Secondary)
 ├── 筛选标签栏 (横向)
-│   ├── "全部" (选中态: `info 5` 背景, `Light Title` 文字)
+│   ├── "全部" (选中态: `Dots Accent Fill` 背景, `Light Title` 文字)
 │   ├── "年" / "月" / "周" (未选中: BG-2 背景, Label-Tertiary 文字)
 │   └── 圆角 8px, 内边距 8px 上下
 ├── 记忆卡片列表 (16px 边距, 12px 卡片间距)
@@ -34,7 +34,7 @@
 │       │   ├── 语音条 (半透明背景, 时长 + 语音图标)
 │       │   ├── 链接摘要 + 缩略图 (68px)
 │       │   └── 来源标记 (14px favicon + 来源名, Label-Tertiary)
-│       └── 背景 `Bg 3` 或 `Bg 1`
+│       └── 背景 `Bg 2` 或 `Bg 1`
 └── HomeIndicator
 ```
 
@@ -45,8 +45,8 @@
 - 页面背景 `Bg`
 - 顶部 NavBar 有毛玻璃效果 (backdrop-blur: 40px)
 - 推荐卡片有渐变背景 + 微阴影，这是特殊场景，遵循"品牌展示区可豁免渐变"的约定
-- 记忆卡片背景：统一为 `Bg 3`
-- 筛选标签选中态背景：`info 5` (#6FD2BD)，文字 `Light Title`
+- 记忆卡片背景：统一为 `Bg 2`
+- 筛选标签选中态背景：`Dots Accent Fill` (#56D1BF)，文字 `Light Title`
 - 筛选标签未选中态背景：BG-2，文字 #BFBFC1
 
 ---

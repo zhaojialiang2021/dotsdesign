@@ -61,27 +61,17 @@ export function ButtonDemo() {
                 立即查看
               </DotsButton>
             </div>
-          </section>
-
-          <section className="dots-button-spec__matrix" aria-label="尺寸矩阵">
-            {SIZES.map((item) => (
-              <div className="dots-button-spec__row" key={item}>
-                <div className="dots-button-spec__row-label">
-                  <strong>{item}</strong>
-                  <span>{sizeMeta[item].label}</span>
-                  <em>{sizeMeta[item].scene}</em>
-                </div>
-                <DotsButton variant="filled" size={item}>
-                  关注
-                </DotsButton>
-                <DotsButton variant="outline" size={item}>
-                  添加
-                </DotsButton>
-                <DotsButton variant="neutral" size={item}>
-                  已关注
-                </DotsButton>
-              </div>
-            ))}
+            <aside className="dots-button-spec__controls" aria-label="属性控制">
+              <DemoControl label="variant">
+                <PropPicker options={VARIANTS} value={variant} onChange={setVariant} />
+              </DemoControl>
+              <DemoControl label="size">
+                <PropPicker options={SIZES} value={size} onChange={setSize} />
+              </DemoControl>
+              <DemoControl label="fullWidth">
+                <PropPicker options={[false, true] as const} value={fullWidth} onChange={setFullWidth} />
+              </DemoControl>
+            </aside>
           </section>
 
           <section className="dots-button-spec__scenarios" aria-label="典型场景">
@@ -106,26 +96,40 @@ export function ButtonDemo() {
               </DotsButton>
             </Scenario>
           </section>
+
+          <section className="dots-button-spec__matrix" aria-label="尺寸矩阵">
+            <div className="dots-button-spec__matrix-header" aria-hidden="true">
+              <span>Size</span>
+              <span>Filled</span>
+              <span>Outline</span>
+              <span>Neutral</span>
+            </div>
+            {SIZES.map((item) => (
+              <div className="dots-button-spec__row" key={item}>
+                <div className="dots-button-spec__row-label">
+                  <strong>{item}</strong>
+                  <span>{sizeMeta[item].label}</span>
+                  <em>{sizeMeta[item].scene}</em>
+                </div>
+                <DotsButton variant="filled" size={item}>
+                  关注
+                </DotsButton>
+                <DotsButton variant="outline" size={item}>
+                  添加
+                </DotsButton>
+                <DotsButton variant="neutral" size={item}>
+                  已关注
+                </DotsButton>
+              </div>
+            ))}
+          </section>
         </div>
-      }
-      controls={
-        <>
-          <DemoControl label="variant">
-            <PropPicker options={VARIANTS} value={variant} onChange={setVariant} />
-          </DemoControl>
-          <DemoControl label="size">
-            <PropPicker options={SIZES} value={size} onChange={setSize} />
-          </DemoControl>
-          <DemoControl label="fullWidth">
-            <PropPicker options={[false, true] as const} value={fullWidth} onChange={setFullWidth} />
-          </DemoControl>
-        </>
       }
     />
   )
 }
 
-function DotsButton({
+export function DotsButton({
   variant,
   size,
   fullWidth = false,

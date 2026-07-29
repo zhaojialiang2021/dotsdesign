@@ -32,7 +32,9 @@ export function CardDemo() {
 
   return (
     <DemoFrame
-      caption="Card · Live"
+      caption="Card"
+      title="内容层级与交互表面"
+      description="切换表面层级、内边距和交互状态，检查卡片是否只在必要时表达边界与点击反馈。"
       code={code}
       stage={
         <div

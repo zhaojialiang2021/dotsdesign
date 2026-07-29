@@ -46,7 +46,9 @@ export function EmptyStateDemo() {
 
   return (
     <DemoFrame
-      caption="Empty State · Live"
+      caption="Empty State"
+      title="状态文案与行动入口"
+      description="在不同空状态间切换，检查插图、标题、说明和主次操作是否共同指向下一步。"
       code={code}
       stage={
         <div

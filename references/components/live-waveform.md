@@ -68,9 +68,9 @@ LiveWaveform 是点点语音与 AI 处理链路里的状态组件。它复刻的
 
 | Tone | Active | Idle | Processing | 用途 |
 |---|---|---|---|---|
-| `brand` | `info 5` | `Separator 2` | `info 6` | 默认浅底语音状态 |
-| `ink` | `Title` | `Description Lighter` | `Paragraph` | 文本密集或低彩场景 |
-| `inverse` | `Bg Light` | `Separator 4` | `Bg Light` | 深色、图片或反色背景 |
+| `brand` | `Dots Accent Fill` | `Separator 2` | `Dots Accent Text` | 默认浅底语音状态 |
+| `ink` | `Title` | `Description` | `Paragraph` | 文本密集或低彩场景 |
+| `inverse` | `White` | `Light Separator 2` | `White` | 深色、图片或反色背景 |
 
 `listening` 的波形可以实时变化，语音输入条本身的入场/出场只做颜色和透明度过渡，不做弹跳位移，避免让用户误解控件位置发生变化。
 

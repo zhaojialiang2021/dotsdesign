@@ -1,5 +1,5 @@
 {
-  "$generatedAt": "2026-06-24T03:53:58.557Z",
+  "$generatedAt": "2026-07-28T11:27:18.603Z",
   "$count": 7,
   "components": [
     {
@@ -7,7 +7,7 @@
       "slug": "button",
       "name": "Button",
       "category": "action",
-      "description": "触发即时任务的动作单元。Dots Button 继承 ReDs 的六档尺寸、宽度和场景规则，主色映射为 info 5，图底场景使用 ghost。",
+      "description": "触发即时任务的动作单元。Dots Button 继承 ReDs 的六档尺寸、宽度和场景规则，主色映射为 Dots Accent Fill，图底场景使用 ghost。",
       "props": {
         "variant": {
           "values": [
@@ -98,18 +98,18 @@
         }
       ],
       "tokens": {
-        "variant.filled.bg": "info-5",
-        "variant.filled.fg": "bg-light",
-        "variant.filled.border": "info-5",
+        "variant.filled.bg": "dots-accent-fill",
+        "variant.filled.fg": "always-white",
+        "variant.filled.border": "dots-accent-fill",
         "variant.outline.bg": "transparent",
-        "variant.outline.fg": "info-6",
-        "variant.outline.border": "info-6",
+        "variant.outline.fg": "dots-accent-text",
+        "variant.outline.border": "dots-accent-border",
         "variant.neutral.bg": "transparent",
         "variant.neutral.fg": "title",
         "variant.neutral.border": "separator-2",
-        "variant.ghost.bg": "fill-c",
-        "variant.ghost.fg": "bg-light",
-        "variant.ghost.border": "separator-light-5",
+        "variant.ghost.bg": "dark-fill-5",
+        "variant.ghost.fg": "always-white",
+        "variant.ghost.border": "light-separator-2",
         "state.disabled.bg": "disabled",
         "state.disabled.fg": "placeholder",
         "size.xLarge.height": "48px",
@@ -179,7 +179,7 @@
         ],
         "dont": [
           "不要在同一视图放两个 variant=filled 的按钮。",
-          "不要把小红书红 --primary 用作点点主按钮。",
+          "不要把小红书红 --xhs-red 用作点点主按钮。",
           "不要在图底按钮上展示 disabled 态。",
           "不要让 xLarge 或 micro 成为默认尺寸。",
           "不要在 button 内嵌 button 或链接。"
@@ -194,7 +194,7 @@
         ],
         "validation": [
           "同一视图 filled 不超过 1 个。",
-          "filled 背景为 info 5，文字为纯白。",
+          "filled 背景为 Dots Accent Fill，文字为固定白色。",
           "fullWidth 只出现在主流程、表单底部或固定操作栏。"
         ]
       }
@@ -230,7 +230,7 @@
             true
           ],
           "default": false,
-          "description": "是否可点击。true 时 hover 加 fill-quaternary 背景，cursor=pointer"
+          "description": "是否可点击。true 时 hover 加 Fill 1 背景，cursor=pointer"
         }
       },
       "states": [
@@ -258,7 +258,7 @@
       ],
       "tokens": {
         "default.bg": "transparent",
-        "default.border": "line-non-opaque",
+        "default.border": "separator-2",
         "tinted.bg": "bg-1",
         "tinted.border": "transparent",
         "elevated.bg": "bg-0",
@@ -269,7 +269,7 @@
         "padding.compact": "space-3",
         "padding.standard": "space-4",
         "padding.comfortable": "space-5",
-        "interactive.hover.bg": "fill-quaternary"
+        "interactive.hover.bg": "fill-1"
       },
       "anatomy": [
         {
@@ -383,13 +383,13 @@
       "tokens": {
         "container.padding": "space-7",
         "title.font": "headline-h3",
-        "title.color": "label-primary",
+        "title.color": "title",
         "description.font": "body-secondary",
-        "description.color": "label-secondary",
+        "description.color": "description",
         "title.gap": "space-3",
         "description.gap": "space-2",
         "action.gap": "space-5",
-        "icon.color": "label-tertiary",
+        "icon.color": "placeholder",
         "icon.size.icon": "64px",
         "icon.size.spot": "120px",
         "icon.size.scene": "200px"
@@ -557,8 +557,8 @@
         "field.error.height": "78px",
         "container.padding-x": "space-4",
         "container.gap": "space-3",
-        "field.bg": "bg-light",
-        "extension.bg": "fill-tertiary",
+        "field.bg": "bg-base",
+        "extension.bg": "fill-1",
         "extension.radius": "radius-large",
         "text.font": "body-primary",
         "caption.font": "caption-2",
@@ -567,11 +567,11 @@
         "suffix.color": "description",
         "placeholder.color": "placeholder",
         "disabled.color": "disabled",
-        "action.color": "brand-blue-text",
-        "cursor.color": "brand-blue-text",
-        "selection.bg": "brand-blue-light",
-        "clear.bg": "fill-primary",
-        "error.bg": "info-base",
+        "action.color": "dots-accent-text",
+        "cursor.color": "dots-accent-text",
+        "selection.bg": "dots-accent-highlight",
+        "clear.bg": "fill-3",
+        "error.bg": "warning-soft",
         "error.text": "description",
         "icon.size": "24px",
         "clear.size": "20px",
@@ -651,7 +651,7 @@
         "dont": [
           "不要复用旧 search/password 输入框逻辑覆盖 TextField 规范。",
           "不要用 placeholder 当 label；需要 label 时在容器外单独提供。",
-          "不要把 --primary 小红书红用于光标、后缀按钮或聚焦反馈。",
+          "不要把 --xhs-red 小红书红用于光标、后缀按钮或聚焦反馈。",
           "不要在 focused 态改变容器尺寸，清除按钮出现不应造成布局跳动。",
           "不要把 ReDs 临时色直接提升为全局 token；需要沉淀时先补 token 文档。"
         ]
@@ -794,12 +794,12 @@
         }
       ],
       "tokens": {
-        "tone.brand.active": "brand-blue",
-        "tone.brand.processing": "info-6",
+        "tone.brand.active": "dots-accent-fill",
+        "tone.brand.processing": "dots-accent-text",
         "tone.brand.idle": "separator-2",
         "tone.ink.active": "title",
-        "tone.inverse.active": "bg-light",
-        "surface.bg": "fill-a",
+        "tone.inverse.active": "always-white",
+        "surface.bg": "bg-base",
         "surface.border": "separator-2",
         "surface.radius": "radius-inner-card",
         "size.compact.height": "64px",
@@ -878,7 +878,7 @@
         ],
         "validation": [
           "用户消息右对齐，Dots 消息左对齐。",
-          "用户气泡使用 Fill B，AI 文本气泡使用 Fill A，AI 卡片使用 Fill 5。",
+          "用户气泡使用 Fill 5，AI 文本气泡使用 Bg，AI 卡片使用 Fill 5。",
           "气泡尖角颜色必须与气泡背景一致。",
           "发送新消息后键盘收起，消息流滚动到最新。"
         ]
@@ -952,10 +952,10 @@
         }
       ],
       "tokens": {
-        "user.bg": "fill-b",
+        "user.bg": "fill-5",
         "user.fg": "title",
         "user.border": "separator-base",
-        "dots.bg": "fill-a",
+        "dots.bg": "bg-base",
         "dots.fg": "title",
         "dots.border": "separator-2",
         "ai-card.bg": "fill-5",
@@ -1092,8 +1092,8 @@
         "container.shadow": "shadow-modal",
         "container.radius.bottom": "radius-x-large radius-x-large 0px 0px",
         "container.radius.right": "radius-x-large 0px 0px radius-x-large",
-        "backdrop.bg": "color.backdrop",
-        "handle.bg": "fill-tertiary",
+        "backdrop.bg": "mask-bg",
+        "handle.bg": "fill-1",
         "handle.width": "36px",
         "handle.height": "4px",
         "padding": "space-5",

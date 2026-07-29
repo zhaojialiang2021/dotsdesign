@@ -38,6 +38,7 @@ Dots 的设计系统不是给 agent 自由发挥的素材库，而是 agent 的�
 |------|--------|--------|
 | strategy.md | 派发任务时 | 确认任务属于哪个 Track、要影响什么指标 |
 | design-tokens.md | 任何涉及视觉的操作 | 颜色/字号/间距/圆角/阴影的精确值 |
+| color-tokens.md | 涉及颜色时 | Light/Dark、Always Mode、品牌和语义色的完整定义 |
 | design-principles.md | 任何涉及判断的操作 | 每条规则的"为什么"（设计备注） |
 | haptics.md | 涉及交互的操作 | 5 级触觉意图和波形参数 |
 | framework-a.md | 画聊天流页面时 | 聊天流的结构和适配规则 |

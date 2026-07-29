@@ -27,7 +27,7 @@ Input 在组件规范中指 TextField 文本字段，不等同于点点对话页
 
 | variant | 尺寸 | 背景 | 圆角 | 用途 |
 |------|------|------|------|------|
-| field | 393 x 48px | Bg Light | 0 | 标准表单行、设置项输入。 |
+| field | 393 x 48px | `Bg Base` / `--bg-base` | 0 | 标准表单行、设置项输入；随站点主题切换。 |
 | extension | 361 x 48px | Fill 1 / 弱填充 | 12px | 半屏、卡片、局部拓展输入。 |
 
 field 的 error 态总高变为 78px：上方 48px 输入行，下方 18px 错误提示。extension 的 error 态仍然保持 48px，只改变容器底色。
@@ -51,7 +51,7 @@ field 的 error 态总高变为 78px：上方 48px 输入行，下方 18px 错�
 | prefix | dropdown | 文字 + 16px 下拉箭头，文字与箭头间距 4px。 |
 | suffix | text | 固定文字后缀。 |
 | suffix | limit | 实时字数，如 0/24。 |
-| suffix | link | 文本按钮，颜色使用点点品牌动作色 `info 5` / `--info-5`。 |
+| suffix | link | 文本按钮，颜色使用点点品牌动作色 `Dots Accent Text` / `--dots-accent-text`。 |
 | suffix | icon | 24px 图标。 |
 | suffix | image | 48 x 24px 图片。 |
 
@@ -62,17 +62,17 @@ field 的 error 态总高变为 78px：上方 48px 输入行，下方 18px 错�
 3. 点击清除后 value 置空，焦点仍停留在输入框。
 4. disabled 态不响应输入、清除和后缀 action。
 5. 状态切换不能改变水平布局节奏，前缀、输入文字、清除、后缀之间保持 12px 间距。
-6. 输入光标、文本选择、后缀文字按钮等聚焦/动作反馈统一使用点点品牌绿系 token：`--info-5` / `--info-4` / `--info-6`，禁止使用社区红 `--primary`。
+6. 输入光标、文本选择、后缀文字按钮等聚焦/动作反馈统一使用点点品牌 token：`--dots-accent-text` / `--dots-accent-highlight` / `--dots-accent-border`，禁止使用社区红 `--xhs-red`。
 7. placeholder 与 disabled 直接引用 `--placeholder` / `--disabled`，不要在组件内写临时 rgba。
 
 ## 光标与选区
 
 | 项 | Token | 说明 |
 |------|------|------|
-| caret | `info 6` / `--info-6` | 输入光标颜色，不能使用浏览器默认红色或社区红。 |
-| selection background | `info 4` / `--info-4` | 文本选中背景，保持品牌绿透明度。 |
-| suffix link | `info 5` / `--info-5` | 后缀文字按钮和可点击动作。 |
-| focus feedback | `Separator 3` / `--separator-3` + `info 4` | 聚焦时只强化可感知性，不改变行高和布局。 |
+| caret | `Dots Accent Text` / `--dots-accent-text` | 输入光标颜色，不能使用浏览器默认红色或社区红。 |
+| selection background | `Dots Accent Highlight` / `--dots-accent-highlight` | 文本选中背景。 |
+| suffix link | `Dots Accent Text` / `--dots-accent-text` | 后缀文字按钮和可点击动作。 |
+| focus feedback | `Separator 2` / `--separator-2` + `Dots Accent Border` | 聚焦时只强化可感知性，不改变行高和布局。 |
 
 ## 与对话页输入栏的关系
 

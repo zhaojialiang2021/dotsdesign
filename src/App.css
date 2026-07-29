@@ -2447,7 +2447,7 @@ body.is-preview *::-webkit-scrollbar {
   background: var(--dots-bg);
   box-shadow: 0 0 0 8px #ffffff;
   font-family: var(--font-component);
-  border-radius: 48px;
+  border-radius: var(--phone-radius);
   corner-shape: squircle;
 }
 
@@ -2746,6 +2746,7 @@ body.is-preview *::-webkit-scrollbar {
   --dots-reply-bubble: #ffffff;
   --dots-description: rgba(0, 0, 0, 0.45);
   --dots-placeholder: rgba(48, 48, 52, 0.2);
+  color-scheme: light;
   font-family: var(--font-component);
 }
 

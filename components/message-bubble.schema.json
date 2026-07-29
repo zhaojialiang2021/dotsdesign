@@ -13,7 +13,7 @@
     ],
     "validation": [
       "用户消息右对齐，Dots 消息左对齐。",
-      "用户气泡使用 Fill B，AI 文本气泡使用 Fill A，AI 卡片使用 Fill 5。",
+      "用户气泡使用 Fill 5，AI 文本气泡使用 Bg，AI 卡片使用 Fill 5。",
       "气泡尖角颜色必须与气泡背景一致。",
       "发送新消息后键盘收起，消息流滚动到最新。"
     ]
@@ -87,10 +87,10 @@
     }
   ],
   "tokens": {
-    "user.bg": "fill-b",
+    "user.bg": "fill-5",
     "user.fg": "title",
     "user.border": "separator-base",
-    "dots.bg": "fill-a",
+    "dots.bg": "bg-base",
     "dots.fg": "title",
     "dots.border": "separator-2",
     "ai-card.bg": "fill-5",

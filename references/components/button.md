@@ -8,7 +8,7 @@ figma_source: ReDs Components / Button 按钮规范 / node 55137:12496
 
 # Button
 
-Button 用于触发一个即时任务。点点按钮规范继承 ReDs 的尺寸、宽度、场景和继承关系，但视觉语言替换为 Dots tokens：主操作使用 `info 5`，中性容器使用 `Separator 2`，图底按钮使用 `Fill C`。
+Button 用于触发一个即时任务。点点按钮规范继承 ReDs 的尺寸、宽度、场景和继承关系，但视觉语言替换为 Dots tokens：主操作使用 `Dots Accent Fill`，中性容器使用 `Separator 2`，图底按钮使用 `Dark Fill 5`。
 
 按钮文案必须短，优先使用「谓语 + 宾语」或「谓语」：`立即查看`、`去看看`、`发送`、`关注`。不要把解释性长句塞进按钮。
 
@@ -16,12 +16,12 @@ Button 用于触发一个即时任务。点点按钮规范继承 ReDs 的尺寸�
 
 | Variant | 用途 | 背景 | 文字 | 边框 |
 |---|---|---|---|---|
-| `filled` | 主操作、当前页面唯一最强动作 | `info 5` / `--info-5` | `Bg Light` / `--bg-light` | `info 5` |
-| `outline` | 强调但不是唯一主动作 | 透明 | `info 6` / `--info-6` | `info 6` |
+| `filled` | 主操作、当前页面唯一最强动作 | `Dots Accent Fill` / `--dots-accent-fill` | `White` / `--always-white` | `Dots Accent Fill` |
+| `outline` | 强调但不是唯一主动作 | 透明 | `Dots Accent Text` / `--dots-accent-text` | `Dots Accent Border` / `--dots-accent-border` |
 | `neutral` | 空态、取消、弱操作 | 透明 | `Title` / `--title` | `Separator 2` / `--separator-2` |
-| `ghost` | 图片、彩色或深色背景上的按钮 | `Fill C` / `--fill-c` | `Bg Light` / `--bg-light` | 透明 |
+| `ghost` | 图片、彩色或深色背景上的按钮 | `Dark Fill 5` / `--dark-fill-5` | `White` / `--always-white` | 透明 |
 
-`filled` 不使用小红书红 `--primary`。红色只保留给社区语境或不可逆风险提示，不作为点点主 CTA。
+`filled` 不使用小红书红 `--xhs-red`。红色只保留给社区语境或不可逆风险提示，不作为点点主 CTA。
 
 ## 尺寸
 
@@ -49,7 +49,7 @@ Button 用于触发一个即时任务。点点按钮规范继承 ReDs 的尺寸�
 |---|---|
 | `default` | 使用当前 `variant` + `size` |
 | `pressed` | `scale(.97)`，opacity 降到 `.6`，不额外换颜色 |
-| `disabled` | 背景使用 `Disabled`，文字使用 `Placeholder` 或 `Description Lighter` |
+| `disabled` | 背景使用 `Disabled`，文字使用 `Placeholder` 或 `Description` |
 | `loading` | 保持按钮尺寸不变，文案可替换为 loading 指示 |
 | `selected` | 用于关注类按钮，例如 `已关注`、`互相关注`，层级从 `outline/neutral` 降低 |
 
@@ -71,7 +71,7 @@ Button 用于触发一个即时任务。点点按钮规范继承 ReDs 的尺寸�
 
 ### 图片或彩色背景
 
-图片、插画、复杂彩色背景上优先使用 `ghost`。有图片背景时，图片本身就是容器背景，不再额外加卡片描边或浅色容器底；按钮保持 `Fill C` 背景和白色文字。不要在图底使用低识别度的描边按钮，也不要放 disabled 态。
+图片、插画、复杂彩色背景上优先使用 `ghost`。有图片背景时，图片本身就是容器背景，不再额外加卡片描边或浅色容器底；按钮保持 `Dark Fill 5` 背景和白色文字。不要在图底使用低识别度的描边按钮，也不要放 disabled 态。
 
 ### 规范页展示卡片
 
@@ -85,6 +85,10 @@ Button 规范页里的场景卡片统一使用 `large + fullWidth` 做横向比�
 | 图片背景 | `large + ghost + fullWidth` |
 
 尺寸表仍然保留 `xLarge` 到 `micro` 的定义，但场景展示不再混用 `medium`、`small`、`mini`。
+
+Button 规范页的「当前组合」由说明、按钮预览和属性控制共同组成一个模块，桌面端三列横排，窄屏纵向堆叠。典型场景紧随其后，桌面端四列横排，优先说明按钮如何使用；尺寸矩阵最后展示，并使用明确的 Filled / Outline / Neutral 列标题组织比较。尺寸矩阵只保留最外层轮廓，表头和各尺寸行之间不使用分割线，依靠固定列宽与留白建立对齐；容器四周使用更宽的内边距，避免首尾内容贴近轮廓。「当前组合」、尺寸矩阵和典型场景大卡统一使用 `--radius-workflow-card`（24px）；图片预览等卡片内部元素继续使用 `--radius-inner-card`。整个实时预览不增加点阵舞台或额外外框。
+
+「结构」图解使用响应式双栏：左栏只解释 Container、Label、宽度规则和四种 Variant，右栏只展示六档 Size。各信息组使用标题和留白分层，不把标号、说明、按钮和尺寸梯度叠在同一张 SVG 画布里；窄屏下两栏顺序堆叠。
 
 ### 继承关系
 
@@ -103,7 +107,7 @@ Button 规范页里的场景卡片统一使用 `large + fullWidth` 做横向比�
 ## 禁止
 
 - 不使用黑色实心按钮作为点点主 CTA。
-- 不使用 `--primary` 小红书红作为点点主按钮。
+- 不使用 `--xhs-red` 小红书红作为点点主按钮。
 - 不在同一个视图里放两个同层级 `filled` 主操作。
 - 不为 hover 单独发明颜色；桌面 hover 只做轻微背景或按压反馈。
 - 不在按钮中嵌套链接或另一个按钮。

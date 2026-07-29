@@ -1,13 +1,8 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject, type UIEvent as ReactUIEvent, type WheelEvent as ReactWheelEvent } from 'react'
-import lottie from 'lottie-web'
 import thinkAddCircle from '../assets/dotted/think-add-circle.svg'
 import thinkBack from '../assets/dotted/think-back.svg'
 import thinkCamera from '../assets/dotted/think-camera.svg'
-import thinkCheckComplete from '../assets/dotted/think-check-complete.svg'
-import thinkCloudAnimationUrl from '../assets/dotted/think-lottie/cloud.json?url'
 import thinkDescending from '../assets/dotted/think-descending.svg'
-import thinkGlassAnimationUrl from '../assets/dotted/think-lottie/glass.json?url'
-import thinkPenAnimationUrl from '../assets/dotted/think-lottie/pen.json?url'
 import thinkInternet from '../assets/dotted/think-internet.svg'
 import thinkMessageVoice from '../assets/dotted/think-message-voice.svg'
 import thinkMore from '../assets/dotted/think-more.svg'
@@ -63,6 +58,7 @@ import sourceJulyYi2 from '../assets/dotted/sources-july/yi-2.png'
 import sourceJulyYi3 from '../assets/dotted/sources-july/yi-3.png'
 import thinkUserAvatar from '../assets/dotted/think-user-avatar.svg'
 import { DotsMessageBubble, type DotsMessageRole } from './dotted/DotsMessageBubble'
+import { ProcessIndicator, type ProcessIndicatorKind } from './dotted/ProcessIndicator'
 
 const realLoadingCardStatusPool = ['check', 'warning', 'check', 'warning', 'check'] as const
 type DottedRealLoadingCard = {
@@ -128,7 +124,7 @@ type DottedProcessRow = {
   title: string
   detail: string
   last?: boolean
-  lottieUrl?: string
+  indicatorKind?: ProcessIndicatorKind
   lottiePlaying?: boolean
 }
 
@@ -297,10 +293,9 @@ function getDeepThinkingTargetBody(kind: DottedProcessKind | undefined) {
   return deepThinkingBodyText
 }
 
-function getDeepThinkingAnimationUrl(kind: DottedProcessKind | undefined) {
-  if (kind === 'toolcallSearch') return thinkGlassAnimationUrl
-  if (kind === 'toolcall') return thinkGlassAnimationUrl
-  return thinkCloudAnimationUrl
+function getDeepThinkingIndicatorKind(kind: DottedProcessKind | undefined): ProcessIndicatorKind {
+  if (kind === 'toolcallSearch' || kind === 'toolcall') return 'search'
+  return 'thinking'
 }
 
 function getStackDetailTargetHeight(kind: DottedProcessKind | undefined, toolNoteDisplayVariant: DottedToolNoteDisplayVariant, toolCallDetailVariant: DottedToolCallDetailVariant) {
@@ -476,10 +471,10 @@ const sourcePillSequenceDelayMs = sourcePillCountDurationMs + sourcePillBetweenD
 const sourcePillTotalSequenceMs = sourcePillSequenceDelayMs + sourcePillCountDurationMs + sourcePillFinalHoldMs
 
 const thinkingStages = [
-  { label: '判断中...', animationUrl: thinkCloudAnimationUrl },
-  { label: '工具调用中...', animationUrl: thinkPenAnimationUrl },
-  { label: '检索中...', animationUrl: thinkGlassAnimationUrl },
-]
+  { label: '判断中...', indicatorKind: 'thinking' },
+  { label: '工具调用中...', indicatorKind: 'tool-call' },
+  { label: '检索中...', indicatorKind: 'search' },
+] satisfies Array<{ label: string; indicatorKind: ProcessIndicatorKind }>
 
 function DottedToolSearchRows({
   text,
@@ -845,11 +840,7 @@ function DottedToolSearchDetailCards() {
 }
 
 function DottedThinkingCheckIcon() {
-  return (
-    <span className="dotted-demo__thinking-check" aria-hidden="true">
-      <img src={thinkCheckComplete} alt="" />
-    </span>
-  )
+  return <ProcessIndicator kind="complete" className="dotted-demo__thinking-check" />
 }
 
 function DottedRealLoadingToolCallDetail({
@@ -1165,10 +1156,10 @@ function DottedDeepThinkingContent({
                 {isRowComplete && !keepsSearchIcon ? (
                   <DottedThinkingCheckIcon />
                 ) : (
-                  <DottedLottieAnimation
-                    src={keepsSearchIcon ? thinkGlassAnimationUrl : getDeepThinkingAnimationUrl(kind)}
+                  <ProcessIndicator
+                    kind={keepsSearchIcon ? 'search' : getDeepThinkingIndicatorKind(kind)}
                     className="dotted-demo__thinking-stack-lottie"
-                    play={keepsSearchIcon || (isActive && !isRowComplete)}
+                    playing={keepsSearchIcon || (isActive && !isRowComplete)}
                   />
                 )}
               </span>
@@ -1271,48 +1262,6 @@ function DottedDeepThinkingContent({
       ) : null}
     </>
   )
-}
-
-function DottedLottieAnimation({
-  src,
-  className,
-  loop = true,
-  play = true,
-}: {
-  src: string
-  className?: string
-  loop?: boolean
-  play?: boolean
-}) {
-  const containerRef = useRef<HTMLSpanElement>(null)
-
-  useEffect(() => {
-    if (!containerRef.current) return undefined
-
-    const animation = lottie.loadAnimation({
-      container: containerRef.current,
-      renderer: 'svg',
-      loop,
-      autoplay: play,
-      path: src,
-    })
-    const stopAtFirstFrame = () => {
-      animation.goToAndStop(0, true)
-    }
-    if (!play) {
-      stopAtFirstFrame()
-      animation.addEventListener('DOMLoaded', stopAtFirstFrame)
-    }
-
-    return () => {
-      if (!play) {
-        animation.removeEventListener('DOMLoaded', stopAtFirstFrame)
-      }
-      animation.destroy()
-    }
-  }, [loop, play, src])
-
-  return <span ref={containerRef} className={className} aria-hidden="true" />
 }
 
 function DottedChatStream({
@@ -1421,8 +1370,14 @@ function DottedChatStream({
                     <DottedThinkingCheckIcon />
                   </span>
                 ) : (
-                  <DottedLottieAnimation
-                    src={item.isQuickAnswerThinking ? thinkGlassAnimationUrl : item.isDeepThinking ? getDeepThinkingAnimationUrl(item.deepThinkingKind) : thinkingStages[item.thinkingStageIndex ?? 0].animationUrl}
+                  <ProcessIndicator
+                    kind={
+                      item.isQuickAnswerThinking
+                        ? 'search'
+                        : item.isDeepThinking
+                          ? getDeepThinkingIndicatorKind(item.deepThinkingKind)
+                          : thinkingStages[item.thinkingStageIndex ?? 0].indicatorKind
+                    }
                     className="dotted-demo__thinking-lottie"
                   />
                 )}
@@ -1474,10 +1429,9 @@ function DottedChatStream({
   )
 }
 
-function getProcessAnimationUrl(kind: DottedProcessKind) {
-  if (kind === 'toolcallSearch') return thinkGlassAnimationUrl
-  if (kind === 'toolcall') return thinkGlassAnimationUrl
-  return thinkCloudAnimationUrl
+function getProcessIndicatorKind(kind: DottedProcessKind): ProcessIndicatorKind {
+  if (kind === 'toolcallSearch' || kind === 'toolcall') return 'search'
+  return 'thinking'
 }
 
 function getThinkingProcessRows({
@@ -1532,7 +1486,7 @@ function getThinkingProcessRows({
       title: isCurrent ? currentTitle || row.title : row.title,
       detail: isCurrent ? currentBody || row.detail : row.detail,
       last: true,
-      lottieUrl: getProcessAnimationUrl(row.kind),
+      indicatorKind: getProcessIndicatorKind(row.kind),
       lottiePlaying: isCurrent && !isThinkingComplete,
     }
   }).map((row, index, rows) => ({
@@ -1696,35 +1650,35 @@ function DottedSourcesSheet({
       icon: '💭',
       title: deepThinkingTitleText,
       detail: deepThinkingBodyText,
-      lottieUrl: thinkCloudAnimationUrl,
+      indicatorKind: 'thinking',
     },
     {
       kind: 'toolcall',
       icon: '🔍',
       title: toolCallTitleText,
       detail: toolCallBodyText,
-      lottieUrl: thinkGlassAnimationUrl,
+      indicatorKind: 'search',
     },
     {
       kind: 'thinkCompact',
       icon: '💭',
       title: compactThinkTitleText,
       detail: compactThinkBodyText,
-      lottieUrl: thinkCloudAnimationUrl,
+      indicatorKind: 'thinking',
     },
     {
       kind: 'toolcallSearch',
       icon: '🔍',
       title: searchToolCallTitleText,
       detail: searchToolCallBodyText,
-      lottieUrl: thinkGlassAnimationUrl,
+      indicatorKind: 'search',
     },
     {
       kind: 'thinkPlan',
       icon: '💭',
       title: planThinkTitleText,
       detail: planThinkBodyText,
-      lottieUrl: thinkCloudAnimationUrl,
+      indicatorKind: 'thinking',
       last: true,
     },
   ]
@@ -1893,11 +1847,11 @@ function DottedSourcesSheet({
                     <>
                       <div className="dotted-demo__process-progress" aria-hidden="true">
                         <span className="dotted-demo__process-icon">
-                          {row.lottieUrl ? (
-                            <DottedLottieAnimation
-                              src={row.lottieUrl}
+                          {row.indicatorKind ? (
+                            <ProcessIndicator
+                              kind={row.indicatorKind}
                               className="dotted-demo__process-lottie"
-                              play={row.lottiePlaying === true}
+                              playing={row.lottiePlaying === true}
                             />
                           ) : row.icon}
                         </span>

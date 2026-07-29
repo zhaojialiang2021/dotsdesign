@@ -104,7 +104,7 @@ export function PagePage({ slug }: { slug: string }) {
       {src && (
         <section className="docs-section-block">
           <h2 className="docs-section-block__heading">页面规格</h2>
-          <div className="docs-card">{renderMarkdown(src)}</div>
+          <div className="docs-flat-doc">{renderMarkdown(src)}</div>
         </section>
       )}
     </>
