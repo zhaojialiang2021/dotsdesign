@@ -13,6 +13,9 @@ import { InputPreview } from '../previews/InputPreview'
 import { DividerPreview } from '../previews/DividerPreview'
 import { ToastPreview } from '../previews/ToastPreview'
 import { MessageBubblePreview } from '../previews/MessageBubblePreview'
+import { MediaImageDemo } from '../previews/MediaImageDemo'
+import { MediaNoteDemo } from '../previews/MediaNoteDemo'
+import { MediaVideoDemo } from '../previews/MediaVideoDemo'
 // 深度组件 live demo —— Day 4 逐个实现
 import { ButtonDemo } from '../previews/ButtonDemo'
 import { InputDemo } from '../previews/InputDemo'
@@ -51,6 +54,9 @@ const deepDemoMap: Partial<Record<ComponentSlug, React.ComponentType>> = {
   sheet: SheetDemo,
   'empty-state': EmptyStateDemo,
   'message-bubble': MessageBubblePreview,
+  'media-image': MediaImageDemo,
+  'media-note': MediaNoteDemo,
+  'media-video': MediaVideoDemo,
   'process-indicator': ProcessIndicatorDemo,
   'live-waveform': LiveWaveformDemo,
 }
@@ -172,7 +178,7 @@ function DeepComponentPage({
   return (
     <>
       <DocsPageHeader
-        eyebrow={`${schema.category} · ${t('component.deep-tag')}`}
+        eyebrow={schema.category}
         title={schema.name}
         subtitle={schema.description}
         actions={

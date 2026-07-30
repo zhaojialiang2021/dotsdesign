@@ -61,7 +61,7 @@ used_by: [docs-pages, reports]
 - 分享按钮复制当前页面的完整 URL，包含 Hash 路由；复制成功后按 Figma 节点 `1944:83638` 在画布顶部居中显示「链接已复制」Toast：高 40px、水平 padding 16px、圆角 20px、背景 `--dark-fill-5`，文字使用 14px / 20px PingFang SC 和 `--always-white`。Toast 使用 `duration.in` 从画布上边缘向下进入，完整停留 2 秒后使用 `duration.out` 渐隐退出，不弹出模态层。
 - 关闭按钮返回 `/docs` 主页。
 - 画布右下角内缩 16px 放置 120px × 44px 的画布工具条，圆角 12px。左侧两个 44px 操作区使用 Figma 原始加号、减号图标，分别把手机画板与右侧控制器组成的完整内容组放大或缩小 5%；默认 100%，范围限制在 50%–150%。点阵背景、左上项目入口、右上分享/关闭和右下工具条不参与缩放。
-- 工具条右侧 44px 操作区使用 Figma 原始方案切换图标；缩放操作区与方案入口之间使用 0.5px `--separator-base` 分隔。达到缩放边界时按钮继续保持原样，但不再改变比例。
+- 当前 demo 有两个及以上可切换方案时，工具条右侧 44px 操作区使用 Figma 原始方案切换图标，缩放操作区与方案入口之间使用 0.5px `--separator-base` 分隔；没有更多方案时隐藏入口和分隔线，工具条收窄为 88px，只保留放大与缩小。达到缩放边界时按钮继续保持原样，但不再改变比例。
 - 点击方案入口后，在工具条上方 8px 展开方案面板。面板右侧与画布保持 16px，宽 220px，圆角 16px；面板从固定的右下锚点向上生长，高度由标题和内容决定，不写死高度。
 - 方案面板标题为「方案切换」，标题允许随内容纵向自适应；右侧关闭按钮使用 Figma 原始关闭图标。面板只在点击关闭按钮后关闭，点击画布或重复点击方案入口都不关闭。
 - 方案面板直接控制当前 demo：`胶囊` 对应 `toolNoteDisplayVariant = consistent`，`信息卡` 对应 `toolNoteDisplayVariant = preview-detail`；「右侧图标动画」控制 `sourceImageMotionVariant` 的静态与动效状态。面板中的切换必须立即反映到手机画板。
@@ -148,6 +148,9 @@ used_by: [docs-pages, reports]
 |------|------|------|
 | DottedDemoScreen | 已实现 | 当前点点页面模板和 project demo 基座 |
 | DotsMessageBubble | 已实现 | User / Dots 文本消息气泡统一样式 |
+| MediaImage | 已实现 | response 正文中的单图、多图和更多图片入口 |
+| MediaNote | 已实现 | response 正文中的单篇、两篇、三篇笔记和更多笔记入口 |
+| MediaVideo | 已实现 | response 正文中的 3:4 竖版视频和 16:9 横版视频 |
 | ProcessIndicator | draft | 思考、工具调用、搜索和完成状态位 |
 | Card | 已实现 | response、来源卡、tool call 信息卡 |
 | Sheet | draft | 思考过程和来源半层 |

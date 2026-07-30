@@ -56,8 +56,12 @@ import sourceJulyYiLogo from '../assets/dotted/sources-july/yi-logo.png'
 import sourceJulyYi1 from '../assets/dotted/sources-july/yi-1.png'
 import sourceJulyYi2 from '../assets/dotted/sources-july/yi-2.png'
 import sourceJulyYi3 from '../assets/dotted/sources-july/yi-3.png'
+import mediaVideoDemo from '../assets/dotted/media-video-demo.mp4'
 import thinkUserAvatar from '../assets/dotted/think-user-avatar.svg'
 import { DotsMessageBubble, type DotsMessageRole } from './dotted/DotsMessageBubble'
+import { DotsMediaImage } from './dotted/DotsMediaImage'
+import { DotsMediaNote, type DotsMediaNoteItem } from './dotted/DotsMediaNote'
+import { DotsMediaVideo, type DotsMediaVideoItem } from './dotted/DotsMediaVideo'
 import { ProcessIndicator, type ProcessIndicatorKind } from './dotted/ProcessIndicator'
 
 const realLoadingCardStatusPool = ['check', 'warning', 'check', 'warning', 'check'] as const
@@ -138,7 +142,21 @@ type DottedFinalResponseImageBlock = {
   images: string[]
 }
 
-type DottedFinalResponseBlock = DottedFinalResponseTextBlock | DottedFinalResponseImageBlock
+type DottedFinalResponseNoteBlock = {
+  type: 'note-row'
+  notes: DotsMediaNoteItem[]
+}
+
+type DottedFinalResponseVideoBlock = {
+  type: 'video'
+  video: DotsMediaVideoItem
+}
+
+type DottedFinalResponseBlock =
+  | DottedFinalResponseTextBlock
+  | DottedFinalResponseImageBlock
+  | DottedFinalResponseNoteBlock
+  | DottedFinalResponseVideoBlock
 
 const streamingReplyChunks = [
   '先看看去除营销软广后，',
@@ -235,7 +253,16 @@ const finalResponseText = [
 ].join('\n')
 const finalResponseBlocks: DottedFinalResponseBlock[] = [
   { type: 'paragraph', text: '6个人暑假去新疆玩10天，推荐走伊犁环线，以乌鲁木齐为起点和终点，包7座车或自驾最方便。路线可以安排为：乌鲁木齐→赛里木湖→伊宁→喀拉峻草原→琼库什台→夏塔→昭苏→那拉提草原→独库公路→乌鲁木齐。' },
-  { type: 'image-row', images: [responseIli1, responseIli2, responseIli3] },
+  { type: 'image-row', images: [responseIli1, responseIli2, responseIli3, sourceJulySailor1, sourceJulySailor2, sourceJulySailor3] },
+  {
+    type: 'note-row',
+    notes: [
+      { cover: sourceJulySailor1, coverAlt: '赛里木湖公路与雪山', title: '赛里木湖自驾路线，沿途每一帧都像电影', author: '水手旅行记', avatar: sourceJulySailorLogo, likes: 862 },
+      { cover: sourceJulyYi1, coverAlt: '伊犁草原与山谷', title: '第一次去伊犁，路线这样安排就够了', author: '一一在路上', avatar: sourceJulyYiLogo, likes: 236, mediaType: 'video' },
+      { cover: sourceJulyK1, coverAlt: '新疆旅行沿途风景', title: '10天伊犁环线，收藏这一篇就够了', author: 'K的旅行手账', avatar: sourceJulyKLogo, likes: 518 },
+      { cover: sourceJulyOolong1, coverAlt: '草原日落', title: '盛夏伊犁的日落时刻', author: '乌龙茶', avatar: sourceJulyOolongLogo, likes: 189 },
+    ],
+  },
   { type: 'heading', text: '🚗 行程安排' },
   { type: 'paragraph', text: '整体路线建议安排为：乌鲁木齐→赛里木湖→伊宁→喀拉峻草原→琼库什台→夏塔→昭苏→那拉提草原→独库公路→乌鲁木齐。第一天抵达乌鲁木齐后，可以逛国际大巴扎，品尝新疆特色美食；第二天前往赛里木湖，欣赏新疆最经典的湖泊、雪山和草原风光，晚上建议住湖边附近，方便拍摄日出和晨雾。' },
   { type: 'paragraph', text: '之后前往伊宁市，途中可以打卡果子沟大桥，晚上逛六星街，体验当地民族风情。接下来几天重点游玩伊犁草原区域，喀拉峻草原以辽阔的草原和雪山背景闻名，适合拍照；琼库什台则保留了原始牧村风貌，可以体验木屋、草原、森林和星空，是行程中非常值得停留的一站。' },
@@ -244,12 +271,23 @@ const finalResponseBlocks: DottedFinalResponseBlock[] = [
   { type: 'paragraph', text: '这趟行程的核心打卡点包括：赛里木湖的蓝色湖面、果子沟大桥的公路大片、琼库什台的原始村落、夏塔的雪山冰川、那拉提的空中草原以及独库公路的壮丽景色。暑假7—8月属于新疆旅游旺季，建议提前预订车辆和住宿，同时准备防晒用品、墨镜、防风外套和舒适运动鞋。' },
   { type: 'heading', text: '✨ 实用提醒' },
   { type: 'paragraph', text: '费用方面，6个人包车10天，交通费用大约1万—1.5万元，人均约1700—2500元；住宿、餐饮和门票加起来，整体比较舒适的预算大约人均5000—8000元左右。这条线路节奏适中，不会太赶，既能看到新疆最经典的自然风光，也能体验当地民族文化，非常适合作为朋友暑假旅行目的地。' },
+  {
+    type: 'video',
+    video: {
+      src: mediaVideoDemo,
+      label: '伊犁旅行路线横版视频',
+      orientation: 'landscape',
+      duration: '01:46',
+      author: '王悦伊',
+      avatar: sourceJulyYiLogo,
+    },
+  },
 ]
 const finalResponseSections = [
-  { blocks: [0, 1], list: false },
-  { blocks: [2, 3, 4, 5], list: false },
-  { blocks: [6, 7], list: false },
-  { blocks: [8, 9], list: false },
+  { blocks: [0, 1, 2], list: false },
+  { blocks: [3, 4, 5, 6], list: false },
+  { blocks: [7, 8], list: false },
+  { blocks: [9, 10, 11], list: false },
 ] as const
 
 const quickAnswerResponseBlocks: DottedFinalResponseBlock[] = [
@@ -261,7 +299,7 @@ const quickAnswerResponseBlocks: DottedFinalResponseBlock[] = [
   { type: 'paragraph', text: '行程后半段，可以前往唐布拉草原，感受“百里画廊”的流动之美。最后，通过独库公路北段返回乌鲁木齐。独库公路每年仅开放几个月，一日看四季的奇景是旅途中浓墨重彩的一笔。' },
 ]
 const quickAnswerResponseText = quickAnswerResponseBlocks
-  .map((block) => block.type === 'image-row' ? '' : block.text)
+  .map((block) => block.type === 'paragraph' || block.type === 'heading' || block.type === 'bullet' ? block.text : '')
   .filter(Boolean)
   .join('')
 const quickAnswerResponseSections = [
@@ -274,7 +312,11 @@ const countCharacters = (text: string) => Array.from(text).length
 const getResponseTextLengthBeforeBlock = (blocks: DottedFinalResponseBlock[], blockIndex: number) => (
   blocks
     .slice(0, blockIndex)
-    .reduce((total, previousBlock) => total + (previousBlock.type === 'image-row' ? 0 : Array.from(previousBlock.text).length), 0)
+    .reduce((total, previousBlock) => total + (
+      previousBlock.type === 'paragraph' || previousBlock.type === 'heading' || previousBlock.type === 'bullet'
+        ? Array.from(previousBlock.text).length
+        : 0
+    ), 0)
 )
 
 function getDeepThinkingTargetTitle(kind: DottedProcessKind | undefined) {
@@ -1537,11 +1579,39 @@ function DottedFinalResponseCard({
                 if (visibleCount < previousLength) return null
 
                 return (
-                  <div className="dotted-demo__response-image-row" key={`image-row-${blockIndex}`} aria-label="伊犁行程图片">
-                    {block.images.map((imageUrl, imageIndex) => (
-                      <img src={imageUrl} alt="" key={imageUrl} style={{ '--response-image-index': imageIndex } as CSSProperties} />
-                    ))}
-                  </div>
+                  <DotsMediaImage
+                    className="dotted-demo__response-media"
+                    images={block.images.map((imageUrl, imageIndex) => ({
+                      src: imageUrl,
+                      alt: `伊犁行程图片 ${imageIndex + 1}`,
+                      orientation: 'portrait',
+                    }))}
+                    key={`image-row-${blockIndex}`}
+                  />
+                )
+              }
+
+              if (block.type === 'note-row') {
+                if (visibleCount < previousLength) return null
+
+                return (
+                  <DotsMediaNote
+                    className="dotted-demo__response-media"
+                    notes={block.notes}
+                    key={`note-row-${blockIndex}`}
+                  />
+                )
+              }
+
+              if (block.type === 'video') {
+                if (visibleCount < previousLength) return null
+
+                return (
+                  <DotsMediaVideo
+                    className="dotted-demo__response-media"
+                    video={block.video}
+                    key={`video-${blockIndex}`}
+                  />
                 )
               }
 

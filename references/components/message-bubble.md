@@ -26,6 +26,8 @@ MessageBubble 是点点对话流的核心 Component Harness，不是普通气泡
 
 `DotsMessage` 负责左右对齐、消息间距和生命周期位置；`DotsMessageBubble` 负责文字气泡、判断态容器、逐字流式文本和 response 壳体。
 
+response 正文里的媒体不扩展 MessageBubble 私有样式：普通图片统一复用 [`MediaImage`](./media-image.md)，社区笔记统一复用 [`MediaNote`](./media-note.md)，视频统一复用 [`MediaVideo`](./media-video.md)。
+
 ## 文字气泡
 
 | 属性 | User | Dots |

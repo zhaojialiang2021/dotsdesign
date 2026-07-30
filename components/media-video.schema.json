@@ -1,0 +1,54 @@
+{
+  "$schema": "https://dots.design/schemas/component.schema.json",
+  "slug": "media-video",
+  "name": "MediaVideo",
+  "category": "conversation-media",
+  "description": "插入 AI response 正文内容流的视频组件，支持竖版和横版完整控件。",
+  "harness": {
+    "semantic": "用视频补充相邻回答；点击后进入播放器。",
+    "generation": [
+      "根据媒体方向选择 portrait 或 landscape。",
+      "竖版严格使用 3:4；横版严格使用 16:9。",
+      "两种方向均展示作者、声音、播放和时长，并允许声音与播放状态独立切换。",
+      "视频默认暂停，点击播放按钮后才开始播放。"
+    ],
+    "validation": [
+      "竖版 240×320px、圆角 22px。",
+      "横版 329×185.0625px、圆角 22px。",
+      "横版底部控件和右上时长的位置、字号与导出图标一致。"
+    ]
+  },
+  "props": {
+    "orientation": { "values": ["portrait", "landscape"], "default": "landscape", "description": "由视频元数据提供。" },
+    "duration": { "values": ["01:46", ""], "default": "01:46", "description": "横版视频时长。" },
+    "author": { "values": ["王悦伊", ""], "default": "王悦伊", "description": "横版视频作者名。" }
+  },
+  "states": ["portrait", "landscape"],
+  "constraints": [
+    { "rule": "portrait_ratio", "value": "3:4", "description": "竖版视频固定为 3:4。" },
+    { "rule": "landscape_ratio", "value": "16:9", "description": "横版视频固定为 16:9。" },
+    { "rule": "both_orientations_have_controls", "value": true, "description": "两种方向均展示设计稿中的完整覆盖控件。" },
+    { "rule": "controls_toggle_independently", "value": true, "description": "声音和播放按钮独立切换。" },
+    { "rule": "default_paused", "value": true, "description": "默认不自动播放。" }
+  ],
+  "tokens": {
+    "portrait.width": "media-video.portrait-width",
+    "portrait.height": "media-video.portrait-height",
+    "portrait.radius": "media-video.portrait-radius",
+    "landscape.width": "media-video.landscape-width",
+    "landscape.height": "media-video.landscape-height",
+    "landscape.radius": "media-video.landscape-radius",
+    "controls.text": "always-white",
+    "controls.overlay": "always-video-control-overlay"
+  },
+  "haptics": { "play": "light" },
+  "anatomy": [
+    { "part": "poster", "tokens": ["portrait.radius", "landscape.radius"], "description": "按方向裁切的视频封面。" },
+    { "part": "controls", "tokens": ["controls.text", "controls.overlay"], "description": "两种方向展示的底部控件。" },
+    { "part": "duration", "tokens": ["controls.text"], "description": "右上角时长。" }
+  ],
+  "doDont": {
+    "do": ["方向由视频元数据明确传入。", "使用 Figma 导出的原始控件图标。"],
+    "dont": ["不要把竖版拉满回答宽度。", "不要让声音按钮触发播放切换。"]
+  }
+}

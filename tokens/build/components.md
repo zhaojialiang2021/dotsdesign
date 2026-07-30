@@ -302,6 +302,158 @@ AI 最容易忘记的状态。空容器不是 bug，是产品的一个 view —�
 
 ---
 
+## MediaImage (`media-image`)
+
+**Category**: conversation-media
+
+插入 AI response 正文内容流的图片媒体组件。支持单张横竖图、多图三列和超过三张时的更多图片入口。
+
+### Harness
+- **Semantic**: 用图片补充相邻文字内容，不承担来源卡、笔记卡或视频播放语义。
+- **Generation Rules**
+  - 先读取图片总数；单图再读取媒体方向，多图统一裁切为 3:4。
+  - 两张图仍使用三图单张尺寸，不拉伸填满空余列。
+  - 超过三张只展示前三张，并在图组下方展示更多图片入口。
+- **Validation**
+  - 单张横图 219×164px，单张竖图 165×220px。
+  - 多图间距 6px、圆角 16px，三列撑满 329px 内容宽度。
+  - 超过三张时入口文案展示图片总数。
+  - 图片块前后存在文字承接。
+
+### Props
+- `count`: 1 | 2 | 3 | 4 _(default: `1`)_
+  图片数量。4 代表大于三张的 overflow 场景。
+- `singleOrientation`: "portrait" | "landscape" _(default: `"landscape"`)_
+  仅单图使用，由媒体元数据提供。
+- `moreAction`: true | false _(default: `true`)_
+  超过三张时是否提供打开完整图片浏览器的动作。
+
+### States
+`single-portrait`, `single-landscape`, `group-two`, `group-three`, `group-overflow`
+
+### Constraints
+- **maximum_visible_images**: 内容流最多展示前三张图片。
+- **group_uses_three_column_size**: 两张和三张使用相同单张尺寸。
+- **group_crop_ratio**: 多图统一以 3:4 裁切。
+- **overflow_uses_more_button**: 超过三张时图组下方必须出现更多图片入口。
+
+### Anatomy
+- **image-grid**: 承载最多三张图片的横向网格。
+- **image**: 单图保留方向尺寸，多图统一 3:4 裁切。
+- **more-button**: 超过三张时展示总数并打开完整图片浏览器。
+
+### Do
+- 图片前后使用文字说明内容关系。
+- 多图按输入顺序展示前三张。
+- 为内容图片提供真实 alt。
+
+### Don't
+- 不要在两张图时拉宽单张图片。
+- 不要用第三张上的 +N 遮罩替代更多图片入口。
+- 不要连续堆叠多个媒体块。
+
+---
+
+## MediaNote (`media-note`)
+
+**Category**: conversation-media
+
+插入 AI response 正文内容流的笔记媒体组件。
+
+### Harness
+- **Semantic**: 用社区笔记补充相邻回答，并保留标题、作者和互动量。
+- **Generation Rules**
+  - 单篇和两篇使用相同的大卡尺寸，三篇及以上切换为三列紧凑卡。
+  - 最多展示前三篇，超过三篇时在卡组下展示更多笔记入口。
+  - 视频笔记在右上角展示播放标识。
+- **Validation**
+  - 所有卡片比例 3:4、圆角 16px、间距 6px。
+  - 单篇宽 161.5px；两篇每张尺寸与单篇一致；三篇横向撑满 329px。
+  - 封面、底部渐变、标题、作者头像、作者名和点赞量完整。
+
+### Props
+- `count`: 1 | 2 | 3 | 4 _(default: `1`)_
+  笔记数量，4 表示 overflow。
+- `mediaType`: "image" | "video" _(default: `"image"`)_
+  视频类型展示播放标识。
+- `moreAction`: true | false _(default: `true`)_
+  超过三篇时打开完整笔记列表。
+
+### States
+`single`, `group-two`, `group-three`, `group-overflow`
+
+### Constraints
+- **maximum_visible_notes**: 内容流最多展示前三篇笔记。
+- **ratio**: 所有笔记卡固定为 3:4。
+- **single_matches_two**: 单篇和两篇使用相同单卡尺寸。
+- **overflow_uses_more_button**: 超过三篇必须展示更多入口。
+
+### Anatomy
+- **cover**: 3:4 裁切的笔记封面。
+- **content**: 底部渐变上的标题、作者和点赞信息。
+- **more-button**: 超过三篇时展示总数。
+
+### Do
+- 保留笔记标题、作者与互动量。
+- 按输入顺序展示前三篇。
+
+### Don't
+- 不要把单篇卡拉满内容宽度。
+- 不要在三列模式继续使用大卡字号。
+
+---
+
+## MediaVideo (`media-video`)
+
+**Category**: conversation-media
+
+插入 AI response 正文内容流的视频组件，支持竖版和横版完整控件。
+
+### Harness
+- **Semantic**: 用视频补充相邻回答；点击后进入播放器。
+- **Generation Rules**
+  - 根据媒体方向选择 portrait 或 landscape。
+  - 竖版严格使用 3:4；横版严格使用 16:9。
+  - 两种方向均展示作者、声音、播放和时长，并允许声音与播放状态独立切换。
+  - 视频默认暂停，点击播放按钮后才开始播放。
+- **Validation**
+  - 竖版 240×320px、圆角 22px。
+  - 横版 329×185.0625px、圆角 22px。
+  - 横版底部控件和右上时长的位置、字号与导出图标一致。
+
+### Props
+- `orientation`: "portrait" | "landscape" _(default: `"landscape"`)_
+  由视频元数据提供。
+- `duration`: "01:46" | "" _(default: `"01:46"`)_
+  横版视频时长。
+- `author`: "王悦伊" | "" _(default: `"王悦伊"`)_
+  横版视频作者名。
+
+### States
+`portrait`, `landscape`
+
+### Constraints
+- **portrait_ratio**: 竖版视频固定为 3:4。
+- **landscape_ratio**: 横版视频固定为 16:9。
+- **both_orientations_have_controls**: 两种方向均展示设计稿中的完整覆盖控件。
+- **controls_toggle_independently**: 声音和播放按钮独立切换。
+- **default_paused**: 默认不自动播放。
+
+### Anatomy
+- **poster**: 按方向裁切的视频封面。
+- **controls**: 两种方向展示的底部控件。
+- **duration**: 右上角时长。
+
+### Do
+- 方向由视频元数据明确传入。
+- 使用 Figma 导出的原始控件图标。
+
+### Don't
+- 不要把竖版拉满回答宽度。
+- 不要让声音按钮触发播放切换。
+
+---
+
 ## MessageBubble (`message-bubble`)
 
 **Category**: conversation
@@ -355,6 +507,59 @@ AI 最容易忘记的状态。空容器不是 bug，是产品的一个 view —�
 - 不要让用户消息出现在左侧。
 - 不要让尖角颜色和气泡背景不一致。
 - 不要把消息间距当普通列表 gap。
+
+---
+
+## ProcessIndicator (`process-indicator`)
+
+**Category**: conversation
+
+AI 回答过程状态组件。用封闭语义映射阅读、洞察、思考、文档、检查、搜索、工具调用、亮点和完成状态，避免页面直接依赖 Lottie 资源。
+
+### Harness
+- **Semantic**: 表达 AI 当前处于思考、工具调用、搜索或完成阶段，只负责状态呈现，不负责推进回答流程。
+- **Generation Rules**
+  - 先根据业务阶段选择 kind，不允许按动画外观随意选择。
+  - 根据阅读、洞察、思考、文档、检查、搜索、工具调用和亮点语义选择 kind。
+  - 只有当前最新过程播放动画；历史过程停在第一帧或进入 complete。
+- **Validation**
+  - kind 必须命中 schema 中的封闭枚举。
+  - 页面不得直接引用 Lottie JSON 文件。
+  - prefers-reduced-motion=true 时 Lottie 必须停在第一帧。
+  - 完成态必须使用设计资源，不能用 CSS 手画对勾。
+
+### Props
+- `kind`: "reading" | "insight" | "thinking" | "document" | "review" | "search" | "tool-call" | "highlight" | "complete" _(default: `"thinking"`)_
+  过程语义。组件内部把语义映射到固定 Lottie 或完成对勾资源。
+- `playing`: true | false _(default: `true`)_
+  是否播放当前 Lottie。false 时停在第一帧；complete 不受该属性影响。
+- `loop`: true | false _(default: `true`)_
+  是否循环播放。持续过程使用 true，一次性演示可使用 false。
+
+### States
+`playing`, `paused`, `complete`, `reduced-motion`
+
+### Constraints
+- **semantic_asset_mapping_is_closed**: 业务只能选择 kind，不能把 Lottie URL 作为 prop 传入。
+- **default_slot_size**: 默认状态位为 36×36px；紧凑列表由父级缩放到 32px 或 24px。
+- **motion_respects_user_setting**: 减少动态效果开启时，动画必须停在第一帧。
+- **process_state_is_controlled**: kind 和 playing 由上层状态机传入，组件内部不能自行推进回答流程。
+
+### Anatomy
+- **slot**: 稳定占位，避免状态切换时文字和连接线跳动。
+- **motion**: thinking、tool-call 和 search 对应的 Lottie 渲染层。
+- **complete-icon**: 完成态设计资源，与 Lottie 在同一位置原地切换。
+
+### Do
+- 根据回答状态机选择 kind。
+- 只让当前最新过程播放。
+- 独立使用且没有可见文案时提供 label。
+
+### Don't
+- 不要在页面里直接 import Lottie JSON。
+- 不要把动画当装饰随机使用。
+- 不要让组件内部猜测回答流程。
+- 不要忽略减少动态效果设置。
 
 ---
 

@@ -72,6 +72,7 @@
 - 填充：`--light-fill-1` 到 `--light-fill-5` 与 `--dark-fill-1` 到 `--dark-fill-5`
 - 描边：`--light-separator`、`--light-separator-2`、`--dark-separator`、`--dark-separator-2`
 - 中性色：`--always-white`、`--always-black`
+- 媒体：`--always-media-overlay`
 
 兼容旧页面的变量只在生成 CSS 中保留别名，不再用于新规范和新代码。禁止自行定义颜色；不要把 `XHS Red` 用于点点对话、系统组件或文档站。
 
@@ -145,6 +146,11 @@ Docs 字阶只用于文档站的信息层级，不进入组件规范和 Dots App
 | `dialog-input` | `16px` | `400` | `48px` | `0.02em` | 输入框文字 |
 | `dialog-time` | `13px` | `400` | `18px` | — | 时间标签 |
 | `community-card-title` | `14px` | `500` | `20px` | — | 社区卡片标题 |
+| `media-note-meta` | `12px` | `400` | `18px` | — | 大笔记卡作者与点赞 |
+| `media-note-title-compact` | `12px` | `500` | `18px` | — | 三列笔记卡标题 |
+| `media-note-meta-compact` | `10px` | `400` | `14px` | — | 三列笔记卡作者与点赞 |
+| `media-video-author` | `12px` | `400` | `18px` | — | 横版视频作者名 |
+| `media-video-duration` | `11px` | `500` | `16px` | — | 横版视频时长 |
 | `support` | `12px` | `400` | `17px` | — | 辅助文字 |
 
 ---

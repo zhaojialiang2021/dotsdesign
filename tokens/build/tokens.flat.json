@@ -1,6 +1,6 @@
 {
-  "$generatedAt": "2026-07-29T13:06:14.875Z",
-  "$count": 171,
+  "$generatedAt": "2026-07-30T06:08:45.086Z",
+  "$count": 225,
   "tokens": [
     {
       "name": "color.bg.0",
@@ -544,6 +544,27 @@
       "modes": null
     },
     {
+      "name": "color.always.media-overlay",
+      "value": "rgba(36,36,36,0.32)",
+      "type": "color",
+      "description": "媒体卡底部文字蒙层",
+      "modes": null
+    },
+    {
+      "name": "color.always.video-control-overlay",
+      "value": "rgba(0,0,0,0.20)",
+      "type": "color",
+      "description": "横版视频底部控件渐变终点",
+      "modes": null
+    },
+    {
+      "name": "color.always.video-duration-shadow",
+      "value": "rgba(0,0,0,0.12)",
+      "type": "color",
+      "description": "横版视频右上时长局部遮罩",
+      "modes": null
+    },
+    {
       "name": "color.legacy.accent-yellow",
       "value": "#FFCC00",
       "type": "color",
@@ -800,6 +821,321 @@
       "value": "30pt",
       "type": "dimension",
       "description": "按钮区底部到容器底部",
+      "modes": null
+    },
+    {
+      "name": "media-image.single-portrait-width",
+      "value": "165px",
+      "type": "dimension",
+      "description": "AI 回答流单张竖图宽度",
+      "modes": null
+    },
+    {
+      "name": "media-image.single-portrait-height",
+      "value": "220px",
+      "type": "dimension",
+      "description": "AI 回答流单张竖图高度",
+      "modes": null
+    },
+    {
+      "name": "media-image.single-landscape-width",
+      "value": "219px",
+      "type": "dimension",
+      "description": "AI 回答流单张横图宽度",
+      "modes": null
+    },
+    {
+      "name": "media-image.single-landscape-height",
+      "value": "164px",
+      "type": "dimension",
+      "description": "AI 回答流单张横图高度",
+      "modes": null
+    },
+    {
+      "name": "media-image.group-gap",
+      "value": "6px",
+      "type": "dimension",
+      "description": "AI 回答流多图横向间距",
+      "modes": null
+    },
+    {
+      "name": "media-image.group-button-gap",
+      "value": "12px",
+      "type": "dimension",
+      "description": "图组到更多图片入口的间距",
+      "modes": null
+    },
+    {
+      "name": "media-image.radius",
+      "value": "16px",
+      "type": "dimension",
+      "description": "AI 回答流图片圆角",
+      "modes": null
+    },
+    {
+      "name": "media-image.more-height",
+      "value": "44px",
+      "type": "dimension",
+      "description": "更多图片入口固定高度",
+      "modes": null
+    },
+    {
+      "name": "media-image.more-radius",
+      "value": "40px",
+      "type": "dimension",
+      "description": "更多图片入口圆角",
+      "modes": null
+    },
+    {
+      "name": "media-image.more-avatar",
+      "value": "14px",
+      "type": "dimension",
+      "description": "更多图片入口头像尺寸",
+      "modes": null
+    },
+    {
+      "name": "media-note.container-width",
+      "value": "329px",
+      "type": "dimension",
+      "description": "AI 回答流笔记卡内容宽度",
+      "modes": null
+    },
+    {
+      "name": "media-note.gap",
+      "value": "6px",
+      "type": "dimension",
+      "description": "笔记卡横向间距",
+      "modes": null
+    },
+    {
+      "name": "media-note.button-gap",
+      "value": "12px",
+      "type": "dimension",
+      "description": "笔记卡组到更多入口的间距",
+      "modes": null
+    },
+    {
+      "name": "media-note.radius",
+      "value": "16px",
+      "type": "dimension",
+      "description": "笔记卡圆角",
+      "modes": null
+    },
+    {
+      "name": "media-note.large-width",
+      "value": "161.5px",
+      "type": "dimension",
+      "description": "单张和两张笔记卡宽度",
+      "modes": null
+    },
+    {
+      "name": "media-note.large-height",
+      "value": "215.333px",
+      "type": "dimension",
+      "description": "单张和两张笔记卡高度",
+      "modes": null
+    },
+    {
+      "name": "media-note.large-padding-top",
+      "value": "20px",
+      "type": "dimension",
+      "description": "大笔记卡内容顶部留白",
+      "modes": null
+    },
+    {
+      "name": "media-note.large-padding-x",
+      "value": "12px",
+      "type": "dimension",
+      "description": "大笔记卡内容水平留白",
+      "modes": null
+    },
+    {
+      "name": "media-note.large-padding-bottom",
+      "value": "12px",
+      "type": "dimension",
+      "description": "大笔记卡内容底部留白",
+      "modes": null
+    },
+    {
+      "name": "media-note.large-content-gap",
+      "value": "6px",
+      "type": "dimension",
+      "description": "大笔记卡标题与作者行间距",
+      "modes": null
+    },
+    {
+      "name": "media-note.large-avatar",
+      "value": "16px",
+      "type": "dimension",
+      "description": "大笔记卡作者头像尺寸",
+      "modes": null
+    },
+    {
+      "name": "media-note.large-like-icon",
+      "value": "14px",
+      "type": "dimension",
+      "description": "大笔记卡点赞图标尺寸",
+      "modes": null
+    },
+    {
+      "name": "media-note.compact-padding-top",
+      "value": "16px",
+      "type": "dimension",
+      "description": "三列笔记卡内容顶部留白",
+      "modes": null
+    },
+    {
+      "name": "media-note.compact-padding-x",
+      "value": "10px",
+      "type": "dimension",
+      "description": "三列笔记卡内容水平留白",
+      "modes": null
+    },
+    {
+      "name": "media-note.compact-padding-bottom",
+      "value": "10px",
+      "type": "dimension",
+      "description": "三列笔记卡内容底部留白",
+      "modes": null
+    },
+    {
+      "name": "media-note.compact-content-gap",
+      "value": "4px",
+      "type": "dimension",
+      "description": "三列笔记卡标题与作者行间距",
+      "modes": null
+    },
+    {
+      "name": "media-note.compact-avatar",
+      "value": "14px",
+      "type": "dimension",
+      "description": "三列笔记卡作者头像尺寸",
+      "modes": null
+    },
+    {
+      "name": "media-note.compact-like-icon",
+      "value": "12px",
+      "type": "dimension",
+      "description": "三列笔记卡点赞图标尺寸",
+      "modes": null
+    },
+    {
+      "name": "media-note.video-badge",
+      "value": "20px",
+      "type": "dimension",
+      "description": "视频笔记右上角播放标识尺寸",
+      "modes": null
+    },
+    {
+      "name": "media-note.more-height",
+      "value": "44px",
+      "type": "dimension",
+      "description": "更多笔记入口固定高度",
+      "modes": null
+    },
+    {
+      "name": "media-note.more-radius",
+      "value": "40px",
+      "type": "dimension",
+      "description": "更多笔记入口圆角",
+      "modes": null
+    },
+    {
+      "name": "media-note.more-avatar",
+      "value": "14px",
+      "type": "dimension",
+      "description": "更多笔记入口头像尺寸",
+      "modes": null
+    },
+    {
+      "name": "media-video.portrait-width",
+      "value": "240px",
+      "type": "dimension",
+      "description": "回答流竖版视频宽度",
+      "modes": null
+    },
+    {
+      "name": "media-video.portrait-height",
+      "value": "320px",
+      "type": "dimension",
+      "description": "回答流竖版视频高度",
+      "modes": null
+    },
+    {
+      "name": "media-video.portrait-radius",
+      "value": "22px",
+      "type": "dimension",
+      "description": "竖版视频圆角",
+      "modes": null
+    },
+    {
+      "name": "media-video.landscape-width",
+      "value": "329px",
+      "type": "dimension",
+      "description": "回答流横版视频宽度",
+      "modes": null
+    },
+    {
+      "name": "media-video.landscape-height",
+      "value": "185.0625px",
+      "type": "dimension",
+      "description": "回答流横版视频高度",
+      "modes": null
+    },
+    {
+      "name": "media-video.landscape-radius",
+      "value": "22px",
+      "type": "dimension",
+      "description": "横版视频圆角",
+      "modes": null
+    },
+    {
+      "name": "media-video.control-padding",
+      "value": "16px",
+      "type": "dimension",
+      "description": "横版视频底部控件内边距",
+      "modes": null
+    },
+    {
+      "name": "media-video.control-gap",
+      "value": "16px",
+      "type": "dimension",
+      "description": "作者信息与播放控件间距",
+      "modes": null
+    },
+    {
+      "name": "media-video.author-gap",
+      "value": "6px",
+      "type": "dimension",
+      "description": "头像与作者名间距",
+      "modes": null
+    },
+    {
+      "name": "media-video.control-size",
+      "value": "18px",
+      "type": "dimension",
+      "description": "头像、声音和播放控件尺寸",
+      "modes": null
+    },
+    {
+      "name": "media-video.duration-padding",
+      "value": "12px",
+      "type": "dimension",
+      "description": "时长标签顶部和右侧留白",
+      "modes": null
+    },
+    {
+      "name": "media-video.duration-mask-width",
+      "value": "60px",
+      "type": "dimension",
+      "description": "时长标签局部遮罩宽度",
+      "modes": null
+    },
+    {
+      "name": "media-video.duration-mask-height",
+      "value": "40px",
+      "type": "dimension",
+      "description": "时长标签局部遮罩高度",
       "modes": null
     },
     {
@@ -1126,6 +1462,13 @@
       }
     },
     {
+      "name": "shadow.media-note-text",
+      "value": "0 0.5px 1px rgba(0,0,0,0.30)",
+      "type": "shadow",
+      "description": "笔记卡封面文字阴影",
+      "modes": null
+    },
+    {
       "name": "font.family",
       "value": "'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif",
       "type": "fontFamily",
@@ -1248,6 +1591,61 @@
       },
       "type": "typography",
       "description": "社区卡片标题，最多两行",
+      "modes": null
+    },
+    {
+      "name": "typography.media-note-meta",
+      "value": {
+        "fontSize": "12px",
+        "fontWeight": 400,
+        "lineHeight": "18px"
+      },
+      "type": "typography",
+      "description": "大笔记卡作者和点赞信息",
+      "modes": null
+    },
+    {
+      "name": "typography.media-note-title-compact",
+      "value": {
+        "fontSize": "12px",
+        "fontWeight": 500,
+        "lineHeight": "18px"
+      },
+      "type": "typography",
+      "description": "三列笔记卡标题",
+      "modes": null
+    },
+    {
+      "name": "typography.media-note-meta-compact",
+      "value": {
+        "fontSize": "10px",
+        "fontWeight": 400,
+        "lineHeight": "14px"
+      },
+      "type": "typography",
+      "description": "三列笔记卡作者和点赞信息",
+      "modes": null
+    },
+    {
+      "name": "typography.media-video-author",
+      "value": {
+        "fontSize": "12px",
+        "fontWeight": 400,
+        "lineHeight": "18px"
+      },
+      "type": "typography",
+      "description": "横版视频作者名",
+      "modes": null
+    },
+    {
+      "name": "typography.media-video-duration",
+      "value": {
+        "fontSize": "11px",
+        "fontWeight": 500,
+        "lineHeight": "16px"
+      },
+      "type": "typography",
+      "description": "横版视频时长标签",
       "modes": null
     },
     {

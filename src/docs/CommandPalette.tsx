@@ -48,8 +48,7 @@ function buildItems(): Item[] {
     items.push({
       href: `/docs/components/${c.slug}`,
       label: c.name,
-      group: c.depth === 'deep' ? '深度组件' : '其他组件',
-      hint: c.depth === 'deep' ? 'deep' : undefined,
+      group: '组件',
       keywords: c.slug,
     })
   }

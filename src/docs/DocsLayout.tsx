@@ -275,7 +275,6 @@ function SystemNav({ route }: { route: DocsRoute }) {
             key={c.slug}
             href={`/docs/components/${c.slug}`}
             active={route.kind === 'component' && route.slug === c.slug}
-            badge={t('badge.deep')}
           >
             {c.name}
           </NavItem>

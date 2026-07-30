@@ -1,0 +1,109 @@
+{
+  "$schema": "https://dots.design/schemas/component.schema.json",
+  "slug": "media-image",
+  "name": "MediaImage",
+  "category": "conversation-media",
+  "description": "插入 AI response 正文内容流的图片媒体组件。支持单张横竖图、多图三列和超过三张时的更多图片入口。",
+  "harness": {
+    "semantic": "用图片补充相邻文字内容，不承担来源卡、笔记卡或视频播放语义。",
+    "generation": [
+      "先读取图片总数；单图再读取媒体方向，多图统一裁切为 3:4。",
+      "两张图仍使用三图单张尺寸，不拉伸填满空余列。",
+      "超过三张只展示前三张，并在图组下方展示更多图片入口。"
+    ],
+    "validation": [
+      "单张横图 219×164px，单张竖图 165×220px。",
+      "多图间距 6px、圆角 16px，三列撑满 329px 内容宽度。",
+      "超过三张时入口文案展示图片总数。",
+      "图片块前后存在文字承接。"
+    ]
+  },
+  "props": {
+    "count": {
+      "values": [1, 2, 3, 4],
+      "default": 1,
+      "description": "图片数量。4 代表大于三张的 overflow 场景。"
+    },
+    "singleOrientation": {
+      "values": ["portrait", "landscape"],
+      "default": "landscape",
+      "description": "仅单图使用，由媒体元数据提供。"
+    },
+    "moreAction": {
+      "values": [true, false],
+      "default": true,
+      "description": "超过三张时是否提供打开完整图片浏览器的动作。"
+    }
+  },
+  "states": ["single-portrait", "single-landscape", "group-two", "group-three", "group-overflow"],
+  "constraints": [
+    {
+      "rule": "maximum_visible_images",
+      "value": 3,
+      "description": "内容流最多展示前三张图片。"
+    },
+    {
+      "rule": "group_uses_three_column_size",
+      "value": true,
+      "description": "两张和三张使用相同单张尺寸。"
+    },
+    {
+      "rule": "group_crop_ratio",
+      "value": "3:4",
+      "description": "多图统一以 3:4 裁切。"
+    },
+    {
+      "rule": "overflow_uses_more_button",
+      "value": true,
+      "description": "超过三张时图组下方必须出现更多图片入口。"
+    }
+  ],
+  "tokens": {
+    "single.portrait.width": "media-image.single-portrait-width",
+    "single.portrait.height": "media-image.single-portrait-height",
+    "single.landscape.width": "media-image.single-landscape-width",
+    "single.landscape.height": "media-image.single-landscape-height",
+    "group.gap": "media-image.group-gap",
+    "group.button-gap": "media-image.group-button-gap",
+    "image.radius": "media-image.radius",
+    "button.height": "media-image.more-height",
+    "button.radius": "media-image.more-radius",
+    "button.avatar": "media-image.more-avatar",
+    "button.bg": "bg-0-lighter",
+    "button.fg": "title",
+    "button.padding": "space-2"
+  },
+  "haptics": {
+    "open-image": "light",
+    "open-more": "light"
+  },
+  "anatomy": [
+    {
+      "part": "image-grid",
+      "tokens": ["group.gap"],
+      "description": "承载最多三张图片的横向网格。"
+    },
+    {
+      "part": "image",
+      "tokens": ["image.radius"],
+      "description": "单图保留方向尺寸，多图统一 3:4 裁切。"
+    },
+    {
+      "part": "more-button",
+      "tokens": ["button.bg", "button.fg", "button.radius", "button.height", "button.avatar", "button.padding", "group.button-gap"],
+      "description": "超过三张时展示总数并打开完整图片浏览器。"
+    }
+  ],
+  "doDont": {
+    "do": [
+      "图片前后使用文字说明内容关系。",
+      "多图按输入顺序展示前三张。",
+      "为内容图片提供真实 alt。"
+    ],
+    "dont": [
+      "不要在两张图时拉宽单张图片。",
+      "不要用第三张上的 +N 遮罩替代更多图片入口。",
+      "不要连续堆叠多个媒体块。"
+    ]
+  }
+}

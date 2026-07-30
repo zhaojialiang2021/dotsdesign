@@ -78,6 +78,9 @@
 | `color.dark.separator-2` | `rgba(0,0,0,0.2)` | Dark Separator 2 |
 | `color.always.white` | `#FFFFFF` | White：Always Mode 白色 |
 | `color.always.black` | `#000000` | Black：Always Mode 黑色 |
+| `color.always.media-overlay` | `rgba(36,36,36,0.32)` | 媒体卡底部文字蒙层 |
+| `color.always.video-control-overlay` | `rgba(0,0,0,0.20)` | 横版视频底部控件渐变终点 |
+| `color.always.video-duration-shadow` | `rgba(0,0,0,0.12)` | 横版视频右上时长局部遮罩 |
 | `color.legacy.accent-yellow` | `#FFCC00` | 兼容旧页面，不属于现行颜色规范 |
 | `color.legacy.accent-green` | `#34C759` | 兼容旧页面，不属于现行颜色规范 |
 | `color.legacy.accent-pink` | `#FF6482` | 兼容旧页面，不属于现行颜色规范 |
@@ -135,6 +138,66 @@
 | `rich.card-top` | `28pt` | 卡片容器顶部到 H1 |
 | `rich.card-action-gap` | `28pt` | 最后内容到按钮区顶部 |
 | `rich.card-bottom` | `30pt` | 按钮区底部到容器底部 |
+
+## media-image
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `media-image.single-portrait-width` | `165px` | AI 回答流单张竖图宽度 |
+| `media-image.single-portrait-height` | `220px` | AI 回答流单张竖图高度 |
+| `media-image.single-landscape-width` | `219px` | AI 回答流单张横图宽度 |
+| `media-image.single-landscape-height` | `164px` | AI 回答流单张横图高度 |
+| `media-image.group-gap` | `6px` | AI 回答流多图横向间距 |
+| `media-image.group-button-gap` | `12px` | 图组到更多图片入口的间距 |
+| `media-image.radius` | `16px` | AI 回答流图片圆角 |
+| `media-image.more-height` | `44px` | 更多图片入口固定高度 |
+| `media-image.more-radius` | `40px` | 更多图片入口圆角 |
+| `media-image.more-avatar` | `14px` | 更多图片入口头像尺寸 |
+
+## media-note
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `media-note.container-width` | `329px` | AI 回答流笔记卡内容宽度 |
+| `media-note.gap` | `6px` | 笔记卡横向间距 |
+| `media-note.button-gap` | `12px` | 笔记卡组到更多入口的间距 |
+| `media-note.radius` | `16px` | 笔记卡圆角 |
+| `media-note.large-width` | `161.5px` | 单张和两张笔记卡宽度 |
+| `media-note.large-height` | `215.333px` | 单张和两张笔记卡高度 |
+| `media-note.large-padding-top` | `20px` | 大笔记卡内容顶部留白 |
+| `media-note.large-padding-x` | `12px` | 大笔记卡内容水平留白 |
+| `media-note.large-padding-bottom` | `12px` | 大笔记卡内容底部留白 |
+| `media-note.large-content-gap` | `6px` | 大笔记卡标题与作者行间距 |
+| `media-note.large-avatar` | `16px` | 大笔记卡作者头像尺寸 |
+| `media-note.large-like-icon` | `14px` | 大笔记卡点赞图标尺寸 |
+| `media-note.compact-padding-top` | `16px` | 三列笔记卡内容顶部留白 |
+| `media-note.compact-padding-x` | `10px` | 三列笔记卡内容水平留白 |
+| `media-note.compact-padding-bottom` | `10px` | 三列笔记卡内容底部留白 |
+| `media-note.compact-content-gap` | `4px` | 三列笔记卡标题与作者行间距 |
+| `media-note.compact-avatar` | `14px` | 三列笔记卡作者头像尺寸 |
+| `media-note.compact-like-icon` | `12px` | 三列笔记卡点赞图标尺寸 |
+| `media-note.video-badge` | `20px` | 视频笔记右上角播放标识尺寸 |
+| `media-note.more-height` | `44px` | 更多笔记入口固定高度 |
+| `media-note.more-radius` | `40px` | 更多笔记入口圆角 |
+| `media-note.more-avatar` | `14px` | 更多笔记入口头像尺寸 |
+
+## media-video
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `media-video.portrait-width` | `240px` | 回答流竖版视频宽度 |
+| `media-video.portrait-height` | `320px` | 回答流竖版视频高度 |
+| `media-video.portrait-radius` | `22px` | 竖版视频圆角 |
+| `media-video.landscape-width` | `329px` | 回答流横版视频宽度 |
+| `media-video.landscape-height` | `185.0625px` | 回答流横版视频高度 |
+| `media-video.landscape-radius` | `22px` | 横版视频圆角 |
+| `media-video.control-padding` | `16px` | 横版视频底部控件内边距 |
+| `media-video.control-gap` | `16px` | 作者信息与播放控件间距 |
+| `media-video.author-gap` | `6px` | 头像与作者名间距 |
+| `media-video.control-size` | `18px` | 头像、声音和播放控件尺寸 |
+| `media-video.duration-padding` | `12px` | 时长标签顶部和右侧留白 |
+| `media-video.duration-mask-width` | `60px` | 时长标签局部遮罩宽度 |
+| `media-video.duration-mask-height` | `40px` | 时长标签局部遮罩高度 |
 
 ## Spacing
 
@@ -210,6 +273,7 @@
 | `shadow.2` | `0 16px 48px rgba(20,20,20,0.12)` (dark: `0 16px 48px rgba(20,20,20,0.24)`) | 面板阴影 |
 | `shadow.3` | `0 24px 72px rgba(20,20,20,0.20)` (dark: `0 24px 72px rgba(20,20,20,0.40)`) | 高层面板阴影 |
 | `shadow.modal` | `0 16px 48px rgba(20,20,20,0.12)` (dark: `0 16px 48px rgba(20,20,20,0.24)`) | 兼容旧变量：映射到 shadow 2 |
+| `shadow.media-note-text` | `0 0.5px 1px rgba(0,0,0,0.30)` | 笔记卡封面文字阴影 |
 
 ## Font Family
 
@@ -231,6 +295,11 @@
 | `typography.dialog-input` | 16px | 400 | 48px | 输入框文字 |
 | `typography.dialog-time` | 13px | 400 | 18px | 对话时间标签 |
 | `typography.community-card-title` | 14px | 500 | 20px | 社区卡片标题，最多两行 |
+| `typography.media-note-meta` | 12px | 400 | 18px | 大笔记卡作者和点赞信息 |
+| `typography.media-note-title-compact` | 12px | 500 | 18px | 三列笔记卡标题 |
+| `typography.media-note-meta-compact` | 10px | 400 | 14px | 三列笔记卡作者和点赞信息 |
+| `typography.media-video-author` | 12px | 400 | 18px | 横版视频作者名 |
+| `typography.media-video-duration` | 11px | 500 | 16px | 横版视频时长标签 |
 | `typography.support` | 12px | 400 | 17px | 辅助文字 |
 | `typography.headline-h1` | 20pt | 600 | 34pt | 兼容旧文档：映射到 Rich H1 |
 | `typography.headline-h2` | 18pt | 600 | 31pt | 兼容旧文档：映射到 Rich H2 |

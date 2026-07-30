@@ -11,6 +11,9 @@ export type ComponentSlug =
   | 'divider'
   | 'toast'
   | 'message-bubble'
+  | 'media-image'
+  | 'media-note'
+  | 'media-video'
   | 'process-indicator'
   | 'live-waveform'
 
@@ -47,6 +50,9 @@ export const components: ComponentMeta[] = [
   { slug: 'divider', name: 'Divider', status: 'placeholder', depth: 'shallow' },
   { slug: 'toast', name: 'Toast', status: 'placeholder', depth: 'shallow' },
   { slug: 'message-bubble', name: 'MessageBubble', status: 'complete', depth: 'deep' },
+  { slug: 'media-image', name: 'MediaImage', status: 'draft', depth: 'deep' },
+  { slug: 'media-note', name: 'MediaNote', status: 'draft', depth: 'deep' },
+  { slug: 'media-video', name: 'MediaVideo', status: 'draft', depth: 'deep' },
   { slug: 'process-indicator', name: 'ProcessIndicator', status: 'draft', depth: 'deep' },
   { slug: 'live-waveform', name: 'LiveWaveform', status: 'draft', depth: 'deep' },
 ]
@@ -57,7 +63,7 @@ export const pages: PageMeta[] = [
     name: '点点对话页',
     subtitle: '聊天 · Skill · AI 生成卡片',
     screenId: 'dotted-demo',
-    uses: ['message-bubble', 'process-indicator', 'input', 'card'],
+    uses: ['message-bubble', 'media-image', 'media-note', 'media-video', 'process-indicator', 'input', 'card'],
   },
 ]
 

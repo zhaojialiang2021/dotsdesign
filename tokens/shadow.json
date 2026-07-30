@@ -24,6 +24,11 @@
       "$type": "shadow",
       "$description": "兼容旧变量：映射到 shadow 2",
       "$extensions": { "modes": { "dark": "0 16px 48px rgba(20,20,20,0.24)" } }
+    },
+    "media-note-text": {
+      "$value": "0 0.5px 1px rgba(0,0,0,0.30)",
+      "$type": "shadow",
+      "$description": "笔记卡封面文字阴影"
     }
   }
 }

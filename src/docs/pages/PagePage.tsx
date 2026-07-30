@@ -90,9 +90,6 @@ export function PagePage({ slug }: { slug: string }) {
                   onClick={() => navigate(`/docs/components/${slug}`)}
                 >
                   <span className="docs-uses-chip__name">{c.name}</span>
-                  {c.depth === 'deep' && (
-                    <span className="docs-uses-chip__badge">deep</span>
-                  )}
                   <Icon.ChevronRight size={12} />
                 </button>
               )

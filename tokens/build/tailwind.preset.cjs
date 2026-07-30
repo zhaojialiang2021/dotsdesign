@@ -71,6 +71,9 @@ module.exports = {
   "dark-separator-2": "var(--dark-separator-2)",
   "always-white": "var(--always-white)",
   "always-black": "var(--always-black)",
+  "always-media-overlay": "var(--always-media-overlay)",
+  "always-video-control-overlay": "var(--always-video-control-overlay)",
+  "always-video-duration-shadow": "var(--always-video-duration-shadow)",
   "legacy-accent-yellow": "var(--legacy-accent-yellow)",
   "legacy-accent-green": "var(--legacy-accent-green)",
   "legacy-accent-pink": "var(--legacy-accent-pink)",
@@ -183,6 +186,41 @@ module.exports = {
       "fontWeight": "500"
     }
   ],
+  "media-note-meta": [
+    "12px",
+    {
+      "lineHeight": "18px",
+      "fontWeight": "400"
+    }
+  ],
+  "media-note-title-compact": [
+    "12px",
+    {
+      "lineHeight": "18px",
+      "fontWeight": "500"
+    }
+  ],
+  "media-note-meta-compact": [
+    "10px",
+    {
+      "lineHeight": "14px",
+      "fontWeight": "400"
+    }
+  ],
+  "media-video-author": [
+    "12px",
+    {
+      "lineHeight": "18px",
+      "fontWeight": "400"
+    }
+  ],
+  "media-video-duration": [
+    "11px",
+    {
+      "lineHeight": "16px",
+      "fontWeight": "500"
+    }
+  ],
   "support": [
     "12px",
     {
@@ -281,7 +319,8 @@ module.exports = {
   "1": "var(--shadow-1)",
   "2": "var(--shadow-2)",
   "3": "var(--shadow-3)",
-  "modal": "var(--shadow-modal)"
+  "modal": "var(--shadow-modal)",
+  "media-note-text": "var(--shadow-media-note-text)"
 },
     },
   },

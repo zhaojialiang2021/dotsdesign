@@ -185,6 +185,7 @@ function ReportDemoChrome({ activeSlug }: { activeSlug: string }) {
 function ReportDemoCanvasTools({
   scale,
   onScaleChange,
+  schemeSwitcherEnabled,
   toolNoteDisplayVariant,
   onToolNoteDisplayVariantChange,
   sourceImageMotionEnabled,
@@ -192,6 +193,7 @@ function ReportDemoCanvasTools({
 }: {
   scale: number
   onScaleChange: (scale: number) => void
+  schemeSwitcherEnabled: boolean
   toolNoteDisplayVariant: DottedToolNoteDisplayVariant
   onToolNoteDisplayVariantChange: (variant: DottedToolNoteDisplayVariant) => void
   sourceImageMotionEnabled: boolean
@@ -209,7 +211,7 @@ function ReportDemoCanvasTools({
 
   return (
     <>
-      {schemePanelOpen ? (
+      {schemeSwitcherEnabled && schemePanelOpen ? (
         <aside className="docs-report-demo-scheme-panel" aria-label="方案切换">
           <header className="docs-report-demo-scheme-panel__header">
             <h2>方案切换</h2>
@@ -259,7 +261,13 @@ function ReportDemoCanvasTools({
         </aside>
       ) : null}
 
-      <div className="docs-report-demo-canvas-tools" aria-label="画布工具">
+      <div
+        className={[
+          'docs-report-demo-canvas-tools',
+          !schemeSwitcherEnabled ? 'docs-report-demo-canvas-tools--scale-only' : '',
+        ].filter(Boolean).join(' ')}
+        aria-label="画布工具"
+      >
         <button
           type="button"
           onClick={() => changeScale(1)}
@@ -276,15 +284,19 @@ function ReportDemoCanvasTools({
         >
           <img className="docs-report-demo-canvas-tools__zoom-icon" src={demoShellZoomOutIcon} alt="" />
         </button>
-        <span className="docs-report-demo-canvas-tools__separator" aria-hidden="true" />
-        <button
-          type="button"
-          onClick={() => setSchemePanelOpen(true)}
-          aria-label="打开方案切换面板"
-          aria-expanded={schemePanelOpen}
-        >
-          <img className="docs-report-demo-canvas-tools__scheme-icon" src={demoShellSchemeIcon} alt="" />
-        </button>
+        {schemeSwitcherEnabled ? (
+          <>
+            <span className="docs-report-demo-canvas-tools__separator" aria-hidden="true" />
+            <button
+              type="button"
+              onClick={() => setSchemePanelOpen(true)}
+              aria-label="打开方案切换面板"
+              aria-expanded={schemePanelOpen}
+            >
+              <img className="docs-report-demo-canvas-tools__scheme-icon" src={demoShellSchemeIcon} alt="" />
+            </button>
+          </>
+        ) : null}
       </div>
     </>
   )
@@ -521,6 +533,7 @@ function ConversationStreamingReport({
       <ReportDemoCanvasTools
         scale={canvasScale}
         onScaleChange={setCanvasScale}
+        schemeSwitcherEnabled={toolCallDetailVariant === 'default'}
         toolNoteDisplayVariant={toolNoteDisplayVariant}
         onToolNoteDisplayVariantChange={setToolNoteDisplayVariant}
         sourceImageMotionEnabled={sourceImageMotionEnabled}

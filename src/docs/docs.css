@@ -5264,7 +5264,7 @@ pre.docs-codeblock > code {
   align-items: center;
   border-radius: var(--radius-option);
   overflow: hidden;
-  background: var(--bg-1);
+  background: var(--bg-2);
   box-shadow:
     0 16px 4px transparent,
     0 10px 4px transparent,
@@ -5321,13 +5321,18 @@ pre.docs-codeblock > code {
   align-items: center;
   overflow: hidden;
   border-radius: var(--radius-option);
-  background: var(--bg-1);
+  background: var(--bg-2);
   box-shadow:
     0 16px 4px transparent,
     0 10px 4px transparent,
     0 6px 3px color-mix(in srgb, var(--always-black) 1%, transparent),
     0 3px 3px color-mix(in srgb, var(--always-black) 1%, transparent),
     0 1px 1px color-mix(in srgb, var(--always-black) 1%, transparent);
+}
+
+.docs-report-demo-canvas-tools--scale-only {
+  width: 88px;
+  grid-template-columns: repeat(2, 44px);
 }
 
 .docs-report-demo-canvas-tools button {
@@ -5343,6 +5348,10 @@ pre.docs-codeblock > code {
 
 .docs-report-demo-canvas-tools button:first-child {
   justify-items: end;
+}
+
+.docs-report-demo-canvas-tools.docs-report-demo-canvas-tools--scale-only button:first-child {
+  justify-items: center;
 }
 
 .docs-report-demo-canvas-tools img {
@@ -5378,7 +5387,7 @@ pre.docs-codeblock > code {
   box-sizing: border-box;
   overflow: hidden;
   border-radius: var(--radius-input);
-  background: var(--bg-1);
+  background: var(--bg-2);
   box-shadow:
     0 6px 2px color-mix(in srgb, var(--always-black) 1%, transparent),
     0 2px 2px color-mix(in srgb, var(--always-black) 2%, transparent),
@@ -5575,7 +5584,7 @@ pre.docs-codeblock > code {
   place-items: center;
   border: 0;
   border-radius: var(--radius-option);
-  background: var(--bg-1);
+  background: var(--bg-2);
   color: var(--label-primary);
   cursor: pointer;
   box-shadow:
@@ -5605,7 +5614,7 @@ pre.docs-codeblock > code {
   overflow: hidden;
   border: 0;
   border-radius: var(--radius-input);
-  background: var(--bg-1);
+  background: var(--bg-2);
   box-shadow:
     0 6px 2px color-mix(in srgb, var(--always-black) 1%, transparent),
     0 2px 2px color-mix(in srgb, var(--always-black) 2%, transparent),
@@ -9749,6 +9758,75 @@ pre.docs-codeblock > code {
   font-weight: 600;
 }
 
+.docs-demo:has(.media-image-demo) {
+  display: block;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.docs-demo__stage:has(.media-image-demo) {
+  min-height: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.docs-demo__stage:has(.media-image-demo) .docs-stage__inner {
+  width: 100%;
+}
+
+.media-image-demo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(329px, 1fr));
+  gap: var(--space-8);
+  width: 100%;
+  font-family: var(--font-component);
+}
+
+.media-image-demo__example {
+  min-width: 0;
+  padding-bottom: var(--space-8);
+  border-bottom: 0.5px solid var(--separator-base);
+}
+
+.media-image-demo__example:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+.media-image-demo__example-header {
+  width: 329px;
+  max-width: 100%;
+  min-height: 54px;
+  margin-bottom: var(--space-4);
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.media-image-demo__example-header strong {
+  color: var(--title);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.media-image-demo__example-header code,
+.media-image-demo__example-header span {
+  color: var(--description);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.media-image-demo__example-header span {
+  text-align: right;
+}
+
+.media-image-demo .dots-media-image {
+  width: 329px;
+  max-width: 100%;
+}
+
 @media (max-width: 920px) {
   .process-indicator-demo {
     grid-template-columns: 1fr;
@@ -9756,6 +9834,14 @@ pre.docs-codeblock > code {
 
   .process-indicator-demo__preview {
     min-height: 320px;
+  }
+
+  .media-image-demo {
+    grid-template-columns: 1fr;
+  }
+
+  .media-image-demo__example:nth-last-child(2) {
+    border-bottom: 0.5px solid var(--separator-base);
   }
 }
 
