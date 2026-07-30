@@ -1,22 +1,13 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject, type UIEvent as ReactUIEvent, type WheelEvent as ReactWheelEvent } from 'react'
-import thinkAddCircle from '../assets/dotted/think-add-circle.svg'
-import thinkBack from '../assets/dotted/think-back.svg'
-import thinkCamera from '../assets/dotted/think-camera.svg'
-import thinkDescending from '../assets/dotted/think-descending.svg'
 import thinkInternet from '../assets/dotted/think-internet.svg'
-import thinkMessageVoice from '../assets/dotted/think-message-voice.svg'
-import thinkMore from '../assets/dotted/think-more.svg'
 import thinkNoteSingle from '../assets/dotted/think-note-single.svg'
-import thinkResponseArrow from '../assets/dotted/think-response-arrow.svg'
-import thinkResponseAvatar1 from '../assets/dotted/think-response-avatar-1.png'
-import thinkResponseAvatar2 from '../assets/dotted/think-response-avatar-2.png'
-import thinkResponseCopy from '../assets/dotted/think-response-copy.svg'
-import thinkResponseDislike from '../assets/dotted/think-response-dislike.svg'
-import thinkResponseRefresh from '../assets/dotted/think-response-refresh.svg'
-import thinkResponseShare from '../assets/dotted/think-response-share.svg'
-import thinkStatusCap from '../assets/dotted/think-status-cap.svg'
-import thinkStatusCellular from '../assets/dotted/think-status-cellular.svg'
-import thinkStatusWifi from '../assets/dotted/think-status-wifi.svg'
+import thinkResponseArrow from '../assets/dotted/base-response-arrow.svg'
+import thinkResponseAvatar1 from '../assets/dotted/base-response-avatar-1.png'
+import thinkResponseAvatar2 from '../assets/dotted/base-response-avatar-2.png'
+import thinkResponseCopy from '../assets/dotted/base-response-copy.svg'
+import thinkResponseDislike from '../assets/dotted/base-response-dislike.svg'
+import thinkResponseRefresh from '../assets/dotted/base-response-refresh.svg'
+import thinkResponseShare from '../assets/dotted/base-response-share.svg'
 import sourceLike from '../assets/dotted/source-like.svg'
 import sourceQuote from '../assets/dotted/source-quote.svg'
 import responseIli1 from '../assets/dotted/response/ili-1.png'
@@ -57,7 +48,7 @@ import sourceJulyYi1 from '../assets/dotted/sources-july/yi-1.png'
 import sourceJulyYi2 from '../assets/dotted/sources-july/yi-2.png'
 import sourceJulyYi3 from '../assets/dotted/sources-july/yi-3.png'
 import mediaVideoDemo from '../assets/dotted/media-video-demo.mp4'
-import thinkUserAvatar from '../assets/dotted/think-user-avatar.svg'
+import { DottedConversationShell } from './dotted/DottedConversationShell'
 import { DotsMessageBubble, type DotsMessageRole } from './dotted/DotsMessageBubble'
 import { DotsMediaImage } from './dotted/DotsMediaImage'
 import { DotsMediaNote, type DotsMediaNoteItem } from './dotted/DotsMediaNote'
@@ -3160,39 +3151,9 @@ export function DottedDemoScreen({
   ]
 
   return (
-    <div className="dotted-demo-page dots-message-surface" data-node-id="3:4417">
-      <div className="dotted-demo">
-        <div className="dotted-demo__topbar" data-node-id="2:380">
-          <div className="dotted-demo__statusbar" data-node-id="2:381">
-            <div className="dotted-demo__status-time">9:41</div>
-            <div className="dotted-demo__status-levels" aria-hidden="true">
-              <img className="dotted-demo__cellular" src={thinkStatusCellular} alt="" />
-              <img className="dotted-demo__wifi" src={thinkStatusWifi} alt="" />
-              <span className="dotted-demo__battery">
-                <img className="dotted-demo__battery-cap" src={thinkStatusCap} alt="" />
-                <span className="dotted-demo__battery-fill" />
-              </span>
-            </div>
-          </div>
-
-          <nav className="dotted-demo__nav" aria-label="点点导航" data-node-id="2:382">
-            <div className="dotted-demo__nav-left">
-              <button className="dotted-demo__nav-btn" type="button" aria-label="返回">
-                <img src={thinkBack} alt="" aria-hidden="true" />
-              </button>
-              <div className="dotted-demo__avatar-title">
-                <img className="dotted-demo__avatar" src={thinkUserAvatar} alt="" aria-hidden="true" />
-                <div className="dotted-demo__title">点点</div>
-              </div>
-            </div>
-            <button className="dotted-demo__nav-btn" type="button" aria-label="更多">
-              <img src={thinkMore} alt="" aria-hidden="true" />
-            </button>
-          </nav>
-        </div>
-
-        <main className="dotted-demo__dialog" aria-label="点点对话区">
-          <DottedChatStream
+    <DottedConversationShell
+      dialog={
+        <DottedChatStream
             items={chatItems}
             streamRef={chatStreamRef}
             onSourcesClick={() => setActiveSheetMode('sources')}
@@ -3203,44 +3164,17 @@ export function DottedDemoScreen({
             sourceImageMotionVariant={sourceImageMotionVariant}
             thinkingDisplayVariant={thinkingDisplayVariant}
             toolCallDetailVariant={toolCallDetailVariant}
-          />
-        </main>
-
-        {showJumpToBottom && (
-          <button className="dotted-demo__jump-bottom" type="button" aria-label="跳转到回答底部" onClick={handleJumpToBottom}>
-            <img src={thinkDescending} alt="" aria-hidden="true" />
-          </button>
-        )}
-
-        {shouldShowQuickAnswerButton && (
+        />
+      }
+      showJumpToBottom={showJumpToBottom}
+      onJumpToBottom={handleJumpToBottom}
+      floatingActions={shouldShowQuickAnswerButton ? (
           <button className="dotted-demo__quick-answer-button" type="button" onClick={handleQuickAnswerClick}>
             <img className="dotted-demo__quick-answer-icon" src={quickAnswerIcon} alt="" aria-hidden="true" />
             <span>获得快速回答</span>
           </button>
-        )}
-
-        <div className="dotted-demo__dock">
-          <div className="dotted-demo__composer" data-node-id="3:4437">
-            <div className="dotted-demo__composer-main">
-              <div className="dotted-demo__composer-placeholder">
-                <img src={thinkMessageVoice} alt="" aria-hidden="true" />
-                <span>发消息或按住说话...</span>
-              </div>
-              <div className="dotted-demo__composer-actions">
-                <button className="dotted-demo__composer-icon" type="button" aria-label="拍照">
-                  <img src={thinkCamera} alt="" aria-hidden="true" />
-                </button>
-                <button className="dotted-demo__composer-icon" type="button" aria-label="添加">
-                  <img src={thinkAddCircle} alt="" aria-hidden="true" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="dotted-demo__watermark">内容由AI生成</div>
-          <div className="dotted-demo__home-indicator" aria-hidden="true" />
-        </div>
-
-        {activeSheetMode && (
+      ) : undefined}
+      overlay={activeSheetMode ? (
           <DottedSourcesSheet
             mode={activeSheetMode}
             currentThinkingKind={deepThinkingKind}
@@ -3251,8 +3185,7 @@ export function DottedDemoScreen({
             quick={answerRoute === 'quick'}
             onClose={() => setActiveSheetMode(null)}
           />
-        )}
-      </div>
-    </div>
+      ) : undefined}
+    />
   )
 }

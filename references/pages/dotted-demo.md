@@ -34,14 +34,26 @@ used_by: [docs-pages, reports]
 
 页面级或 Pattern 级 demo 必须基于真实页面模板生成，不允许脱离页面模板另造展示基座。
 
+Figma「7月方案」节点 `2060:30262` 是点点对话页唯一基础底座。底座由 `DottedConversationShell` 提供，固定负责 393×852 Light-only 画布、顶部系统栏与导航、可滚动消息区、至底入口、底部输入区和安全区；`DottedDemoScreen` 只负责回答流程与功能模块组合。
+
 对话页能力必须复用：
 
-- `DottedDemoScreen`
+- `DottedConversationShell`
+- `DottedDemoScreen`（需要回答流程时）
 - iOS 状态栏
 - 点点导航栏
 - 真实消息流
 - `DotsMessageBubble`
 - 底部输入区
+
+底座开放四类叠加位置：
+
+- `dialog`：用户消息、AI 回答、媒体组件和过程状态。
+- `floatingActions`：至底、快速回答等不占据消息流布局的动作。
+- `composer`：语音、键盘、Skill 选中等输入状态。
+- `overlay`：思考半层、来源半层和后续模态功能层。
+
+后续 demo 只能向这些位置注入功能，不得复制或替换状态栏、导航、滚动容器、安全区和默认输入底座。基础底座样式变化必须由所有页面、Pattern 和 Report demo 共同继承。
 
 汇报说明、进度控制器、切换开关和设计备注只能放在手机画板外侧，不能在手机画板内重建一套展示框架。
 
