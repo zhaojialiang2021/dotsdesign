@@ -95,6 +95,9 @@
 | `color.always.media-overlay` | `rgba(36,36,36,0.32)` | 媒体卡底部文字蒙层 |
 | `color.always.video-control-overlay` | `rgba(0,0,0,0.20)` | 横版视频底部控件渐变终点 |
 | `color.always.video-duration-shadow` | `rgba(0,0,0,0.12)` | 横版视频右上时长局部遮罩 |
+| `color.always.ask-dots-action` | `#34B39D` | 问点点搜索引导的立即总结文字 |
+| `color.always.ask-dots-island-surface` | `rgba(255,255,255,0.80)` | 问点点搜索引导新版玻璃表面 |
+| `color.always.ask-dots-island-border` | `rgba(86,209,191,0.20)` | 问点点搜索引导新版薄荷描边 |
 | `color.legacy.accent-yellow` | `#FFCC00` | 兼容旧页面，不属于现行颜色规范 |
 | `color.legacy.accent-green` | `#34C759` | 兼容旧页面，不属于现行颜色规范 |
 | `color.legacy.accent-pink` | `#FF6482` | 兼容旧页面，不属于现行颜色规范 |
@@ -258,6 +261,7 @@
 | `duration.delayed-in` | `300ms` | 延迟入场 |
 | `duration.out` | `250ms` | 元素退场 |
 | `duration.sheet` | `400ms` | 弹窗/底部弹窗出入场，允许 350-450ms |
+| `duration.morph` | `800ms` | 大幅共享元素形变，容纳轻微越界与回稳 |
 | `duration.fast` | `250ms` | 兼容旧变量：状态切换 |
 | `duration.normal` | `250ms` | 兼容旧变量：页面切换 |
 | `duration.slow` | `350ms` | 兼容旧变量：大幅位移 |
@@ -268,6 +272,7 @@
 |---|---|---|
 | `curve.out` | `cubic-bezier(.32,.72,0,1)` | 通用出场/进入 |
 | `curve.spring` | `cubic-bezier(.34,1.56,.64,1)` | 弹性效果 |
+| `curve.morph-spring` | `linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.0072 60%, 1.013 65%, 1.0145 70%, 1.0134 75%, 1.011 80%, 1.008 85%, 1.005 90%, 1.0023 95%, 1)` | 阻尼比 0.78 的欠阻尼形变弹簧离线采样；双向轻微越界后回稳 |
 | `curve.default` | `cubic-bezier(.32,.72,0,1)` | 兼容旧变量：映射到 Dots ease-out |
 | `curve.ease-out` | `cubic-bezier(.32,.72,0,1)` | 兼容旧变量：映射到 Dots ease-out |
 
@@ -288,6 +293,8 @@
 | `shadow.3` | `0 24px 72px rgba(20,20,20,0.20)` (dark: `0 24px 72px rgba(20,20,20,0.40)`) | 高层面板阴影 |
 | `shadow.modal` | `0 16px 48px rgba(20,20,20,0.12)` (dark: `0 16px 48px rgba(20,20,20,0.24)`) | 兼容旧变量：映射到 shadow 2 |
 | `shadow.media-note-text` | `0 0.5px 1px rgba(0,0,0,0.30)` | 笔记卡封面文字阴影 |
+| `shadow.community-search-field` | `0 4px 18px rgba(0,0,0,0.06)` | 社区搜索结果页搜索框阴影 |
+| `shadow.ask-dots-island` | `0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)` | 问点点搜索引导新版黑色投影与薄荷柔光 |
 
 ## Font Family
 

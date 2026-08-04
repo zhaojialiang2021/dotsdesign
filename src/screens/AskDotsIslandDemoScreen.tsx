@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type AnimationEvent, type UIEvent } from 'react'
+import lottie from 'lottie-web'
 import backIcon from '../assets/dotted/ask-dots-island/back.svg'
+import dotsLogoAnimationUrl from '../assets/dotted/ask-dots-island/dots-logo-motion.json?url'
 import closeIcon from '../assets/dotted/ask-dots-island/close.svg'
 import dotsAvatar from '../assets/dotted/ask-dots-island/dots-avatar.svg'
 import filterIcon from '../assets/dotted/ask-dots-island/filter.svg'
@@ -62,9 +64,10 @@ const resultCards = [
 const searchTabs = ['全部', '用户', '商品', '图片', '地点'] as const
 const thinkingScenario: DottedEntryScenario = {
   userQuery: '帮我总结上海周末遛娃好去处',
-  judgmentText: '搜索亲子去处并过滤营销软广',
+  judgmentText: '',
   contextText: '',
   thinkingTitle: '整理上海周末遛娃好去处',
+  thinkingBody: '',
   thinkingHoldMs: 2000,
   response: askDotsFamilyResponse,
 }
@@ -99,6 +102,37 @@ function shuffleCards<T>(items: readonly T[]) {
   return shuffled
 }
 
+function AskDotsIslandLogo() {
+  const containerRef = useRef<HTMLSpanElement>(null)
+
+  useEffect(() => {
+    if (!containerRef.current) return undefined
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const animation = lottie.loadAnimation({
+      container: containerRef.current,
+      renderer: 'svg',
+      loop: true,
+      autoplay: !reduceMotion,
+      path: dotsLogoAnimationUrl,
+    })
+    const stopAtFirstFrame = () => animation.goToAndStop(0, true)
+
+    if (reduceMotion) animation.addEventListener('DOMLoaded', stopAtFirstFrame)
+
+    return () => {
+      if (reduceMotion) animation.removeEventListener('DOMLoaded', stopAtFirstFrame)
+      animation.destroy()
+    }
+  }, [])
+
+  return (
+    <span
+      ref={containerRef}
+      className="ask-dots-demo__island-dots-logo ask-dots-demo__island-dots-logo--motion"
+    />
+  )
+}
+
 export function AskDotsIslandDemoScreen() {
   const [view, setView] = useState<'results' | 'thinking'>('results')
   const [transitionPhase, setTransitionPhase] = useState<'idle' | 'entering' | 'leaving'>('idle')
@@ -107,6 +141,7 @@ export function AskDotsIslandDemoScreen() {
   const [dismissed, setDismissed] = useState(false)
   const [conversationStarted, setConversationStarted] = useState(false)
   const [answerPending, setAnswerPending] = useState(false)
+  const [pendingIntro, setPendingIntro] = useState(false)
   const [hideCompletedStatus, setHideCompletedStatus] = useState(false)
   const [renderCycleCount, setRenderCycleCount] = useState(1)
   const appendedScrollHeightRef = useRef(0)
@@ -136,6 +171,7 @@ export function AskDotsIslandDemoScreen() {
       setConversationStarted(true)
       setAnswerPending(true)
     }
+    setPendingIntro(false)
     setHideCompletedStatus(false)
     setPrompted(true)
     setExpanded(false)
@@ -143,8 +179,15 @@ export function AskDotsIslandDemoScreen() {
     setView('thinking')
   }
 
+  const handlePendingIntroEnd = (event: AnimationEvent<HTMLSpanElement>) => {
+    if (event.target !== event.currentTarget) return
+
+    setPendingIntro(false)
+  }
+
   const handleResponseComplete = useCallback(() => {
     setAnswerPending(false)
+    setPendingIntro(false)
   }, [])
 
   const leaveThinking = () => {
@@ -159,6 +202,7 @@ export function AskDotsIslandDemoScreen() {
     if (transitionPhase === 'leaving') {
       setView('results')
       setTransitionPhase('idle')
+      if (answerPending) setPendingIntro(true)
       if (hideCompletedStatus) {
         setConversationStarted(false)
         setHideCompletedStatus(false)
@@ -193,9 +237,9 @@ export function AskDotsIslandDemoScreen() {
     setExpanded(true)
   }
 
-  const hasVisibleConversationStatus = conversationStarted && !hideCompletedStatus
+  const hasVisibleConversationStatus = (conversationStarted || pendingIntro) && !hideCompletedStatus
   const islandStatusLabel = hasVisibleConversationStatus
-    ? (answerPending ? '思考中' : '已总结')
+    ? (answerPending ? '总结中' : '已总结')
     : '问点点'
 
   return (
@@ -337,7 +381,7 @@ export function AskDotsIslandDemoScreen() {
 
       <aside
         className={`ask-dots-demo__island${expanded ? ' ask-dots-demo__island--expanded' : ''}`}
-        aria-label={answerPending ? '点点正在思考' : hasVisibleConversationStatus ? '点点已总结' : '问点点总结提示'}
+        aria-label={answerPending ? '点点正在总结' : hasVisibleConversationStatus ? '点点已总结' : '问点点总结提示'}
       >
         <span className="ask-dots-demo__island-liquid" aria-hidden="true">
           <span className="ask-dots-demo__island-glow ask-dots-demo__island-glow--bottom">
@@ -349,12 +393,21 @@ export function AskDotsIslandDemoScreen() {
         </span>
 
         <span className="ask-dots-demo__island-logo" aria-hidden="true">
-          {answerPending ? (
+          {pendingIntro ? (
+            <span
+              className="ask-dots-demo__island-dots-intro"
+              onAnimationEnd={handlePendingIntroEnd}
+            >
+              <AskDotsIslandLogo />
+            </span>
+          ) : answerPending ? (
             <ProcessIndicator
               kind="thinking"
               playing
               className="ask-dots-demo__island-thinking"
             />
+          ) : expanded ? (
+            <AskDotsIslandLogo />
           ) : (
             <img
               className="ask-dots-demo__island-dots-logo"
@@ -370,14 +423,14 @@ export function AskDotsIslandDemoScreen() {
             {islandStatusLabel}
           </span>
           <span className="ask-dots-demo__island-copy-question">
-            需要我帮你总结下上海周末遛娃好去处吗？
+            笔记太多看花眼啦？让我来帮你总结下吧~
           </span>
         </span>
 
         <button
           className="ask-dots-demo__island-trigger"
           type="button"
-          aria-label={answerPending ? '查看思考中的回答' : hasVisibleConversationStatus ? '查看已总结的回答' : '问点点'}
+          aria-label={answerPending ? '查看总结中的回答' : hasVisibleConversationStatus ? '查看已总结的回答' : '问点点'}
           onClick={enterThinking}
         >
           <span className="ask-dots-demo__tab-divider">
@@ -388,7 +441,7 @@ export function AskDotsIslandDemoScreen() {
         <div className="ask-dots-demo__island-content" aria-hidden={!expanded}>
           <div className="ask-dots-demo__island-actions">
             <button type="button" onClick={dismissPrompt}>忽略</button>
-            <button type="button" className="ask-dots-demo__summary" onClick={enterThinking}>立即总结</button>
+            <button type="button" className="ask-dots-demo__summary" onClick={enterThinking}>帮我总结</button>
           </div>
         </div>
       </aside>

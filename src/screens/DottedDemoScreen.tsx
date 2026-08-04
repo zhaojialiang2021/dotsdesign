@@ -1397,6 +1397,7 @@ function DottedChatStream({
                   item.isJudging ? 'dotted-demo__thinking--judging' : '',
                   item.isJudgingHold ? 'dotted-demo__thinking--judging-hold' : '',
                   item.isDeepThinking && !item.isQuickAnswerThinking ? 'dotted-demo__thinking--deep' : '',
+                  item.isDeepThinking && item.deepThinkingTargetBody === '' ? 'dotted-demo__thinking--content-hug' : '',
                   item.isQuickAnswerThinking ? 'dotted-demo__thinking--quick-answer' : '',
                   item.deepThinkingKind === 'toolcall' ? 'dotted-demo__thinking--toolcall' : '',
                   item.deepThinkingKind === 'thinkCompact' && !item.deepThinkingBody ? 'dotted-demo__thinking--think-compact' : '',

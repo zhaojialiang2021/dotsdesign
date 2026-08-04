@@ -548,11 +548,51 @@
 }
 
 .ask-dots-demo__island-dots-logo {
+  display: block;
   width: var(--space-5);
   height: var(--space-5);
+  line-height: 0;
   transform: translate(-0.42px, -0.83px) scale(.84);
   transform-origin: center;
   transition: transform var(--duration-morph) var(--curve-morph-spring);
+}
+
+.ask-dots-demo__island-dots-logo svg {
+  display: block;
+}
+
+.ask-dots-demo__island-dots-logo--motion {
+  width: calc(var(--space-5) + (var(--space-1) / 2));
+  height: calc(var(--space-5) + (var(--space-1) / 2));
+  place-self: center;
+}
+
+.ask-dots-demo__island-dots-intro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  animation: ask-dots-logo-intro 1s var(--curve-out) both;
+  will-change: transform;
+}
+
+.ask-dots-demo__island-dots-intro > .ask-dots-demo__island-dots-logo--motion {
+  transform: translate(0, 0) scale(1);
+}
+
+@keyframes ask-dots-logo-intro {
+  0% {
+    transform: scale(.92);
+  }
+
+  18%,
+  82% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(.9);
+  }
 }
 
 .ask-dots-demo__island--expanded .ask-dots-demo__island-logo {
@@ -860,6 +900,10 @@
     color: var(--title);
     background-image: none;
     animation: none;
+  }
+
+  .ask-dots-demo__island-dots-intro {
+    animation-duration: 1ms;
   }
 
   .ask-dots-demo__conversation-transition--entering,

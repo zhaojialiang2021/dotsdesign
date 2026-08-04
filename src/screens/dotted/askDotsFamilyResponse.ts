@@ -15,7 +15,6 @@ import rankWorldSkills from '../../assets/dotted/ask-dots-island/response/rank-w
 import statusArrow from '../../assets/dotted/ask-dots-island/response/status-arrow.svg'
 import statusAvatar1 from '../../assets/dotted/ask-dots-island/response/status-avatar-1.png'
 import statusAvatar2 from '../../assets/dotted/ask-dots-island/response/status-avatar-2.png'
-import statusQuality from '../../assets/dotted/ask-dots-island/response/status-quality.svg'
 import westBund1 from '../../assets/dotted/ask-dots-island/response/west-bund-1.png'
 import westBund2 from '../../assets/dotted/ask-dots-island/response/west-bund-2.png'
 import westBund3 from '../../assets/dotted/ask-dots-island/response/west-bund-3.png'
@@ -61,8 +60,7 @@ const responseText = responseBlocks
   .join('')
 
 export const askDotsFamilyResponse = {
-  statusText: '已过滤疑似营销内容，参考1165人经验',
-  statusIcon: statusQuality,
+  statusText: '搜索并总结47人真实经验',
   statusAvatars: [statusAvatar1, statusAvatar2],
   statusArrow,
   text: responseText,

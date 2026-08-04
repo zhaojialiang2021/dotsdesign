@@ -250,11 +250,13 @@ Motion 规范页直接在 `Bg` 页面内容区域展示，不包外层卡片。D
 |------|------|------|
 | `curve.out` / `--curve-out` | `cubic-bezier(.32,.72,0,1)` | 通用出场/进入 |
 | `curve.spring` / `--curve-spring` | `cubic-bezier(.34,1.56,.64,1)` | 弹性效果 |
+| `curve.morph-spring` / `--curve-morph-spring` | `linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.0072 60%, 1.013 65%, 1.0145 70%, 1.0134 75%, 1.011 80%, 1.008 85%, 1.005 90%, 1.0023 95%, 1)` | 阻尼比 0.78 的欠阻尼形变弹簧采样；双向轻微越界后回稳 |
 | `duration.in` / `--duration-in` | `250ms` | 元素入场 |
 | `duration.expand` / `--duration-expand` | `350ms` | 内容展开 |
 | `duration.delayed-in` / `--duration-delayed-in` | `300ms` | 延迟入场 |
 | `duration.out` / `--duration-out` | `250ms` | 元素退场 |
 | `duration.sheet` / `--duration-sheet` | `400ms` | 弹窗/底部弹窗出入场 |
+| `duration.morph` / `--duration-morph` | `800ms` | 大幅共享元素形变，容纳越界与回稳 |
 
 按压反馈：`scale(.95)` 到 `scale(.97)`，透明度 `.5`。交互元素必须禁用文本选中和 tap highlight。
 
