@@ -48,7 +48,7 @@
 | `color.inverted-fill.4` | `rgba(255,255,255,0.32)` (dark: `rgba(48,48,52,0.5)`) | Inverted Fill 4：反色标签色 |
 | `color.inverted-fill.5` | `rgba(255,255,255,0.99)` (dark: `rgba(48,48,52,0.99)`) | Inverted Fill 5：反色强标签、气泡、轻提示底色 |
 | `color.separator.2` | `rgba(0,0,0,0.2)` (dark: `rgba(255,255,255,0.16)`) | Separator 2：较深色二级描边 |
-| `color.separator.base` | `rgba(0,0,0,0.08)` (dark: `rgba(0,0,0,0.2)`) | Separator：分割线、描边 |
+| `color.separator.base` | `rgba(0,0,0,0.08)` (dark: `rgba(255,255,255,0.12)`) | Separator：分割线、描边 |
 | `color.separator.opaque` | `#EAEAEA` (dark: `#222226`) | Opaque Separator：多条线重叠时使用 |
 | `color.xhs.red` | `#FF2442` (dark: `#FF2E4D`) | XHS Red：小红书品牌强调色 |
 | `color.xhs.red-soft` | `#FFEDF0` (dark: `#301C1F`) | XHS Red Soft：小红书品牌弱强调背景 |
@@ -92,6 +92,9 @@
 | `color.dark.separator-2` | `rgba(0,0,0,0.2)` | Dark Separator 2 |
 | `color.always.white` | `#FFFFFF` | White：Always Mode 白色 |
 | `color.always.black` | `#000000` | Black：Always Mode 黑色 |
+| `color.always.media-overlay` | `rgba(36,36,36,0.32)` | 媒体卡底部文字蒙层 |
+| `color.always.video-control-overlay` | `rgba(0,0,0,0.20)` | 横版视频底部控件渐变终点 |
+| `color.always.video-duration-shadow` | `rgba(0,0,0,0.12)` | 横版视频右上时长局部遮罩 |
 | `color.legacy.accent-yellow` | `#FFCC00` | 兼容旧页面，不属于现行颜色规范 |
 | `color.legacy.accent-green` | `#34C759` | 兼容旧页面，不属于现行颜色规范 |
 | `color.legacy.accent-pink` | `#FF6482` | 兼容旧页面，不属于现行颜色规范 |
@@ -149,6 +152,66 @@
 | `rich.card-top` | `28pt` | 卡片容器顶部到 H1 |
 | `rich.card-action-gap` | `28pt` | 最后内容到按钮区顶部 |
 | `rich.card-bottom` | `30pt` | 按钮区底部到容器底部 |
+
+## media-image
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `media-image.single-portrait-width` | `165px` | AI 回答流单张竖图宽度 |
+| `media-image.single-portrait-height` | `220px` | AI 回答流单张竖图高度 |
+| `media-image.single-landscape-width` | `219px` | AI 回答流单张横图宽度 |
+| `media-image.single-landscape-height` | `164px` | AI 回答流单张横图高度 |
+| `media-image.group-gap` | `6px` | AI 回答流多图横向间距 |
+| `media-image.group-button-gap` | `12px` | 图组到更多图片入口的间距 |
+| `media-image.radius` | `16px` | AI 回答流图片圆角 |
+| `media-image.more-height` | `44px` | 更多图片入口固定高度 |
+| `media-image.more-radius` | `40px` | 更多图片入口圆角 |
+| `media-image.more-avatar` | `14px` | 更多图片入口头像尺寸 |
+
+## media-note
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `media-note.container-width` | `329px` | AI 回答流笔记卡内容宽度 |
+| `media-note.gap` | `6px` | 笔记卡横向间距 |
+| `media-note.button-gap` | `12px` | 笔记卡组到更多入口的间距 |
+| `media-note.radius` | `16px` | 笔记卡圆角 |
+| `media-note.large-width` | `161.5px` | 单张和两张笔记卡宽度 |
+| `media-note.large-height` | `215.333px` | 单张和两张笔记卡高度 |
+| `media-note.large-padding-top` | `20px` | 大笔记卡内容顶部留白 |
+| `media-note.large-padding-x` | `12px` | 大笔记卡内容水平留白 |
+| `media-note.large-padding-bottom` | `12px` | 大笔记卡内容底部留白 |
+| `media-note.large-content-gap` | `6px` | 大笔记卡标题与作者行间距 |
+| `media-note.large-avatar` | `16px` | 大笔记卡作者头像尺寸 |
+| `media-note.large-like-icon` | `14px` | 大笔记卡点赞图标尺寸 |
+| `media-note.compact-padding-top` | `16px` | 三列笔记卡内容顶部留白 |
+| `media-note.compact-padding-x` | `10px` | 三列笔记卡内容水平留白 |
+| `media-note.compact-padding-bottom` | `10px` | 三列笔记卡内容底部留白 |
+| `media-note.compact-content-gap` | `4px` | 三列笔记卡标题与作者行间距 |
+| `media-note.compact-avatar` | `14px` | 三列笔记卡作者头像尺寸 |
+| `media-note.compact-like-icon` | `12px` | 三列笔记卡点赞图标尺寸 |
+| `media-note.video-badge` | `20px` | 视频笔记右上角播放标识尺寸 |
+| `media-note.more-height` | `44px` | 更多笔记入口固定高度 |
+| `media-note.more-radius` | `40px` | 更多笔记入口圆角 |
+| `media-note.more-avatar` | `14px` | 更多笔记入口头像尺寸 |
+
+## media-video
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| `media-video.portrait-width` | `240px` | 回答流竖版视频宽度 |
+| `media-video.portrait-height` | `320px` | 回答流竖版视频高度 |
+| `media-video.portrait-radius` | `22px` | 竖版视频圆角 |
+| `media-video.landscape-width` | `329px` | 回答流横版视频宽度 |
+| `media-video.landscape-height` | `185.0625px` | 回答流横版视频高度 |
+| `media-video.landscape-radius` | `22px` | 横版视频圆角 |
+| `media-video.control-padding` | `16px` | 横版视频底部控件内边距 |
+| `media-video.control-gap` | `16px` | 作者信息与播放控件间距 |
+| `media-video.author-gap` | `6px` | 头像与作者名间距 |
+| `media-video.control-size` | `18px` | 头像、声音和播放控件尺寸 |
+| `media-video.duration-padding` | `12px` | 时长标签顶部和右侧留白 |
+| `media-video.duration-mask-width` | `60px` | 时长标签局部遮罩宽度 |
+| `media-video.duration-mask-height` | `40px` | 时长标签局部遮罩高度 |
 
 ## Spacing
 
@@ -224,6 +287,7 @@
 | `shadow.2` | `0 16px 48px rgba(20,20,20,0.12)` (dark: `0 16px 48px rgba(20,20,20,0.24)`) | 面板阴影 |
 | `shadow.3` | `0 24px 72px rgba(20,20,20,0.20)` (dark: `0 24px 72px rgba(20,20,20,0.40)`) | 高层面板阴影 |
 | `shadow.modal` | `0 16px 48px rgba(20,20,20,0.12)` (dark: `0 16px 48px rgba(20,20,20,0.24)`) | 兼容旧变量：映射到 shadow 2 |
+| `shadow.media-note-text` | `0 0.5px 1px rgba(0,0,0,0.30)` | 笔记卡封面文字阴影 |
 
 ## Font Family
 
@@ -245,6 +309,11 @@
 | `typography.dialog-input` | 16px | 400 | 48px | 输入框文字 |
 | `typography.dialog-time` | 13px | 400 | 18px | 对话时间标签 |
 | `typography.community-card-title` | 14px | 500 | 20px | 社区卡片标题，最多两行 |
+| `typography.media-note-meta` | 12px | 400 | 18px | 大笔记卡作者和点赞信息 |
+| `typography.media-note-title-compact` | 12px | 500 | 18px | 三列笔记卡标题 |
+| `typography.media-note-meta-compact` | 10px | 400 | 14px | 三列笔记卡作者和点赞信息 |
+| `typography.media-video-author` | 12px | 400 | 18px | 横版视频作者名 |
+| `typography.media-video-duration` | 11px | 500 | 16px | 横版视频时长标签 |
 | `typography.support` | 12px | 400 | 17px | 辅助文字 |
 | `typography.headline-h1` | 20pt | 600 | 34pt | 兼容旧文档：映射到 Rich H1 |
 | `typography.headline-h2` | 18pt | 600 | 31pt | 兼容旧文档：映射到 Rich H2 |
@@ -564,6 +633,158 @@ AI 最容易忘记的状态。空容器不是 bug，是产品的一个 view —�
 
 ---
 
+## MediaImage (`media-image`)
+
+**Category**: conversation-media
+
+插入 AI response 正文内容流的图片媒体组件。支持单张横竖图、多图三列和超过三张时的更多图片入口。
+
+### Harness
+- **Semantic**: 用图片补充相邻文字内容，不承担来源卡、笔记卡或视频播放语义。
+- **Generation Rules**
+  - 先读取图片总数；单图再读取媒体方向，多图统一裁切为 3:4。
+  - 两张图仍使用三图单张尺寸，不拉伸填满空余列。
+  - 超过三张只展示前三张，并在图组下方展示更多图片入口。
+- **Validation**
+  - 单张横图 219×164px，单张竖图 165×220px。
+  - 多图间距 6px、圆角 16px，三列撑满 329px 内容宽度。
+  - 超过三张时入口文案展示图片总数。
+  - 图片块前后存在文字承接。
+
+### Props
+- `count`: 1 | 2 | 3 | 4 _(default: `1`)_
+  图片数量。4 代表大于三张的 overflow 场景。
+- `singleOrientation`: "portrait" | "landscape" _(default: `"landscape"`)_
+  仅单图使用，由媒体元数据提供。
+- `moreAction`: true | false _(default: `true`)_
+  超过三张时是否提供打开完整图片浏览器的动作。
+
+### States
+`single-portrait`, `single-landscape`, `group-two`, `group-three`, `group-overflow`
+
+### Constraints
+- **maximum_visible_images**: 内容流最多展示前三张图片。
+- **group_uses_three_column_size**: 两张和三张使用相同单张尺寸。
+- **group_crop_ratio**: 多图统一以 3:4 裁切。
+- **overflow_uses_more_button**: 超过三张时图组下方必须出现更多图片入口。
+
+### Anatomy
+- **image-grid**: 承载最多三张图片的横向网格。
+- **image**: 单图保留方向尺寸，多图统一 3:4 裁切。
+- **more-button**: 超过三张时展示总数并打开完整图片浏览器。
+
+### Do
+- 图片前后使用文字说明内容关系。
+- 多图按输入顺序展示前三张。
+- 为内容图片提供真实 alt。
+
+### Don't
+- 不要在两张图时拉宽单张图片。
+- 不要用第三张上的 +N 遮罩替代更多图片入口。
+- 不要连续堆叠多个媒体块。
+
+---
+
+## MediaNote (`media-note`)
+
+**Category**: conversation-media
+
+插入 AI response 正文内容流的笔记媒体组件。
+
+### Harness
+- **Semantic**: 用社区笔记补充相邻回答，并保留标题、作者和互动量。
+- **Generation Rules**
+  - 单篇和两篇使用相同的大卡尺寸，三篇及以上切换为三列紧凑卡。
+  - 最多展示前三篇，超过三篇时在卡组下展示更多笔记入口。
+  - 视频笔记在右上角展示播放标识。
+- **Validation**
+  - 所有卡片比例 3:4、圆角 16px、间距 6px。
+  - 单篇宽 161.5px；两篇每张尺寸与单篇一致；三篇横向撑满 329px。
+  - 封面、底部渐变、标题、作者头像、作者名和点赞量完整。
+
+### Props
+- `count`: 1 | 2 | 3 | 4 _(default: `1`)_
+  笔记数量，4 表示 overflow。
+- `mediaType`: "image" | "video" _(default: `"image"`)_
+  视频类型展示播放标识。
+- `moreAction`: true | false _(default: `true`)_
+  超过三篇时打开完整笔记列表。
+
+### States
+`single`, `group-two`, `group-three`, `group-overflow`
+
+### Constraints
+- **maximum_visible_notes**: 内容流最多展示前三篇笔记。
+- **ratio**: 所有笔记卡固定为 3:4。
+- **single_matches_two**: 单篇和两篇使用相同单卡尺寸。
+- **overflow_uses_more_button**: 超过三篇必须展示更多入口。
+
+### Anatomy
+- **cover**: 3:4 裁切的笔记封面。
+- **content**: 底部渐变上的标题、作者和点赞信息。
+- **more-button**: 超过三篇时展示总数。
+
+### Do
+- 保留笔记标题、作者与互动量。
+- 按输入顺序展示前三篇。
+
+### Don't
+- 不要把单篇卡拉满内容宽度。
+- 不要在三列模式继续使用大卡字号。
+
+---
+
+## MediaVideo (`media-video`)
+
+**Category**: conversation-media
+
+插入 AI response 正文内容流的视频组件，支持竖版和横版完整控件。
+
+### Harness
+- **Semantic**: 用视频补充相邻回答；点击后进入播放器。
+- **Generation Rules**
+  - 根据媒体方向选择 portrait 或 landscape。
+  - 竖版严格使用 3:4；横版严格使用 16:9。
+  - 两种方向均展示作者、声音、播放和时长，并允许声音与播放状态独立切换。
+  - 视频默认暂停，点击播放按钮后才开始播放。
+- **Validation**
+  - 竖版 240×320px、圆角 22px。
+  - 横版 329×185.0625px、圆角 22px。
+  - 横版底部控件和右上时长的位置、字号与导出图标一致。
+
+### Props
+- `orientation`: "portrait" | "landscape" _(default: `"landscape"`)_
+  由视频元数据提供。
+- `duration`: "01:46" | "" _(default: `"01:46"`)_
+  横版视频时长。
+- `author`: "王悦伊" | "" _(default: `"王悦伊"`)_
+  横版视频作者名。
+
+### States
+`portrait`, `landscape`
+
+### Constraints
+- **portrait_ratio**: 竖版视频固定为 3:4。
+- **landscape_ratio**: 横版视频固定为 16:9。
+- **both_orientations_have_controls**: 两种方向均展示设计稿中的完整覆盖控件。
+- **controls_toggle_independently**: 声音和播放按钮独立切换。
+- **default_paused**: 默认不自动播放。
+
+### Anatomy
+- **poster**: 按方向裁切的视频封面。
+- **controls**: 两种方向展示的底部控件。
+- **duration**: 右上角时长。
+
+### Do
+- 方向由视频元数据明确传入。
+- 使用 Figma 导出的原始控件图标。
+
+### Don't
+- 不要把竖版拉满回答宽度。
+- 不要让声音按钮触发播放切换。
+
+---
+
 ## MessageBubble (`message-bubble`)
 
 **Category**: conversation
@@ -617,6 +838,59 @@ AI 最容易忘记的状态。空容器不是 bug，是产品的一个 view —�
 - 不要让用户消息出现在左侧。
 - 不要让尖角颜色和气泡背景不一致。
 - 不要把消息间距当普通列表 gap。
+
+---
+
+## ProcessIndicator (`process-indicator`)
+
+**Category**: conversation
+
+AI 回答过程状态组件。用封闭语义映射阅读、洞察、思考、文档、检查、搜索、工具调用、亮点和完成状态，避免页面直接依赖 Lottie 资源。
+
+### Harness
+- **Semantic**: 表达 AI 当前处于思考、工具调用、搜索或完成阶段，只负责状态呈现，不负责推进回答流程。
+- **Generation Rules**
+  - 先根据业务阶段选择 kind，不允许按动画外观随意选择。
+  - 根据阅读、洞察、思考、文档、检查、搜索、工具调用和亮点语义选择 kind。
+  - 只有当前最新过程播放动画；历史过程停在第一帧或进入 complete。
+- **Validation**
+  - kind 必须命中 schema 中的封闭枚举。
+  - 页面不得直接引用 Lottie JSON 文件。
+  - prefers-reduced-motion=true 时 Lottie 必须停在第一帧。
+  - 完成态必须使用设计资源，不能用 CSS 手画对勾。
+
+### Props
+- `kind`: "reading" | "insight" | "thinking" | "document" | "review" | "search" | "tool-call" | "highlight" | "complete" _(default: `"thinking"`)_
+  过程语义。组件内部把语义映射到固定 Lottie 或完成对勾资源。
+- `playing`: true | false _(default: `true`)_
+  是否播放当前 Lottie。false 时停在第一帧；complete 不受该属性影响。
+- `loop`: true | false _(default: `true`)_
+  是否循环播放。持续过程使用 true，一次性演示可使用 false。
+
+### States
+`playing`, `paused`, `complete`, `reduced-motion`
+
+### Constraints
+- **semantic_asset_mapping_is_closed**: 业务只能选择 kind，不能把 Lottie URL 作为 prop 传入。
+- **default_slot_size**: 默认状态位为 36×36px；紧凑列表由父级缩放到 32px 或 24px。
+- **motion_respects_user_setting**: 减少动态效果开启时，动画必须停在第一帧。
+- **process_state_is_controlled**: kind 和 playing 由上层状态机传入，组件内部不能自行推进回答流程。
+
+### Anatomy
+- **slot**: 稳定占位，避免状态切换时文字和连接线跳动。
+- **motion**: thinking、tool-call 和 search 对应的 Lottie 渲染层。
+- **complete-icon**: 完成态设计资源，与 Lottie 在同一位置原地切换。
+
+### Do
+- 根据回答状态机选择 kind。
+- 只让当前最新过程播放。
+- 独立使用且没有可见文案时提供 label。
+
+### Don't
+- 不要在页面里直接 import Lottie JSON。
+- 不要把动画当装饰随机使用。
+- 不要让组件内部猜测回答流程。
+- 不要忽略减少动态效果设置。
 
 ---
 

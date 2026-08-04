@@ -6,6 +6,7 @@
     "delayed-in": { "$value": "300ms", "$type": "duration", "$description": "延迟入场" },
     "out": { "$value": "250ms", "$type": "duration", "$description": "元素退场" },
     "sheet": { "$value": "400ms", "$type": "duration", "$description": "弹窗/底部弹窗出入场，允许 350-450ms" },
+    "morph": { "$value": "800ms", "$type": "duration", "$description": "大幅共享元素形变，容纳轻微越界与回稳" },
     "fast": { "$value": "250ms", "$type": "duration", "$description": "兼容旧变量：状态切换" },
     "normal": { "$value": "250ms", "$type": "duration", "$description": "兼容旧变量：页面切换" },
     "slow": { "$value": "350ms", "$type": "duration", "$description": "兼容旧变量：大幅位移" }
@@ -20,6 +21,11 @@
       "$value": "cubic-bezier(.34,1.56,.64,1)",
       "$type": "cubicBezier",
       "$description": "弹性效果"
+    },
+    "morph-spring": {
+      "$value": "linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.0072 60%, 1.013 65%, 1.0145 70%, 1.0134 75%, 1.011 80%, 1.008 85%, 1.005 90%, 1.0023 95%, 1)",
+      "$type": "string",
+      "$description": "阻尼比 0.78 的欠阻尼形变弹簧离线采样；双向轻微越界后回稳"
     },
     "default": {
       "$value": "cubic-bezier(.32,.72,0,1)",

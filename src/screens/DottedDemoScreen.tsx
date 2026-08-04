@@ -48,11 +48,12 @@ import sourceJulyYi1 from '../assets/dotted/sources-july/yi-1.png'
 import sourceJulyYi2 from '../assets/dotted/sources-july/yi-2.png'
 import sourceJulyYi3 from '../assets/dotted/sources-july/yi-3.png'
 import mediaVideoDemo from '../assets/dotted/media-video-demo.mp4'
-import { DottedConversationShell } from './dotted/DottedConversationShell'
+import { DottedConversationShell, type DottedConversationShellVariant } from './dotted/DottedConversationShell'
 import { DotsMessageBubble, type DotsMessageRole } from './dotted/DotsMessageBubble'
 import { DotsMediaImage } from './dotted/DotsMediaImage'
 import { DotsMediaNote, type DotsMediaNoteItem } from './dotted/DotsMediaNote'
 import { DotsMediaVideo, type DotsMediaVideoItem } from './dotted/DotsMediaVideo'
+import { DotsRecommendationRanking, type DotsRecommendationRankingItem } from './dotted/DotsRecommendationRanking'
 import { ProcessIndicator, type ProcessIndicatorKind } from './dotted/ProcessIndicator'
 
 const realLoadingCardStatusPool = ['check', 'warning', 'check', 'warning', 'check'] as const
@@ -69,6 +70,15 @@ export type DottedToolNoteDisplayVariant = 'consistent' | 'preview-detail'
 export type DottedToolCallDetailVariant = 'default' | 'real-loading'
 export type DottedSourceImageMotionVariant = 'static' | 'slide' | 'fade' | 'flip' | 'stack'
 export type DottedThinkingDisplayVariant = 'single' | 'stacked'
+export type DottedEntryScenario = {
+  userQuery: string
+  judgmentText: string
+  contextText: string
+  thinkingTitle: string
+  thinkingBody?: string
+  thinkingHoldMs?: number
+  response?: DottedResponseConfig
+}
 type DottedStreamingPhase = 'thinking' | 'judging' | 'judgingHold' | 'streaming' | 'quickAnswerPrompt' | 'quickAnswerThink' | 'quickAnswerThinkHold' | 'think' | 'thinkHold' | 'toolcall' | 'toolcallHold' | 'thinkCompact' | 'thinkCompactHold' | 'toolcallSearch' | 'toolcallSearchHold' | 'thinkPlan' | 'thinkPlanHold' | 'thinkingComplete' | 'thinkingSummary' | 'response' | 'done'
 type DottedProcessKind = 'think' | 'toolcall' | 'thinkCompact' | 'toolcallSearch' | 'thinkPlan'
 
@@ -89,6 +99,8 @@ type DotsHistoryMessage = {
   thinkingProgress?: number
   deepThinkingTitle?: string
   deepThinkingBody?: string
+  deepThinkingTargetTitle?: string
+  deepThinkingTargetBody?: string
   deepThinkingTitleProgress?: number
   deepThinkingKind?: DottedProcessKind
   deepThinkingComplete?: boolean
@@ -100,6 +112,7 @@ type DotsHistoryMessage = {
   isQuickFinalResponse?: boolean
   isFinalResponseSummary?: boolean
   isFinalResponseComplete?: boolean
+  responseConfig?: DottedResponseConfig
   deepThinkingSummaryCollapsing?: boolean
 }
 
@@ -130,12 +143,12 @@ type DottedFinalResponseTextBlock = {
 
 type DottedFinalResponseImageBlock = {
   type: 'image-row'
-  images: string[]
+  images: readonly string[]
 }
 
 type DottedFinalResponseNoteBlock = {
   type: 'note-row'
-  notes: DotsMediaNoteItem[]
+  notes: readonly DotsMediaNoteItem[]
 }
 
 type DottedFinalResponseVideoBlock = {
@@ -143,11 +156,32 @@ type DottedFinalResponseVideoBlock = {
   video: DotsMediaVideoItem
 }
 
-type DottedFinalResponseBlock =
+type DottedFinalResponseRankingBlock = {
+  type: 'ranking'
+  items: readonly DotsRecommendationRankingItem[]
+}
+
+export type DottedFinalResponseBlock =
   | DottedFinalResponseTextBlock
   | DottedFinalResponseImageBlock
   | DottedFinalResponseNoteBlock
   | DottedFinalResponseVideoBlock
+  | DottedFinalResponseRankingBlock
+
+export type DottedResponseConfig = {
+  statusText: string
+  statusIcon?: string
+  statusAvatars?: readonly string[]
+  statusArrow?: string
+  text: string
+  blocks: readonly DottedFinalResponseBlock[]
+  sections: readonly {
+    blocks: readonly number[]
+    list?: boolean
+  }[]
+  sourcesEnabled?: boolean
+  imageAltPrefix?: string
+}
 
 const streamingReplyChunks = [
   '先看看去除营销软广后，',
@@ -162,8 +196,6 @@ const contextCharacterDelayMs = 16
 const contextToThinkDelayMs = 600
 const compactThinkCompleteHoldMs = 1000
 const simpleJudgmentText = '搜索真人经验并过滤营销软广'
-const simpleJudgmentCharacters = Array.from(simpleJudgmentText)
-const simpleJudgmentCopyWidthPx = Math.ceil(simpleJudgmentCharacters.length * 15.5 + 6)
 const quickAnswerTitleText = '搜索伊犁经典玩法'
 const quickAnswerTitleCharacters = Array.from(quickAnswerTitleText)
 const quickAnswerSecondTitleText = '搜索核心景点信息'
@@ -249,7 +281,7 @@ const finalResponseBlocks: DottedFinalResponseBlock[] = [
     type: 'note-row',
     notes: [
       { cover: sourceJulySailor1, coverAlt: '赛里木湖公路与雪山', title: '赛里木湖自驾路线，沿途每一帧都像电影', author: '水手旅行记', avatar: sourceJulySailorLogo, likes: 862 },
-      { cover: sourceJulyYi1, coverAlt: '伊犁草原与山谷', title: '第一次去伊犁，路线这样安排就够了', author: '一一在路上', avatar: sourceJulyYiLogo, likes: 236, mediaType: 'video' },
+      { cover: sourceJulyYi2, coverAlt: '伊犁虞美人花海', title: '第一次去伊犁，路线这样安排就够了', author: '一一在路上', avatar: sourceJulyYiLogo, likes: 236, mediaType: 'video' },
       { cover: sourceJulyK1, coverAlt: '新疆旅行沿途风景', title: '10天伊犁环线，收藏这一篇就够了', author: 'K的旅行手账', avatar: sourceJulyKLogo, likes: 518 },
       { cover: sourceJulyOolong1, coverAlt: '草原日落', title: '盛夏伊犁的日落时刻', author: '乌龙茶', avatar: sourceJulyOolongLogo, likes: 189 },
     ],
@@ -300,7 +332,7 @@ const quickAnswerResponseSections = [
 
 const countCharacters = (text: string) => Array.from(text).length
 
-const getResponseTextLengthBeforeBlock = (blocks: DottedFinalResponseBlock[], blockIndex: number) => (
+const getResponseTextLengthBeforeBlock = (blocks: readonly DottedFinalResponseBlock[], blockIndex: number) => (
   blocks
     .slice(0, blockIndex)
     .reduce((total, previousBlock) => total + (
@@ -478,8 +510,6 @@ const sourceItems = [
     likes: '2387',
   },
 ] as const
-const deepThinkingTitleCharacters = Array.from(deepThinkingTitleText)
-const deepThinkingBodyCharacters = Array.from(deepThinkingBodyText)
 const toolCallTitleCharacters = Array.from(toolCallTitleText)
 const toolCallBodyCharacters = Array.from(toolCallBodyText)
 const compactThinkTitleCharacters = Array.from(compactThinkTitleText)
@@ -488,7 +518,6 @@ const searchToolCallTitleCharacters = Array.from(searchToolCallTitleText)
 const searchToolCallBodyCharacters = Array.from(searchToolCallBodyText)
 const planThinkTitleCharacters = Array.from(planThinkTitleText)
 const planThinkBodyCharacters = Array.from(planThinkBodyText)
-const finalResponseCharacters = Array.from(finalResponseText)
 const quickAnswerResponseCharacters = Array.from(quickAnswerResponseText)
 const processTransitionDelayMs = 1000
 const thinkingCompleteConfirmMs = 600
@@ -993,8 +1022,8 @@ function DottedDeepThinkingContent({
   const useTailOpacity = streamingVariant === 'span-mask'
   const visibleTitle = item.deepThinkingTitle ?? ''
   const visibleBody = item.deepThinkingBody ?? ''
-  const targetTitle = getDeepThinkingTargetTitle(item.deepThinkingKind)
-  const targetBody = getDeepThinkingTargetBody(item.deepThinkingKind)
+  const targetTitle = item.deepThinkingTargetTitle ?? getDeepThinkingTargetTitle(item.deepThinkingKind)
+  const targetBody = item.deepThinkingTargetBody ?? getDeepThinkingTargetBody(item.deepThinkingKind)
   const titleComplete = countCharacters(visibleTitle) >= countCharacters(targetTitle)
   const bodyComplete = countCharacters(visibleBody) >= countCharacters(targetBody)
   const shouldShowBody = Boolean(targetBody) && (!useTailOpacity || titleComplete)
@@ -1124,8 +1153,8 @@ function DottedDeepThinkingContent({
   if (thinkingDisplayVariant === 'stacked' && item.deepThinkingKind) {
     const activeIndex = processKindOrder.indexOf(item.deepThinkingKind)
     const visibleProcessKinds = processKindOrder.slice(0, Math.max(activeIndex + 1, 1))
-    const activeTargetTitle = getDeepThinkingTargetTitle(item.deepThinkingKind)
-    const activeTargetBody = getDeepThinkingTargetBody(item.deepThinkingKind)
+    const activeTargetTitle = item.deepThinkingTargetTitle ?? getDeepThinkingTargetTitle(item.deepThinkingKind)
+    const activeTargetBody = item.deepThinkingTargetBody ?? getDeepThinkingTargetBody(item.deepThinkingKind)
     const activeTitleComplete = countCharacters(visibleTitle) >= countCharacters(activeTargetTitle)
     const activeBodyComplete = !activeTargetBody || countCharacters(visibleBody) >= countCharacters(activeTargetBody)
     const shouldShowEntrySheen = !item.deepThinkingComplete && (!activeTitleComplete || !activeBodyComplete)
@@ -1148,8 +1177,8 @@ function DottedDeepThinkingContent({
           const isActive = kind === item.deepThinkingKind
           const rowTitle = isActive ? visibleTitle : getDeepThinkingTargetTitle(kind)
           const rowBody = isActive ? visibleBody : getDeepThinkingTargetBody(kind)
-          const rowTargetTitle = getDeepThinkingTargetTitle(kind)
-          const rowTargetBody = getDeepThinkingTargetBody(kind)
+          const rowTargetTitle = isActive ? activeTargetTitle : getDeepThinkingTargetTitle(kind)
+          const rowTargetBody = isActive ? activeTargetBody : getDeepThinkingTargetBody(kind)
           const rowTitleComplete = countCharacters(rowTitle) >= countCharacters(rowTargetTitle)
           const rowBodyComplete = countCharacters(rowBody) >= countCharacters(rowTargetBody)
           const realLoadingRowComplete = kind === 'toolcall' && toolCallDetailVariant === 'real-loading' && realLoadingDetailComplete
@@ -1339,6 +1368,8 @@ function DottedChatStream({
   return (
     <div className="dotted-demo__chat-stream" aria-label="Dots 历史消息" ref={streamRef}>
       {items.map((item) => {
+        const canOpenThinking = item.isDeepThinking && !item.isQuickAnswerThinking && Boolean(onThinkingClick)
+        const judgmentCopyWidthPx = Math.ceil(countCharacters(item.text) * 15.5 + 6)
         const messageClassName = [
           item.isThinking ? 'dots-message-row--thinking' : '',
           item.isJudging ? 'dots-message-row--judging' : '',
@@ -1352,7 +1383,7 @@ function DottedChatStream({
         return (
           item.isFinalResponse ? (
             <div key={item.id} className="dots-message-row dots-message-row--dots dots-message-row--response">
-              <DottedFinalResponseCard quick={item.isQuickFinalResponse} summaryOnly={item.isFinalResponseSummary} complete={item.isFinalResponseComplete} onSourcesClick={onSourcesClick} streamingVariant={streamingVariant}>{item.text}</DottedFinalResponseCard>
+              <DottedFinalResponseCard quick={item.isQuickFinalResponse} summaryOnly={item.isFinalResponseSummary} complete={item.isFinalResponseComplete} onSourcesClick={onSourcesClick} responseConfig={item.responseConfig} streamingVariant={streamingVariant}>{item.text}</DottedFinalResponseCard>
             </div>
           ) : (
             <DotsMessageBubble key={item.id} role={item.role} className={messageClassName}>
@@ -1362,7 +1393,7 @@ function DottedChatStream({
                 className={[
                   'dotted-demo__thinking',
                   item.isDeepThinking && !item.isQuickAnswerThinking ? `dotted-demo__thinking--transition-${thinkingTransitionStyle}` : '',
-                  item.isDeepThinking && !item.isQuickAnswerThinking ? 'dotted-demo__thinking--clickable' : '',
+                  canOpenThinking ? 'dotted-demo__thinking--clickable' : '',
                   item.isJudging ? 'dotted-demo__thinking--judging' : '',
                   item.isJudgingHold ? 'dotted-demo__thinking--judging-hold' : '',
                   item.isDeepThinking && !item.isQuickAnswerThinking ? 'dotted-demo__thinking--deep' : '',
@@ -1375,10 +1406,10 @@ function DottedChatStream({
                   item.isDeepThinkingTitleComplete ? 'dotted-demo__thinking--deep-title-complete' : '',
                   useSpanMask ? 'dotted-demo__thinking--tail-stream' : '',
                 ].filter(Boolean).join(' ')}
-                role={item.isDeepThinking && !item.isQuickAnswerThinking ? 'button' : undefined}
-                tabIndex={item.isDeepThinking && !item.isQuickAnswerThinking ? 0 : undefined}
-                onClick={item.isDeepThinking && !item.isQuickAnswerThinking ? onThinkingClick : undefined}
-                onKeyDown={item.isDeepThinking && !item.isQuickAnswerThinking ? handleThinkingKeyDown : undefined}
+                role={canOpenThinking ? 'button' : undefined}
+                tabIndex={canOpenThinking ? 0 : undefined}
+                onClick={canOpenThinking ? onThinkingClick : undefined}
+                onKeyDown={canOpenThinking ? handleThinkingKeyDown : undefined}
                 aria-label={item.text || '判断中'}
                 style={
                   item.isQuickAnswerThinking
@@ -1392,8 +1423,8 @@ function DottedChatStream({
                       } as CSSProperties)
                     : item.isJudging
                     ? ({
-                        '--thinking-width': `${52 + simpleJudgmentCopyWidthPx * (item.thinkingProgress ?? 0)}px`,
-                        '--thinking-copy-width': `${simpleJudgmentCopyWidthPx * (item.thinkingProgress ?? 0)}px`,
+                        '--thinking-width': `${52 + judgmentCopyWidthPx * (item.thinkingProgress ?? 0)}px`,
+                        '--thinking-copy-width': `${judgmentCopyWidthPx * (item.thinkingProgress ?? 0)}px`,
                       } as CSSProperties)
                     : undefined
                 }
@@ -1534,6 +1565,7 @@ function DottedFinalResponseCard({
   summaryOnly = false,
   quick = false,
   onSourcesClick,
+  responseConfig,
   streamingVariant = 'default',
 }: {
   children: ReactNode
@@ -1541,25 +1573,41 @@ function DottedFinalResponseCard({
   summaryOnly?: boolean
   quick?: boolean
   onSourcesClick?: () => void
+  responseConfig?: DottedResponseConfig
   streamingVariant?: DottedStreamingVariant
 }) {
   const streamedText = String(children)
   const visibleCount = Array.from(streamedText).length
   const useSpanMask = streamingVariant === 'span-mask'
-  const responseBlocks = quick ? quickAnswerResponseBlocks : finalResponseBlocks
-  const responseSections = quick ? quickAnswerResponseSections : finalResponseSections
+  const responseBlocks = responseConfig?.blocks ?? (quick ? quickAnswerResponseBlocks : finalResponseBlocks)
+  const responseSections = responseConfig?.sections ?? (quick ? quickAnswerResponseSections : finalResponseSections)
+  const responseStatusText = responseConfig?.statusText ?? (quick ? '思考完成，参考小红书与全网12人真实经验' : '思考完成，参考小红书与全网22人真实经验')
+  const responseAvatars = responseConfig?.statusAvatars ?? [thinkResponseAvatar1, thinkResponseAvatar2]
+  const responseArrow = responseConfig?.statusArrow ?? thinkResponseArrow
+  const canOpenSources = responseConfig?.sourcesEnabled !== false && Boolean(onSourcesClick)
+  const statusContent = (
+    <>
+      {responseConfig?.statusIcon ? <img className="dotted-demo__response-status-icon" src={responseConfig.statusIcon} alt="" aria-hidden="true" /> : null}
+      <span className="dotted-demo__response-status-text">{responseStatusText}</span>
+      <span className="dotted-demo__response-avatars" aria-hidden="true">
+        {responseAvatars.map((avatar, index) => <img src={avatar} alt="" key={`${avatar}-${index}`} />)}
+      </span>
+      {responseArrow ? <img className="dotted-demo__response-arrow" src={responseArrow} alt="" aria-hidden="true" /> : null}
+    </>
+  )
 
   return (
     <article className={['dotted-demo__response-card', quick ? 'dotted-demo__response-card--quick' : '', summaryOnly ? 'dotted-demo__response-card--summary' : ''].filter(Boolean).join(' ')} aria-label="Dots 最终回答">
       <div className="dotted-demo__response-main">
-        <button className="dotted-demo__response-status" type="button" onClick={onSourcesClick}>
-          <span>{quick ? '思考完成，参考小红书与全网12人真实经验' : '思考完成，参考小红书与全网22人真实经验'}</span>
-          <span className="dotted-demo__response-avatars" aria-hidden="true">
-            <img src={thinkResponseAvatar1} alt="" />
-            <img src={thinkResponseAvatar2} alt="" />
-          </span>
-          <img className="dotted-demo__response-arrow" src={thinkResponseArrow} alt="" aria-hidden="true" />
-        </button>
+        {canOpenSources ? (
+          <button className="dotted-demo__response-status" type="button" onClick={onSourcesClick}>
+            {statusContent}
+          </button>
+        ) : (
+          <div className="dotted-demo__response-status">
+            {statusContent}
+          </div>
+        )}
         {!summaryOnly && <div className="dotted-demo__response-content">
           {responseSections.map((section, sectionIndex) => {
             const renderedBlocks = section.blocks.map((blockIndex) => {
@@ -1588,7 +1636,7 @@ function DottedFinalResponseCard({
                 return (
                   <DotsMediaNote
                     className="dotted-demo__response-media"
-                    notes={block.notes}
+                    notes={[...block.notes]}
                     key={`note-row-${blockIndex}`}
                   />
                 )
@@ -1604,6 +1652,12 @@ function DottedFinalResponseCard({
                     key={`video-${blockIndex}`}
                   />
                 )
+              }
+
+              if (block.type === 'ranking') {
+                if (visibleCount < previousLength) return null
+
+                return <DotsRecommendationRanking items={block.items} key={`ranking-${blockIndex}`} />
               }
 
               const blockLength = Array.from(block.text).length
@@ -1662,18 +1716,18 @@ function DottedFinalResponseCard({
       >
           <div className="dotted-demo__response-action-group">
             <button type="button" aria-label="复制">
-              <img src={thinkResponseCopy} alt="" aria-hidden="true" />
+              <img className="dotted-demo__response-action-icon--copy" src={thinkResponseCopy} alt="" aria-hidden="true" />
             </button>
             <button type="button" aria-label="分享">
-              <img src={thinkResponseShare} alt="" aria-hidden="true" />
+              <img className="dotted-demo__response-action-icon--share" src={thinkResponseShare} alt="" aria-hidden="true" />
             </button>
           </div>
           <div className="dotted-demo__response-action-group">
             <button type="button" aria-label="不喜欢">
-              <img src={thinkResponseDislike} alt="" aria-hidden="true" />
+              <img className="dotted-demo__response-action-icon--dislike" src={thinkResponseDislike} alt="" aria-hidden="true" />
             </button>
             <button type="button" aria-label="重新生成">
-              <img src={thinkResponseRefresh} alt="" aria-hidden="true" />
+              <img className="dotted-demo__response-action-icon--refresh" src={thinkResponseRefresh} alt="" aria-hidden="true" />
             </button>
           </div>
       </div>
@@ -2061,6 +2115,10 @@ export function DottedDemoScreen({
   thinkingDisplayVariant = 'single',
   quickAnswerEnabled = true,
   toolCallDetailVariant = 'default',
+  entryScenario,
+  onBack,
+  onResponseComplete,
+  shellVariant = 'standalone',
 }: {
   demoMode?: DottedDemoMode
   demoStep?: DottedDemoStep
@@ -2075,6 +2133,10 @@ export function DottedDemoScreen({
   thinkingDisplayVariant?: DottedThinkingDisplayVariant
   quickAnswerEnabled?: boolean
   toolCallDetailVariant?: DottedToolCallDetailVariant
+  entryScenario?: DottedEntryScenario
+  onBack?: () => void
+  onResponseComplete?: () => void
+  shellVariant?: DottedConversationShellVariant
 } = {}) {
   const chatStreamRef = useRef<HTMLDivElement>(null)
   const jumpToBottomDismissedRef = useRef(false)
@@ -2105,10 +2167,22 @@ export function DottedDemoScreen({
   const [showJumpToBottom, setShowJumpToBottom] = useState(false)
   const [activeSheetMode, setActiveSheetMode] = useState<DottedSheetMode | null>(null)
   const isStreamingReplyDemo = demoMode === 'streaming-reply'
+  const entryUserQuery = entryScenario?.userQuery ?? '6千以内电视机推荐'
+  const entryJudgmentText = entryScenario?.judgmentText ?? simpleJudgmentText
+  const entryContextText = entryScenario?.contextText ?? streamingReplyTextFull
+  const entryThinkingTitle = entryScenario?.thinkingTitle ?? deepThinkingTitleText
+  const entryThinkingBody = entryScenario?.thinkingBody ?? deepThinkingBodyText
+  const entryThinkingHoldMs = entryScenario?.thinkingHoldMs ?? processTransitionDelayMs
+  const entryResponse = entryScenario?.response
+  const entryResponseText = entryResponse?.text ?? finalResponseText
 
   useEffect(() => {
     answerRouteRef.current = answerRoute
   }, [answerRoute])
+
+  useEffect(() => {
+    if (streamingPhase === 'done') onResponseComplete?.()
+  }, [onResponseComplete, streamingPhase])
 
   const resetQuickAnswerState = () => {
     setQuickAnswerMode(false)
@@ -2168,6 +2242,11 @@ export function DottedDemoScreen({
 
   useEffect(() => {
     const timers: number[] = []
+    const entryJudgmentCharacters = Array.from(entryJudgmentText)
+    const entryContextCharacters = Array.from(entryContextText)
+    const entryThinkingTitleCharacters = Array.from(entryThinkingTitle)
+    const entryThinkingBodyCharacters = Array.from(entryThinkingBody)
+    const entryResponseCharacters = Array.from(entryResponseText)
     const showPreviousThinking = (kind: DottedProcessKind, title: string, body = '') => {
       setPreviousThinking({ kind, title, body })
       timers.push(window.setTimeout(() => setPreviousThinking(null), 220))
@@ -2177,10 +2256,10 @@ export function DottedDemoScreen({
       if (kind === 'thinkCompact') return { titleCharacters: compactThinkTitleCharacters, bodyCharacters: compactThinkBodyCharacters, holdPhase: 'thinkCompactHold' as const }
       if (kind === 'toolcallSearch') return { titleCharacters: searchToolCallTitleCharacters, bodyCharacters: searchToolCallBodyCharacters, holdPhase: 'toolcallSearchHold' as const }
       if (kind === 'thinkPlan') return { titleCharacters: planThinkTitleCharacters, bodyCharacters: planThinkBodyCharacters, holdPhase: 'thinkPlanHold' as const }
-      return { titleCharacters: deepThinkingTitleCharacters, bodyCharacters: deepThinkingBodyCharacters, holdPhase: 'thinkHold' as const }
+      return { titleCharacters: entryThinkingTitleCharacters, bodyCharacters: entryThinkingBodyCharacters, holdPhase: 'thinkHold' as const }
     }
     const getNextProcessKind = (kind: DottedProcessKind): DottedProcessKind | 'response' => {
-      if (kind === 'think') return 'toolcall'
+      if (kind === 'think') return entryResponse ? 'response' : 'toolcall'
       if (kind === 'toolcall') return 'thinkCompact'
       if (kind === 'thinkCompact') return 'toolcallSearch'
       if (kind === 'toolcallSearch') return 'thinkPlan'
@@ -2195,13 +2274,21 @@ export function DottedDemoScreen({
 
       const typeFinalResponseCharacter = () => {
         finalResponseCursor += 1
-        setFinalResponseReplyText(finalResponseCharacters.slice(0, finalResponseCursor).join(''))
-        if (finalResponseCursor >= finalResponseCharacters.length) {
+        setFinalResponseReplyText(entryResponseCharacters.slice(0, finalResponseCursor).join(''))
+        if (finalResponseCursor >= entryResponseCharacters.length) {
           setStreamingPhase('done')
           return
         }
 
         timers.push(window.setTimeout(typeFinalResponseCharacter, 12))
+      }
+
+      if (entryResponse) {
+        setDeepThinkingTitle('')
+        setDeepThinkingBody('')
+        setStreamingPhase('response')
+        timers.push(window.setTimeout(typeFinalResponseCharacter, responseStartDelayMs))
+        return
       }
 
       setStreamingPhase('thinkingComplete')
@@ -2217,16 +2304,16 @@ export function DottedDemoScreen({
       }, thinkingCompleteConfirmMs))
     }
     const showContext = (startLength = 0, continueToThink = true) => {
-      let replyCursor = Math.min(startLength, streamingReplyCharacters.length)
-      setStreamingReplyText(streamingReplyCharacters.slice(0, replyCursor).join(''))
+      let replyCursor = Math.min(startLength, entryContextCharacters.length)
+      setStreamingReplyText(entryContextCharacters.slice(0, replyCursor).join(''))
       setStreamingPhase('streaming')
 
       const typeContextCharacter = () => {
         if (quickAnswerOverrideRef.current) return
 
-        replyCursor = Math.min(streamingReplyCharacters.length, replyCursor + contextCharacterStep)
-        setStreamingReplyText(streamingReplyCharacters.slice(0, replyCursor).join(''))
-        if (replyCursor >= streamingReplyCharacters.length) {
+        replyCursor = Math.min(entryContextCharacters.length, replyCursor + contextCharacterStep)
+        setStreamingReplyText(entryContextCharacters.slice(0, replyCursor).join(''))
+        if (replyCursor >= entryContextCharacters.length) {
           if (continueToThink) {
             timers.push(window.setTimeout(() => {
               if (quickAnswerOverrideRef.current) return
@@ -2269,7 +2356,7 @@ export function DottedDemoScreen({
               bodyCharacters.join(''),
             )
             runProcessFromKind(nextKind)
-          }, kind === 'toolcall' ? sourcePillTotalSequenceMs : processTransitionDelayMs))
+          }, kind === 'think' && entryResponse ? entryThinkingHoldMs : kind === 'toolcall' ? sourcePillTotalSequenceMs : processTransitionDelayMs))
         }
 
         if (kind === 'toolcallSearch') {
@@ -2341,8 +2428,8 @@ export function DottedDemoScreen({
 
           const continueJudgment = () => {
             cursor += 1
-            setSimpleJudgmentReplyText(simpleJudgmentCharacters.slice(0, cursor).join(''))
-            if (cursor >= simpleJudgmentCharacters.length) {
+            setSimpleJudgmentReplyText(entryJudgmentCharacters.slice(0, cursor).join(''))
+            if (cursor >= entryJudgmentCharacters.length) {
               setStreamingPhase('judgingHold')
               timers.push(window.setTimeout(() => {
                 showContext(snapshot.streamingLength)
@@ -2399,8 +2486,8 @@ export function DottedDemoScreen({
 
           const continueFinalResponse = () => {
             finalResponseCursor += 1
-            setFinalResponseReplyText(finalResponseCharacters.slice(0, finalResponseCursor).join(''))
-            if (finalResponseCursor >= finalResponseCharacters.length) {
+            setFinalResponseReplyText(entryResponseCharacters.slice(0, finalResponseCursor).join(''))
+            if (finalResponseCursor >= entryResponseCharacters.length) {
               setStreamingPhase('done')
               return
             }
@@ -2439,8 +2526,8 @@ export function DottedDemoScreen({
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
         resetQuickAnswerState()
-        setStreamingReplyText(demoStep === 'thinking' || demoStep === 'judging-think' ? '' : streamingReplyTextFull)
-        setSimpleJudgmentReplyText(demoStep === 'thinking' ? '' : simpleJudgmentText)
+        setStreamingReplyText(demoStep === 'thinking' || demoStep === 'judging-think' ? '' : entryContextText)
+        setSimpleJudgmentReplyText(demoStep === 'thinking' ? '' : entryJudgmentText)
         setDeepThinkingTitle('')
         setDeepThinkingBody('')
         setFinalResponseReplyText('')
@@ -2453,8 +2540,8 @@ export function DottedDemoScreen({
 
           const typeJudgmentCharacter = () => {
             cursor += 1
-            setSimpleJudgmentReplyText(simpleJudgmentCharacters.slice(0, cursor).join(''))
-            if (cursor >= simpleJudgmentCharacters.length) {
+            setSimpleJudgmentReplyText(entryJudgmentCharacters.slice(0, cursor).join(''))
+            if (cursor >= entryJudgmentCharacters.length) {
               setStreamingPhase('judgingHold')
               timers.push(window.setTimeout(() => {
                 showContext()
@@ -2480,9 +2567,9 @@ export function DottedDemoScreen({
         }
 
         if (demoStep === 'complete') {
-          setStreamingReplyText(streamingReplyTextFull)
-          setSimpleJudgmentReplyText(simpleJudgmentText)
-          setFinalResponseReplyText(finalResponseText)
+          setStreamingReplyText(entryContextText)
+          setSimpleJudgmentReplyText(entryJudgmentText)
+          setFinalResponseReplyText(entryResponseText)
           setStreamingPhase('done')
           return
         }
@@ -2527,8 +2614,8 @@ export function DottedDemoScreen({
 
         const typeJudgmentCharacter = () => {
           cursor += 1
-          setSimpleJudgmentReplyText(simpleJudgmentCharacters.slice(0, cursor).join(''))
-          if (cursor >= simpleJudgmentCharacters.length) {
+          setSimpleJudgmentReplyText(entryJudgmentCharacters.slice(0, cursor).join(''))
+          if (cursor >= entryJudgmentCharacters.length) {
             setStreamingPhase('judgingHold')
             return
           }
@@ -2546,7 +2633,7 @@ export function DottedDemoScreen({
         quickAnswerOverrideRef.current = false
         resetQuickAnswerState()
         setStreamingReplyText('')
-        setSimpleJudgmentReplyText(simpleJudgmentText)
+        setSimpleJudgmentReplyText(entryJudgmentText)
         setDeepThinkingTitle('')
         setDeepThinkingBody('')
         setFinalResponseReplyText('')
@@ -2565,10 +2652,10 @@ export function DottedDemoScreen({
         resetQuickAnswerState()
         let titleCursor = 0
         const nextKind = demoStep === 'think-plan' ? 'thinkPlan' : demoStep === 'toolcall-search' ? 'toolcallSearch' : demoStep === 'toolcall' ? 'toolcall' : demoStep === 'think-compact' ? 'thinkCompact' : 'think'
-        const titleCharacters = nextKind === 'thinkPlan' ? planThinkTitleCharacters : nextKind === 'toolcallSearch' ? searchToolCallTitleCharacters : nextKind === 'toolcall' ? toolCallTitleCharacters : nextKind === 'thinkCompact' ? compactThinkTitleCharacters : deepThinkingTitleCharacters
-        const bodyCharacters = nextKind === 'thinkPlan' ? planThinkBodyCharacters : nextKind === 'toolcallSearch' ? searchToolCallBodyCharacters : nextKind === 'toolcall' ? toolCallBodyCharacters : nextKind === 'thinkCompact' ? compactThinkBodyCharacters : deepThinkingBodyCharacters
-        setStreamingReplyText(streamingReplyTextFull)
-        setSimpleJudgmentReplyText(simpleJudgmentText)
+        const titleCharacters = nextKind === 'thinkPlan' ? planThinkTitleCharacters : nextKind === 'toolcallSearch' ? searchToolCallTitleCharacters : nextKind === 'toolcall' ? toolCallTitleCharacters : nextKind === 'thinkCompact' ? compactThinkTitleCharacters : Array.from(entryThinkingTitle)
+        const bodyCharacters = nextKind === 'thinkPlan' ? planThinkBodyCharacters : nextKind === 'toolcallSearch' ? searchToolCallBodyCharacters : nextKind === 'toolcall' ? toolCallBodyCharacters : nextKind === 'thinkCompact' ? compactThinkBodyCharacters : Array.from(entryThinkingBody)
+        setStreamingReplyText(entryContextText)
+        setSimpleJudgmentReplyText(entryJudgmentText)
         setDeepThinkingTitle('')
         setDeepThinkingBody('')
         setFinalResponseReplyText('')
@@ -2617,8 +2704,8 @@ export function DottedDemoScreen({
         quickAnswerOverrideRef.current = false
         resetQuickAnswerState()
         let responseCursor = 0
-        setStreamingReplyText(streamingReplyTextFull)
-        setSimpleJudgmentReplyText(simpleJudgmentText)
+        setStreamingReplyText(entryContextText)
+        setSimpleJudgmentReplyText(entryJudgmentText)
         setDeepThinkingTitle('')
         setDeepThinkingBody('')
         setDeepThinkingKind('thinkPlan')
@@ -2628,8 +2715,8 @@ export function DottedDemoScreen({
 
         const typeFinalResponseCharacter = () => {
           responseCursor += 1
-          setFinalResponseReplyText(finalResponseCharacters.slice(0, responseCursor).join(''))
-          if (responseCursor >= finalResponseCharacters.length) {
+          setFinalResponseReplyText(entryResponseCharacters.slice(0, responseCursor).join(''))
+          if (responseCursor >= entryResponseCharacters.length) {
             setStreamingPhase('done')
             return
           }
@@ -2646,12 +2733,12 @@ export function DottedDemoScreen({
       timers.push(window.setTimeout(() => {
         quickAnswerOverrideRef.current = false
         resetQuickAnswerState()
-        setStreamingReplyText(streamingReplyTextFull)
-        setSimpleJudgmentReplyText(simpleJudgmentText)
+        setStreamingReplyText(entryContextText)
+        setSimpleJudgmentReplyText(entryJudgmentText)
         setDeepThinkingTitle('')
         setDeepThinkingBody('')
         setDeepThinkingKind('thinkPlan')
-        setFinalResponseReplyText(finalResponseText)
+        setFinalResponseReplyText(entryResponseText)
         setPreviousThinking(null)
         setStreamingPhase('done')
         setThinkingStageIndex(0)
@@ -2675,8 +2762,8 @@ export function DottedDemoScreen({
 
       const intervalId = window.setInterval(() => {
         cursor += 1
-        setSimpleJudgmentReplyText(simpleJudgmentCharacters.slice(0, cursor).join(''))
-        if (cursor >= simpleJudgmentCharacters.length) {
+        setSimpleJudgmentReplyText(entryJudgmentCharacters.slice(0, cursor).join(''))
+        if (cursor >= entryJudgmentCharacters.length) {
           window.clearInterval(intervalId)
           setStreamingPhase('judgingHold')
 
@@ -2691,15 +2778,15 @@ export function DottedDemoScreen({
                 const typeDeepTitleCharacter = () => {
                   if (quickAnswerOverrideRef.current) return
                   titleCursor += 1
-                  setDeepThinkingTitle(deepThinkingTitleCharacters.slice(0, titleCursor).join(''))
-                  if (titleCursor >= deepThinkingTitleCharacters.length) {
+                  setDeepThinkingTitle(entryThinkingTitleCharacters.slice(0, titleCursor).join(''))
+                  if (titleCursor >= entryThinkingTitleCharacters.length) {
                     let bodyCursor = 0
 
                     const typeDeepBodyCharacter = () => {
                       if (quickAnswerOverrideRef.current) return
                       bodyCursor += 1
-                      setDeepThinkingBody(deepThinkingBodyCharacters.slice(0, bodyCursor).join(''))
-                      if (bodyCursor >= deepThinkingBodyCharacters.length) {
+                      setDeepThinkingBody(entryThinkingBodyCharacters.slice(0, bodyCursor).join(''))
+                      if (bodyCursor >= entryThinkingBodyCharacters.length) {
                         setStreamingPhase('thinkHold')
                         timers.push(window.setTimeout(() => {
                           if (quickAnswerOverrideRef.current) return
@@ -2879,7 +2966,7 @@ export function DottedDemoScreen({
     }, 0))
 
     return () => timers.forEach((timerId) => window.clearTimeout(timerId))
-  }, [continueAfterStep, demoStep, isStreamingReplyDemo, paused, resumeSignal])
+  }, [continueAfterStep, demoStep, entryContextText, entryJudgmentText, entryResponse, entryResponseText, entryThinkingBody, entryThinkingHoldMs, entryThinkingTitle, isStreamingReplyDemo, paused, resumeSignal])
 
   useEffect(() => {
     if (streamingPhase === 'done') return undefined
@@ -3028,8 +3115,8 @@ export function DottedDemoScreen({
     return () => timers.forEach((timerId) => window.clearTimeout(timerId))
   }, [answerRoute, paused, quickAnswerResponseReplyText, streamingPhase])
 
-  const simpleJudgmentProgress = simpleJudgmentReplyText.length / simpleJudgmentCharacters.length
-  const activeDeepTitleLength = streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold' ? quickAnswerTitleCharacters.length : deepThinkingKind === 'thinkPlan' ? planThinkTitleCharacters.length : deepThinkingKind === 'toolcallSearch' ? searchToolCallTitleCharacters.length : deepThinkingKind === 'toolcall' ? toolCallTitleCharacters.length : deepThinkingKind === 'thinkCompact' ? compactThinkTitleCharacters.length : deepThinkingTitleCharacters.length
+  const simpleJudgmentProgress = simpleJudgmentReplyText.length / countCharacters(entryJudgmentText)
+  const activeDeepTitleLength = streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold' ? quickAnswerTitleCharacters.length : deepThinkingKind === 'thinkPlan' ? planThinkTitleCharacters.length : deepThinkingKind === 'toolcallSearch' ? searchToolCallTitleCharacters.length : deepThinkingKind === 'toolcall' ? toolCallTitleCharacters.length : deepThinkingKind === 'thinkCompact' ? compactThinkTitleCharacters.length : countCharacters(entryThinkingTitle)
   const deepThinkingTitleProgress = deepThinkingTitle.length / activeDeepTitleLength
   const deepThinkingComplete = (
     streamingPhase === 'quickAnswerThinkHold'
@@ -3078,86 +3165,93 @@ export function DottedDemoScreen({
       || streamingPhase === 'thinkPlanHold'
     )
   const responseReplyText = answerRoute === 'quick' ? quickAnswerResponseReplyText : finalResponseReplyText
+  const assistantItems: DotsHistoryItem[] = []
+
+  if (streamingReplyText || streamingPhase === 'streaming') {
+    assistantItems.push({
+      id: 'dots-streaming-reply',
+      type: 'message',
+      role: 'dots',
+      text: streamingReplyText,
+      isStreaming: streamingPhase === 'streaming',
+    })
+  }
+
+  if (shouldRenderDeepThinking) {
+    assistantItems.push({
+      id: 'dots-deep-thinking',
+      type: 'message',
+      role: 'dots',
+      text: `${deepThinkingTitle}${deepThinkingBody}`,
+      isThinking: true,
+      isDeepThinking: true,
+      isDeepThinkingTitleComplete: deepThinkingTitleProgress >= 1,
+      thinkingStageIndex,
+      deepThinkingTitle,
+      deepThinkingBody,
+      deepThinkingTargetTitle: deepThinkingKind === 'think' ? entryThinkingTitle : undefined,
+      deepThinkingTargetBody: deepThinkingKind === 'think' ? entryThinkingBody : undefined,
+      deepThinkingTitleProgress,
+      deepThinkingKind,
+      deepThinkingComplete,
+      isQuickAnswerThinking: streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold',
+      isQuickAnswerSwitching: quickAnswerTitleSwitching,
+      previousDeepThinkingTitle: previousThinking?.title,
+      previousDeepThinkingBody: previousThinking?.body,
+      previousDeepThinkingKind: previousThinking?.kind,
+      thinkingDisplayVariant,
+      deepThinkingSummaryCollapsing: streamingPhase === 'thinkingSummary',
+    })
+  }
+
+  if (responseReplyText || streamingPhase === 'response') {
+    assistantItems.push({
+      id: 'dots-final-response',
+      type: 'message',
+      role: 'dots',
+      text: responseReplyText,
+      isFinalResponse: true,
+      isQuickFinalResponse: answerRoute === 'quick',
+      isFinalResponseSummary: answerRoute !== 'quick' && streamingPhase === 'thinkingSummary',
+      isFinalResponseComplete: streamingPhase === 'done',
+      responseConfig: answerRoute === 'long' ? entryResponse : undefined,
+    })
+  }
+
+  if (!assistantItems.length) {
+    assistantItems.push({
+      id: 'dots-thinking',
+      type: 'message',
+      role: 'dots',
+      text: simpleJudgmentReplyText,
+      isThinking: true,
+      isJudging: streamingPhase === 'judging' || streamingPhase === 'judgingHold',
+      isJudgingHold: streamingPhase === 'judgingHold',
+      thinkingStageIndex,
+      thinkingProgress: simpleJudgmentProgress,
+    })
+  }
+
   const chatItems: DotsHistoryItem[] = [
     {
       id: 'user-query',
       type: 'message',
       role: 'user',
-      text: '6千以内电视机推荐',
+      text: entryUserQuery,
     },
-    ...(streamingReplyText || streamingPhase === 'streaming' || shouldRenderDeepThinking || deepThinkingTitle || deepThinkingBody
-      ? [
-          {
-            id: 'dots-streaming-reply',
-            type: 'message' as const,
-            role: 'dots' as const,
-            text: streamingReplyText,
-            isStreaming: streamingPhase === 'streaming',
-          },
-          ...(shouldRenderDeepThinking
-            ? [
-                {
-                  id: 'dots-deep-thinking',
-                  type: 'message' as const,
-                  role: 'dots' as const,
-                  text: `${deepThinkingTitle}${deepThinkingBody}`,
-                  isThinking: true,
-                  isDeepThinking: true,
-                  isDeepThinkingTitleComplete: deepThinkingTitleProgress >= 1,
-                  thinkingStageIndex,
-                  deepThinkingTitle,
-                  deepThinkingBody,
-                  deepThinkingTitleProgress,
-                  deepThinkingKind,
-                  deepThinkingComplete,
-                  isQuickAnswerThinking: streamingPhase === 'quickAnswerThink' || streamingPhase === 'quickAnswerThinkHold',
-                  isQuickAnswerSwitching: quickAnswerTitleSwitching,
-                  previousDeepThinkingTitle: previousThinking?.title,
-                  previousDeepThinkingBody: previousThinking?.body,
-                  previousDeepThinkingKind: previousThinking?.kind,
-                  thinkingDisplayVariant,
-                  deepThinkingSummaryCollapsing: streamingPhase === 'thinkingSummary',
-                },
-              ]
-            : []),
-          ...(responseReplyText || streamingPhase === 'response'
-            ? [
-                {
-                  id: 'dots-final-response',
-                  type: 'message' as const,
-                  role: 'dots' as const,
-                  text: responseReplyText,
-                  isFinalResponse: true,
-                  isQuickFinalResponse: answerRoute === 'quick',
-                  isFinalResponseSummary: answerRoute !== 'quick' && streamingPhase === 'thinkingSummary',
-                  isFinalResponseComplete: streamingPhase === 'done',
-                },
-              ]
-            : []),
-        ]
-      : [
-          {
-            id: 'dots-thinking',
-            type: 'message' as const,
-            role: 'dots' as const,
-            text: simpleJudgmentReplyText,
-            isThinking: true,
-            isJudging: streamingPhase === 'judging' || streamingPhase === 'judgingHold',
-            isJudgingHold: streamingPhase === 'judgingHold',
-            thinkingStageIndex,
-            thinkingProgress: simpleJudgmentProgress,
-          },
-        ]),
+    ...assistantItems,
   ]
 
   return (
     <DottedConversationShell
+      onBack={onBack}
+      shellVariant={shellVariant}
       dialog={
         <DottedChatStream
             items={chatItems}
             streamRef={chatStreamRef}
-            onSourcesClick={() => setActiveSheetMode('sources')}
-            onThinkingClick={() => setActiveSheetMode('thinking')}
+            onSourcesClick={entryResponse?.sourcesEnabled === false ? undefined : () => setActiveSheetMode('sources')}
+            onThinkingClick={entryScenario ? undefined : () => setActiveSheetMode('thinking')}
             thinkingTransitionStyle={thinkingTransitionStyle}
             streamingVariant={streamingVariant}
             toolNoteDisplayVariant={toolNoteDisplayVariant}

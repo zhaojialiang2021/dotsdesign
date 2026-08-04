@@ -61,6 +61,9 @@ const screenBySlug: Record<ScreenId, LazyExoticComponent<PreviewScreen>> = {
     import('./screens/TimeFragmentScreen').then((m) => ({ default: m.TimeFragmentScreen })),
   ),
   'dotted-demo': lazy(() => import('./screens/DottedDemoScreen').then((m) => ({ default: m.DottedDemoScreen }))),
+  'ask-dots-island-demo': lazy(() =>
+    import('./screens/AskDotsIslandDemoScreen').then((m) => ({ default: m.AskDotsIslandDemoScreen })),
+  ),
 }
 
 function AppInner() {

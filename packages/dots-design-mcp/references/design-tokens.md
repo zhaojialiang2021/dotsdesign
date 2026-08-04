@@ -42,7 +42,7 @@
 | Labels | `Link Accent` / `--link-accent` | `#3D8AF5` | `#C6D9EF` | 强调链接 |
 | Fills | `Fill 1-5` / `--fill-1` … `--fill-5` | `#303034 5% / 10% / 20% / 50% / 99%` | `#FFFFFF 4% / 8% / 12.5% / 32% / 99%` | 从次级控件到强标签、气泡、轻提示 |
 | Fills | `Inverted Fill 1-5` / `--inverted-fill-1` … `--inverted-fill-5` | `#FFFFFF 4% / 8% / 12.5% / 32% / 99%` | `#303034 5% / 10% / 20% / 50% / 99%` | 反色填充阶梯 |
-| Separators | `Separator` / `--separator-base` | `#000000 8%` | `#000000 20%` | 分割线、描边 |
+| Separators | `Separator` / `--separator-base` | `#000000 8%` | `#FFFFFF 12%` | 分割线、描边 |
 | Separators | `Separator 2` / `--separator-2` | `#000000 20%` | `#FFFFFF 16%` | 较深色二级描边 |
 | Separators | `Opaque Separator` / `--separator-opaque` | `#EAEAEA` | `#222226` | 多条线重叠时使用 |
 
@@ -72,8 +72,18 @@
 - 填充：`--light-fill-1` 到 `--light-fill-5` 与 `--dark-fill-1` 到 `--dark-fill-5`
 - 描边：`--light-separator`、`--light-separator-2`、`--dark-separator`、`--dark-separator-2`
 - 中性色：`--always-white`、`--always-black`
+- 媒体：`--always-media-overlay`
+- 问点点搜索引导：`--always-ask-dots-action`、`--always-ask-dots-island-surface`、`--always-ask-dots-island-border`
 
 兼容旧页面的变量只在生成 CSS 中保留别名，不再用于新规范和新代码。禁止自行定义颜色；不要把 `XHS Red` 用于点点对话、系统组件或文档站。
+
+### 主题作用域
+
+- 站点壳层、文档画布、浮层和工具栏使用自适应令牌，跟随当前主题。
+- iOS 手机画板和产品内页面 Demo 是明确的 Light-only 主题岛，使用浅色背景、深色文字与浅色分割线，不继承站点深色模式。
+- 品牌色块等固定色表面必须同时固定前景色。例如薄荷绿 Hero 始终使用深色文字，黑色 CTA 始终使用白色文字。
+- 正文使用 `--paragraph`；辅助说明、注释和元数据使用 `--description`。禁止在令牌之外再叠加 opacity 降低对比度。
+- 深色模式的卡片和代码块使用 `--bg-1` / `--bg-2` 建立层级；`--bg-0-lighter` 只用于最底层深色画布，不作为普通卡片背景。
 
 ---
 
@@ -137,6 +147,11 @@ Docs 字阶只用于文档站的信息层级，不进入组件规范和 Dots App
 | `dialog-input` | `16px` | `400` | `48px` | `0.02em` | 输入框文字 |
 | `dialog-time` | `13px` | `400` | `18px` | — | 时间标签 |
 | `community-card-title` | `14px` | `500` | `20px` | — | 社区卡片标题 |
+| `media-note-meta` | `12px` | `400` | `18px` | — | 大笔记卡作者与点赞 |
+| `media-note-title-compact` | `12px` | `500` | `18px` | — | 三列笔记卡标题 |
+| `media-note-meta-compact` | `10px` | `400` | `14px` | — | 三列笔记卡作者与点赞 |
+| `media-video-author` | `12px` | `400` | `18px` | — | 横版视频作者名 |
+| `media-video-duration` | `11px` | `500` | `16px` | — | 横版视频时长 |
 | `support` | `12px` | `400` | `17px` | — | 辅助文字 |
 
 ---
@@ -252,3 +267,5 @@ Motion 规范页直接在 `Bg` 页面内容区域展示，不包外层卡片。D
 | `shadow.1` / `--shadow-1` | `0 8px 24px rgba(20,20,20,0.04)` | `0 8px 24px rgba(20,20,20,0.08)` | 卡片、容器 |
 | `shadow.2` / `--shadow-2` | `0 16px 48px rgba(20,20,20,0.12)` | `0 16px 48px rgba(20,20,20,0.24)` | 面板 |
 | `shadow.3` / `--shadow-3` | `0 24px 72px rgba(20,20,20,0.20)` | `0 24px 72px rgba(20,20,20,0.40)` | 高层面板 |
+| `shadow.community-search-field` / `--shadow-community-search-field` | `0 4px 18px rgba(0,0,0,0.06)` | 同 Light | 社区搜索框 |
+| `shadow.ask-dots-island` / `--shadow-ask-dots-island` | `0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)` | 同 Light | 问点点搜索引导展开浮层 |

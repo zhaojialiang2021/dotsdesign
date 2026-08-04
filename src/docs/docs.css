@@ -1216,6 +1216,16 @@
   justify-content: center;
 }
 
+/* 点点页面自身使用设备级超级圆角，外层必须沿用同一裁切轮廓。 */
+.docs-device-screen:has(.dotted-demo-page) {
+  border-radius: var(--phone-radius);
+  corner-shape: squircle;
+}
+
+.docs-device-screen:has(.dotted-demo-page--main-site) {
+  border-radius: calc(var(--radius-tag) * 2);
+}
+
 /* === Pitch 演示页 === */
 /* pitch-mode 下隐藏文档壳侧栏和顶栏 */
 body.pitch-mode .docs-topnav,
@@ -5252,6 +5262,41 @@ pre.docs-codeblock > code {
   will-change: transform;
 }
 
+.docs-report-demo-canvas-content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  zoom: var(--demo-canvas-scale, 1);
+  transition: zoom var(--duration-out) var(--curve-out);
+}
+
+.docs-phone-frame {
+  position: relative;
+  width: 393px;
+  height: 852px;
+  flex: 0 0 auto;
+}
+
+.docs-phone-bezel {
+  display: none;
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  z-index: 100;
+  width: 453px;
+  height: 912px;
+  object-fit: fill;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.docs-report-demo-canvas-content--phone-bezel .docs-phone-bezel {
+  display: block;
+}
+
 .docs-report-demo-actions {
   position: fixed;
   top: calc(var(--space-5) + var(--space-4));
@@ -5376,6 +5421,21 @@ pre.docs-codeblock > code {
   width: 0.5px;
   height: 44px;
   background: var(--separator-base);
+}
+
+.docs-report-demo-phone-bezel-control {
+  position: fixed;
+  top: calc(var(--space-5) + var(--space-4) + 8px);
+  right: calc(var(--space-5) + var(--space-4) + 88px + 40px);
+  z-index: 24;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--paragraph);
+  font-family: var(--font-component);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
 }
 
 .docs-report-demo-scheme-panel {
@@ -5775,8 +5835,6 @@ pre.docs-codeblock > code {
   align-items: center;
   justify-items: center;
   margin: 0;
-  zoom: var(--demo-canvas-scale, 1);
-  transition: zoom var(--duration-out) var(--curve-out);
 }
 
 .docs-timestamp-phone {
@@ -5889,6 +5947,14 @@ pre.docs-codeblock > code {
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
+}
+
+.docs-ask-dots-island-phone,
+.docs-ask-dots-island-phone .ask-dots-demo {
+  width: 393px;
+  height: 852px;
+  min-height: 852px;
+  flex: 0 0 auto;
 }
 
 .docs-report-stepper__button {
@@ -6158,6 +6224,7 @@ pre.docs-codeblock > code {
   grid-template-columns: minmax(260px, 360px) minmax(520px, 1fr);
   gap: 64px;
   align-items: center;
+  pointer-events: auto;
 }
 
 .docs-floating-cards-copy {
@@ -6714,6 +6781,11 @@ pre.docs-codeblock > code {
   .docs-report-demo-actions {
     top: calc(var(--space-5) + var(--space-4));
     right: calc(var(--space-5) + var(--space-4));
+  }
+
+  .docs-report-demo-phone-bezel-control {
+    top: calc(var(--space-5) + var(--space-4) + 8px);
+    right: calc(var(--space-5) + var(--space-4) + 88px + 40px);
   }
 
   .docs-report-demo-canvas-tools,

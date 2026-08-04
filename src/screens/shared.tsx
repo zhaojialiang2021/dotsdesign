@@ -4,6 +4,7 @@ import {
   type AbilityCardItem,
   type TypeTagTone,
 } from './shared-data'
+import { IOSStatusBar } from './shared/IOSStatusBar'
 export type { AbilityCardItem, ScreenId, TypeTagTone } from './shared-data'
 
 // === 共享布局组件 ===
@@ -27,16 +28,7 @@ export function MobileShell({
 }
 
 export function StatusBar({ dark = false }: { dark?: boolean }) {
-  return (
-    <div className={`status-bar${dark ? ' status-bar--dark' : ''}`}>
-      <div className="status-bar__time">9:41</div>
-      <div className="status-bar__icons" aria-hidden="true">
-        <SignalIcon />
-        <WifiIcon />
-        <BatteryIcon />
-      </div>
-    </div>
-  )
+  return <IOSStatusBar className="status-bar" dark={dark} />
 }
 
 export function TopNav({
@@ -215,32 +207,6 @@ export function CloseIcon() {
   return (
     <SvgIcon className="icon icon--tiny">
       <path d="M7 7L17 17M17 7L7 17" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-    </SvgIcon>
-  )
-}
-
-function SignalIcon() {
-  return (
-    <SvgIcon className="icon icon--status" viewBox="0 0 20 14">
-      <path d="M1 12.5H3.5V10H1V12.5ZM5.25 12.5H7.75V7.5H5.25V12.5ZM9.5 12.5H12V5H9.5V12.5ZM13.75 12.5H16.25V2.5H13.75V12.5Z" fill="currentColor" />
-    </SvgIcon>
-  )
-}
-
-function WifiIcon() {
-  return (
-    <SvgIcon className="icon icon--status" viewBox="0 0 18 14">
-      <path d="M1.6 5.3C6.1 1.6 11.9 1.6 16.4 5.3M4.5 8.2C7.2 6.1 10.8 6.1 13.5 8.2M7.4 11.1C8.3 10.4 9.7 10.4 10.6 11.1" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </SvgIcon>
-  )
-}
-
-function BatteryIcon() {
-  return (
-    <SvgIcon className="icon icon--battery" viewBox="0 0 28 14">
-      <rect x="1" y="1.5" width="22" height="11" rx="3" stroke="currentColor" strokeWidth="1.5" />
-      <rect x="3.5" y="4" width="15" height="6" rx="2" fill="currentColor" />
-      <rect x="24.5" y="4.5" width="2.5" height="5" rx="1.2" fill="currentColor" />
     </SvgIcon>
   )
 }

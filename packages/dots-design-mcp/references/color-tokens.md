@@ -5,11 +5,11 @@
 状态：complete
 最后校对：2026-07-28
 
-本文件是颜色规范的人类可读真相源，执行数据位于 `tokens/color.json`。`Light / Dark` 是自适应 token，`Always Mode` 是固定 token。所有 token 名统一使用英文；PDF 中的 `Primary` 明确为小红书宿主品牌色，归入 `XHS brand`；点点绿色统一归入 `Dots brand`。
+本文件是颜色规范的人类可读真相源，执行数据位于 `tokens/color.json`。`Light / Dark` 是自适应 token，`Always Mode` 是固定 token。所有 token 名统一使用英文；PDF 中的 `Primary` 明确为小红书品牌色，归入 `XHS brand`；点点绿色统一归入 `Dots brand`。
 
 PDF 中 `Light Dots text` 的色值文字缺失；根据同组 Dark 值与 Dots bg 色块校正为 `#56D1BF`。带透明度的值在本文件保留为 `#HEX 百分比`，构建数据使用等价 `rgba()`。
 
-规范页展示使用扁平分组：分组不包卡片外框，单个 Token 不使用独立卡片底色和圆角，仅用行分隔与色块建立层级，避免“页面 → 分组卡片 → Token 卡片 → 色块”重复套层。
+规范页展示使用扁平分组：分组不包卡片外框，单个 Token 不使用独立卡片底色和圆角，仅用行分隔与 64×64px 色块建立层级，避免“页面 → 分组卡片 → Token 卡片 → 色块”重复套层。色块右侧依次纵向展示名称、用途说明和计算值；名称只显示可读部分，不显示 CSS 变量前缀 `--`，点击复制仍返回完整 `var(--token-name)`。
 
 ## Light / Dark
 
@@ -79,6 +79,9 @@ PDF 中 `Light Dots text` 的色值文字缺失；根据同组 Dark 值与 Dots 
 | Separators | Dark Separator 2 | `--dark-separator-2` | 暗色较深二级描边 | `#000000 20%` |
 | Neutral | White | `--always-white` | 固定白色 | `#FFFFFF` |
 | Neutral | Black | `--always-black` | 固定黑色 | `#000000` |
+| Dots search demo | Ask Dots Action | `--always-ask-dots-action` | 「立即总结」文字 | `#34B39D` |
+| Dots search demo | Ask Dots Island Surface | `--always-ask-dots-island-surface` | 新版展开浮层玻璃表面 | `#FFFFFF 80%` |
+| Dots search demo | Ask Dots Island Border | `--always-ask-dots-island-border` | 新版展开浮层薄荷描边 | `#56D1BF 20%` |
 
 ## 迁移规则
 

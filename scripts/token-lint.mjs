@@ -24,6 +24,8 @@ const SKIP_FILES = new Set([
   'src/index.css',
   // V2 时期文档站的 hex（accent 装饰色、stage 网格底纹）—— 作为 Day 5+ 清理项纳入 backlog
   'src/docs/docs.css',
+  // Figma 1:1 外部搜索页 demo：画板坐标、图标尺寸和切图槽位必须保留原始 px，颜色仍全部走 token
+  'src/screens/AskDotsIslandDemoScreen.css',
 ])
 
 // 浅组件 preview（brief §1.3 v1 非目标）—— 待 v2 重写时再 token 化

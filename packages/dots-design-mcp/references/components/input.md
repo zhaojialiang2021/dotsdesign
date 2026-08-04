@@ -27,7 +27,7 @@ Input 在组件规范中指 TextField 文本字段，不等同于点点对话页
 
 | variant | 尺寸 | 背景 | 圆角 | 用途 |
 |------|------|------|------|------|
-| field | 393 x 48px | Bg | 0 | 标准表单行、设置项输入。 |
+| field | 393 x 48px | `Bg Base` / `--bg-base` | 0 | 标准表单行、设置项输入；随站点主题切换。 |
 | extension | 361 x 48px | Fill 1 / 弱填充 | 12px | 半屏、卡片、局部拓展输入。 |
 
 field 的 error 态总高变为 78px：上方 48px 输入行，下方 18px 错误提示。extension 的 error 态仍然保持 48px，只改变容器底色。

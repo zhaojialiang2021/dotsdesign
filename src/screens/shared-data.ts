@@ -8,7 +8,7 @@ export type AbilityCardItem = {
   tone: TypeTagTone
 }
 
-export type ScreenId = 'splash' | 'home' | 'ai-preferences' | 'ai-summary' | 'time-fragment' | 'dotted-demo'
+export type ScreenId = 'splash' | 'home' | 'ai-preferences' | 'ai-summary' | 'time-fragment' | 'dotted-demo' | 'ask-dots-island-demo'
 
 export const tagToneClassName: Record<TypeTagTone, string> = {
   brand: 'mb-type-tag--brand',

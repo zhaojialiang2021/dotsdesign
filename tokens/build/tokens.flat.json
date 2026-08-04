@@ -1,6 +1,6 @@
 {
-  "$generatedAt": "2026-07-30T06:08:45.086Z",
-  "$count": 225,
+  "$generatedAt": "2026-08-04T11:13:51.954Z",
+  "$count": 232,
   "tokens": [
     {
       "name": "color.bg.0",
@@ -562,6 +562,27 @@
       "value": "rgba(0,0,0,0.12)",
       "type": "color",
       "description": "横版视频右上时长局部遮罩",
+      "modes": null
+    },
+    {
+      "name": "color.always.ask-dots-action",
+      "value": "#34B39D",
+      "type": "color",
+      "description": "问点点搜索引导的立即总结文字",
+      "modes": null
+    },
+    {
+      "name": "color.always.ask-dots-island-surface",
+      "value": "rgba(255,255,255,0.80)",
+      "type": "color",
+      "description": "问点点搜索引导新版玻璃表面",
+      "modes": null
+    },
+    {
+      "name": "color.always.ask-dots-island-border",
+      "value": "rgba(86,209,191,0.20)",
+      "type": "color",
+      "description": "问点点搜索引导新版薄荷描边",
       "modes": null
     },
     {
@@ -1356,6 +1377,13 @@
       "modes": null
     },
     {
+      "name": "duration.morph",
+      "value": "800ms",
+      "type": "duration",
+      "description": "大幅共享元素形变，容纳轻微越界与回稳",
+      "modes": null
+    },
+    {
       "name": "duration.fast",
       "value": "250ms",
       "type": "duration",
@@ -1388,6 +1416,13 @@
       "value": "cubic-bezier(.34,1.56,.64,1)",
       "type": "cubicBezier",
       "description": "弹性效果",
+      "modes": null
+    },
+    {
+      "name": "curve.morph-spring",
+      "value": "linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.0072 60%, 1.013 65%, 1.0145 70%, 1.0134 75%, 1.011 80%, 1.008 85%, 1.005 90%, 1.0023 95%, 1)",
+      "type": "string",
+      "description": "阻尼比 0.78 的欠阻尼形变弹簧离线采样；双向轻微越界后回稳",
       "modes": null
     },
     {
@@ -1466,6 +1501,20 @@
       "value": "0 0.5px 1px rgba(0,0,0,0.30)",
       "type": "shadow",
       "description": "笔记卡封面文字阴影",
+      "modes": null
+    },
+    {
+      "name": "shadow.community-search-field",
+      "value": "0 4px 18px rgba(0,0,0,0.06)",
+      "type": "shadow",
+      "description": "社区搜索结果页搜索框阴影",
+      "modes": null
+    },
+    {
+      "name": "shadow.ask-dots-island",
+      "value": "0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)",
+      "type": "shadow",
+      "description": "问点点搜索引导新版黑色投影与薄荷柔光",
       "modes": null
     },
     {

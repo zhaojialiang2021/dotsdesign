@@ -6,6 +6,8 @@
 
 消息体是点点对话页的基础单元，承载用户消息、Dots 文本回复、判断态、流式输出和 response 卡片。页面 demo 只能引用该组件规范，不允许复制私有气泡样式。
 
+组件文档里的连续对话预览用于核对 iOS 浅色消息规范，必须作为显式 Light-only 预览岛渲染；站点外壳、说明文字和控制器仍跟随当前主题。
+
 ## Harness 定义
 
 MessageBubble 是点点对话流的核心 Component Harness，不是普通气泡样式。
@@ -23,6 +25,8 @@ MessageBubble 是点点对话流的核心 Component Harness，不是普通气泡
 ```
 
 `DotsMessage` 负责左右对齐、消息间距和生命周期位置；`DotsMessageBubble` 负责文字气泡、判断态容器、逐字流式文本和 response 壳体。
+
+response 正文里的媒体不扩展 MessageBubble 私有样式：普通图片统一复用 [`MediaImage`](./media-image.md)，社区笔记统一复用 [`MediaNote`](./media-note.md)，视频统一复用 [`MediaVideo`](./media-video.md)。
 
 ## 文字气泡
 
@@ -47,6 +51,7 @@ MessageBubble 是点点对话流的核心 Component Harness，不是普通气泡
 组件侧只提供这些稳定能力：
 
 - 左侧 36×36 Lottie / icon 状态位。
+- 状态位统一复用 [`ProcessIndicator`](./process-indicator.md)，MessageBubble 不直接选择动画资源。
 - 脑雾背景容器，背景透明度和 blur 由框架控制。
 - 标题、正文、来源内容的正常文档流布局。
 - 当前内容流式输出，已完成内容保持静态。

@@ -1,8 +1,8 @@
 ---
 name: Answer Loading Framework
 status: draft
-last_updated: 2026-07-21
-used_by: [dotted-demo, conversation-streaming, long-thinking, message-bubble, card, sheet]
+last_updated: 2026-08-04
+used_by: [dotted-demo, conversation-streaming, long-thinking, ask-dots-island-demo, message-bubble, card, sheet]
 ---
 
 # Answer Loading 回答加载框架
@@ -21,9 +21,19 @@ Answer Loading 是点点对话页里“回答不是瞬间出现，而是有可�
 
 ## 页面基座
 
-点点对话 demo 使用 393×852px 手机画板，外壳圆角 48px，外部 8px 纯白外描边，浅色背景使用 `Bg`。顶部是 iOS 状态栏和点点导航；底部是输入区渐隐底座、48px 输入框、`内容由AI生成` 和 home indicator。
+点点对话 demo 使用 393×852px 手机画板，外壳圆角 48px，外部 8px 纯白外描边，浅色背景使用 `Bg`。顶部 iOS 状态栏统一引用全局 `personal/statusbar-light.png`，不再由页面拼接图标；下方是点点导航，底部是输入区渐隐底座、48px 输入框、`内容由AI生成` 和 home indicator。
 
 输入区背后使用独立透明渐变遮罩层：`#F5F5F5` 三段 stop 为 `0% / 0%`、`18% / 80%`、`36% / 100%`，36% 后保持 100%。渐变层不做背景模糊；输入框自身使用 `#FCFCFC` 纯色背景和 25px backdrop blur。输入框父级不能使用会隔离采样的合成上下文。
+
+## 跨业务入口复用
+
+外部业务入口需要直接进入思考页时，复用 `DottedDemoScreen`，通过 `entryScenario` 传入 `userQuery`、`judgmentText`、`contextText`、`thinkingTitle` 和可选的 `thinkingBody`。这些参数只替换入口问题、上下文回复和首段思考，不复制页面外壳或 loading 组件。业务已具备完整回答时，还可以传入 `thinkingHoldMs` 和 `response`；`response` 必须同时提供状态行、回答区块、区块分组和完整流式文本，不能只替换一段正文后继续复用默认内容。
+
+`DottedDemoScreen` 通过 `shellVariant` 明确页面归属：`standalone` 为现有独立端框架，`main-site` 为主站框架。默认值保持 `standalone`，只有目标页面规格明确要求主站时才传 `main-site`，不得通过覆盖独立端 CSS 冒充主站。
+
+`main-site` 严格复用 Figma 节点 `2245:75646` 的顶栏和输入区：返回 + 用户头像/点点 + 更多、16px 圆角文本输入框和「发消息或按住说话...」。顶栏和页面使用同一个 `Bg`，返回动作由业务入口注入；两种外壳共享消息流和 answer-loading 状态，外壳差异不能复制判断、思考或 response 逻辑。
+
+只提供入口场景时，从 `demoStep="think"` 播放并停留在首段思考，不继续展示默认电视或新疆链路；同时不开放思考过程半层。提供业务 `response` 时，首段思考完成后按 `thinkingHoldMs` 停留并直接进入该业务 response，不播放通用工具调用链路，也不经过通用「思考完成」折叠转场。未提供业务来源时，response 状态行仅作为信息展示，不得打开默认新疆来源半层。
 
 ## 消息与气泡
 

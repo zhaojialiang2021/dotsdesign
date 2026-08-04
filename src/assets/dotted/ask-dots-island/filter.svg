@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Mask group">
+<mask id="mask0_0_587" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="16" height="16">
+<path id="Rectangle 5344" d="M0 0H16V16H0V0Z" fill="#D9D9D9"/>
+</mask>
+<g mask="url(#mask0_0_587)">
+<path id="Vector 38 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M1.33333 3.93333C1.33333 3.60196 1.60196 3.33333 1.93333 3.33333H14.0667C14.398 3.33333 14.6667 3.60196 14.6667 3.93333C14.6667 4.2647 14.398 4.53333 14.0667 4.53333H1.93333C1.60196 4.53333 1.33333 4.2647 1.33333 3.93333Z" fill="black" fill-opacity="0.45"/>
+<path id="Vector 39 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M3 7.99998C3 7.66861 3.26863 7.39998 3.6 7.39998L12.4 7.39998C12.7314 7.39998 13 7.66861 13 7.99998C13 8.33135 12.7314 8.59998 12.4 8.59998H3.6C3.26863 8.59998 3 8.33135 3 7.99998Z" fill="black" fill-opacity="0.45"/>
+<path id="Vector 40 (Stroke)" fill-rule="evenodd" clip-rule="evenodd" d="M5 12.0667C5 11.7353 5.26863 11.4667 5.6 11.4667L10.4 11.4667C10.7314 11.4667 11 11.7353 11 12.0667C11 12.398 10.7314 12.6667 10.4 12.6667L5.6 12.6667C5.26863 12.6667 5 12.3981 5 12.0667Z" fill="black" fill-opacity="0.45"/>
+</g>
+</g>
+</svg>

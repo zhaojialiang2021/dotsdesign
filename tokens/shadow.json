@@ -29,6 +29,16 @@
       "$value": "0 0.5px 1px rgba(0,0,0,0.30)",
       "$type": "shadow",
       "$description": "笔记卡封面文字阴影"
+    },
+    "community-search-field": {
+      "$value": "0 4px 18px rgba(0,0,0,0.06)",
+      "$type": "shadow",
+      "$description": "社区搜索结果页搜索框阴影"
+    },
+    "ask-dots-island": {
+      "$value": "0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)",
+      "$type": "shadow",
+      "$description": "问点点搜索引导新版黑色投影与薄荷柔光"
     }
   }
 }

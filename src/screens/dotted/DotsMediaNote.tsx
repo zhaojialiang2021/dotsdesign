@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 import playIcon from '../../assets/dotted/dots-note-play.svg'
-import likeIcon from '../../assets/dotted/source-like.svg'
+import likeIcon from '../../assets/dotted/media-note-like.svg'
 
 export type DotsMediaNoteItem = {
   cover: string

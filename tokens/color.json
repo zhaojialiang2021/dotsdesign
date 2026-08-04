@@ -297,7 +297,10 @@
       "black": { "$value": "#000000", "$type": "color", "$description": "Black：Always Mode 黑色" },
       "media-overlay": { "$value": "rgba(36,36,36,0.32)", "$type": "color", "$description": "媒体卡底部文字蒙层" },
       "video-control-overlay": { "$value": "rgba(0,0,0,0.20)", "$type": "color", "$description": "横版视频底部控件渐变终点" },
-      "video-duration-shadow": { "$value": "rgba(0,0,0,0.12)", "$type": "color", "$description": "横版视频右上时长局部遮罩" }
+      "video-duration-shadow": { "$value": "rgba(0,0,0,0.12)", "$type": "color", "$description": "横版视频右上时长局部遮罩" },
+      "ask-dots-action": { "$value": "#34B39D", "$type": "color", "$description": "问点点搜索引导的立即总结文字" },
+      "ask-dots-island-surface": { "$value": "rgba(255,255,255,0.80)", "$type": "color", "$description": "问点点搜索引导新版玻璃表面" },
+      "ask-dots-island-border": { "$value": "rgba(86,209,191,0.20)", "$type": "color", "$description": "问点点搜索引导新版薄荷描边" }
     },
     "legacy": {
       "accent-yellow": { "$value": "#FFCC00", "$type": "color", "$description": "兼容旧页面，不属于现行颜色规范" },
