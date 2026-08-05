@@ -75,8 +75,9 @@
   --always-video-control-overlay: rgba(0,0,0,0.20);
   --always-video-duration-shadow: rgba(0,0,0,0.12);
   --always-ask-dots-action: #34B39D;
-  --always-ask-dots-island-surface: rgba(255,255,255,0.80);
+  --always-ask-dots-island-surface: rgba(255,255,255,0.90);
   --always-ask-dots-island-border: rgba(86,209,191,0.20);
+  --always-ask-dots-guide-surface: #FDFFFE;
   --legacy-accent-yellow: #FFCC00;
   --legacy-accent-green: #34C759;
   --legacy-accent-pink: #FF6482;
@@ -197,7 +198,8 @@
   --duration-slow: 350ms;
   --curve-out: cubic-bezier(.32,.72,0,1);
   --curve-spring: cubic-bezier(.34,1.56,.64,1);
-  --curve-morph-spring: linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.0072 60%, 1.013 65%, 1.0145 70%, 1.0134 75%, 1.011 80%, 1.008 85%, 1.005 90%, 1.0023 95%, 1);
+  --curve-morph-spring: linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.012 60%, 1.024 65%, 1.03 70%, 1.028 75%, 1.022 80%, 1.015 85%, 1.009 90%, 1.004 95%, 1);
+  --curve-morph-settle: linear(0, 0.035 5%, 0.09 10%, 0.16 15%, 0.24 20%, 0.32 25%, 0.4 30%, 0.48 35%, 0.55 40%, 0.62 45%, 0.68 50%, 0.73 55%, 0.78 60%, 0.82 65%, 0.86 70%, 0.91 75%, 0.98 80%, 1.03 85%, 1.015 90%, 1.004 95%, 1);
   --curve-default: cubic-bezier(.32,.72,0,1);
   --curve-ease-out: cubic-bezier(.32,.72,0,1);
   --press-scale-min: 0.95;
@@ -210,6 +212,7 @@
   --shadow-media-note-text: 0 0.5px 1px rgba(0,0,0,0.30);
   --shadow-community-search-field: 0 4px 18px rgba(0,0,0,0.06);
   --shadow-ask-dots-island: 0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20);
+  --shadow-ask-dots-guide: 0 4px 20px rgba(0,0,0,0.08);
   --font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
   --rich-h1-size: 20pt;
   --rich-h1-weight: 600;

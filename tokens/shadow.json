@@ -39,6 +39,11 @@
       "$value": "0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)",
       "$type": "shadow",
       "$description": "问点点搜索引导新版黑色投影与薄荷柔光"
+    },
+    "ask-dots-guide": {
+      "$value": "0 4px 20px rgba(0,0,0,0.08)",
+      "$type": "shadow",
+      "$description": "问点点方案 B 单行引导卡投影"
     }
   }
 }

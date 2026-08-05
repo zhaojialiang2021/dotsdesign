@@ -6396,27 +6396,15 @@ div.dotted-demo__response-status {
 .dotted-demo__dock--main-site::before {
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--always-white) 0%, transparent) 10%,
-    color-mix(in srgb, var(--always-white) 80%, transparent) 60%,
-    color-mix(in srgb, var(--always-white) 80%, transparent) 100%
+    color-mix(in srgb, var(--dots-bg) 0%, transparent) 0%,
+    color-mix(in srgb, var(--dots-bg) 80%, transparent) 25%,
+    var(--dots-bg) 55%
   );
 }
 
-.dotted-demo__dock--main-site::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  backdrop-filter: blur(50px);
-  -webkit-backdrop-filter: blur(50px);
-  mask-image: linear-gradient(180deg, transparent 0%, var(--always-black) 100%);
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, var(--always-black) 100%);
-}
-
 .dotted-demo__dock--main-site .dotted-demo__composer {
-  padding-top: var(--space-3);
-  padding-bottom: 0;
+  padding-top: 0;
+  padding-bottom: var(--space-3);
 }
 
 .dotted-demo__dock--main-site .dotted-demo__composer-main {
@@ -6424,6 +6412,8 @@ div.dotted-demo__response-status {
   padding: var(--space-3) calc(var(--space-3) + var(--space-1) / 2);
   border-radius: var(--radius-input);
   background: color-mix(in srgb, var(--always-white) 80%, transparent);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
 }
 
 .dotted-demo__composer-prompt {

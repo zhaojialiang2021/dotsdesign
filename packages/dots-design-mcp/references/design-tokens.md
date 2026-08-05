@@ -73,7 +73,7 @@
 - 描边：`--light-separator`、`--light-separator-2`、`--dark-separator`、`--dark-separator-2`
 - 中性色：`--always-white`、`--always-black`
 - 媒体：`--always-media-overlay`
-- 问点点搜索引导：`--always-ask-dots-action`、`--always-ask-dots-island-surface`、`--always-ask-dots-island-border`
+- 问点点搜索引导：`--always-ask-dots-action`、`--always-ask-dots-island-surface`、`--always-ask-dots-island-border`、`--always-ask-dots-guide-surface`
 
 兼容旧页面的变量只在生成 CSS 中保留别名，不再用于新规范和新代码。禁止自行定义颜色；不要把 `XHS Red` 用于点点对话、系统组件或文档站。
 
@@ -250,7 +250,8 @@ Motion 规范页直接在 `Bg` 页面内容区域展示，不包外层卡片。D
 |------|------|------|
 | `curve.out` / `--curve-out` | `cubic-bezier(.32,.72,0,1)` | 通用出场/进入 |
 | `curve.spring` / `--curve-spring` | `cubic-bezier(.34,1.56,.64,1)` | 弹性效果 |
-| `curve.morph-spring` / `--curve-morph-spring` | `linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.0072 60%, 1.013 65%, 1.0145 70%, 1.0134 75%, 1.011 80%, 1.008 85%, 1.005 90%, 1.0023 95%, 1)` | 阻尼比 0.78 的欠阻尼形变弹簧采样；双向轻微越界后回稳 |
+| `curve.morph-spring` / `--curve-morph-spring` | `linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.012 60%, 1.024 65%, 1.03 70%, 1.028 75%, 1.022 80%, 1.015 85%, 1.009 90%, 1.004 95%, 1)` | 共享元素展开弹簧；约 70% 时越过目标 3%，随后回到精确尺寸 |
+| `curve.morph-settle` / `--curve-morph-settle` | `linear(0, 0.035 5%, 0.09 10%, 0.16 15%, 0.24 20%, 0.32 25%, 0.4 30%, 0.48 35%, 0.55 40%, 0.62 45%, 0.68 50%, 0.73 55%, 0.78 60%, 0.82 65%, 0.86 70%, 0.91 75%, 0.98 80%, 1.03 85%, 1.015 90%, 1.004 95%, 1)` | 共享元素收回弹簧；前段保留形变可读性，最后 25% 加速归位，并在约 85% 时越过目标 3% 后回稳 |
 | `duration.in` / `--duration-in` | `250ms` | 元素入场 |
 | `duration.expand` / `--duration-expand` | `350ms` | 内容展开 |
 | `duration.delayed-in` / `--duration-delayed-in` | `300ms` | 延迟入场 |
@@ -271,3 +272,4 @@ Motion 规范页直接在 `Bg` 页面内容区域展示，不包外层卡片。D
 | `shadow.3` / `--shadow-3` | `0 24px 72px rgba(20,20,20,0.20)` | `0 24px 72px rgba(20,20,20,0.40)` | 高层面板 |
 | `shadow.community-search-field` / `--shadow-community-search-field` | `0 4px 18px rgba(0,0,0,0.06)` | 同 Light | 社区搜索框 |
 | `shadow.ask-dots-island` / `--shadow-ask-dots-island` | `0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)` | 同 Light | 问点点搜索引导展开浮层 |
+| `shadow.ask-dots-guide` / `--shadow-ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 同 Light | 问点点方案 B 单行引导卡 |

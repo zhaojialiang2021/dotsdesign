@@ -96,8 +96,9 @@
 | `color.always.video-control-overlay` | `rgba(0,0,0,0.20)` | 横版视频底部控件渐变终点 |
 | `color.always.video-duration-shadow` | `rgba(0,0,0,0.12)` | 横版视频右上时长局部遮罩 |
 | `color.always.ask-dots-action` | `#34B39D` | 问点点搜索引导的立即总结文字 |
-| `color.always.ask-dots-island-surface` | `rgba(255,255,255,0.80)` | 问点点搜索引导新版玻璃表面 |
+| `color.always.ask-dots-island-surface` | `rgba(255,255,255,0.90)` | 问点点搜索引导新版玻璃表面 |
 | `color.always.ask-dots-island-border` | `rgba(86,209,191,0.20)` | 问点点搜索引导新版薄荷描边 |
+| `color.always.ask-dots-guide-surface` | `#FDFFFE` | 问点点方案 B 引导卡：#83F2DF 2% 叠加白色 |
 | `color.legacy.accent-yellow` | `#FFCC00` | 兼容旧页面，不属于现行颜色规范 |
 | `color.legacy.accent-green` | `#34C759` | 兼容旧页面，不属于现行颜色规范 |
 | `color.legacy.accent-pink` | `#FF6482` | 兼容旧页面，不属于现行颜色规范 |
@@ -272,7 +273,8 @@
 |---|---|---|
 | `curve.out` | `cubic-bezier(.32,.72,0,1)` | 通用出场/进入 |
 | `curve.spring` | `cubic-bezier(.34,1.56,.64,1)` | 弹性效果 |
-| `curve.morph-spring` | `linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.0072 60%, 1.013 65%, 1.0145 70%, 1.0134 75%, 1.011 80%, 1.008 85%, 1.005 90%, 1.0023 95%, 1)` | 阻尼比 0.78 的欠阻尼形变弹簧离线采样；双向轻微越界后回稳 |
+| `curve.morph-spring` | `linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.012 60%, 1.024 65%, 1.03 70%, 1.028 75%, 1.022 80%, 1.015 85%, 1.009 90%, 1.004 95%, 1)` | 共享元素展开弹簧；约 70% 时越过目标 3%，随后回到精确尺寸 |
+| `curve.morph-settle` | `linear(0, 0.035 5%, 0.09 10%, 0.16 15%, 0.24 20%, 0.32 25%, 0.4 30%, 0.48 35%, 0.55 40%, 0.62 45%, 0.68 50%, 0.73 55%, 0.78 60%, 0.82 65%, 0.86 70%, 0.91 75%, 0.98 80%, 1.03 85%, 1.015 90%, 1.004 95%, 1)` | 共享元素收回弹簧；前段保留形变可读性，最后 25% 加速归位，并在约 85% 时越过目标 3% 后回稳 |
 | `curve.default` | `cubic-bezier(.32,.72,0,1)` | 兼容旧变量：映射到 Dots ease-out |
 | `curve.ease-out` | `cubic-bezier(.32,.72,0,1)` | 兼容旧变量：映射到 Dots ease-out |
 
@@ -295,6 +297,7 @@
 | `shadow.media-note-text` | `0 0.5px 1px rgba(0,0,0,0.30)` | 笔记卡封面文字阴影 |
 | `shadow.community-search-field` | `0 4px 18px rgba(0,0,0,0.06)` | 社区搜索结果页搜索框阴影 |
 | `shadow.ask-dots-island` | `0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)` | 问点点搜索引导新版黑色投影与薄荷柔光 |
+| `shadow.ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 问点点方案 B 单行引导卡投影 |
 
 ## Font Family
 

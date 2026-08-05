@@ -23,7 +23,9 @@ Answer Loading 是点点对话页里“回答不是瞬间出现，而是有可�
 
 点点对话 demo 使用 393×852px 手机画板，外壳圆角 48px，外部 8px 纯白外描边，浅色背景使用 `Bg`。顶部 iOS 状态栏统一引用全局 `personal/statusbar-light.png`，不再由页面拼接图标；下方是点点导航，底部是输入区渐隐底座、48px 输入框、`内容由AI生成` 和 home indicator。
 
-输入区背后使用独立透明渐变遮罩层：`#F5F5F5` 三段 stop 为 `0% / 0%`、`18% / 80%`、`36% / 100%`，36% 后保持 100%。主站输入区在同一高度范围叠加纵向 Progressive Background Blur，参数为顶部 Start `0px`、底部 End `50px`；实现层只能参与背景采样，不能模糊输入框、辅助文案和 Home Indicator。输入框自身继续使用 `#FCFCFC` 纯色背景和 25px backdrop blur，父级不能使用会隔离采样的合成上下文。独立端输入区保持原渐变遮罩，不继承主站的 Progressive Blur。
+主站输入区严格复用 Figma 节点 `2209:71562`：整体 393×98px，内部依次是 60px 输入框区、18px AI 辅助文案区和 20px Home Indicator 区。输入框区只保留左右与底部 12px 间距，顶部不留间距；输入框尺寸 369×48px，圆角 16px，内边距为上下 12px、左右 14px。
+
+主站输入区背后只使用独立透明渐变遮罩层：`#F5F5F5` 三段 stop 为 `0% / 0%`、`25% / 80%`、`55% / 100%`，55% 后保持 100%，不叠加 Background Blur。48px 输入框自身使用半透明 `#FCFCFC` 表面和 25px backdrop blur，模糊覆盖整个圆角输入框，不影响输入区渐变、辅助文案和 Home Indicator。独立端输入区保持原渐变遮罩。
 
 ## 跨业务入口复用
 

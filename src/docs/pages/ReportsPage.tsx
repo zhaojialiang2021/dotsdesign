@@ -7,7 +7,7 @@ import { reportDemos } from '../manifest'
 import { ReportDemoCanvas } from '../ReportDemoCanvas'
 import { NotFoundPage } from './NotFoundPage'
 import { DottedDemoScreen, type DottedDemoStep, type DottedSourceImageMotionVariant, type DottedThinkingDisplayVariant, type DottedToolNoteDisplayVariant } from '../../screens/DottedDemoScreen'
-import { AskDotsIslandDemoScreen } from '../../screens/AskDotsIslandDemoScreen'
+import { AskDotsIslandDemoScreen, type AskDotsIslandBubbleVariant } from '../../screens/AskDotsIslandDemoScreen'
 import restartIcon from '../../assets/dotted/think-response-refresh.svg'
 import iphoneBezel from '../../assets/docs/iphone-bezel.png'
 
@@ -35,11 +35,28 @@ export function ReportsPage({ slug }: { slug: string }) {
 }
 
 function AskDotsIslandReport() {
+  const [bubbleVariant, setBubbleVariant] = useState<AskDotsIslandBubbleVariant>('current')
+
+  const changeBubbleVariant = (variant: AskDotsIslandBubbleVariant) => {
+    if (variant === bubbleVariant) return
+    setBubbleVariant(variant)
+  }
+
   return (
-    <ReportDemoCanvas activeSlug="ask-dots-island-demo">
+    <ReportDemoCanvas
+      activeSlug="ask-dots-island-demo"
+      schemeControls={{
+        kind: 'ask-dots-island',
+        bubbleVariant,
+        onBubbleVariantChange: changeBubbleVariant,
+      }}
+    >
       <div className="docs-phone-frame">
         <div className="docs-timestamp-phone docs-ask-dots-island-phone" aria-label="搜索结果页问点点灵动展开 demo">
-          <AskDotsIslandDemoScreen />
+          <AskDotsIslandDemoScreen
+            key={bubbleVariant}
+            bubbleVariant={bubbleVariant}
+          />
         </div>
         <img className="docs-phone-bezel" src={iphoneBezel} alt="" aria-hidden="true" />
       </div>
@@ -222,6 +239,7 @@ function ConversationStreamingReport({
     <ReportDemoCanvas
       activeSlug={activeSlug}
       schemeControls={toolCallDetailVariant === 'default' ? {
+        kind: 'tool-call',
         toolNoteDisplayVariant,
         onToolNoteDisplayVariantChange: setToolNoteDisplayVariant,
         sourceImageMotionEnabled,

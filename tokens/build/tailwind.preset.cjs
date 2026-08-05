@@ -77,6 +77,7 @@ module.exports = {
   "always-ask-dots-action": "var(--always-ask-dots-action)",
   "always-ask-dots-island-surface": "var(--always-ask-dots-island-surface)",
   "always-ask-dots-island-border": "var(--always-ask-dots-island-border)",
+  "always-ask-dots-guide-surface": "var(--always-ask-dots-guide-surface)",
   "legacy-accent-yellow": "var(--legacy-accent-yellow)",
   "legacy-accent-green": "var(--legacy-accent-green)",
   "legacy-accent-pink": "var(--legacy-accent-pink)",
@@ -316,7 +317,8 @@ module.exports = {
       transitionTimingFunction: {
   "out": "cubic-bezier(.32,.72,0,1)",
   "spring": "cubic-bezier(.34,1.56,.64,1)",
-  "morph-spring": "linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.0072 60%, 1.013 65%, 1.0145 70%, 1.0134 75%, 1.011 80%, 1.008 85%, 1.005 90%, 1.0023 95%, 1)",
+  "morph-spring": "linear(0, 0.053 5%, 0.175 10%, 0.3246 15%, 0.4754 20%, 0.6122 25%, 0.7277 30%, 0.8197 35%, 0.8893 40%, 0.9394 45%, 0.9734 50%, 0.9949 55%, 1.012 60%, 1.024 65%, 1.03 70%, 1.028 75%, 1.022 80%, 1.015 85%, 1.009 90%, 1.004 95%, 1)",
+  "morph-settle": "linear(0, 0.035 5%, 0.09 10%, 0.16 15%, 0.24 20%, 0.32 25%, 0.4 30%, 0.48 35%, 0.55 40%, 0.62 45%, 0.68 50%, 0.73 55%, 0.78 60%, 0.82 65%, 0.86 70%, 0.91 75%, 0.98 80%, 1.03 85%, 1.015 90%, 1.004 95%, 1)",
   "default": "cubic-bezier(.32,.72,0,1)",
   "ease-out": "cubic-bezier(.32,.72,0,1)"
 },
@@ -327,7 +329,8 @@ module.exports = {
   "modal": "var(--shadow-modal)",
   "media-note-text": "var(--shadow-media-note-text)",
   "community-search-field": "var(--shadow-community-search-field)",
-  "ask-dots-island": "var(--shadow-ask-dots-island)"
+  "ask-dots-island": "var(--shadow-ask-dots-island)",
+  "ask-dots-guide": "var(--shadow-ask-dots-guide)"
 },
     },
   },

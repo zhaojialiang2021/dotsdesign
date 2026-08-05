@@ -80,8 +80,9 @@ PDF 中 `Light Dots text` 的色值文字缺失；根据同组 Dark 值与 Dots 
 | Neutral | White | `--always-white` | 固定白色 | `#FFFFFF` |
 | Neutral | Black | `--always-black` | 固定黑色 | `#000000` |
 | Dots search demo | Ask Dots Action | `--always-ask-dots-action` | 「立即总结」文字 | `#34B39D` |
-| Dots search demo | Ask Dots Island Surface | `--always-ask-dots-island-surface` | 新版展开浮层玻璃表面 | `#FFFFFF 80%` |
+| Dots search demo | Ask Dots Island Surface | `--always-ask-dots-island-surface` | 新版展开浮层玻璃表面 | `#FFFFFF 90%` |
 | Dots search demo | Ask Dots Island Border | `--always-ask-dots-island-border` | 新版展开浮层薄荷描边 | `#56D1BF 20%` |
+| Dots search demo | Ask Dots Guide Surface | `--always-ask-dots-guide-surface` | 方案 B 单行引导卡表面 | `#83F2DF 2% over White` |
 
 ## 迁移规则
 

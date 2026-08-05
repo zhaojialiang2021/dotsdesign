@@ -7,6 +7,7 @@ import {
   type ReactNode,
 } from 'react'
 import type { DottedToolNoteDisplayVariant } from '../screens/DottedDemoScreen'
+import type { AskDotsIslandBubbleVariant } from '../screens/AskDotsIslandDemoScreen'
 import demoShellMenuIcon from '../assets/docs/demo-shell-menu.svg'
 import demoShellArrowRightIcon from '../assets/docs/demo-shell-arrow-right.svg'
 import demoShellShareIcon from '../assets/docs/demo-shell-share.svg'
@@ -23,7 +24,18 @@ const copyToastHoldDurationMs = 2000
 const copyToastExitDurationMs = 250
 const demoCanvasScaleMin = 50
 const demoCanvasScaleMax = 150
+const demoCanvasAutoScaleMax = 120
 const demoCanvasScaleStep = 5
+const demoCanvasVerticalComfortSpace = 112
+const demoCanvasPhoneBezelHeight = 912
+
+function getAutoCanvasScale(viewportHeight: number) {
+  const availableHeight = Math.max(0, viewportHeight - demoCanvasVerticalComfortSpace)
+  const rawScale = availableHeight / demoCanvasPhoneBezelHeight * 100
+  const steppedScale = Math.floor(rawScale / demoCanvasScaleStep) * demoCanvasScaleStep
+
+  return Math.min(demoCanvasAutoScaleMax, Math.max(demoCanvasScaleMin, steppedScale))
+}
 
 type CopyToastPhase = 'hidden' | 'visible' | 'leaving'
 
@@ -38,12 +50,23 @@ interface DemoCanvasDragStart extends DemoCanvasOffset {
   clientY: number
 }
 
-export interface ReportDemoSchemeControls {
+interface ReportDemoToolCallSchemeControls {
+  kind: 'tool-call'
   toolNoteDisplayVariant: DottedToolNoteDisplayVariant
   onToolNoteDisplayVariantChange: (variant: DottedToolNoteDisplayVariant) => void
   sourceImageMotionEnabled: boolean
   onSourceImageMotionEnabledChange: (enabled: boolean) => void
 }
+
+interface ReportDemoAskDotsSchemeControls {
+  kind: 'ask-dots-island'
+  bubbleVariant: AskDotsIslandBubbleVariant
+  onBubbleVariantChange: (variant: AskDotsIslandBubbleVariant) => void
+}
+
+export type ReportDemoSchemeControls =
+  | ReportDemoToolCallSchemeControls
+  | ReportDemoAskDotsSchemeControls
 
 export function ReportDemoCanvas({
   activeSlug,
@@ -56,11 +79,35 @@ export function ReportDemoCanvas({
   schemeControls?: ReportDemoSchemeControls
   shellClassName?: string
 }) {
-  const [canvasScale, setCanvasScale] = useState(100)
+  const [canvasScale, setCanvasScale] = useState(() => (
+    getAutoCanvasScale(typeof window === 'undefined' ? demoCanvasPhoneBezelHeight : window.innerHeight)
+  ))
+  const [canvasScaleMode, setCanvasScaleMode] = useState<'auto' | 'manual'>('auto')
   const [phoneBezelVisible, setPhoneBezelVisible] = useState(false)
   const [canvasOffset, setCanvasOffset] = useState<DemoCanvasOffset>({ x: 0, y: 0 })
   const [canvasDragging, setCanvasDragging] = useState(false)
+  const shellRef = useRef<HTMLDivElement>(null)
   const canvasDragStartRef = useRef<DemoCanvasDragStart | null>(null)
+
+  useEffect(() => {
+    const shell = shellRef.current
+    if (!shell || canvasScaleMode !== 'auto') return undefined
+
+    const updateAutoScale = () => {
+      setCanvasScale(getAutoCanvasScale(shell.getBoundingClientRect().height))
+    }
+
+    updateAutoScale()
+    const resizeObserver = new ResizeObserver(updateAutoScale)
+    resizeObserver.observe(shell)
+
+    return () => resizeObserver.disconnect()
+  }, [canvasScaleMode])
+
+  const setManualCanvasScale = (scale: number) => {
+    setCanvasScaleMode('manual')
+    setCanvasScale(scale)
+  }
 
   const startCanvasDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
     if (!event.isPrimary || event.button !== 0) return
@@ -99,6 +146,7 @@ export function ReportDemoCanvas({
 
   return (
     <div
+      ref={shellRef}
       className={[
         'docs-report-demo-shell',
         'docs-report-demo-shell--immersive',
@@ -117,7 +165,7 @@ export function ReportDemoCanvas({
       <ReportDemoChrome activeSlug={activeSlug} />
       <ReportDemoCanvasTools
         scale={canvasScale}
-        onScaleChange={setCanvasScale}
+        onScaleChange={setManualCanvasScale}
         phoneBezelVisible={phoneBezelVisible}
         onPhoneBezelVisibleChange={setPhoneBezelVisible}
         schemeControls={schemeControls}
@@ -316,43 +364,69 @@ function ReportDemoCanvasTools({
             </button>
           </header>
           <div className="docs-report-demo-scheme-panel__content">
-            <div className="docs-report-demo-scheme-control">
-              <span>tool call 样式</span>
-              <div className="docs-report-demo-scheme-control__segmented" role="group" aria-label="tool call 样式">
-                <button
-                  className={schemeControls.toolNoteDisplayVariant === 'consistent' ? 'is-active' : undefined}
-                  type="button"
-                  onClick={() => schemeControls.onToolNoteDisplayVariantChange('consistent')}
-                  aria-pressed={schemeControls.toolNoteDisplayVariant === 'consistent'}
-                >
-                  胶囊
-                </button>
-                <button
-                  className={schemeControls.toolNoteDisplayVariant === 'preview-detail' ? 'is-active' : undefined}
-                  type="button"
-                  onClick={() => schemeControls.onToolNoteDisplayVariantChange('preview-detail')}
-                  aria-pressed={schemeControls.toolNoteDisplayVariant === 'preview-detail'}
-                >
-                  信息卡
-                </button>
+            {schemeControls.kind === 'tool-call' ? (
+              <>
+                <div className="docs-report-demo-scheme-control">
+                  <span>tool call 样式</span>
+                  <div className="docs-report-demo-scheme-control__segmented" role="group" aria-label="tool call 样式">
+                    <button
+                      className={schemeControls.toolNoteDisplayVariant === 'consistent' ? 'is-active' : undefined}
+                      type="button"
+                      onClick={() => schemeControls.onToolNoteDisplayVariantChange('consistent')}
+                      aria-pressed={schemeControls.toolNoteDisplayVariant === 'consistent'}
+                    >
+                      胶囊
+                    </button>
+                    <button
+                      className={schemeControls.toolNoteDisplayVariant === 'preview-detail' ? 'is-active' : undefined}
+                      type="button"
+                      onClick={() => schemeControls.onToolNoteDisplayVariantChange('preview-detail')}
+                      aria-pressed={schemeControls.toolNoteDisplayVariant === 'preview-detail'}
+                    >
+                      信息卡
+                    </button>
+                  </div>
+                </div>
+                <div className="docs-report-demo-scheme-control">
+                  <span>右侧图标动画</span>
+                  <button
+                    className={[
+                      'docs-report-demo-scheme-control__switch',
+                      schemeControls.sourceImageMotionEnabled ? 'is-active' : '',
+                    ].filter(Boolean).join(' ')}
+                    type="button"
+                    onClick={() => schemeControls.onSourceImageMotionEnabledChange(!schemeControls.sourceImageMotionEnabled)}
+                    role="switch"
+                    aria-checked={schemeControls.sourceImageMotionEnabled}
+                    aria-label="右侧图标动画"
+                  >
+                    <span />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="docs-report-demo-scheme-control">
+                <span>入口气泡样式</span>
+                <div className="docs-report-demo-scheme-control__segmented" role="group" aria-label="入口气泡样式">
+                  <button
+                    className={schemeControls.bubbleVariant === 'current' ? 'is-active' : undefined}
+                    type="button"
+                    onClick={() => schemeControls.onBubbleVariantChange('current')}
+                    aria-pressed={schemeControls.bubbleVariant === 'current'}
+                  >
+                    方案 A
+                  </button>
+                  <button
+                    className={schemeControls.bubbleVariant === 'new' ? 'is-active' : undefined}
+                    type="button"
+                    onClick={() => schemeControls.onBubbleVariantChange('new')}
+                    aria-pressed={schemeControls.bubbleVariant === 'new'}
+                  >
+                    方案 B
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="docs-report-demo-scheme-control">
-              <span>右侧图标动画</span>
-              <button
-                className={[
-                  'docs-report-demo-scheme-control__switch',
-                  schemeControls.sourceImageMotionEnabled ? 'is-active' : '',
-                ].filter(Boolean).join(' ')}
-                type="button"
-                onClick={() => schemeControls.onSourceImageMotionEnabledChange(!schemeControls.sourceImageMotionEnabled)}
-                role="switch"
-                aria-checked={schemeControls.sourceImageMotionEnabled}
-                aria-label="右侧图标动画"
-              >
-                <span />
-              </button>
-            </div>
+            )}
           </div>
         </aside>
       ) : null}
