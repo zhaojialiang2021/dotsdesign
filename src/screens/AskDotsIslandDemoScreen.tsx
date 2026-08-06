@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type AnimationEvent, type TransitionEvent, type UIEvent } from 'react'
-import lottie from 'lottie-web'
 import backIcon from '../assets/dotted/ask-dots-island/back.svg'
-import dotsLogoAnimationUrl from '../assets/dotted/ask-dots-island/dots-logo-motion.json?url'
 import closeIcon from '../assets/dotted/ask-dots-island/close.svg'
 import dotsAvatar from '../assets/dotted/ask-dots-island/dots-avatar.svg'
 import filterIcon from '../assets/dotted/ask-dots-island/filter.svg'
@@ -35,7 +33,8 @@ import figma13Cover from '../assets/dotted/ask-dots-island/results/figma-13-cove
 import figma14Avatar from '../assets/dotted/ask-dots-island/results/figma-14-avatar.png'
 import figma14Cover from '../assets/dotted/ask-dots-island/results/figma-14-cover.png'
 import searchDivider from '../assets/dotted/ask-dots-island/search-divider.svg'
-import schemeBGlow from '../assets/dotted/ask-dots-island/scheme-b-glow.svg'
+import schemeBAvatar from '../assets/dotted/ask-dots-island/scheme-b-avatar.svg'
+import schemeBPointer from '../assets/dotted/ask-dots-island/scheme-b-pointer.svg'
 import tabDivider from '../assets/dotted/ask-dots-island/tab-divider.svg'
 import { DottedDemoScreen, type DottedEntryScenario } from './DottedDemoScreen'
 import { askDotsFamilyResponse } from './dotted/askDotsFamilyResponse'
@@ -71,7 +70,7 @@ const thinkingScenario: DottedEntryScenario = {
   response: askDotsFamilyResponse,
 }
 
-export type AskDotsIslandBubbleVariant = 'current' | 'new'
+export type AskDotsIslandBubbleVariant = 'current' | 'new' | 'compact'
 
 function triggerLightHaptic() {
   navigator.vibrate?.(15)
@@ -103,37 +102,6 @@ function shuffleCards<T>(items: readonly T[]) {
   return shuffled
 }
 
-function AskDotsIslandLogo() {
-  const containerRef = useRef<HTMLSpanElement>(null)
-
-  useEffect(() => {
-    if (!containerRef.current) return undefined
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const animation = lottie.loadAnimation({
-      container: containerRef.current,
-      renderer: 'svg',
-      loop: true,
-      autoplay: !reduceMotion,
-      path: dotsLogoAnimationUrl,
-    })
-    const stopAtFirstFrame = () => animation.goToAndStop(0, true)
-
-    if (reduceMotion) animation.addEventListener('DOMLoaded', stopAtFirstFrame)
-
-    return () => {
-      if (reduceMotion) animation.removeEventListener('DOMLoaded', stopAtFirstFrame)
-      animation.destroy()
-    }
-  }, [])
-
-  return (
-    <span
-      ref={containerRef}
-      className="ask-dots-demo__island-dots-logo ask-dots-demo__island-dots-logo--motion"
-    />
-  )
-}
-
 export function AskDotsIslandDemoScreen({
   bubbleVariant = 'current',
 }: {
@@ -148,6 +116,10 @@ export function AskDotsIslandDemoScreen({
   const [conversationStarted, setConversationStarted] = useState(false)
   const [answerPending, setAnswerPending] = useState(false)
   const [hideCompletedStatus, setHideCompletedStatus] = useState(false)
+  const [completionNoticePending, setCompletionNoticePending] = useState(false)
+  const [completionNoticeExpanded, setCompletionNoticeExpanded] = useState(false)
+  const [completionNoticeCollapsing, setCompletionNoticeCollapsing] = useState(false)
+  const [openedCompletedConversation, setOpenedCompletedConversation] = useState(false)
   const [renderCycleCount, setRenderCycleCount] = useState(1)
   const appendedScrollHeightRef = useRef(0)
   const promptScrollTopRef = useRef(0)
@@ -189,15 +161,30 @@ export function AskDotsIslandDemoScreen({
     if (!collapsing) return undefined
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const timer = window.setTimeout(() => setCollapsing(false), reduceMotion ? 0 : 850)
+    const timer = window.setTimeout(() => setCollapsing(false), reduceMotion ? 0 : 1000)
     return () => window.clearTimeout(timer)
   }, [collapsing])
+
+  useEffect(() => {
+    if (!completionNoticeExpanded) return undefined
+
+    const timer = window.setTimeout(() => {
+      setCompletionNoticeCollapsing(true)
+      setCompletionNoticeExpanded(false)
+    }, 3000)
+
+    return () => window.clearTimeout(timer)
+  }, [completionNoticeExpanded])
 
   const enterThinking = () => {
     triggerLightHaptic()
     if (!conversationStarted) {
       setConversationStarted(true)
       setAnswerPending(true)
+      setCompletionNoticePending(false)
+      setCompletionNoticeExpanded(false)
+      setCompletionNoticeCollapsing(false)
+      setOpenedCompletedConversation(false)
     }
     setHideCompletedStatus(false)
     setPrompted(true)
@@ -209,12 +196,28 @@ export function AskDotsIslandDemoScreen({
 
   const handleResponseComplete = useCallback(() => {
     setAnswerPending(false)
-  }, [])
+    if (view === 'results' && transitionPhase === 'idle') {
+      setCompletionNoticeExpanded(true)
+      return
+    }
+    setCompletionNoticePending(true)
+  }, [transitionPhase, view])
 
   const leaveThinking = () => {
     triggerLightHaptic()
-    if (!answerPending) setHideCompletedStatus(true)
+    if (!answerPending && openedCompletedConversation) setHideCompletedStatus(true)
     setTransitionPhase('leaving')
+  }
+
+  const openCompletedConversation = () => {
+    triggerLightHaptic()
+    setCompletionNoticePending(false)
+    setCompletionNoticeExpanded(false)
+    setCompletionNoticeCollapsing(false)
+    setOpenedCompletedConversation(true)
+    setHideCompletedStatus(false)
+    setTransitionPhase('entering')
+    setView('thinking')
   }
 
   const handleConversationAnimationEnd = (event: AnimationEvent<HTMLDivElement>) => {
@@ -223,9 +226,14 @@ export function AskDotsIslandDemoScreen({
     if (transitionPhase === 'leaving') {
       setView('results')
       setTransitionPhase('idle')
+      if (completionNoticePending) {
+        setCompletionNoticePending(false)
+        setCompletionNoticeExpanded(true)
+      }
       if (hideCompletedStatus) {
         setConversationStarted(false)
         setHideCompletedStatus(false)
+        setOpenedCompletedConversation(false)
       }
       return
     }
@@ -240,8 +248,34 @@ export function AskDotsIslandDemoScreen({
     setExpanded(false)
   }
 
+  const finishCompletionNotice = useCallback(() => {
+    setCompletionNoticePending(false)
+    setCompletionNoticeExpanded(false)
+    setCompletionNoticeCollapsing(false)
+    setConversationStarted(false)
+    setHideCompletedStatus(false)
+    setOpenedCompletedConversation(false)
+  }, [])
+
+  useEffect(() => {
+    if (!completionNoticeCollapsing) return undefined
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const timer = window.setTimeout(finishCompletionNotice, reduceMotion ? 0 : 1000)
+    return () => window.clearTimeout(timer)
+  }, [completionNoticeCollapsing, finishCompletionNotice])
+
   const handleIslandTransitionEnd = (event: TransitionEvent<HTMLElement>) => {
-    if (event.target !== event.currentTarget || event.propertyName !== 'width' || expanded) return
+    if (
+      event.target !== event.currentTarget
+      || event.propertyName !== 'width'
+      || expanded
+      || completionNoticeExpanded
+    ) return
+    if (completionNoticeCollapsing) {
+      finishCompletionNotice()
+      return
+    }
     setCollapsing(false)
   }
 
@@ -272,72 +306,27 @@ export function AskDotsIslandDemoScreen({
   }
 
   const hasVisibleConversationStatus = conversationStarted && !hideCompletedStatus
-  const islandStatusLabel = hasVisibleConversationStatus
-    ? (answerPending ? '总结中' : '已总结')
-    : '问点点'
-  const showSchemeBPrompt = bubbleVariant === 'new' && (expanded || collapsing)
+  const islandStatusLabel = hasVisibleConversationStatus && answerPending ? '总结中' : '问点点'
+  const showCompletionPrompt = completionNoticeExpanded || completionNoticeCollapsing
+  const showSchemeBPrompt = !showCompletionPrompt && bubbleVariant === 'new' && (expanded || collapsing)
+  const showSchemeCPrompt = !showCompletionPrompt && bubbleVariant === 'compact' && (expanded || collapsing)
+  const showSchemeCSharedEntry = bubbleVariant === 'compact' && !hasVisibleConversationStatus
+  const islandExpanded = (!showSchemeBPrompt && expanded) || completionNoticeExpanded
+  const islandCollapsing = (!showSchemeBPrompt && collapsing) || completionNoticeCollapsing
+  const islandVariantClass = showCompletionPrompt
+    ? ' ask-dots-demo__island--completion'
+    : bubbleVariant === 'new'
+      ? ' ask-dots-demo__island--variant-b'
+      : bubbleVariant === 'compact'
+        ? ' ask-dots-demo__island--variant-c'
+        : ''
 
   return (
     <div className="ask-dots-demo-stage" data-bubble-variant={bubbleVariant}>
       <IOSStatusBar className="ask-dots-demo-stage__system-status" />
-      <svg className="ask-dots-demo-stage__liquid-filter" aria-hidden="true">
-        <defs>
-          <filter id="ask-dots-liquid-glass" x="-25%" y="-45%" width="150%" height="190%" colorInterpolationFilters="sRGB">
-            <feTurbulence type="fractalNoise" baseFrequency="0.012 0.045" numOctaves={2} seed={8} stitchTiles="stitch" result="liquid-noise" />
-            <feGaussianBlur in="liquid-noise" stdDeviation={3} result="liquid-map" />
-            <feMorphology in="SourceAlpha" operator="erode" radius={8} result="glass-center-mask" />
-            <feComposite in="SourceAlpha" in2="glass-center-mask" operator="out" result="glass-edge-mask" />
-            <feDisplacementMap in="SourceGraphic" in2="liquid-map" scale={32} xChannelSelector="R" yChannelSelector="B" result="glass-red-displaced" />
-            <feColorMatrix
-              in="glass-red-displaced"
-              type="matrix"
-              values="1 0 0 0 0
-                      0 0 0 0 0
-                      0 0 0 0 0
-                      0 0 0 1 0"
-              result="glass-red-channel"
-            />
-            <feDisplacementMap in="SourceGraphic" in2="liquid-map" scale={30} xChannelSelector="R" yChannelSelector="B" result="glass-green-displaced" />
-            <feColorMatrix
-              in="glass-green-displaced"
-              type="matrix"
-              values="0 0 0 0 0
-                      0 1 0 0 0
-                      0 0 0 0 0
-                      0 0 0 1 0"
-              result="glass-green-channel"
-            />
-            <feDisplacementMap in="SourceGraphic" in2="liquid-map" scale={28} xChannelSelector="R" yChannelSelector="B" result="glass-blue-displaced" />
-            <feColorMatrix
-              in="glass-blue-displaced"
-              type="matrix"
-              values="0 0 0 0 0
-                      0 0 0 0 0
-                      0 0 1 0 0
-                      0 0 0 1 0"
-              result="glass-blue-channel"
-            />
-            <feBlend in="glass-green-channel" in2="glass-blue-channel" mode="screen" result="glass-green-blue" />
-            <feBlend in="glass-red-channel" in2="glass-green-blue" mode="screen" result="glass-aberration" />
-            <feGaussianBlur in="glass-aberration" stdDeviation={0.25} result="glass-refraction" />
-            <feComposite in="glass-refraction" in2="glass-edge-mask" operator="in" result="glass-edge-refraction" />
-            <feComposite in="SourceGraphic" in2="glass-center-mask" operator="in" result="glass-center" />
-            <feComposite in="glass-edge-refraction" in2="glass-center" operator="over" result="glass-body" />
-            <feSpecularLighting in="liquid-map" surfaceScale={10} specularConstant={0.85} specularExponent={40} lightingColor="var(--always-white)" result="glass-specular">
-              <fePointLight x={-80} y={-120} z={180} />
-            </feSpecularLighting>
-            <feComposite in="glass-specular" in2="glass-edge-mask" operator="in" result="glass-edge-light" />
-            <feBlend in="glass-body" in2="glass-edge-light" mode="screen" />
-          </filter>
-        </defs>
-      </svg>
 
       <main className="ask-dots-demo" data-theme="light" aria-hidden={view === 'thinking'} inert={view === 'thinking' ? true : undefined}>
         <div className="ask-dots-demo__header-surface" aria-hidden="true" />
-        <div
-          className={`ask-dots-demo__header-mask${expanded && bubbleVariant === 'current' ? ' ask-dots-demo__header-mask--visible' : ''}`}
-          aria-hidden="true"
-        />
 
         <header className="ask-dots-demo__search-row">
           <button className="ask-dots-demo__icon-button" type="button" aria-label="返回">
@@ -415,37 +404,38 @@ export function AskDotsIslandDemoScreen({
       </section>
 
       <aside
-        className={`ask-dots-demo__island${bubbleVariant === 'new' ? ' ask-dots-demo__island--variant-b' : ''}${expanded ? ' ask-dots-demo__island--expanded' : ''}${collapsing ? ' ask-dots-demo__island--collapsing' : ''}`}
-        aria-label={answerPending ? '点点正在总结' : hasVisibleConversationStatus ? '点点已总结' : '问点点总结提示'}
+        className={`ask-dots-demo__island${islandVariantClass}${islandExpanded ? ' ask-dots-demo__island--expanded' : ''}${islandCollapsing ? ' ask-dots-demo__island--collapsing' : ''}`}
+        aria-label={showCompletionPrompt ? '点点已帮你总结完成' : answerPending ? '点点正在总结' : '问点点总结提示'}
         onTransitionEnd={handleIslandTransitionEnd}
       >
-        {showSchemeBPrompt ? (
+        {showCompletionPrompt ? (
           <>
-            <span className="ask-dots-demo__scheme-b-glow" aria-hidden="true">
-              <span className="ask-dots-demo__scheme-b-glow-shape">
-                <img src={schemeBGlow} alt="" draggable={false} />
-              </span>
-              </span>
-              <span className="ask-dots-demo__scheme-b-leading" aria-hidden="true">
-                <span className="ask-dots-demo__scheme-b-avatar">
-                  <AskDotsIslandLogo />
-                </span>
-              <span className="ask-dots-demo__scheme-b-copy">
-                <small>点点</small>
-                <strong>笔记看花眼？试试点点帮你总结</strong>
-              </span>
-            </span>
             <button
-              className="ask-dots-demo__scheme-b-summary"
+              className="ask-dots-demo__completion-copy"
               type="button"
-              onClick={enterThinking}
+              onClick={openCompletedConversation}
             >
-              立即总结
+              <span className="ask-dots-demo__completion-agent">
+                <span className="ask-dots-demo__completion-logo" aria-hidden="true">
+                  <img src={dotsAvatar} alt="" draggable={false} />
+                </span>
+                <span>点点</span>
+              </span>
+              <span className="ask-dots-demo__completion-message">已帮你总结完成</span>
+            </button>
+            <button
+              className="ask-dots-demo__completion-action"
+              type="button"
+              onClick={openCompletedConversation}
+            >
+              去看看
             </button>
           </>
         ) : (
           <>
-            <span className="ask-dots-demo__island-liquid" aria-hidden="true" />
+            {bubbleVariant === 'current' ? (
+              <span className="ask-dots-demo__island-liquid" aria-hidden="true" />
+            ) : null}
 
             <span className="ask-dots-demo__island-logo" aria-hidden="true">
               {answerPending && view === 'results' ? (
@@ -454,8 +444,6 @@ export function AskDotsIslandDemoScreen({
                   playing
                   className="ask-dots-demo__island-thinking"
                 />
-              ) : expanded || collapsing ? (
-                <AskDotsIslandLogo />
               ) : (
                 <img
                   className="ask-dots-demo__island-dots-logo"
@@ -468,11 +456,18 @@ export function AskDotsIslandDemoScreen({
 
             <span className="ask-dots-demo__island-copy" aria-hidden="true">
               <span className={`ask-dots-demo__island-copy-label${answerPending ? ' ask-dots-demo__island-copy-label--pending' : ''}`}>
-                {islandStatusLabel}
+                {showSchemeCSharedEntry ? (
+                  <>
+                    <span className="ask-dots-demo__scheme-c-prefix">问</span>
+                    <span className="ask-dots-demo__scheme-c-core">点点</span>
+                  </>
+                ) : islandStatusLabel}
               </span>
-              <span className="ask-dots-demo__island-copy-question">
-                笔记太多看花眼啦？让我来帮你总结下吧~
-              </span>
+              {bubbleVariant === 'current' ? (
+                <span className="ask-dots-demo__island-copy-question">
+                  笔记看花眼？试试让点点帮你总结
+                </span>
+              ) : null}
             </span>
 
             <button
@@ -486,15 +481,62 @@ export function AskDotsIslandDemoScreen({
               </span>
             </button>
 
-            <div className="ask-dots-demo__island-content" aria-hidden={!expanded}>
-              <div className="ask-dots-demo__island-actions">
-                <button type="button" onClick={dismissPrompt}>忽略</button>
-                <button type="button" className="ask-dots-demo__summary" onClick={enterThinking}>帮我总结</button>
+            {showSchemeCPrompt ? (
+              <span className="ask-dots-demo__scheme-c-row">
+                <span className="ask-dots-demo__scheme-c-question" aria-hidden="true">
+                  笔记看花眼？试试让点点帮你总结
+                </span>
+                <button
+                  className="ask-dots-demo__scheme-c-confirm"
+                  type="button"
+                  onClick={enterThinking}
+                >
+                  好的
+                </button>
+              </span>
+            ) : bubbleVariant === 'current' ? (
+              <div className="ask-dots-demo__island-content" aria-hidden={!expanded}>
+                <div className="ask-dots-demo__island-actions">
+                  <button type="button" onClick={dismissPrompt}>忽略</button>
+                  <button type="button" className="ask-dots-demo__summary" onClick={enterThinking}>好的</button>
+                </div>
               </div>
-            </div>
+            ) : null}
           </>
         )}
       </aside>
+
+      {showSchemeBPrompt ? (
+        <aside
+          className={`ask-dots-demo__scheme-b-card${expanded ? ' ask-dots-demo__scheme-b-card--expanded' : ''}${collapsing ? ' ask-dots-demo__scheme-b-card--collapsing' : ''}`}
+          aria-label="问点点总结提示"
+        >
+          <img
+            className="ask-dots-demo__scheme-b-pointer"
+            src={schemeBPointer}
+            alt=""
+            draggable={false}
+          />
+          <span className="ask-dots-demo__scheme-b-primary" aria-hidden="true">
+            <span className="ask-dots-demo__scheme-b-avatar">
+              <img src={schemeBAvatar} alt="" draggable={false} />
+            </span>
+            <span className="ask-dots-demo__scheme-b-question">
+              需要我帮你总结下上海周末遛娃好去处吗？
+            </span>
+          </span>
+          <span className="ask-dots-demo__scheme-b-actions">
+            <button type="button" onClick={dismissPrompt}>忽略</button>
+            <button
+              className="ask-dots-demo__scheme-b-confirm"
+              type="button"
+              onClick={enterThinking}
+            >
+              好的
+            </button>
+          </span>
+        </aside>
+      ) : null}
 
         <div className="ask-dots-demo__home-indicator" aria-hidden="true" />
       </main>

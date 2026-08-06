@@ -43,7 +43,17 @@
     "ask-dots-guide": {
       "$value": "0 4px 20px rgba(0,0,0,0.08)",
       "$type": "shadow",
-      "$description": "问点点方案 B 单行引导卡投影"
+      "$description": "问点点方案 A 引导卡投影"
+    },
+    "ask-dots-choice-guide": {
+      "$value": "0 4px 10px rgba(0,0,0,0.20)",
+      "$type": "shadow",
+      "$description": "问点点方案 B 指向式双行引导卡投影"
+    },
+    "ask-dots-compact-guide": {
+      "$value": "0 4px 20px rgba(0,0,0,0.20)",
+      "$type": "shadow",
+      "$description": "问点点方案 C 双行引导卡投影"
     }
   }
 }

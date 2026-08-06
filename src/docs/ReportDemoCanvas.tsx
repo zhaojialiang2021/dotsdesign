@@ -424,6 +424,14 @@ function ReportDemoCanvasTools({
                   >
                     方案 B
                   </button>
+                  <button
+                    className={schemeControls.bubbleVariant === 'compact' ? 'is-active' : undefined}
+                    type="button"
+                    onClick={() => schemeControls.onBubbleVariantChange('compact')}
+                    aria-pressed={schemeControls.bubbleVariant === 'compact'}
+                  >
+                    方案 C
+                  </button>
                 </div>
               </div>
             )}

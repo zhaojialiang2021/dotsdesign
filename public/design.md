@@ -283,7 +283,9 @@
 | `shadow.media-note-text` | `0 0.5px 1px rgba(0,0,0,0.30)` | 笔记卡封面文字阴影 |
 | `shadow.community-search-field` | `0 4px 18px rgba(0,0,0,0.06)` | 社区搜索结果页搜索框阴影 |
 | `shadow.ask-dots-island` | `0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)` | 问点点搜索引导新版黑色投影与薄荷柔光 |
-| `shadow.ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 问点点方案 B 单行引导卡投影 |
+| `shadow.ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 问点点方案 A 引导卡投影 |
+| `shadow.ask-dots-choice-guide` | `0 4px 10px rgba(0,0,0,0.20)` | 问点点方案 B 指向式双行引导卡投影 |
+| `shadow.ask-dots-compact-guide` | `0 4px 20px rgba(0,0,0,0.20)` | 问点点方案 C 双行引导卡投影 |
 
 ## Font Family
 

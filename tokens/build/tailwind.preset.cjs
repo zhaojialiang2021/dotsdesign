@@ -330,7 +330,9 @@ module.exports = {
   "media-note-text": "var(--shadow-media-note-text)",
   "community-search-field": "var(--shadow-community-search-field)",
   "ask-dots-island": "var(--shadow-ask-dots-island)",
-  "ask-dots-guide": "var(--shadow-ask-dots-guide)"
+  "ask-dots-guide": "var(--shadow-ask-dots-guide)",
+  "ask-dots-choice-guide": "var(--shadow-ask-dots-choice-guide)",
+  "ask-dots-compact-guide": "var(--shadow-ask-dots-compact-guide)"
 },
     },
   },

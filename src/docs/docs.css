@@ -5522,6 +5522,10 @@ pre.docs-codeblock > code {
   background: var(--fill-1);
 }
 
+.docs-report-demo-scheme-control__segmented:has(button:nth-child(3)) {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .docs-report-demo-scheme-control__segmented button {
   min-width: 0;
   height: 28px;

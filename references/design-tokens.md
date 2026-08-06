@@ -272,4 +272,6 @@ Motion 规范页直接在 `Bg` 页面内容区域展示，不包外层卡片。D
 | `shadow.3` / `--shadow-3` | `0 24px 72px rgba(20,20,20,0.20)` | `0 24px 72px rgba(20,20,20,0.40)` | 高层面板 |
 | `shadow.community-search-field` / `--shadow-community-search-field` | `0 4px 18px rgba(0,0,0,0.06)` | 同 Light | 社区搜索框 |
 | `shadow.ask-dots-island` / `--shadow-ask-dots-island` | `0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)` | 同 Light | 问点点搜索引导展开浮层 |
-| `shadow.ask-dots-guide` / `--shadow-ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 同 Light | 问点点方案 B 单行引导卡 |
+| `shadow.ask-dots-guide` / `--shadow-ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 同 Light | 问点点方案 A 引导卡 |
+| `shadow.ask-dots-choice-guide` / `--shadow-ask-dots-choice-guide` | `0 4px 10px rgba(0,0,0,0.20)` | 同 Light | 问点点方案 B 指向式双行引导卡 |
+| `shadow.ask-dots-compact-guide` / `--shadow-ask-dots-compact-guide` | `0 4px 20px rgba(0,0,0,0.20)` | 同 Light | 问点点方案 C 双行引导卡 |
