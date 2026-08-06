@@ -980,6 +980,18 @@
   color: var(--description);
 }
 
+.ask-dots-demo__completion-agent-label {
+  display: flex;
+  align-items: center;
+}
+
+.ask-dots-demo__completion-agent-prefix {
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  white-space: nowrap;
+}
+
 .ask-dots-demo__completion-logo {
   position: relative;
   width: var(--space-5);
@@ -1033,6 +1045,25 @@
   animation: ask-dots-completion-content-out var(--duration-morph) linear both;
 }
 
+.ask-dots-demo__island--completion-c .ask-dots-demo__completion-action {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-4);
+}
+
+.ask-dots-demo__island--completion-c.ask-dots-demo__island--collapsing .ask-dots-demo__completion-copy {
+  pointer-events: none;
+  animation: none;
+}
+
+.ask-dots-demo__island--completion-c.ask-dots-demo__island--collapsing .ask-dots-demo__completion-message {
+  animation: ask-dots-completion-message-out var(--duration-morph) linear both;
+}
+
+.ask-dots-demo__island--completion-c.ask-dots-demo__island--collapsing .ask-dots-demo__completion-agent-prefix {
+  animation: ask-dots-completion-prefix-in var(--duration-morph) var(--curve-out) both;
+}
+
 @keyframes ask-dots-completion-content-in {
   0%,
   24% {
@@ -1060,6 +1091,34 @@
   }
 }
 
+@keyframes ask-dots-completion-message-out {
+  0%,
+  24% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  54%,
+  100% {
+    opacity: 0;
+    transform: translateX(var(--space-1));
+  }
+}
+
+@keyframes ask-dots-completion-prefix-in {
+  0%,
+  38% {
+    width: 0;
+    opacity: 0;
+  }
+
+  76%,
+  100% {
+    width: 15px;
+    opacity: 1;
+  }
+}
+
 .ask-dots-demo__scheme-b-card {
   position: absolute;
   z-index: 60;
@@ -1081,38 +1140,44 @@
   box-shadow: var(--shadow-ask-dots-choice-guide);
   backdrop-filter: blur(calc(var(--space-3) / 2));
   -webkit-backdrop-filter: blur(calc(var(--space-3) / 2));
+  transform-origin: right top;
+  will-change: opacity, transform;
 }
 
 .ask-dots-demo__scheme-b-card--expanded {
-  animation: ask-dots-scheme-b-card-in var(--duration-in) var(--curve-out) both;
+  animation: ask-dots-scheme-b-card-in var(--duration-expand) var(--curve-morph-spring) both;
 }
 
 .ask-dots-demo__scheme-b-card--collapsing {
   pointer-events: none;
-  animation: ask-dots-scheme-b-card-out var(--duration-out) var(--curve-out) both;
+  animation: ask-dots-scheme-b-card-out var(--duration-expand) var(--curve-morph-spring) both;
 }
 
 @keyframes ask-dots-scheme-b-card-in {
   from {
-    opacity: 0;
-    transform: translateY(var(--space-5));
+    opacity: .15;
+    transform: translateY(calc((var(--space-3) / 2) - var(--space-7))) scale(.18);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 @keyframes ask-dots-scheme-b-card-out {
-  from {
+  0% {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 
-  to {
+  75% {
+    opacity: 1;
+  }
+
+  100% {
     opacity: 0;
-    transform: translateY(var(--space-2));
+    transform: translateY(calc((var(--space-3) / 2) - var(--space-7))) scale(.18);
   }
 }
 

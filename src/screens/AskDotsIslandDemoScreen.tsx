@@ -314,7 +314,7 @@ export function AskDotsIslandDemoScreen({
   const islandExpanded = (!showSchemeBPrompt && expanded) || completionNoticeExpanded
   const islandCollapsing = (!showSchemeBPrompt && collapsing) || completionNoticeCollapsing
   const islandVariantClass = showCompletionPrompt
-    ? ' ask-dots-demo__island--completion'
+    ? ` ask-dots-demo__island--completion${bubbleVariant === 'compact' ? ' ask-dots-demo__island--completion-c' : ''}`
     : bubbleVariant === 'new'
       ? ' ask-dots-demo__island--variant-b'
       : bubbleVariant === 'compact'
@@ -419,7 +419,12 @@ export function AskDotsIslandDemoScreen({
                 <span className="ask-dots-demo__completion-logo" aria-hidden="true">
                   <img src={dotsAvatar} alt="" draggable={false} />
                 </span>
-                <span>点点</span>
+                {bubbleVariant === 'compact' ? (
+                  <span className="ask-dots-demo__completion-agent-label">
+                    <span className="ask-dots-demo__completion-agent-prefix">问</span>
+                    <span>点点</span>
+                  </span>
+                ) : <span>点点</span>}
               </span>
               <span className="ask-dots-demo__completion-message">已帮你总结完成</span>
             </button>
