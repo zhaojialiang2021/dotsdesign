@@ -54,6 +54,11 @@
       "$value": "0 4px 20px rgba(0,0,0,0.20)",
       "$type": "shadow",
       "$description": "问点点方案 C 双行引导卡投影"
+    },
+    "ask-dots-completion-guide": {
+      "$value": "0 8px 15px rgba(0,0,0,0.20)",
+      "$type": "shadow",
+      "$description": "问点点方案 B 总结完成提示投影"
     }
   }
 }

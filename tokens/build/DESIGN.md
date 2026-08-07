@@ -286,6 +286,7 @@
 | `shadow.ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 问点点方案 A 引导卡投影 |
 | `shadow.ask-dots-choice-guide` | `0 4px 10px rgba(0,0,0,0.20)` | 问点点方案 B 指向式双行引导卡投影 |
 | `shadow.ask-dots-compact-guide` | `0 4px 20px rgba(0,0,0,0.20)` | 问点点方案 C 双行引导卡投影 |
+| `shadow.ask-dots-completion-guide` | `0 8px 15px rgba(0,0,0,0.20)` | 问点点方案 B 总结完成提示投影 |
 
 ## Font Family
 

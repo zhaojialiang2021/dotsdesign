@@ -935,6 +935,70 @@
     ask-dots-completion-surface-out var(--duration-morph) linear both;
 }
 
+.ask-dots-demo__island--completion-b.ask-dots-demo__island--expanded,
+.ask-dots-demo__island--completion-b.ask-dots-demo__island--collapsing {
+  --scheme-b-entry-offset-y: calc(var(--space-1) - var(--space-7) - 1px);
+  top: 158px;
+  right: var(--space-4);
+  left: auto;
+  width: 270px;
+  height: 52px;
+  overflow: visible;
+  justify-content: space-between;
+  gap: 0;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+  background: var(--always-white);
+  box-shadow: var(--shadow-ask-dots-completion-guide);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transform-origin: right top;
+  will-change: opacity, transform;
+}
+
+.ask-dots-demo__island--completion-b.ask-dots-demo__island--collapsing {
+  --ask-dots-collapse-shadow: var(--shadow-ask-dots-completion-guide);
+  pointer-events: none;
+  animation: ask-dots-scheme-b-card-out var(--duration-expand) var(--curve-morph-spring) both;
+}
+
+.ask-dots-demo .ask-dots-demo__completed-tab-entry {
+  position: absolute;
+  z-index: 59;
+  top: 106px;
+  right: 0;
+  width: 95px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: calc(var(--space-1) / 2);
+  padding-right: var(--space-4);
+  background: var(--bg-base);
+  color: var(--title);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+.ask-dots-demo__completed-tab-logo {
+  position: relative;
+  width: var(--space-5);
+  height: var(--space-5);
+  flex: 0 0 var(--space-5);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.ask-dots-demo__completed-tab-logo img {
+  display: block;
+  width: var(--space-5);
+  height: var(--space-5);
+  transform: translate(-0.42px, -0.83px) scale(.84);
+  transform-origin: center;
+}
+
 @keyframes ask-dots-completion-surface-out {
   0%,
   75% {
@@ -997,6 +1061,22 @@
   transform-origin: center;
 }
 
+.ask-dots-demo__completion-agent--scheme-b,
+.ask-dots-demo__completion-agent--scheme-b .ask-dots-demo__completion-logo {
+  width: var(--space-6);
+  height: var(--space-6);
+  flex-basis: var(--space-6);
+}
+
+.ask-dots-demo__completion-agent--scheme-b .ask-dots-demo__completion-logo img {
+  position: absolute;
+  top: 2.4px;
+  left: 2.4px;
+  width: 19.2px;
+  height: 19.2px;
+  transform: none;
+}
+
 .ask-dots-demo__completion-message {
   min-width: 0;
   overflow: hidden;
@@ -1035,6 +1115,27 @@
   transform-origin: right center;
 }
 
+.ask-dots-demo__island--completion-b .ask-dots-demo__completion-copy {
+  flex: 0 0 auto;
+  gap: calc(var(--space-3) / 2);
+  font-size: 16px;
+  line-height: var(--space-6);
+}
+
+.ask-dots-demo__island--completion-b .ask-dots-demo__completion-action {
+  margin-left: auto;
+}
+
+.ask-dots-demo__completion-pointer {
+  position: absolute;
+  z-index: 2;
+  top: -5px;
+  right: 23px;
+  width: 14px;
+  height: 5px;
+  pointer-events: none;
+}
+
 .ask-dots-demo__island--completion.ask-dots-demo__island--expanded .ask-dots-demo__completion-copy,
 .ask-dots-demo__island--completion.ask-dots-demo__island--expanded .ask-dots-demo__completion-action {
   animation: ask-dots-completion-content-in var(--duration-morph) var(--curve-out) both;
@@ -1043,6 +1144,11 @@
 .ask-dots-demo__island--completion.ask-dots-demo__island--collapsing .ask-dots-demo__completion-copy,
 .ask-dots-demo__island--completion.ask-dots-demo__island--collapsing .ask-dots-demo__completion-action {
   animation: ask-dots-completion-content-out var(--duration-morph) linear both;
+}
+
+.ask-dots-demo__island--completion-b.ask-dots-demo__island--collapsing .ask-dots-demo__completion-copy,
+.ask-dots-demo__island--completion-b.ask-dots-demo__island--collapsing .ask-dots-demo__completion-action {
+  animation: none;
 }
 
 .ask-dots-demo__island--completion-c .ask-dots-demo__completion-action {

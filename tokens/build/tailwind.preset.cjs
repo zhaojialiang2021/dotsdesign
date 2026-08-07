@@ -332,7 +332,8 @@ module.exports = {
   "ask-dots-island": "var(--shadow-ask-dots-island)",
   "ask-dots-guide": "var(--shadow-ask-dots-guide)",
   "ask-dots-choice-guide": "var(--shadow-ask-dots-choice-guide)",
-  "ask-dots-compact-guide": "var(--shadow-ask-dots-compact-guide)"
+  "ask-dots-compact-guide": "var(--shadow-ask-dots-compact-guide)",
+  "ask-dots-completion-guide": "var(--shadow-ask-dots-completion-guide)"
 },
     },
   },

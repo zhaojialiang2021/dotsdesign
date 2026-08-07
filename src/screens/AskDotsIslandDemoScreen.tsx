@@ -287,6 +287,15 @@ export function AskDotsIslandDemoScreen({
     setCollapsing(false)
   }
 
+  const handleIslandAnimationEnd = (event: AnimationEvent<HTMLElement>) => {
+    if (
+      event.target !== event.currentTarget
+      || event.animationName !== 'ask-dots-scheme-b-card-out'
+      || !completionNoticeCollapsing
+    ) return
+    finishCompletionNotice()
+  }
+
   const handleResultsScroll = (event: UIEvent<HTMLElement>) => {
     const scrollArea = event.currentTarget
 
@@ -322,7 +331,7 @@ export function AskDotsIslandDemoScreen({
   const islandExpanded = (!showSchemeBPrompt && expanded) || completionNoticeExpanded
   const islandCollapsing = (!showSchemeBPrompt && collapsing) || completionNoticeCollapsing
   const islandVariantClass = showCompletionPrompt
-    ? ` ask-dots-demo__island--completion${bubbleVariant === 'compact' ? ' ask-dots-demo__island--completion-c' : ''}`
+    ? ` ask-dots-demo__island--completion${bubbleVariant === 'new' ? ' ask-dots-demo__island--completion-b' : ''}${bubbleVariant === 'compact' ? ' ask-dots-demo__island--completion-c' : ''}`
     : bubbleVariant === 'new'
       ? ' ask-dots-demo__island--variant-b'
       : bubbleVariant === 'compact'
@@ -416,10 +425,25 @@ export function AskDotsIslandDemoScreen({
         </div>
       </section>
 
+      {showCompletionPrompt && bubbleVariant === 'new' ? (
+        <button
+          className="ask-dots-demo__completed-tab-entry"
+          type="button"
+          aria-label="查看已总结的回答"
+          onClick={openCompletedConversation}
+        >
+          <span className="ask-dots-demo__completed-tab-logo" aria-hidden="true">
+            <img src={dotsAvatar} alt="" draggable={false} />
+          </span>
+          <span>已总结</span>
+        </button>
+      ) : null}
+
       <aside
         className={`ask-dots-demo__island${islandVariantClass}${islandExpanded ? ' ask-dots-demo__island--expanded' : ''}${islandCollapsing ? ' ask-dots-demo__island--collapsing' : ''}`}
         aria-label={showCompletionPrompt ? '点点已帮你总结完成' : answerPending ? '点点正在总结' : '问点点总结提示'}
         onTransitionEnd={handleIslandTransitionEnd}
+        onAnimationEnd={handleIslandAnimationEnd}
       >
         {!showCompletionPrompt && bubbleVariant !== 'new' ? (
           <span
@@ -471,17 +495,25 @@ export function AskDotsIslandDemoScreen({
 
         {showCompletionPrompt ? (
           <>
+            {bubbleVariant === 'new' ? (
+              <img
+                className="ask-dots-demo__completion-pointer"
+                src={schemeBPointer}
+                alt=""
+                draggable={false}
+              />
+            ) : null}
             <button
               className={`ask-dots-demo__completion-copy${bubbleVariant === 'compact' ? ' ask-dots-demo__completion-copy--shared' : ''}`}
               type="button"
               onClick={openCompletedConversation}
             >
               {bubbleVariant !== 'compact' ? (
-                <span className="ask-dots-demo__completion-agent">
+                <span className={`ask-dots-demo__completion-agent${bubbleVariant === 'new' ? ' ask-dots-demo__completion-agent--scheme-b' : ''}`}>
                   <span className="ask-dots-demo__completion-logo" aria-hidden="true">
-                    <img src={dotsAvatar} alt="" draggable={false} />
+                    <img src={bubbleVariant === 'new' ? schemeBAvatar : dotsAvatar} alt="" draggable={false} />
                   </span>
-                  <span>点点</span>
+                  {bubbleVariant !== 'new' ? <span>点点</span> : null}
                 </span>
               ) : null}
               <span className="ask-dots-demo__completion-message">已帮你总结完成</span>

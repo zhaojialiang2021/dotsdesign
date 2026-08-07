@@ -215,6 +215,7 @@
   --shadow-ask-dots-guide: 0 4px 20px rgba(0,0,0,0.08);
   --shadow-ask-dots-choice-guide: 0 4px 10px rgba(0,0,0,0.20);
   --shadow-ask-dots-compact-guide: 0 4px 20px rgba(0,0,0,0.20);
+  --shadow-ask-dots-completion-guide: 0 8px 15px rgba(0,0,0,0.20);
   --font-family: 'PingFang SC', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
   --rich-h1-size: 20pt;
   --rich-h1-weight: 600;

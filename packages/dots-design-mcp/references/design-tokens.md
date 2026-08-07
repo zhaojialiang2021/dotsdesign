@@ -275,3 +275,4 @@ Motion 规范页直接在 `Bg` 页面内容区域展示，不包外层卡片。D
 | `shadow.ask-dots-guide` / `--shadow-ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 同 Light | 问点点方案 A 引导卡 |
 | `shadow.ask-dots-choice-guide` / `--shadow-ask-dots-choice-guide` | `0 4px 10px rgba(0,0,0,0.20)` | 同 Light | 问点点方案 B 指向式双行引导卡 |
 | `shadow.ask-dots-compact-guide` / `--shadow-ask-dots-compact-guide` | `0 4px 20px rgba(0,0,0,0.20)` | 同 Light | 问点点方案 C 双行引导卡 |
+| `shadow.ask-dots-completion-guide` / `--shadow-ask-dots-completion-guide` | `0 8px 15px rgba(0,0,0,0.20)` | 同 Light | 问点点方案 B 总结完成提示 |

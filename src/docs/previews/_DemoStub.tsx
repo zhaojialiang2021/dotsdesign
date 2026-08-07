@@ -4,6 +4,44 @@ import { useToast } from '../useToast'
 import { useT } from '../useLocale'
 import { Icon } from '../icons'
 
+const codeTokenPattern = /(\/\/.*|\/\*.*?\*\/|"(?:\\.|[^"])*"|'(?:\\.|[^'])*'|`(?:\\.|[^`])*`|<\/?[A-Za-z][\w.-]*|--[\w-]+|\b[A-Za-z_$][\w$-]*\b|\b\d+(?:\.\d+)?\b|[{}()[\],.;:=<>/+*%-])/g
+const codeKeywords = new Set([
+  'as', 'async', 'await', 'break', 'case', 'catch', 'const', 'continue', 'default',
+  'else', 'export', 'extends', 'false', 'for', 'from', 'function', 'if', 'import',
+  'in', 'interface', 'let', 'new', 'null', 'return', 'true', 'type', 'undefined',
+])
+
+function highlightedCode(code: string, language?: string) {
+  return code.split('\n').map((line, lineIndex) => {
+    const tokens = line.split(codeTokenPattern).filter((token) => token !== '')
+    const isCss = language === 'CSS'
+    const isCssSelector = isCss && line.includes('{') && !line.includes(':')
+    return (
+      <span className="docs-syntax__line" key={`${lineIndex}-${line}`}>
+        <span className="docs-syntax__line-number" aria-hidden="true">{lineIndex + 1}</span>
+        <span className="docs-syntax__line-content">
+          {tokens.map((token, tokenIndex) => {
+            const nextToken = tokens.slice(tokenIndex + 1).find((part) => part.trim() !== '')
+            let kind = ''
+            if (token.startsWith('//') || token.startsWith('/*')) kind = 'comment'
+            else if (/^["'`]/.test(token)) kind = 'string'
+            else if (/^<\/?[A-Za-z]/.test(token)) kind = 'tag'
+            else if (codeKeywords.has(token)) kind = 'keyword'
+            else if (/^\d/.test(token)) kind = 'number'
+            else if (isCssSelector && /^[\w-]+$/.test(token)) kind = 'selector'
+            else if (token.startsWith('--')) kind = 'variable'
+            else if (isCss && nextToken === '(') kind = 'function'
+            else if (nextToken === '=' || (isCss && nextToken === ':')) kind = 'property'
+            else if (isCss && /^[A-Za-z-]+$/.test(token)) kind = 'value'
+            else if (/^[{}]/.test(token)) kind = 'punctuation'
+            return <span className={kind ? `docs-syntax__${kind}` : undefined} key={`${tokenIndex}-${token}`}>{token}</span>
+          })}
+        </span>
+      </span>
+    )
+  })
+}
+
 export function DemoFrame({
   stage,
   controls,
@@ -82,9 +120,6 @@ export function DemoFrame({
           {codeTabs && codeTabs.length > 0 ? (
             <div className="docs-demo__code-toolbar">
               <div className="docs-demo__code-toolbar-main">
-                <span className="docs-demo__code-terminal" aria-hidden="true">
-                  <span>&gt;_</span>
-                </span>
                 <div className="docs-demo__code-tabs" role="tablist" aria-label="研发参考代码">
                   {codeTabs.map((tab) => (
                     <button
@@ -115,7 +150,9 @@ export function DemoFrame({
             className={`docs-codeblock docs-demo__code ${codeTabs ? 'docs-demo__code--tabbed' : ''}`}
             ref={codeBlockRef}
           >
-            <code>{selectedCode?.code ?? code}</code>
+            <code className={codeTabs ? 'docs-syntax' : undefined}>
+              {codeTabs ? highlightedCode(selectedCode?.code ?? code ?? '', selectedCode?.language) : code}
+            </code>
             {!codeTabs ? (
               <button className="docs-codeblock__copy" onClick={copy}>
                 <Icon.Copy size={13} /> JSX

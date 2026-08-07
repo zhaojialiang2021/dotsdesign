@@ -200,7 +200,7 @@ export function DotsLiquidGlassStudioSurface({ collapsing }: DotsLiquidGlassStud
     let height = 1
     let backgroundDirty = true
     let removeLiveListeners = () => undefined
-    const blurRadius = 12
+        const blurRadius = 18
     const blurWeights = computeGaussianKernel(blurRadius)
     const animationDuration = collapsing ? 560 : 1050
 
@@ -337,23 +337,23 @@ export function DotsLiquidGlassStudioSurface({ collapsing }: DotsLiquidGlassStud
               u_bgTexture: texture ?? undefined,
               u_bgTextureRatio: backgroundTextureWidth / backgroundTextureHeight,
               u_bgTextureReady: texture ? 1 : 0,
-              u_shadowExpand: 18,
-              u_shadowFactor: 0.16 * (1 - exitProgress),
+              u_shadowExpand: 14,
+              u_shadowFactor: 0.1 * (1 - exitProgress),
               u_shadowPosition: [0, -2],
             },
             mainPass: {
-              u_tint: [1, 1, 1, 0.34 - exitProgress * 0.12],
-              u_refThickness: 26,
-              u_refFactor: 1.42,
-              u_refDispersion: 8,
-              u_refFresnelRange: 34,
-              u_refFresnelHardness: 0.18,
-              u_refFresnelFactor: 0.34,
-              u_glareRange: 30,
-              u_glareHardness: 0.2,
-              u_glareConvergence: 0.58,
-              u_glareOppositeFactor: 0.68,
-              u_glareFactor: (collapsing ? 0.28 : 0.88) * (1 - exitProgress),
+              u_tint: [1, 1, 1, 0.68 - exitProgress * 0.12],
+              u_refThickness: 22,
+              u_refFactor: 1.18,
+              u_refDispersion: 1.5,
+              u_refFresnelRange: 22,
+              u_refFresnelHardness: 0.1,
+              u_refFresnelFactor: 0.16,
+              u_glareRange: 22,
+              u_glareHardness: 0.08,
+              u_glareConvergence: 1.1,
+              u_glareOppositeFactor: 0.28,
+              u_glareFactor: (collapsing ? 0.1 : 0.3) * (1 - exitProgress),
               u_blurEdge: 1,
               STEP: 9,
             },
