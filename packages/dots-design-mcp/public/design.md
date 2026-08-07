@@ -177,8 +177,8 @@
 | `media-note.compact-padding-top` | `16px` | 三列笔记卡内容顶部留白 |
 | `media-note.compact-padding-x` | `10px` | 三列笔记卡内容水平留白 |
 | `media-note.compact-padding-bottom` | `10px` | 三列笔记卡内容底部留白 |
-| `media-note.compact-content-gap` | `4px` | 三列笔记卡标题与作者行间距 |
-| `media-note.compact-avatar` | `14px` | 三列笔记卡作者头像尺寸 |
+| `media-note.compact-content-gap` | `4px` | 三列笔记卡标题与互动行间距 |
+| `media-note.compact-avatar` | `14px` | 三列笔记卡作者头像尺寸；小卡只展示头像，不展示用户名 |
 | `media-note.compact-like-icon` | `12px` | 三列笔记卡点赞图标尺寸 |
 | `media-note.video-badge` | `20px` | 视频笔记右上角播放标识尺寸 |
 | `media-note.more-height` | `44px` | 更多笔记入口固定高度 |
@@ -309,7 +309,7 @@
 | `typography.community-card-title` | 14px | 500 | 20px | 社区卡片标题，最多两行 |
 | `typography.media-note-meta` | 12px | 400 | 18px | 大笔记卡作者和点赞信息 |
 | `typography.media-note-title-compact` | 12px | 500 | 18px | 三列笔记卡标题 |
-| `typography.media-note-meta-compact` | 10px | 400 | 14px | 三列笔记卡作者和点赞信息 |
+| `typography.media-note-meta-compact` | 10px | 400 | 14px | 三列笔记卡点赞信息；用户名不展示 |
 | `typography.media-video-author` | 12px | 400 | 18px | 横版视频作者名 |
 | `typography.media-video-duration` | 11px | 500 | 16px | 横版视频时长标签 |
 | `typography.support` | 12px | 400 | 17px | 辅助文字 |

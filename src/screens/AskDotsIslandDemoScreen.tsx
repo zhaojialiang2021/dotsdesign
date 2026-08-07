@@ -38,6 +38,8 @@ import schemeBPointer from '../assets/dotted/ask-dots-island/scheme-b-pointer.sv
 import tabDivider from '../assets/dotted/ask-dots-island/tab-divider.svg'
 import { DottedDemoScreen, type DottedEntryScenario } from './DottedDemoScreen'
 import { askDotsFamilyResponse } from './dotted/askDotsFamilyResponse'
+import { DotsLiquidGlassStudioSurface } from './dotted/DotsLiquidGlassStudioSurface'
+import { DotsLogoMotion } from './dotted/DotsLogoMotion'
 import { ProcessIndicator } from './dotted/ProcessIndicator'
 import { IOSStatusBar } from './shared/IOSStatusBar'
 import './AskDotsIslandDemoScreen.css'
@@ -71,6 +73,8 @@ const thinkingScenario: DottedEntryScenario = {
 }
 
 export type AskDotsIslandBubbleVariant = 'current' | 'new' | 'compact'
+export type AskDotsIslandSchemeAVariant = 'classic' | 'live'
+export type AskDotsIslandSchemeBVariant = 'full' | 'simple'
 
 function triggerLightHaptic() {
   navigator.vibrate?.(15)
@@ -104,8 +108,12 @@ function shuffleCards<T>(items: readonly T[]) {
 
 export function AskDotsIslandDemoScreen({
   bubbleVariant = 'current',
+  schemeAVariant = 'classic',
+  schemeBVariant = 'simple',
 }: {
   bubbleVariant?: AskDotsIslandBubbleVariant
+  schemeAVariant?: AskDotsIslandSchemeAVariant
+  schemeBVariant?: AskDotsIslandSchemeBVariant
 } = {}) {
   const [view, setView] = useState<'results' | 'thinking'>('results')
   const [transitionPhase, setTransitionPhase] = useState<'idle' | 'entering' | 'leaving'>('idle')
@@ -310,7 +318,7 @@ export function AskDotsIslandDemoScreen({
   const showCompletionPrompt = completionNoticeExpanded || completionNoticeCollapsing
   const showSchemeBPrompt = !showCompletionPrompt && bubbleVariant === 'new' && (expanded || collapsing)
   const showSchemeCPrompt = !showCompletionPrompt && bubbleVariant === 'compact' && (expanded || collapsing)
-  const showSchemeCSharedEntry = bubbleVariant === 'compact' && !hasVisibleConversationStatus
+  const showSchemeASharedLabel = bubbleVariant === 'compact' && !answerPending
   const islandExpanded = (!showSchemeBPrompt && expanded) || completionNoticeExpanded
   const islandCollapsing = (!showSchemeBPrompt && collapsing) || completionNoticeCollapsing
   const islandVariantClass = showCompletionPrompt
@@ -322,7 +330,12 @@ export function AskDotsIslandDemoScreen({
         : ''
 
   return (
-    <div className="ask-dots-demo-stage" data-bubble-variant={bubbleVariant}>
+    <div
+      className="ask-dots-demo-stage"
+      data-bubble-variant={bubbleVariant}
+      data-scheme-a-variant={schemeAVariant}
+      data-scheme-b-variant={schemeBVariant}
+    >
       <IOSStatusBar className="ask-dots-demo-stage__system-status" />
 
       <main className="ask-dots-demo" data-theme="light" aria-hidden={view === 'thinking'} inert={view === 'thinking' ? true : undefined}>
@@ -408,40 +421,19 @@ export function AskDotsIslandDemoScreen({
         aria-label={showCompletionPrompt ? '点点已帮你总结完成' : answerPending ? '点点正在总结' : '问点点总结提示'}
         onTransitionEnd={handleIslandTransitionEnd}
       >
-        {showCompletionPrompt ? (
-          <>
-            <button
-              className="ask-dots-demo__completion-copy"
-              type="button"
-              onClick={openCompletedConversation}
-            >
-              <span className="ask-dots-demo__completion-agent">
-                <span className="ask-dots-demo__completion-logo" aria-hidden="true">
-                  <img src={dotsAvatar} alt="" draggable={false} />
-                </span>
-                {bubbleVariant === 'compact' ? (
-                  <span className="ask-dots-demo__completion-agent-label">
-                    <span className="ask-dots-demo__completion-agent-prefix">问</span>
-                    <span>点点</span>
-                  </span>
-                ) : <span>点点</span>}
-              </span>
-              <span className="ask-dots-demo__completion-message">已帮你总结完成</span>
-            </button>
-            <button
-              className="ask-dots-demo__completion-action"
-              type="button"
-              onClick={openCompletedConversation}
-            >
-              去看看
-            </button>
-          </>
-        ) : (
-          <>
-            {bubbleVariant === 'current' ? (
-              <span className="ask-dots-demo__island-liquid" aria-hidden="true" />
+        {!showCompletionPrompt && bubbleVariant !== 'new' ? (
+          <span
+            className={`ask-dots-demo__island-liquid${bubbleVariant === 'compact' && schemeAVariant === 'classic' ? ' ask-dots-demo__island-liquid--classic' : ''}`}
+            aria-hidden="true"
+          >
+            {showSchemeCPrompt && schemeAVariant === 'live' ? (
+              <DotsLiquidGlassStudioSurface collapsing={collapsing} />
             ) : null}
+          </span>
+        ) : null}
 
+        {(!showCompletionPrompt || bubbleVariant === 'compact') ? (
+          <>
             <span className="ask-dots-demo__island-logo" aria-hidden="true">
               {answerPending && view === 'results' ? (
                 <ProcessIndicator
@@ -461,20 +453,49 @@ export function AskDotsIslandDemoScreen({
 
             <span className="ask-dots-demo__island-copy" aria-hidden="true">
               <span className={`ask-dots-demo__island-copy-label${answerPending ? ' ask-dots-demo__island-copy-label--pending' : ''}`}>
-                {showSchemeCSharedEntry ? (
+                {showSchemeASharedLabel ? (
                   <>
                     <span className="ask-dots-demo__scheme-c-prefix">问</span>
                     <span className="ask-dots-demo__scheme-c-core">点点</span>
                   </>
                 ) : islandStatusLabel}
               </span>
-              {bubbleVariant === 'current' ? (
+              {!showCompletionPrompt && bubbleVariant === 'current' ? (
                 <span className="ask-dots-demo__island-copy-question">
                   笔记看花眼？试试让点点帮你总结
                 </span>
               ) : null}
             </span>
+          </>
+        ) : null}
 
+        {showCompletionPrompt ? (
+          <>
+            <button
+              className={`ask-dots-demo__completion-copy${bubbleVariant === 'compact' ? ' ask-dots-demo__completion-copy--shared' : ''}`}
+              type="button"
+              onClick={openCompletedConversation}
+            >
+              {bubbleVariant !== 'compact' ? (
+                <span className="ask-dots-demo__completion-agent">
+                  <span className="ask-dots-demo__completion-logo" aria-hidden="true">
+                    <img src={dotsAvatar} alt="" draggable={false} />
+                  </span>
+                  <span>点点</span>
+                </span>
+              ) : null}
+              <span className="ask-dots-demo__completion-message">已帮你总结完成</span>
+            </button>
+            <button
+              className="ask-dots-demo__completion-action"
+              type="button"
+              onClick={openCompletedConversation}
+            >
+              去看看
+            </button>
+          </>
+        ) : (
+          <>
             <button
               className="ask-dots-demo__island-trigger"
               type="button"
@@ -513,7 +534,7 @@ export function AskDotsIslandDemoScreen({
 
       {showSchemeBPrompt ? (
         <aside
-          className={`ask-dots-demo__scheme-b-card${expanded ? ' ask-dots-demo__scheme-b-card--expanded' : ''}${collapsing ? ' ask-dots-demo__scheme-b-card--collapsing' : ''}`}
+          className={`ask-dots-demo__scheme-b-card${schemeBVariant === 'simple' ? ' ask-dots-demo__scheme-b-card--simple' : ''}${expanded ? ' ask-dots-demo__scheme-b-card--expanded' : ''}${collapsing ? ' ask-dots-demo__scheme-b-card--collapsing' : ''}`}
           aria-label="问点点总结提示"
         >
           <img
@@ -522,24 +543,46 @@ export function AskDotsIslandDemoScreen({
             alt=""
             draggable={false}
           />
-          <span className="ask-dots-demo__scheme-b-primary" aria-hidden="true">
-            <span className="ask-dots-demo__scheme-b-avatar">
-              <img src={schemeBAvatar} alt="" draggable={false} />
-            </span>
-            <span className="ask-dots-demo__scheme-b-question">
-              需要我帮你总结下上海周末遛娃好去处吗？
-            </span>
-          </span>
-          <span className="ask-dots-demo__scheme-b-actions">
-            <button type="button" onClick={dismissPrompt}>忽略</button>
-            <button
-              className="ask-dots-demo__scheme-b-confirm"
-              type="button"
-              onClick={enterThinking}
-            >
-              好的
-            </button>
-          </span>
+          {schemeBVariant === 'simple' ? (
+            <>
+              <span className="ask-dots-demo__scheme-b-primary" aria-hidden="true">
+                <span className="ask-dots-demo__scheme-b-avatar">
+                  <DotsLogoMotion className="ask-dots-demo__scheme-b-logo-motion" />
+                </span>
+                <span className="ask-dots-demo__scheme-b-question">
+                  笔记太多看花眼？我来帮你总结
+                </span>
+              </span>
+              <button
+                className="ask-dots-demo__scheme-b-simple-confirm"
+                type="button"
+                onClick={enterThinking}
+              >
+                好的
+              </button>
+            </>
+          ) : (
+            <>
+              <span className="ask-dots-demo__scheme-b-primary" aria-hidden="true">
+                <span className="ask-dots-demo__scheme-b-avatar">
+                  <img src={schemeBAvatar} alt="" draggable={false} />
+                </span>
+                <span className="ask-dots-demo__scheme-b-question">
+                  需要我帮你总结下上海周末遛娃好去处吗？
+                </span>
+              </span>
+              <span className="ask-dots-demo__scheme-b-actions">
+                <button type="button" onClick={dismissPrompt}>忽略</button>
+                <button
+                  className="ask-dots-demo__scheme-b-confirm"
+                  type="button"
+                  onClick={enterThinking}
+                >
+                  好的
+                </button>
+              </span>
+            </>
+          )}
         </aside>
       ) : null}
 

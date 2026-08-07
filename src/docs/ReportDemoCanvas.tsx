@@ -7,7 +7,11 @@ import {
   type ReactNode,
 } from 'react'
 import type { DottedToolNoteDisplayVariant } from '../screens/DottedDemoScreen'
-import type { AskDotsIslandBubbleVariant } from '../screens/AskDotsIslandDemoScreen'
+import type {
+  AskDotsIslandBubbleVariant,
+  AskDotsIslandSchemeAVariant,
+  AskDotsIslandSchemeBVariant,
+} from '../screens/AskDotsIslandDemoScreen'
 import demoShellMenuIcon from '../assets/docs/demo-shell-menu.svg'
 import demoShellArrowRightIcon from '../assets/docs/demo-shell-arrow-right.svg'
 import demoShellShareIcon from '../assets/docs/demo-shell-share.svg'
@@ -62,6 +66,10 @@ interface ReportDemoAskDotsSchemeControls {
   kind: 'ask-dots-island'
   bubbleVariant: AskDotsIslandBubbleVariant
   onBubbleVariantChange: (variant: AskDotsIslandBubbleVariant) => void
+  schemeAVariant: AskDotsIslandSchemeAVariant
+  onSchemeAVariantChange: (variant: AskDotsIslandSchemeAVariant) => void
+  schemeBVariant: AskDotsIslandSchemeBVariant
+  onSchemeBVariantChange: (variant: AskDotsIslandSchemeBVariant) => void
 }
 
 export type ReportDemoSchemeControls =
@@ -405,35 +413,93 @@ function ReportDemoCanvasTools({
                 </div>
               </>
             ) : (
-              <div className="docs-report-demo-scheme-control">
-                <span>入口气泡样式</span>
-                <div className="docs-report-demo-scheme-control__segmented" role="group" aria-label="入口气泡样式">
-                  <button
-                    className={schemeControls.bubbleVariant === 'current' ? 'is-active' : undefined}
-                    type="button"
-                    onClick={() => schemeControls.onBubbleVariantChange('current')}
-                    aria-pressed={schemeControls.bubbleVariant === 'current'}
-                  >
-                    方案 A
-                  </button>
-                  <button
-                    className={schemeControls.bubbleVariant === 'new' ? 'is-active' : undefined}
-                    type="button"
-                    onClick={() => schemeControls.onBubbleVariantChange('new')}
-                    aria-pressed={schemeControls.bubbleVariant === 'new'}
-                  >
-                    方案 B
-                  </button>
-                  <button
-                    className={schemeControls.bubbleVariant === 'compact' ? 'is-active' : undefined}
-                    type="button"
-                    onClick={() => schemeControls.onBubbleVariantChange('compact')}
-                    aria-pressed={schemeControls.bubbleVariant === 'compact'}
-                  >
-                    方案 C
-                  </button>
+              <>
+                <div className="docs-report-demo-scheme-control">
+                  <span>入口气泡样式</span>
+                  <div className="docs-report-demo-scheme-control__segmented" role="group" aria-label="入口气泡样式">
+                    <button
+                      className={schemeControls.bubbleVariant === 'compact' ? 'is-active' : undefined}
+                      type="button"
+                      onClick={() => schemeControls.onBubbleVariantChange('compact')}
+                      aria-pressed={schemeControls.bubbleVariant === 'compact'}
+                    >
+                      方案 A
+                    </button>
+                    <button
+                      className={schemeControls.bubbleVariant === 'new' ? 'is-active' : undefined}
+                      type="button"
+                      onClick={() => schemeControls.onBubbleVariantChange('new')}
+                      aria-pressed={schemeControls.bubbleVariant === 'new'}
+                    >
+                      方案 B
+                    </button>
+                    <button
+                      className={schemeControls.bubbleVariant === 'current' ? 'is-active' : undefined}
+                      type="button"
+                      onClick={() => schemeControls.onBubbleVariantChange('current')}
+                      aria-pressed={schemeControls.bubbleVariant === 'current'}
+                    >
+                      方案 C
+                    </button>
+                  </div>
                 </div>
-              </div>
+                <div
+                  className={[
+                    'docs-report-demo-scheme-control',
+                    'docs-report-demo-scheme-control--reserved',
+                    schemeControls.bubbleVariant === 'current' ? 'is-hidden' : '',
+                  ].filter(Boolean).join(' ')}
+                  aria-hidden={schemeControls.bubbleVariant === 'current'}
+                >
+                  {schemeControls.bubbleVariant === 'compact' ? (
+                    <>
+                      <span>方案 A 分支</span>
+                      <div className="docs-report-demo-scheme-control__segmented" role="group" aria-label="方案 A 分支">
+                        <button
+                          className={schemeControls.schemeAVariant === 'classic' ? 'is-active' : undefined}
+                          type="button"
+                          onClick={() => schemeControls.onSchemeAVariantChange('classic')}
+                          aria-pressed={schemeControls.schemeAVariant === 'classic'}
+                        >
+                          偏白版
+                        </button>
+                        <button
+                          className={schemeControls.schemeAVariant === 'live' ? 'is-active' : undefined}
+                          type="button"
+                          onClick={() => schemeControls.onSchemeAVariantChange('live')}
+                          aria-pressed={schemeControls.schemeAVariant === 'live'}
+                        >
+                          实时版
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span>方案 B 分支</span>
+                      <div className="docs-report-demo-scheme-control__segmented" role="group" aria-label="方案 B 分支">
+                        <button
+                          className={schemeControls.schemeBVariant === 'simple' ? 'is-active' : undefined}
+                          type="button"
+                          onClick={() => schemeControls.onSchemeBVariantChange('simple')}
+                          aria-pressed={schemeControls.schemeBVariant === 'simple'}
+                          disabled={schemeControls.bubbleVariant !== 'new'}
+                        >
+                          简化版
+                        </button>
+                        <button
+                          className={schemeControls.schemeBVariant === 'full' ? 'is-active' : undefined}
+                          type="button"
+                          onClick={() => schemeControls.onSchemeBVariantChange('full')}
+                          aria-pressed={schemeControls.schemeBVariant === 'full'}
+                          disabled={schemeControls.bubbleVariant !== 'new'}
+                        >
+                          完整版
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </>
             )}
           </div>
         </aside>

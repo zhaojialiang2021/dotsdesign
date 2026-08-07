@@ -191,8 +191,8 @@
 | `media-note.compact-padding-top` | `16px` | 三列笔记卡内容顶部留白 |
 | `media-note.compact-padding-x` | `10px` | 三列笔记卡内容水平留白 |
 | `media-note.compact-padding-bottom` | `10px` | 三列笔记卡内容底部留白 |
-| `media-note.compact-content-gap` | `4px` | 三列笔记卡标题与作者行间距 |
-| `media-note.compact-avatar` | `14px` | 三列笔记卡作者头像尺寸 |
+| `media-note.compact-content-gap` | `4px` | 三列笔记卡标题与互动行间距 |
+| `media-note.compact-avatar` | `14px` | 三列笔记卡作者头像尺寸；小卡只展示头像，不展示用户名 |
 | `media-note.compact-like-icon` | `12px` | 三列笔记卡点赞图标尺寸 |
 | `media-note.video-badge` | `20px` | 视频笔记右上角播放标识尺寸 |
 | `media-note.more-height` | `44px` | 更多笔记入口固定高度 |
@@ -297,7 +297,9 @@
 | `shadow.media-note-text` | `0 0.5px 1px rgba(0,0,0,0.30)` | 笔记卡封面文字阴影 |
 | `shadow.community-search-field` | `0 4px 18px rgba(0,0,0,0.06)` | 社区搜索结果页搜索框阴影 |
 | `shadow.ask-dots-island` | `0 8px 16px rgba(0,0,0,0.08), 0 3px 80px rgba(102,170,159,0.20)` | 问点点搜索引导新版黑色投影与薄荷柔光 |
-| `shadow.ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 问点点方案 B 单行引导卡投影 |
+| `shadow.ask-dots-guide` | `0 4px 20px rgba(0,0,0,0.08)` | 问点点方案 A 引导卡投影 |
+| `shadow.ask-dots-choice-guide` | `0 4px 10px rgba(0,0,0,0.20)` | 问点点方案 B 指向式双行引导卡投影 |
+| `shadow.ask-dots-compact-guide` | `0 4px 20px rgba(0,0,0,0.20)` | 问点点方案 C 双行引导卡投影 |
 
 ## Font Family
 
@@ -321,7 +323,7 @@
 | `typography.community-card-title` | 14px | 500 | 20px | 社区卡片标题，最多两行 |
 | `typography.media-note-meta` | 12px | 400 | 18px | 大笔记卡作者和点赞信息 |
 | `typography.media-note-title-compact` | 12px | 500 | 18px | 三列笔记卡标题 |
-| `typography.media-note-meta-compact` | 10px | 400 | 14px | 三列笔记卡作者和点赞信息 |
+| `typography.media-note-meta-compact` | 10px | 400 | 14px | 三列笔记卡点赞信息；用户名不展示 |
 | `typography.media-video-author` | 12px | 400 | 18px | 横版视频作者名 |
 | `typography.media-video-duration` | 11px | 500 | 16px | 横版视频时长标签 |
 | `typography.support` | 12px | 400 | 17px | 辅助文字 |
@@ -710,7 +712,8 @@ AI 最容易忘记的状态。空容器不是 bug，是产品的一个 view —�
 - **Validation**
   - 所有卡片比例 3:4、圆角 16px、间距 6px。
   - 单篇宽 161.5px；两篇每张尺寸与单篇一致；三篇横向撑满 329px。
-  - 封面、底部渐变、标题、作者头像、作者名和点赞量完整。
+  - 封面、算色渐变、线性模糊、标题、作者头像、作者名和点赞量完整，文字、头像和点赞图标使用一致的投影。
+  - 检查渐变两端 RGB 均为算色结果，顶部 alpha 为 0、底部 alpha 为 1。
 
 ### Props
 - `count`: 1 | 2 | 3 | 4 _(default: `1`)_
@@ -728,19 +731,28 @@ AI 最容易忘记的状态。空容器不是 bug，是产品的一个 view —�
 - **ratio**: 所有笔记卡固定为 3:4。
 - **single_matches_two**: 单篇和两篇使用相同单卡尺寸。
 - **overflow_uses_more_button**: 超过三篇必须展示更多入口。
+- **color_sample_region**: 截取封面底部 25% 区域参与算色，不使用整张图片。
+- **color_sampling**: 采用 Color Thief RGB MMCQ 逻辑，每 10 个像素采样一次；忽略 alpha 小于 125 的透明像素，以及 RGB 三通道均大于 250 的近白像素。
+- **dominant_color**: 将采样像素压缩为 5-bit RGB，通过 MMCQ 中位切分量化颜色，并按像素数量选择占比最高的主色。
+- **brightness_adjustment**: 主色由 RGB 转为 HSB，保持 H、S 不变：B≥80 时 B-40；20≤B<80 时 B-20；B<20 时 B=0，完成后转回 RGB。
+- **color_gradient**: 内容区使用 0%-100% 线性渐变；两端 RGB 均取降调后的算色结果，顶部 alpha=0，底部 alpha=1。
+- **progressive_blur**: 背景最大模糊为 20px，并使用同方向线性遮罩渐进出现，在内容区 78% 位置达到完整模糊强度。
+- **color_fallback**: Canvas 跨域、无像素或算色失败时回退 Always Media Overlay，不能影响文字可读性。
 
 ### Anatomy
 - **cover**: 3:4 裁切的笔记封面。
-- **content**: 底部渐变上的标题、作者和点赞信息。
+- **content**: 底部算色渐变和 20px 渐进模糊上的标题、作者和点赞信息。
 - **more-button**: 超过三篇时展示总数。
 
 ### Do
 - 保留笔记标题、作者与互动量。
 - 按输入顺序展示前三篇。
+- 点击卡片时保持原尺寸。
 
 ### Don't
 - 不要把单篇卡拉满内容宽度。
 - 不要在三列模式继续使用大卡字号。
+- 不要给笔记卡添加按下缩小效果。
 
 ---
 

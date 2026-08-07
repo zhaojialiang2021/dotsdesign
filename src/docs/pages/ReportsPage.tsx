@@ -7,7 +7,12 @@ import { reportDemos } from '../manifest'
 import { ReportDemoCanvas } from '../ReportDemoCanvas'
 import { NotFoundPage } from './NotFoundPage'
 import { DottedDemoScreen, type DottedDemoStep, type DottedSourceImageMotionVariant, type DottedThinkingDisplayVariant, type DottedToolNoteDisplayVariant } from '../../screens/DottedDemoScreen'
-import { AskDotsIslandDemoScreen, type AskDotsIslandBubbleVariant } from '../../screens/AskDotsIslandDemoScreen'
+import {
+  AskDotsIslandDemoScreen,
+  type AskDotsIslandBubbleVariant,
+  type AskDotsIslandSchemeAVariant,
+  type AskDotsIslandSchemeBVariant,
+} from '../../screens/AskDotsIslandDemoScreen'
 import restartIcon from '../../assets/dotted/think-response-refresh.svg'
 import iphoneBezel from '../../assets/docs/iphone-bezel.png'
 
@@ -35,7 +40,9 @@ export function ReportsPage({ slug }: { slug: string }) {
 }
 
 function AskDotsIslandReport() {
-  const [bubbleVariant, setBubbleVariant] = useState<AskDotsIslandBubbleVariant>('current')
+  const [bubbleVariant, setBubbleVariant] = useState<AskDotsIslandBubbleVariant>('compact')
+  const [schemeAVariant, setSchemeAVariant] = useState<AskDotsIslandSchemeAVariant>('classic')
+  const [schemeBVariant, setSchemeBVariant] = useState<AskDotsIslandSchemeBVariant>('simple')
 
   const changeBubbleVariant = (variant: AskDotsIslandBubbleVariant) => {
     if (variant === bubbleVariant) return
@@ -49,13 +56,19 @@ function AskDotsIslandReport() {
         kind: 'ask-dots-island',
         bubbleVariant,
         onBubbleVariantChange: changeBubbleVariant,
+        schemeAVariant,
+        onSchemeAVariantChange: setSchemeAVariant,
+        schemeBVariant,
+        onSchemeBVariantChange: setSchemeBVariant,
       }}
     >
       <div className="docs-phone-frame">
         <div className="docs-timestamp-phone docs-ask-dots-island-phone" aria-label="搜索结果页问点点灵动展开 demo">
           <AskDotsIslandDemoScreen
-            key={bubbleVariant}
+            key={`${bubbleVariant}-${schemeAVariant}-${schemeBVariant}`}
             bubbleVariant={bubbleVariant}
+            schemeAVariant={schemeAVariant}
+            schemeBVariant={schemeBVariant}
           />
         </div>
         <img className="docs-phone-bezel" src={iphoneBezel} alt="" aria-hidden="true" />

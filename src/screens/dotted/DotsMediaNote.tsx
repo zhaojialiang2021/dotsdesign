@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 import playIcon from '../../assets/dotted/dots-note-play.svg'
 import likeIcon from '../../assets/dotted/media-note-like.svg'
+import { getMediaNoteGradientColor } from './mediaNoteColor'
 
 export type DotsMediaNoteItem = {
   cover: string
@@ -43,19 +44,27 @@ export function DotsMediaNote({
             style={{ '--media-note-index': index } as CSSProperties}
             aria-label={`打开笔记：${note.title}`}
           >
-            <img className="dots-media-note__cover" src={note.cover} alt={note.coverAlt} draggable={false} />
+            <img
+              className="dots-media-note__cover"
+              src={note.cover}
+              alt={note.coverAlt}
+              draggable={false}
+              onLoad={(event) => {
+                const color = getMediaNoteGradientColor(event.currentTarget)
+                if (color) event.currentTarget.parentElement?.style.setProperty('--media-note-derived-color', color)
+              }}
+            />
             {note.mediaType === 'video' && (
               <span className="dots-media-note__video" aria-label="视频笔记">
                 <img src={playIcon} alt="" />
               </span>
             )}
-            <span className="dots-media-note__overlay" aria-hidden="true" />
             <span className="dots-media-note__content">
               <span className="dots-media-note__title">{note.title}</span>
               <span className="dots-media-note__meta">
                 <span className="dots-media-note__author">
                   <img src={note.avatar} alt="" draggable={false} />
-                  <span>{note.author}</span>
+                  {!compact && <span>{note.author}</span>}
                 </span>
                 <span className="dots-media-note__likes">
                   <img src={likeIcon} alt="" />

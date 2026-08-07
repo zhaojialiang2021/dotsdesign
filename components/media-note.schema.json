@@ -14,7 +14,8 @@
     "validation": [
       "所有卡片比例 3:4、圆角 16px、间距 6px。",
       "单篇宽 161.5px；两篇每张尺寸与单篇一致；三篇横向撑满 329px。",
-      "封面、底部渐变、标题、作者头像、作者名和点赞量完整。"
+      "封面、算色渐变、线性模糊、标题、作者头像、作者名和点赞量完整，文字、头像和点赞图标使用一致的投影。",
+      "检查渐变两端 RGB 均为算色结果，顶部 alpha 为 0、底部 alpha 为 1。"
     ]
   },
   "props": {
@@ -27,7 +28,14 @@
     { "rule": "maximum_visible_notes", "value": 3, "description": "内容流最多展示前三篇笔记。" },
     { "rule": "ratio", "value": "3:4", "description": "所有笔记卡固定为 3:4。" },
     { "rule": "single_matches_two", "value": true, "description": "单篇和两篇使用相同单卡尺寸。" },
-    { "rule": "overflow_uses_more_button", "value": true, "description": "超过三篇必须展示更多入口。" }
+    { "rule": "overflow_uses_more_button", "value": true, "description": "超过三篇必须展示更多入口。" },
+    { "rule": "color_sample_region", "value": "bottom-25-percent", "description": "截取封面底部 25% 区域参与算色，不使用整张图片。" },
+    { "rule": "color_sampling", "value": "quality-10", "description": "采用 Color Thief RGB MMCQ 逻辑，每 10 个像素采样一次；忽略 alpha 小于 125 的透明像素，以及 RGB 三通道均大于 250 的近白像素。" },
+    { "rule": "dominant_color", "value": "rgb-mmcq", "description": "将采样像素压缩为 5-bit RGB，通过 MMCQ 中位切分量化颜色，并按像素数量选择占比最高的主色。" },
+    { "rule": "brightness_adjustment", "value": "hsb-piecewise", "description": "主色由 RGB 转为 HSB，保持 H、S 不变：B≥80 时 B-40；20≤B<80 时 B-20；B<20 时 B=0，完成后转回 RGB。" },
+    { "rule": "color_gradient", "value": "linear-0-to-100", "description": "内容区使用 0%-100% 线性渐变；两端 RGB 均取降调后的算色结果，顶部 alpha=0，底部 alpha=1。" },
+    { "rule": "progressive_blur", "value": "20px-at-78-percent", "description": "背景最大模糊为 20px，并使用同方向线性遮罩渐进出现，在内容区 78% 位置达到完整模糊强度。" },
+    { "rule": "color_fallback", "value": "always-media-overlay", "description": "Canvas 跨域、无像素或算色失败时回退 Always Media Overlay，不能影响文字可读性。" }
   ],
   "tokens": {
     "container.width": "media-note.container-width",
@@ -41,11 +49,11 @@
   "haptics": { "open-note": "light", "open-more": "light" },
   "anatomy": [
     { "part": "cover", "tokens": ["card.radius"], "description": "3:4 裁切的笔记封面。" },
-    { "part": "content", "tokens": ["overlay", "text"], "description": "底部渐变上的标题、作者和点赞信息。" },
+    { "part": "content", "tokens": ["overlay", "text"], "description": "底部算色渐变和 20px 渐进模糊上的标题、作者和点赞信息。" },
     { "part": "more-button", "tokens": ["button.height", "button.radius"], "description": "超过三篇时展示总数。" }
   ],
   "doDont": {
-    "do": ["保留笔记标题、作者与互动量。", "按输入顺序展示前三篇。"],
-    "dont": ["不要把单篇卡拉满内容宽度。", "不要在三列模式继续使用大卡字号。"]
+    "do": ["保留笔记标题、作者与互动量。", "按输入顺序展示前三篇。", "点击卡片时保持原尺寸。"],
+    "dont": ["不要把单篇卡拉满内容宽度。", "不要在三列模式继续使用大卡字号。", "不要给笔记卡添加按下缩小效果。"]
   }
 }
