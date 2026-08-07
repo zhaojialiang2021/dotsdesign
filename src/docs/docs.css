@@ -60,7 +60,7 @@
 /* === Sidebar === */
 .docs-sidebar {
   grid-area: sidebar;
-  background: var(--bg-0);
+  background: var(--bg-0-lighter);
   border-right: 0.5px solid var(--line-non-opaque);
   padding: var(--space-5) var(--space-3);
   overflow-y: auto;
@@ -997,7 +997,7 @@
 }
 
 .docs-prose pre {
-  background: var(--bg-1);
+  background: var(--bg-0);
   padding: 16px 20px;
   border-radius: 10px;
   overflow: auto;
@@ -3633,13 +3633,13 @@ body.pitch-mode .docs-main__inner {
 .docs-demo__code-terminal {
   display: inline-grid;
   flex: none;
-  width: calc(var(--space-7) - var(--space-1));
-  height: calc(var(--space-7) - var(--space-1));
+  width: var(--space-5);
+  height: var(--space-5);
   border-radius: var(--radius-small);
   place-items: center;
   background: var(--title);
   color: var(--always-white);
-  font: 500 12px/1 var(--font-mono);
+  font: 500 10px/1 var(--font-mono);
 }
 
 .docs-demo__code-terminal > span {
